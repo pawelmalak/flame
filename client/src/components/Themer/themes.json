@@ -1,0 +1,100 @@
+{
+  "themes": [
+    {
+      "name": "blackboard",
+      "colors": {
+        "background": "#1a1a1a",
+        "primary": "#FFFDEA",
+        "accent": "#5c5c5c"
+      }
+    },
+    {
+      "name": "gazette",
+      "colors": {
+        "background": "#F2F7FF",
+        "primary": "#000000",
+        "accent": "#5c5c5c"
+      }
+    },
+    {
+      "name": "espresso",
+      "colors": {
+        "background": "#21211F",
+        "primary": "#D1B59A",
+        "accent": "#4E4E4E"
+      }
+    },
+    {
+      "name": "cab",
+      "colors": {
+        "background": "#F6D305",
+        "primary": "#1F1F1F",
+        "accent": "#424242"
+      }
+    },
+    {
+      "name": "cloud",
+      "colors": {
+        "background": "#f1f2f0",
+        "primary": "#35342f",
+        "accent": "#37bbe4"
+      }
+    },
+    {
+      "name": "lime",
+      "colors": {
+        "background": "#263238",
+        "primary": "#AABBC3",
+        "accent": "#aeea00"
+      }
+    },
+    {
+      "name": "white",
+      "colors": {
+        "background": "#ffffff",
+        "primary": "#222222",
+        "accent": "#dddddd"
+      }
+    },
+    {
+      "name": "tron",
+      "colors": {
+        "background": "#242B33",
+        "primary": "#EFFBFF",
+        "accent": "#6EE2FF"
+      }
+    },
+    {
+      "name": "blues",
+      "colors": {
+        "background": "#2B2C56",
+        "primary": "#EFF1FC",
+        "accent": "#6677EB"
+      }
+    },
+    {
+      "name": "passion",
+      "colors": {
+        "background": "#f5f5f5",
+        "primary": "#12005e",
+        "accent": "#8e24aa"
+      }
+    },
+    {
+      "name": "chalk",
+      "colors": {
+        "background": "#263238",
+        "primary": "#AABBC3",
+        "accent": "#FF869A"
+      }
+    },
+    {
+      "name": "paper",
+      "colors": {
+        "background": "#F8F6F1",
+        "primary": "#4C432E",
+        "accent": "#AA9A73"
+      }
+    }
+  ]
+}
