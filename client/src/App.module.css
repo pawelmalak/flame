@@ -1,0 +1,19 @@
+.SettingsButton {
+  width: 35px;
+  height: 35px;
+  background-color: var(--color-accent);
+  border-radius: 50%;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.25;
+  transition: all 0.3s;
+}
+
+.SettingsButton:hover {
+  cursor: pointer;
+  opacity: 1;
+}

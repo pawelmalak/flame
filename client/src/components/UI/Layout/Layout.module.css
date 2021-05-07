@@ -1,0 +1,4 @@
+.Container {
+  width: 100%;
+  padding: var(--space-p-x);
+}
