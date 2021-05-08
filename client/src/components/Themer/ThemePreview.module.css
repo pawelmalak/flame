@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .ThemePreview:hover {
@@ -13,6 +13,7 @@
 .ThemePreview p {
   text-transform: capitalize;
   margin: 8px 0;
+  color: var(--color-primary);
   /* align-self: flex-start; */
 }
 

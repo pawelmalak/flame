@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { useEffect, Fragment } from 'react';
+import { connect } from 'react-redux';
 
 import classes from './Themer.module.css';
 
@@ -8,7 +9,13 @@ import ThemePreview from './ThemePreview';
 import { Container } from '../UI/Layout/Layout';
 import Headline from '../UI/Headline/Headline';
 
-const Themer = (): JSX.Element => {
+import { setTheme } from '../../store/actions';
+
+interface ComponentProps {
+  setTheme: Function;
+}
+
+const Themer = (props: ComponentProps): JSX.Element => {
   useEffect((): void => {
     if (localStorage.theme) {
       applyTheme(localStorage.theme);
@@ -27,19 +34,20 @@ const Themer = (): JSX.Element => {
   }
 
   return (
-    <Container>
+    <Fragment>
       <div>
-        <Headline
+        {/* <Headline
           title='Themes'
           subtitle='Select new theme by clicking on it'
-        />
+        /> */}
         <div className={classes.ThemerGrid}>
-          {themes.map((theme: Theme): JSX.Element => <ThemePreview theme={theme} applyTheme={applyTheme} />)}
+          {themes.map((theme: Theme): JSX.Element => <ThemePreview theme={theme} applyTheme={props.setTheme} />)}
         </div>
       </div>
-    </Container>
+    </Fragment>
 
   )
 }
 
-export default Themer;
+
+export default connect(null, { setTheme })(Themer);

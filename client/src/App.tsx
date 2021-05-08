@@ -1,23 +1,30 @@
-import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { setTheme } from './store/actions';
+
+// Redux
+import store from './store/store';
+import { Provider } from 'react-redux';
 
 import classes from './App.module.css';
 
+import Home from './components/Home/Home';
 import Apps from './components/Apps/Apps';
 import Settings from './components/Settings/Settings';
 
-import Icon from './components/UI/Icon/Icon';
+if (localStorage.theme) {
+  store.dispatch(setTheme(localStorage.theme));
+}
 
 const App = (): JSX.Element => {
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route exact path='/' component={Apps} />
-        <Route exact path='/settings' component={Settings} />
-      </Switch>
-      <Link to='/settings' className={classes.SettingsButton}>
-        <Icon icon='mdiCog' />
-      </Link>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Switch>
+          <Route exact path='/' component={Home} />
+          <Route exact path='/settings' component={Settings} />
+        </Switch>
+      </BrowserRouter>
+    </Provider>
   );
 }
 
