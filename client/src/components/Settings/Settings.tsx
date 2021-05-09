@@ -1,15 +1,48 @@
-import { Link } from 'react-router-dom';
+import { NavLink, Link, Switch, Route, withRouter, match } from 'react-router-dom';
 
+import classes from './Settings.module.css';
+
+import { Container } from '../UI/Layout/Layout';
+import Headline from '../UI/Headlines/Headline/Headline';
 import Themer from '../Themer/Themer';
 
-const Settings = (): JSX.Element => {
+interface ComponentProps {
+  match: match;
+}
+
+const Settings = (props: ComponentProps): JSX.Element => {
   return (
-    <div>
-      <h1>settings</h1>
-      <Link to='/'>Home</Link>
-      <Themer />
-    </div>
+    <Container>
+      <Headline
+        title='Settings'
+        subtitle={<Link to='/'>Go back</Link>}
+      />
+      <div className={classes.Settings}>
+        <nav className={classes.SettingsNav}>
+          <NavLink
+            className={classes.SettingsNavLink}
+            activeClassName={classes.SettingsNavLinkActive}
+            exact
+            to='/settings'>
+            Theme
+          </NavLink>
+          <NavLink
+            className={classes.SettingsNavLink}
+            activeClassName={classes.SettingsNavLinkActive}
+            exact
+            to='/settings/nothig'>
+            Nothing
+          </NavLink>
+        </nav>
+        <section className={classes.SettingsContent}>
+          {/* <Themer /> */}
+          <Switch>
+            <Route exact path='/settings' component={Themer} />
+          </Switch>
+        </section>
+      </div>
+    </Container>
   )
 }
 
-export default Settings;
+export default withRouter(Settings);

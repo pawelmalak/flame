@@ -1,3 +1,17 @@
+.Header h1 {
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 4em;
+  margin-bottom: 0.5em;
+}
+
+.Header p {
+  color: var(--color-primary);
+  font-weight: 300;
+  text-transform: uppercase;
+  height: 30px;
+}
+
 .SettingsButton {
   width: 35px;
   height: 35px;

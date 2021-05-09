@@ -1,0 +1,31 @@
+.Settings {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+}
+
+.SettingsNav {
+  /* background-color: coral; */
+  display: flex;
+  flex-direction: column;
+}
+
+.SettingsNavLink {
+  padding-left: 7px;
+  border-left: 3px solid transparent;
+  display: flex;
+  align-items: center;
+  height: 40px;
+}
+
+.SettingsNavLink:hover {
+  border-left: 3px solid var(--color-primary);
+}
+
+.SettingsNavLinkActive {
+  border-left: 3px solid var(--color-primary);
+}
+
+.SettingsContent {
+  /* background-color:springgreen; */
+}
