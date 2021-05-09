@@ -1,7 +1,10 @@
 .HeadlineTitle {
   color: var(--color-primary);
+  font-weight: 700;
 }
 
 .HeadlineSubtitle {
   color: var(--color-primary);
+  margin-bottom: 20px;
+  font-weight: 400;
 }

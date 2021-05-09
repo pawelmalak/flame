@@ -2,6 +2,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  transition: all 0.3s;
+  user-select: none;
 }
 
 body {
@@ -9,8 +11,26 @@ body {
   --color-primary: #EFF1FC;
   --color-accent: #6677EB;
 
-  --space-p-x: 16px;
-
   background-color: var(--color-background);
+  /* font weights
+    light 300
+    regular 400
+    semi-bold 600
+    bold 700
+    extra-bold 800
+  */
   font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, Roboto, sans-serif;
+  font-size: 14px;
 }
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  opacity: 0.75;
+}
+
+/* 320px — 480px: Mobile devices.
+481px — 768px: iPads, Tablets.
+769px — 1024px: Small screens, laptops.
+1025px — 1200px: Desktops, large screens.
+1201px and more — Extra large screens, TV. */

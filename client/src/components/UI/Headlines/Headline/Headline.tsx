@@ -3,13 +3,13 @@ import classes from './Headline.module.css';
 
 interface ComponentProps {
   title: string;
-  subtitle?: string;
+  subtitle?: string | JSX.Element;
 }
 
 const Headline = (props: ComponentProps): JSX.Element => {
   return (
     <Fragment>
-      <h2 className={classes.HeadlineTitle}>{props.title}</h2>
+      <h1 className={classes.HeadlineTitle}>{props.title}</h1>
       {props.subtitle && <p className={classes.HeadlineSubtitle}>{props.subtitle}</p>}
     </Fragment>
   )

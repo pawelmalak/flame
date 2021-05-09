@@ -1,16 +1,31 @@
-import { Link } from 'react-router-dom';
+import { Fragment } from 'react';
 
 import classes from './Apps.module.css';
 
 import { Container } from '../UI/Layout/Layout';
-import Headline from '../UI/Headline/Headline';
+import Headline from '../UI/Headlines/Headline/Headline';
+import AppCard from './AppCard/AppCard';
 
 const Apps = (): JSX.Element => {
   return (
-    <Container>
-      <Headline title='Welcome' />
-      <Link to='/settings'>settings</Link>
-    </Container>
+    <div className={classes.Apps}>
+      <AppCard />
+      <AppCard />
+      <AppCard />
+      <AppCard />
+      <AppCard />
+      <AppCard />
+      <AppCard />
+      <AppCard />
+      <AppCard />
+      <AppCard />
+      <AppCard />
+      <AppCard />
+      <AppCard />
+      <AppCard />
+      <AppCard />
+      <AppCard />
+    </div>
   )
 }
 

@@ -1,0 +1,34 @@
+.AppCard {
+  width: 100%;
+  /* height: 50px; */
+  /* max-width: 150px; */
+  /* border: 1px solid red; */
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.AppCardIcon {
+  width: 40px;
+}
+
+.AppCardDetails {
+  text-transform: uppercase;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center; */
+}
+
+.AppCardDetails h5 {
+  font-size: 1em;
+  font-weight: 500;
+  color: var(--color-primary);
+  margin-bottom: -8px;
+}
+
+.AppCardDetails a {
+  color: var(--color-accent);
+  font-weight: 400;
+  font-size: 0.8em;
+  opacity: 1;
+}

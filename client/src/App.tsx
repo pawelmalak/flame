@@ -21,7 +21,7 @@ const App = (): JSX.Element => {
       <BrowserRouter>
         <Switch>
           <Route exact path='/' component={Home} />
-          <Route exact path='/settings' component={Settings} />
+          <Route path='/settings' component={Settings} />
         </Switch>
       </BrowserRouter>
     </Provider>
