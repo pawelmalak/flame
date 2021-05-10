@@ -1,13 +1,27 @@
 const express = require('express');
+const { connectDB } = require('./db');
+const errorHandler = require('./middleware/errorHandler');
+const colors = require('colors');
 require('dotenv').config();
+
+connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 5005;
 
 app.get('/', (req, res) => {
-  res.send('hello');
+  res.send('Server is working');
 })
 
+// Body parser
+app.use(express.json());
+
+// Link controllers with routes
+app.use('/api/apps', require('./routes/apps'));
+
+// Custom error handler
+app.use(errorHandler);
+
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT} in ${process.env.NODE_ENV} mode`.yellow.bold);
 })
