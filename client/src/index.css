@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  transition: all 0.3s;
+  /* transition: all 0.3s; */
   user-select: none;
 }
 
@@ -12,6 +12,7 @@ body {
   --color-accent: #6677EB;
 
   background-color: var(--color-background);
+  transition: background-color 0.3s;
   /* font weights
     light 300
     regular 400
