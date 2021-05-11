@@ -1,5 +1,13 @@
-export const SET_THEME = 'SET_THEME';
+import {
+  GetAppsAction,
+  SetTheme
+} from './';
 
-export const GET_APPS = 'GET_APPS';
-export const GET_APPS_SUCCESS = 'GET_APPS_SUCCESS';
-export const GET_APPS_ERROR = 'GET_APPS_ERROR';
+export enum ActionTypes {
+  setTheme,
+  getApps,
+  getAppsSuccess,
+  getAppsError
+}
+
+export type Action = GetAppsAction<any> | SetTheme;

@@ -1,7 +1,12 @@
 import { Dispatch } from 'redux';
 import { themes } from '../../components/Themer/themes.json';
 import { Theme } from '../../interfaces/Theme';
-import { SET_THEME } from './actionTypes';
+import { ActionTypes } from './actionTypes';
+
+export interface SetTheme {
+  type: ActionTypes.setTheme,
+  payload: string
+}
 
 export const setTheme = (themeName: string) => (dispatch: Dispatch) => {
   const theme = themes.find((theme: Theme) => theme.name === themeName);
@@ -10,8 +15,8 @@ export const setTheme = (themeName: string) => (dispatch: Dispatch) => {
     localStorage.setItem('theme', themeName);
     loadTheme(theme);
 
-    dispatch({
-      type: SET_THEME,
+    dispatch<SetTheme>({
+      type: ActionTypes.setTheme,
       payload: themeName
     })
   }

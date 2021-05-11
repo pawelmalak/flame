@@ -1,24 +1,29 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
-import {
-  GET_APPS,
-  GET_APPS_SUCCESS,
-  GET_APPS_ERROR
-} from './actionTypes';
+import { ActionTypes } from './actionTypes';
+import { App, AppResponse } from '../../interfaces/App';
+
+export interface GetAppsAction<T> {
+  type: ActionTypes.getApps | ActionTypes.getAppsSuccess | ActionTypes.getAppsError,
+  payload: T
+}
 
 export const getApps = () => async (dispatch: Dispatch) => {
-  dispatch({ type: GET_APPS });
+  dispatch<GetAppsAction<undefined>>({
+    type: ActionTypes.getApps,
+    payload: undefined
+  });
 
   try {
-    const res = await axios.get('/api/apps');
+    const res = await axios.get<AppResponse>('/api/apps');
 
-    dispatch({
-      type: GET_APPS_SUCCESS,
+    dispatch<GetAppsAction<App[]>>({
+      type: ActionTypes.getAppsSuccess,
       payload: res.data.data
     })
   } catch (err) {
-    dispatch({
-      type: GET_APPS_ERROR,
+    dispatch<GetAppsAction<string>>({
+      type: ActionTypes.getAppsError,
       payload: err.data.data
     })
   }

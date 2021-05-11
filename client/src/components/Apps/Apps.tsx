@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { getApps } from '../../store/actions';
 
 // Typescript
-import { App } from '../../interfaces';
+import { App, GlobalState } from '../../interfaces';
 
 // CSS
 import classes from './Apps.module.css';
@@ -49,7 +49,7 @@ const Apps = (props: ComponentProps): JSX.Element => {
   )
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: GlobalState) => {
   return {
     apps: state.app.apps,
     loading: state.app.loading

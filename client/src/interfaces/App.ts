@@ -6,3 +6,8 @@ export interface App {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface AppResponse {
+  success: boolean;
+  data: App[]
+}

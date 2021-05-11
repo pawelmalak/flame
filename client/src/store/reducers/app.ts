@@ -1,29 +1,27 @@
-import {
-  GET_APPS,
-  GET_APPS_SUCCESS,
-  GET_APPS_ERROR
-} from '../actions/actionTypes';
-
+import { ActionTypes, Action } from '../actions';
 import { App } from '../../interfaces/App';
 
-interface State {
+export interface State {
   loading: boolean;
   apps: App[];
+  errors: '' | undefined;
 }
 
 const initialState: State = {
   loading: true,
-  apps: []
+  apps: [],
+  errors: undefined
 }
 
-const getApps = (state: State, action: any): State => {
+const getApps = (state: State, action: Action): State => {
   return {
     ...state,
-    loading: true
+    loading: true,
+    errors: undefined
   }
 }
 
-const getAppsSuccess = (state: State, action: any): State => {
+const getAppsSuccess = (state: State, action: Action): State => {
   return {
     ...state,
     loading: false,
@@ -31,10 +29,19 @@ const getAppsSuccess = (state: State, action: any): State => {
   }
 }
 
-const appReducer = (state = initialState, action: any) => {
+const getAppsError = (state: State, action: Action): State => {
+  return {
+    ...state,
+    loading: false,
+    errors: action.payload
+  }
+}
+
+const appReducer = (state = initialState, action: Action) => {
   switch (action.type) {
-    case GET_APPS: return getApps(state, action);
-    case GET_APPS_SUCCESS: return getAppsSuccess(state, action);
+    case ActionTypes.getApps: return getApps(state, action);
+    case ActionTypes.getAppsSuccess: return getAppsSuccess(state, action);
+    case ActionTypes.getAppsError: return getAppsError(state, action);
     default: return state;
   }
 }

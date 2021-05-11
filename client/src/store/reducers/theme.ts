@@ -1,17 +1,21 @@
-import { SET_THEME } from '../actions/actionTypes';
+import { ActionTypes, Action } from '../actions';
 
-const initialState = {
+export interface State {
+  theme: string;
+}
+
+const initialState: State = {
   theme: 'blues'
 }
 
-const themeReducer = (state = initialState, action: any) => {
+const setTheme = (state: State, action: Action): State => {
+  return { theme: action.payload };
+}
+
+const themeReducer = (state = initialState, action: Action) => {
   switch (action.type) {
-    case SET_THEME:
-      return {
-        theme: action.payload
-      };
-    default:
-      return state;
+    case ActionTypes.setTheme: return setTheme(state, action);
+    default: return state;
   }
 }
 
