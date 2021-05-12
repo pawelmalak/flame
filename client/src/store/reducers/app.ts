@@ -37,11 +37,36 @@ const getAppsError = (state: State, action: Action): State => {
   }
 }
 
+const pinApp = (state: State, action: Action): State => {
+  const tmpApps = [...state.apps];
+  const changedApp = tmpApps.find((app: App) => app.id === action.payload.id);
+  
+  if (changedApp) {
+    changedApp.isPinned = action.payload.isPinned;
+  }
+  
+  return {
+    ...state,
+    apps: tmpApps
+  }
+}
+
+const addAppSuccess = (state: State, action: Action): State => {
+  const tmpApps = [...state.apps, ...action.payload];
+
+  return {
+    ...state,
+    apps: tmpApps
+  }
+}
+
 const appReducer = (state = initialState, action: Action) => {
   switch (action.type) {
     case ActionTypes.getApps: return getApps(state, action);
     case ActionTypes.getAppsSuccess: return getAppsSuccess(state, action);
     case ActionTypes.getAppsError: return getAppsError(state, action);
+    case ActionTypes.pinApp: return pinApp(state, action);
+    case ActionTypes.addAppSuccess: return addAppSuccess(state, action);
     default: return state;
   }
 }

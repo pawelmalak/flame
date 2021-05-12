@@ -3,11 +3,18 @@ export interface App {
   name: string;
   url: string;
   icon: string;
+  isPinned: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface AppResponse {
+export interface AppResponse<T> {
   success: boolean;
-  data: App[]
+  data: T;
+}
+
+export interface NewApp {
+  name: string;
+  url: string;
+  icon: string;
 }

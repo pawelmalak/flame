@@ -14,6 +14,10 @@ const App = sequelize.define('App', {
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: 'cancel'
+  },
+  isPinned: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
   }
 });
 
