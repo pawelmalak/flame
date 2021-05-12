@@ -27,7 +27,7 @@ body {
 a {
   color: var(--color-primary);
   text-decoration: none;
-  opacity: 0.75;
+  /* opacity: 0.75; */
 }
 
 /* 320px — 480px: Mobile devices.

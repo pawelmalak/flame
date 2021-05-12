@@ -1,11 +1,17 @@
 .ThemerGrid {
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   grid-auto-rows: 100px;
 }
 
-@media (min-width: 900px) {
+@media (min-width: 340px) {
+  .ThemerGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 680px) {
   .ThemerGrid {
     grid-template-columns: 1fr 1fr 1fr;
   }

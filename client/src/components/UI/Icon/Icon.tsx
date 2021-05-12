@@ -11,7 +11,7 @@ const Icon = (props: ComponentProps): JSX.Element => {
   let iconPath = MDIcons[props.icon];
 
   if (!iconPath) {
-    console.log('icon not found');
+    console.log(`Icon ${props.icon} not found`);
     iconPath = MDIcons.mdiCancel;
   }
 
@@ -19,7 +19,7 @@ const Icon = (props: ComponentProps): JSX.Element => {
     <MDIcon className={classes.Icon}
       path={iconPath}
     />
-    )
+  )
 }
 
 export default Icon;
