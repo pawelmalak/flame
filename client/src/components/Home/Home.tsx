@@ -1,54 +1,63 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { GlobalState } from '../../interfaces/GlobalState';
+import { getApps } from '../../store/actions';
+
 import Icon from '../UI/Icon/Icon';
+import Modal from '../UI/Modal/Modal';
 
 import classes from './Home.module.css';
 import { Container } from '../UI/Layout/Layout';
 import Headline from '../UI/Headlines/Headline/Headline';
 import SectionHeadline from '../UI/Headlines/SectionHeadline/SectionHeadline';
 import Apps from '../Apps/Apps';
+import AppGrid from '../Apps/AppGrid/AppGrid';
+import { App } from '../../interfaces';
+import Spinner from '../UI/Spinner/Spinner';
 
-const Home = (): JSX.Element => {
+interface ComponentProps {
+  getApps: Function;
+  loading: boolean;
+  apps: App[];
+}
+
+const Home = (props: ComponentProps): JSX.Element => {
+  useEffect(() => {
+    props.getApps();
+  }, [props.getApps]);
+
   const dateAndTime = (): string => {
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
     const now = new Date();
 
-    return `${days[now.getDay()]}, ${now.getDate()} of ${months[now.getMonth()]} ${now.getFullYear()}`;
+    const ordinal = (day: number): string => {
+      if (day > 3 && day < 21) return 'th';
+      switch (day % 10) {
+        case 1:  return "st";
+        case 2:  return "nd";
+        case 3:  return "rd";
+        default: return "th";
+      }
+    }
+
+    return `${days[now.getDay()]}, ${now.getDate()}${ordinal(now.getDate())} ${months[now.getMonth()]} ${now.getFullYear()}`;
   }
 
   const greeter = (): string => {
     const now = new Date().getHours();
     let msg: string;
 
-    if (now > 18) {
-      msg = 'Good evening!';
-    } else if (now > 12) {
-      msg = 'Good afternoon!';
-    } else if (now > 6) {
-      msg = 'Good morning!';
-    } else if (now > 0) {
-      msg = 'Good night!';
-    } else {
-      msg = 'Hello!';
-    }
+    if (now > 18) msg = 'Good evening!';
+    else if (now > 12) msg = 'Good afternoon!';
+    else if (now > 6) msg = 'Good morning!';
+    else if (now > 0) msg = 'Good night!';
+    else msg = 'Hello!';
 
     return msg;
   }
-
-  (() => {
-    const mdiName = 'book-open-blank-variant';
-    const expected = 'mdiBookOpenBlankVariant';
-
-    let parsedName = mdiName
-      .split('-')
-      .map((word: string) => `${word[0].toUpperCase()}${word.slice(1)}`)
-      .join('');
-    parsedName = `mdi${parsedName}`;
-    
-    console.log(parsedName);
-    console.log(parsedName === expected);
-  })();
 
   return (
     <Container>
@@ -57,10 +66,13 @@ const Home = (): JSX.Element => {
         <h1>{greeter()}</h1>
       </header>
 
-      <SectionHeadline title='Apps' />
-      <Apps />
+      <SectionHeadline title='Apps' link='/apps' />
+      {props.loading
+        ? <Spinner />
+        : <AppGrid apps={props.apps.filter((app: App) => app.isPinned)} />
+      }
 
-      <SectionHeadline title='Bookmarks' />
+      <SectionHeadline title='Bookmarks' link='/bookmarks' />
 
       <Link to='/settings' className={classes.SettingsButton}>
         <Icon icon='mdiCog' />
@@ -69,4 +81,11 @@ const Home = (): JSX.Element => {
   )
 }
 
-export default Home;
+const mapStateToProps = (state: GlobalState) => {
+  return {
+    loading: state.app.loading,
+    apps: state.app.apps
+  }
+}
+
+export default connect(mapStateToProps, { getApps })(Home);

@@ -1,0 +1,62 @@
+.TableContainer {
+  width: 100%;
+}
+
+.Table {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: left;
+  font-size: 16px;
+  color: var(--color-primary);
+}
+
+.Table th,
+.Table td {
+  /* border: 1px solid orange; */
+  padding: 10px;
+}
+
+/* Head */
+
+.Table th {
+  --header-radius: 4px;
+  background-color: var(--color-primary);
+  color: var(--color-background);
+}
+
+.Table th:first-child {
+  border-top-left-radius: var(--header-radius);
+  border-bottom-left-radius: var(--header-radius);
+}
+
+.Table th:last-child {
+  border-top-right-radius: var(--header-radius);
+  border-bottom-right-radius: var(--header-radius);
+}
+
+/* Body */
+
+.Table td {
+  /* opacity: 0.5; */
+  transition: all 0.2s;
+}
+
+/* .Table td:hover {
+  opacity: 1;
+} */
+
+/* Actions */
+
+.TableActions {
+  display: flex;
+  align-items: center;
+}
+
+
+.TableAction {
+  width: 22px;
+}
+
+.TableAction:hover {
+  cursor: pointer;
+}

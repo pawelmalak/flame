@@ -64,3 +64,21 @@ export const addApp = (formData: NewApp) => async (dispatch: Dispatch) => {
     console.log(err);
   }
 }
+
+export interface DeleteAppAction {
+  type: ActionTypes.deleteApp,
+  payload: number
+}
+
+export const deleteApp = (id: number) => async (dispatch: Dispatch) => {
+  try {
+    const res = await axios.delete<AppResponse<{}>>(`/api/apps/${id}`);
+
+    dispatch<DeleteAppAction>({
+      type: ActionTypes.deleteApp,
+      payload: id
+    })
+  } catch (err) {
+    console.log(err);
+  }
+}

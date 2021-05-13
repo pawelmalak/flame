@@ -18,7 +18,9 @@ exports.createApp = asyncWrapper(async (req, res, next) => {
 // @route     GET /api/apps
 // @access    Public
 exports.getApps = asyncWrapper(async (req, res, next) => {
-  const apps = await App.findAll();
+  const apps = await App.findAll({
+    order: [['name', 'ASC']]
+  });
 
   res.status(200).json({
     success: true,

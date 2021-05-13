@@ -60,6 +60,15 @@ const addAppSuccess = (state: State, action: Action): State => {
   }
 }
 
+const deleteApp = (state: State, action: Action): State => {
+  const tmpApps = [...state.apps].filter((app: App) => app.id !== action.payload);
+
+  return {
+    ...state,
+    apps: tmpApps
+  }
+}
+
 const appReducer = (state = initialState, action: Action) => {
   switch (action.type) {
     case ActionTypes.getApps: return getApps(state, action);
@@ -67,6 +76,7 @@ const appReducer = (state = initialState, action: Action) => {
     case ActionTypes.getAppsError: return getAppsError(state, action);
     case ActionTypes.pinApp: return pinApp(state, action);
     case ActionTypes.addAppSuccess: return addAppSuccess(state, action);
+    case ActionTypes.deleteApp: return deleteApp(state, action);
     default: return state;
   }
 }

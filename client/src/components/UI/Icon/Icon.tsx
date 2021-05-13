@@ -4,6 +4,7 @@ import { Icon as MDIcon } from '@mdi/react';
 
 interface ComponentProps {
   icon: string;
+  color?: string;
 }
 
 const Icon = (props: ComponentProps): JSX.Element => {
@@ -16,8 +17,10 @@ const Icon = (props: ComponentProps): JSX.Element => {
   }
 
   return (
-    <MDIcon className={classes.Icon}
+    <MDIcon
+      className={classes.Icon}
       path={iconPath}
+      color={props.color ? props.color : 'var(--color-primary)'}
     />
   )
 }

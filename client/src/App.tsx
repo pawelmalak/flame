@@ -12,7 +12,7 @@ import Apps from './components/Apps/Apps';
 import Settings from './components/Settings/Settings';
 
 if (localStorage.theme) {
-  store.dispatch(setTheme(localStorage.theme));
+  store.dispatch<any>(setTheme(localStorage.theme));
 }
 
 const App = (): JSX.Element => {

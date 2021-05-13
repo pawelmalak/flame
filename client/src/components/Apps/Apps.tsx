@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 // Redux
@@ -22,12 +22,11 @@ import Modal from '../UI/Modal/Modal';
 import AppGrid from './AppGrid/AppGrid';
 import AppForm from './AppForm/AppForm';
 import AppTable from './AppTable/AppTable';
-import Test from '../Test';
 
 interface ComponentProps {
   getApps: Function;
-  pinApp: (id: number, isPinned: boolean) => any;
-  addApp: (formData: NewApp) => any;
+  pinApp: (id: number, isPinned: boolean) => void;
+  addApp: (formData: NewApp) => void;
   apps: App[];
   loading: boolean;
 }
@@ -38,16 +37,7 @@ const Apps = (props: ComponentProps): JSX.Element => {
 
   useEffect(() => {
     props.getApps();
-    // props.addApp({
-    //   name: 'Plex',
-    //   url: '192.168.0.128',
-    //   icon: 'cat'
-    // })
   }, [props.getApps]);
-
-  const pinAppHandler = (id: number, state: boolean): void => {
-    props.pinApp(id, state);
-  }
 
   const toggleModal = (): void => {
     setModalIsOpen(!modalIsOpen);
@@ -83,7 +73,7 @@ const Apps = (props: ComponentProps): JSX.Element => {
 
       <div className={classes.Apps}>
         {props.loading
-          ? 'loading'
+          ? <Spinner />
           : (!isInEdit
               ? <AppGrid apps={props.apps} />
               : <AppTable />)

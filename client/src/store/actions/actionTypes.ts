@@ -2,7 +2,8 @@ import {
   GetAppsAction,
   SetTheme,
   PinAppAction,
-  AddAppAction
+  AddAppAction,
+  DeleteAppAction
 } from './';
 
 export enum ActionTypes {
@@ -12,7 +13,8 @@ export enum ActionTypes {
   getAppsError = 'GET_APPS_ERROR',
   pinApp = 'PIN_APP',
   addApp = 'ADD_APP',
-  addAppSuccess = 'ADD_APP_SUCCESS'
+  addAppSuccess = 'ADD_APP_SUCCESS',
+  deleteApp = 'DELETE_APP'
 }
 
-export type Action = GetAppsAction<any> | SetTheme | PinAppAction | AddAppAction;
+export type Action = GetAppsAction<any> | SetTheme | PinAppAction | AddAppAction | DeleteAppAction;
