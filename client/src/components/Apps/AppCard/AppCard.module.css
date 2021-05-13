@@ -9,7 +9,10 @@
 }
 
 .AppCardIcon {
+  /* height: 64px; */
   width: 40px;
+  height: 40px;
+  margin-right: 0.5em;
 }
 
 .AppCardDetails {
@@ -23,7 +26,7 @@
   font-size: 1em;
   font-weight: 500;
   color: var(--color-primary);
-  margin-bottom: -8px;
+  margin-bottom: -4px;
 }
 
 .AppCardDetails span {

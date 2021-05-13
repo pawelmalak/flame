@@ -52,7 +52,7 @@ const pinApp = (state: State, action: Action): State => {
 }
 
 const addAppSuccess = (state: State, action: Action): State => {
-  const tmpApps = [...state.apps, ...action.payload];
+  const tmpApps = [...state.apps, action.payload];
 
   return {
     ...state,

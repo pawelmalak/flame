@@ -1,12 +1,12 @@
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 // Redux
 import { connect } from 'react-redux';
-import { getApps } from '../../store/actions';
+import { getApps, pinApp, addApp } from '../../store/actions';
 
 // Typescript
-import { App, GlobalState } from '../../interfaces';
+import { App, GlobalState, NewApp } from '../../interfaces';
 
 // CSS
 import classes from './Apps.module.css';
@@ -15,34 +15,78 @@ import classes from './Apps.module.css';
 import { Container } from '../UI/Layout/Layout';
 import Headline from '../UI/Headlines/Headline/Headline';
 import Spinner from '../UI/Spinner/Spinner';
+import ActionButton from '../UI/Buttons/ActionButton/ActionButton';
+import Modal from '../UI/Modal/Modal';
 
 // Subcomponents
-import AppCard from './AppCard/AppCard';
+import AppGrid from './AppGrid/AppGrid';
+import AppForm from './AppForm/AppForm';
+import AppTable from './AppTable/AppTable';
+import Test from '../Test';
 
 interface ComponentProps {
   getApps: Function;
+  pinApp: (id: number, isPinned: boolean) => any;
+  addApp: (formData: NewApp) => any;
   apps: App[];
   loading: boolean;
 }
 
 const Apps = (props: ComponentProps): JSX.Element => {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [isInEdit, setIsInEdit] = useState(false);
+
   useEffect(() => {
-    props.getApps()
+    props.getApps();
+    // props.addApp({
+    //   name: 'Plex',
+    //   url: '192.168.0.128',
+    //   icon: 'cat'
+    // })
   }, [props.getApps]);
+
+  const pinAppHandler = (id: number, state: boolean): void => {
+    props.pinApp(id, state);
+  }
+
+  const toggleModal = (): void => {
+    setModalIsOpen(!modalIsOpen);
+  }
+
+  const toggleEdit = (): void => {
+    setIsInEdit(!isInEdit);
+  }
 
   return (
     <Container>
+      <Modal isOpen={modalIsOpen}>
+        <AppForm modalHandler={toggleModal} />
+      </Modal>
+
       <Headline
-        title='Pinned Apps'
-        subtitle={<Link to='/'>Go back</Link>}
+        title='All Apps'
+        subtitle={(<Link to='/'>Go back</Link>)}
       />
-      <Headline title='All Apps' />
+      
+      <div className={classes.ActionsContainer}>
+        <ActionButton
+          name='Add'
+          icon='mdiPlusBox'
+          handler={toggleModal}
+        />
+        <ActionButton
+          name='Edit'
+          icon='mdiPencil'
+          handler={toggleEdit}
+        />
+      </div>
+
       <div className={classes.Apps}>
         {props.loading
           ? 'loading'
-          : props.apps.map((app: App): JSX.Element => {
-            return <AppCard key={app.id} app={app} />
-          })
+          : (!isInEdit
+              ? <AppGrid apps={props.apps} />
+              : <AppTable />)
         }
       </div>
     </Container>
@@ -56,4 +100,4 @@ const mapStateToProps = (state: GlobalState) => {
   }
 }
 
-export default connect(mapStateToProps, { getApps })(Apps);
+export default connect(mapStateToProps, { getApps, pinApp, addApp })(Apps);

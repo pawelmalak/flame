@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import classes from './AppCard.module.css';
 import Icon from '../../UI/Icon/Icon';
 
@@ -5,6 +7,7 @@ import { App } from '../../../interfaces';
 
 interface ComponentProps {
   app: App;
+  pinHandler?: Function;
 }
 
 const AppCard = (props: ComponentProps): JSX.Element => {
@@ -18,16 +21,20 @@ const AppCard = (props: ComponentProps): JSX.Element => {
     return parsedName;
   }
 
+  const redirectHandler = (url: string): void => {
+    window.open(url);
+  }
+
   return (
-    <div className={classes.AppCard}>
+    <a href={`http://${props.app.url}`} target='blank' className={classes.AppCard}>
       <div className={classes.AppCardIcon}>
         <Icon icon={iconParser(props.app.icon)} />
       </div>
       <div className={classes.AppCardDetails}>
         <h5>{props.app.name}</h5>
-        <a href="/">{props.app.url}</a>
+        <span>{props.app.url}</span>
       </div>
-    </div>
+    </a>
   )
 }
 

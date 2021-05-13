@@ -1,0 +1,49 @@
+.AppForm {
+  background-color: var(--color-background);
+  color: var(--color-primary);
+  border-radius: 6px;
+  width: 60%;
+  position: relative;
+  /* height: 50vh; */
+  padding: 50px 50px;
+}
+
+.AppFormIcon {
+  width: 40px;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}
+
+.AppFormIcon:hover {
+  cursor: pointer;
+}
+
+.InputGroup {
+  margin-bottom: 15px;
+}
+
+.InputGroup label,
+.InputGroup span,
+.InputGroup input {
+  display: block;
+}
+
+.InputGroup input {
+  margin: 8px 0;
+  width: 100%;
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+  background-color: var(--color-primary);
+  color: var(--color-background);
+}
+
+.InputGroup span {
+  font-size: 12px;
+  color: var(--color-primary)
+}
+
+.InputGroup span a {
+  color: var(--color-accent);
+}
