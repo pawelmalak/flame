@@ -3,9 +3,9 @@ import { themes } from '../../components/Themer/themes.json';
 import { Theme } from '../../interfaces/Theme';
 import { ActionTypes } from './actionTypes';
 
-export interface SetTheme {
+export interface SetThemeAction {
   type: ActionTypes.setTheme,
-  payload: string
+  payload: Theme
 }
 
 export const setTheme = (themeName: string) => (dispatch: Dispatch) => {
@@ -15,14 +15,14 @@ export const setTheme = (themeName: string) => (dispatch: Dispatch) => {
     localStorage.setItem('theme', themeName);
     loadTheme(theme);
 
-    dispatch<SetTheme>({
+    dispatch<SetThemeAction>({
       type: ActionTypes.setTheme,
-      payload: themeName
+      payload: theme
     })
   }
 }
 
-export const loadTheme = (theme: Theme) => {
+export const loadTheme = (theme: Theme): void => {
   for (const [key, value] of Object.entries(theme.colors)) {
     document.body.style.setProperty(`--color-${key}`, value);
   }

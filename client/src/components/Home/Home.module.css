@@ -2,7 +2,7 @@
   color: var(--color-primary);
   font-weight: 700;
   font-size: 4em;
-  margin-bottom: 0.5em;
+  display: inline-block;
 }
 
 .Header p {
@@ -10,6 +10,36 @@
   font-weight: 300;
   text-transform: uppercase;
   height: 30px;
+}
+
+.HeaderMain {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+}
+
+.WeatherWidget {
+  display: flex;
+}
+
+.WeatherDetails {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--color-primary);
+  margin-left: 10px;
+  font-weight: 500;
+}
+
+.WeatherDetails span:first-child {
+  border-bottom: 1px solid var(--color-primary);
+  padding-bottom: 5px;
+}
+
+.WeatherDetails span:last-child {
+  padding-top: 5px;
 }
 
 .SettingsButton {

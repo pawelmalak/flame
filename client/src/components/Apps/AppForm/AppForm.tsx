@@ -4,7 +4,7 @@ import { addApp } from '../../../store/actions';
 import { NewApp } from '../../../interfaces/App';
 
 import classes from './AppForm.module.css';
-import Icon from '../../UI/Icon/Icon';
+import Icon from '../../UI/Icons/Icon/Icon';
 
 interface ComponentProps {
   modalHandler: Function;

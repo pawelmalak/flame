@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 import classes from './ActionButton.module.css';
-import Icon from '../../Icon/Icon';
+import Icon from '../../Icons/Icon/Icon';
 
 interface ComponentProps {
   name: string;
@@ -24,11 +24,32 @@ const ActionButton = (props: ComponentProps): JSX.Element => {
   );
 
   if (props.link) {
-    return (<Link to={props.link}>{body}</Link>)
+    return (
+      <Link
+        to={props.link}
+        tabIndex={0}>
+        {body}
+      </Link>
+    )
   } else if (props.handler) {
-    return (<div className={classes.ActionButton} onClick={props.handler}>{body}</div>)
+    return (
+      <div
+        className={classes.ActionButton}
+        onClick={props.handler}
+        onKeyPress={(e) => {
+          if (e.key === 'Enter' && props.handler) props.handler()
+        }}
+        tabIndex={0}
+        >{body}
+      </div>
+    )
   } else {
-    return (<div className={classes.ActionButton}>{body}</div>)
+    return (
+      <div
+        className={classes.ActionButton}>
+        {body}
+      </div>
+    )
   }
 }
 

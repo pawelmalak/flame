@@ -3,7 +3,7 @@ import { App, GlobalState } from '../../../interfaces';
 import { pinApp, deleteApp } from '../../../store/actions';
 
 import classes from './AppTable.module.css';
-import Icon from '../../UI/Icon/Icon';
+import Icon from '../../UI/Icons/Icon/Icon';
 
 interface ComponentProps {
   apps: App[];

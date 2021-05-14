@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import classes from './AppCard.module.css';
-import Icon from '../../UI/Icon/Icon';
+import Icon from '../../UI/Icons/Icon/Icon';
 
 import { App } from '../../../interfaces';
 

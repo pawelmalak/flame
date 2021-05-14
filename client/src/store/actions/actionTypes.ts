@@ -1,6 +1,6 @@
 import {
   GetAppsAction,
-  SetTheme,
+  SetThemeAction,
   PinAppAction,
   AddAppAction,
   DeleteAppAction
@@ -17,4 +17,4 @@ export enum ActionTypes {
   deleteApp = 'DELETE_APP'
 }
 
-export type Action = GetAppsAction<any> | SetTheme | PinAppAction | AddAppAction | DeleteAppAction;
+export type Action = GetAppsAction<any> | SetThemeAction | PinAppAction | AddAppAction | DeleteAppAction;

@@ -4,14 +4,12 @@ import { connect } from 'react-redux';
 import { GlobalState } from '../../interfaces/GlobalState';
 import { getApps } from '../../store/actions';
 
-import Icon from '../UI/Icon/Icon';
-import Modal from '../UI/Modal/Modal';
+import Icon from '../UI/Icons/Icon/Icon';
+import WeatherIcon from '../UI/Icons/WeatherIcon/WeatherIcon';
 
 import classes from './Home.module.css';
 import { Container } from '../UI/Layout/Layout';
-import Headline from '../UI/Headlines/Headline/Headline';
 import SectionHeadline from '../UI/Headlines/SectionHeadline/SectionHeadline';
-import Apps from '../Apps/Apps';
 import AppGrid from '../Apps/AppGrid/AppGrid';
 import { App } from '../../interfaces';
 import Spinner from '../UI/Spinner/Spinner';
@@ -63,7 +61,18 @@ const Home = (props: ComponentProps): JSX.Element => {
     <Container>
       <header className={classes.Header}>
         <p>{dateAndTime()}</p>
-        <h1>{greeter()}</h1>
+        <span className={classes.HeaderMain}>
+          <h1>{greeter()}</h1>
+          <div className={classes.WeatherWidget}>
+            <div className={classes.WeatherIcon}>
+              <WeatherIcon icon='clear-day' />
+            </div>
+            <div className={classes.WeatherDetails}>
+              <span>30°C</span>
+              <span>15°C</span>
+            </div>
+          </div>
+        </span>
       </header>
 
       <SectionHeadline title='Apps' link='/apps' />

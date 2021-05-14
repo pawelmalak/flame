@@ -1,5 +1,4 @@
 import classes from './Modal.module.css';
-import Icon from '../Icon/Icon';
 
 interface ComponentProps {
   isOpen: boolean;
