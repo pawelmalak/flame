@@ -1,24 +1,26 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../db');
 
-const App = sequelize.define('App', {
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  url: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  icon: {
+const Config = sequelize.define('Config', {
+  key: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'cancel'
+    unique: true
   },
-  isPinned: {
+  value: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  valueType: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  isLocked: {
     type: DataTypes.BOOLEAN,
     defaultValue: false
   }
+}, {
+  freezeTableName: true
 });
 
-module.exports = App;
+module.exports = Config;

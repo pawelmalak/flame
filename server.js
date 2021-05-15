@@ -18,6 +18,7 @@ app.use(express.json());
 
 // Link controllers with routes
 app.use('/api/apps', require('./routes/apps'));
+app.use('/api/config', require('./routes/config'));
 
 // Custom error handler
 app.use(errorHandler);
