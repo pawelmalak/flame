@@ -31,11 +31,10 @@ const Settings = (props: ComponentProps): JSX.Element => {
             activeClassName={classes.SettingsNavLinkActive}
             exact
             to='/settings/nothig'>
-            Nothing
+            Weather
           </NavLink>
         </nav>
         <section className={classes.SettingsContent}>
-          {/* <Themer /> */}
           <Switch>
             <Route exact path='/settings' component={Themer} />
           </Switch>

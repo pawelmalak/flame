@@ -1,19 +1,21 @@
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { IconKey, Skycons } from 'skycons-ts';
+import { Skycons } from 'skycons-ts';
 import { GlobalState, Theme } from '../../../../interfaces';
+import { IconMapping, TimeOfDay } from './IconMapping';
 
 interface ComponentProps {
   theme: Theme;
-  icon: IconKey
+  weatherStatusCode: number;
 }
 
 const WeatherIcon = (props: ComponentProps): JSX.Element => {
-  const randomId = `icon-${Math.floor(Math.random() * 1000)}`;
+  const icon = (new IconMapping).mapIcon(props.weatherStatusCode, TimeOfDay.day);
+
   useEffect(() => {
     const delay = setTimeout(() => {
       const skycons = new Skycons({'color': props.theme.colors.accent});
-      skycons.add(`weather-icon-${randomId}`, props.icon);
+      skycons.add(`weather-icon`, icon);
       skycons.play();
     }, 1);
 
@@ -22,7 +24,7 @@ const WeatherIcon = (props: ComponentProps): JSX.Element => {
     }
   }, []);
 
-  return <canvas id={`weather-icon-${randomId}`} width='50' height='50'></canvas>
+  return <canvas id={`weather-icon`} width='50' height='50'></canvas>
 }
 
 const mapStateToProps = (state: GlobalState) => {
