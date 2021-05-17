@@ -20,7 +20,7 @@ exports.createPair = asyncWrapper(async (req, res, next) => {
 exports.getAllPairs = asyncWrapper(async (req, res, next) => {
   const pairs = await Config.findAll();
 
-  res.status(201).json({
+  res.status(200).json({
     success: true,
     data: pairs
   })
@@ -38,7 +38,7 @@ exports.getSinglePair = asyncWrapper(async (req, res, next) => {
     return next(new ErrorResponse(`Key ${req.params.key} was not found`, 404));
   }
 
-  res.status(201).json({
+  res.status(200).json({
     success: true,
     data: pair
   })
