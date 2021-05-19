@@ -20,7 +20,8 @@
     "express": "^4.17.1",
     "node-schedule": "^2.0.0",
     "sequelize": "^6.6.2",
-    "sqlite3": "^5.0.2"
+    "sqlite3": "^5.0.2",
+    "ws": "^7.4.5"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
