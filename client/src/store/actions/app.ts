@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import { ActionTypes } from './actionTypes';
-import { App, AppResponse, NewApp } from '../../interfaces/App';
+import { App, ApiResponse, NewApp } from '../../interfaces';
 
 export interface GetAppsAction<T> {
   type: ActionTypes.getApps | ActionTypes.getAppsSuccess | ActionTypes.getAppsError;
@@ -15,7 +15,7 @@ export const getApps = () => async (dispatch: Dispatch) => {
   });
 
   try {
-    const res = await axios.get<AppResponse<App[]>>('/api/apps');
+    const res = await axios.get<ApiResponse<App[]>>('/api/apps');
 
     dispatch<GetAppsAction<App[]>>({
       type: ActionTypes.getAppsSuccess,
@@ -36,7 +36,7 @@ export interface PinAppAction {
 
 export const pinApp = (id: number, isPinned: boolean) => async (dispatch: Dispatch) => {
   try {
-    const res = await axios.put<AppResponse<App>>(`/api/apps/${id}`, { isPinned: !isPinned });
+    const res = await axios.put<ApiResponse<App>>(`/api/apps/${id}`, { isPinned: !isPinned });
 
     dispatch<PinAppAction>({
       type: ActionTypes.pinApp,
@@ -54,7 +54,7 @@ export interface AddAppAction {
 
 export const addApp = (formData: NewApp) => async (dispatch: Dispatch) => {
   try {
-    const res = await axios.post<AppResponse<App>>('/api/apps', formData);
+    const res = await axios.post<ApiResponse<App>>('/api/apps', formData);
 
     dispatch<AddAppAction>({
       type: ActionTypes.addAppSuccess,
@@ -72,7 +72,7 @@ export interface DeleteAppAction {
 
 export const deleteApp = (id: number) => async (dispatch: Dispatch) => {
   try {
-    const res = await axios.delete<AppResponse<{}>>(`/api/apps/${id}`);
+    const res = await axios.delete<ApiResponse<{}>>(`/api/apps/${id}`);
 
     dispatch<DeleteAppAction>({
       type: ActionTypes.deleteApp,

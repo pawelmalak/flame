@@ -1,16 +1,10 @@
-export interface App {
-  id: number;
+import { Model } from './Api';
+
+export interface App extends Model {
   name: string;
   url: string;
   icon: string;
   isPinned: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface AppResponse<T> {
-  success: boolean;
-  data: T;
 }
 
 export interface NewApp {
