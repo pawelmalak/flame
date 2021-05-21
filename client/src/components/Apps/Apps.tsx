@@ -36,7 +36,9 @@ const Apps = (props: ComponentProps): JSX.Element => {
   const [isInEdit, setIsInEdit] = useState(false);
 
   useEffect(() => {
-    props.getApps();
+    if (props.apps.length === 0) {
+      props.getApps();
+    }
   }, [props.getApps]);
 
   const toggleModal = (): void => {
@@ -49,12 +51,12 @@ const Apps = (props: ComponentProps): JSX.Element => {
 
   return (
     <Container>
-      <Modal isOpen={modalIsOpen}>
+      <Modal isOpen={modalIsOpen} setIsOpen={setModalIsOpen}>
         <AppForm modalHandler={toggleModal} />
       </Modal>
 
       <Headline
-        title='All Apps'
+        title='All Applications'
         subtitle={(<Link to='/'>Go back</Link>)}
       />
       
@@ -75,7 +77,9 @@ const Apps = (props: ComponentProps): JSX.Element => {
         {props.loading
           ? <Spinner />
           : (!isInEdit
-              ? <AppGrid apps={props.apps} />
+              ? props.apps.length > 0
+                ? <AppGrid apps={props.apps} />
+                : <p className={classes.AppsMessage}>You don't have any applications. You can a new one from <Link to='/applications'>/application</Link> menu</p>
               : <AppTable />)
         }
       </div>

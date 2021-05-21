@@ -7,10 +7,13 @@ import { IconMapping, TimeOfDay } from './IconMapping';
 interface ComponentProps {
   theme: Theme;
   weatherStatusCode: number;
+  isDay: number;
 }
 
 const WeatherIcon = (props: ComponentProps): JSX.Element => {
-  const icon = (new IconMapping).mapIcon(props.weatherStatusCode, TimeOfDay.day);
+  const icon = props.isDay
+    ? (new IconMapping).mapIcon(props.weatherStatusCode, TimeOfDay.day)
+    : (new IconMapping).mapIcon(props.weatherStatusCode, TimeOfDay.night);
 
   useEffect(() => {
     const delay = setTimeout(() => {

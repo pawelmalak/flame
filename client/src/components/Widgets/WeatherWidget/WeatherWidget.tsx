@@ -36,7 +36,10 @@ const WeatherWidget = (): JSX.Element => {
         : (
           <Fragment>
             <div className={classes.WeatherIcon}>
-              <WeatherIcon weatherStatusCode={weather.conditionCode} />
+              <WeatherIcon
+                weatherStatusCode={weather.conditionCode}
+                isDay={weather.isDay}
+              />
             </div>
             <div className={classes.WeatherDetails}>
               <span>{weather.tempC}°C</span>

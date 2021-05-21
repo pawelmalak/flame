@@ -22,7 +22,7 @@ const App = (): JSX.Element => {
         <Switch>
           <Route exact path='/' component={Home} />
           <Route path='/settings' component={Settings} />
-          <Route path='/apps' component={Apps} />
+          <Route path='/applications' component={Apps} />
         </Switch>
       </BrowserRouter>
     </Provider>
