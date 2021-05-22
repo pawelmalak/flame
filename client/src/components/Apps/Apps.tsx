@@ -34,6 +34,16 @@ interface ComponentProps {
 const Apps = (props: ComponentProps): JSX.Element => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isInEdit, setIsInEdit] = useState(false);
+  const [isInUpdate, setIsInUpdate] = useState(false);
+  const [appInUpdate, setAppInUpdate] = useState<App>({
+    name: 'string',
+    url: 'string',
+    icon: 'string',
+    isPinned: false,
+    id: 0,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  })
 
   useEffect(() => {
     if (props.apps.length === 0) {
@@ -43,16 +53,27 @@ const Apps = (props: ComponentProps): JSX.Element => {
 
   const toggleModal = (): void => {
     setModalIsOpen(!modalIsOpen);
+    setIsInUpdate(false);
   }
 
   const toggleEdit = (): void => {
     setIsInEdit(!isInEdit);
+    setIsInUpdate(false);
+  }
+
+  const toggleUpdate = (app: App): void => {
+    setAppInUpdate(app);
+    setIsInUpdate(true);
+    setModalIsOpen(true);
   }
 
   return (
     <Container>
       <Modal isOpen={modalIsOpen} setIsOpen={setModalIsOpen}>
-        <AppForm modalHandler={toggleModal} />
+        {!isInUpdate
+          ? <AppForm modalHandler={toggleModal} />
+          : <AppForm modalHandler={toggleModal} app={appInUpdate} />
+        }
       </Modal>
 
       <Headline
@@ -80,7 +101,7 @@ const Apps = (props: ComponentProps): JSX.Element => {
               ? props.apps.length > 0
                 ? <AppGrid apps={props.apps} />
                 : <p className={classes.AppsMessage}>You don't have any applications. You can a new one from <Link to='/applications'>/application</Link> menu</p>
-              : <AppTable />)
+              : <AppTable updateAppHandler={toggleUpdate} />)
         }
       </div>
     </Container>

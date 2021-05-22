@@ -82,3 +82,21 @@ export const deleteApp = (id: number) => async (dispatch: Dispatch) => {
     console.log(err);
   }
 }
+
+export interface UpdateAppAction {
+  type: ActionTypes.updateApp;
+  payload: App;
+}
+
+export const updateApp = (id: number, formData: NewApp) => async (dispatch: Dispatch) => {
+  try {
+    const res = await axios.put<ApiResponse<App>>(`/api/apps/${id}`, formData);
+
+    dispatch<UpdateAppAction>({
+      type: ActionTypes.updateApp,
+      payload: res.data.data
+    })
+  } catch (err) {
+    console.log(err);
+  }
+}

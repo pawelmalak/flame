@@ -1,7 +1,7 @@
-import { useState, ChangeEvent, SyntheticEvent } from 'react';
+import { useState, useEffect, ChangeEvent, SyntheticEvent } from 'react';
 import { connect } from 'react-redux';
-import { addApp } from '../../../store/actions';
-import { NewApp } from '../../../interfaces/App';
+import { addApp, updateApp } from '../../../store/actions';
+import { App, NewApp } from '../../../interfaces/App';
 
 import classes from './AppForm.module.css';
 import Icon from '../../UI/Icons/Icon/Icon';
@@ -9,6 +9,8 @@ import Icon from '../../UI/Icons/Icon/Icon';
 interface ComponentProps {
   modalHandler: Function;
   addApp: (formData: NewApp) => any;
+  updateApp: (id: number, formData: NewApp) => any;
+  app?: App;
 }
 
 const AppForm = (props: ComponentProps): JSX.Element => {
@@ -17,6 +19,17 @@ const AppForm = (props: ComponentProps): JSX.Element => {
     url: '',
     icon: ''
   });
+
+  useEffect(() => {
+    if (props.app) {
+      console.log('app');
+      setFormData({
+        name: props.app.name,
+        url: props.app.url,
+        icon: props.app.icon
+      })
+    }
+  }, [props.app])
 
   const _modalHandler = () => {
     props.modalHandler();
@@ -31,7 +44,14 @@ const AppForm = (props: ComponentProps): JSX.Element => {
 
   const formSubmitHandler = (e: SyntheticEvent): void => {
     e.preventDefault();
-    props.addApp(formData);
+
+    if (!props.app) {
+      props.addApp(formData);
+    } else {
+      props.updateApp(props.app.id, formData);
+      props.modalHandler();
+    }
+
     setFormData({
       name: '',
       url: '',
@@ -90,10 +110,13 @@ const AppForm = (props: ComponentProps): JSX.Element => {
             </a>
           </span>
         </div>
-        <button type="submit">add</button>
+        {!props.app
+          ? <button type="submit">add</button>
+          : <button type="submit">update</button>
+        }
       </form>
     </div>
   )
 }
 
-export default connect(null, { addApp })(AppForm);
+export default connect(null, { addApp, updateApp })(AppForm);

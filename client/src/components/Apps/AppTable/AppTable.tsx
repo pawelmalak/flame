@@ -9,6 +9,7 @@ interface ComponentProps {
   apps: App[];
   pinApp: (id: number, isPinned: boolean) => void;
   deleteApp: (id: number) => void;
+  updateAppHandler: (app: App) => void;
 }
 
 const AppTable = (props: ComponentProps): JSX.Element => {
@@ -44,7 +45,11 @@ const AppTable = (props: ComponentProps): JSX.Element => {
                     onClick={() => deleteAppHandler(app)}>
                     <Icon icon='mdiDelete' />
                   </div>
-                  <div className={classes.TableAction}><Icon icon='mdiPencil' /></div>
+                  <div
+                    className={classes.TableAction}
+                    onClick={() => props.updateAppHandler(app)}>
+                    <Icon icon='mdiPencil' />
+                  </div>
                   <div className={classes.TableAction} onClick={() => props.pinApp(app.id, app.isPinned)}>
                     {app.isPinned? <Icon icon='mdiPinOff' color='var(--color-accent)' /> : <Icon icon='mdiPin' />}
                   </div>
