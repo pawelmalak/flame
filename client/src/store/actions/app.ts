@@ -34,8 +34,9 @@ export interface PinAppAction {
   payload: App;
 }
 
-export const pinApp = (id: number, isPinned: boolean) => async (dispatch: Dispatch) => {
+export const pinApp = (app: App) => async (dispatch: Dispatch) => {
   try {
+    const { id, isPinned} = app;
     const res = await axios.put<ApiResponse<App>>(`/api/apps/${id}`, { isPinned: !isPinned });
 
     dispatch<PinAppAction>({

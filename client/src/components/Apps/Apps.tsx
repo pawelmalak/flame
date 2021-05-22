@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 // Redux
@@ -25,7 +25,6 @@ import AppTable from './AppTable/AppTable';
 
 interface ComponentProps {
   getApps: Function;
-  pinApp: (id: number, isPinned: boolean) => void;
   addApp: (formData: NewApp) => void;
   apps: App[];
   loading: boolean;
@@ -92,6 +91,12 @@ const Apps = (props: ComponentProps): JSX.Element => {
           icon='mdiPencil'
           handler={toggleEdit}
         />
+        {isInEdit && <Fragment>
+          <ActionButton
+            name='Pin All'
+            icon='mdiPin'
+          />
+        </Fragment>}
       </div>
 
       <div className={classes.Apps}>
@@ -115,4 +120,4 @@ const mapStateToProps = (state: GlobalState) => {
   }
 }
 
-export default connect(mapStateToProps, { getApps, pinApp, addApp })(Apps);
+export default connect(mapStateToProps, { getApps, addApp })(Apps);

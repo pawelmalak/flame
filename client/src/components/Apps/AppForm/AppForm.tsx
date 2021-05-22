@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent, SyntheticEvent } from 'react';
+import { useState, useEffect, useRef, ChangeEvent, SyntheticEvent } from 'react';
 import { connect } from 'react-redux';
 import { addApp, updateApp } from '../../../store/actions';
 import { App, NewApp } from '../../../interfaces/App';
@@ -19,6 +19,14 @@ const AppForm = (props: ComponentProps): JSX.Element => {
     url: '',
     icon: ''
   });
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [inputRef])
 
   useEffect(() => {
     if (props.app) {
@@ -75,6 +83,7 @@ const AppForm = (props: ComponentProps): JSX.Element => {
             required
             value={formData.name}
             onChange={(e) => inputChangeHandler(e)}
+            ref={inputRef}
           />
         </div>
         <div className={classes.InputGroup}>

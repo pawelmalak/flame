@@ -1,3 +1,4 @@
+import { KeyboardEvent } from 'react';
 import { connect } from 'react-redux';
 import { App, GlobalState } from '../../../interfaces';
 import { pinApp, deleteApp } from '../../../store/actions';
@@ -7,7 +8,7 @@ import Icon from '../../UI/Icons/Icon/Icon';
 
 interface ComponentProps {
   apps: App[];
-  pinApp: (id: number, isPinned: boolean) => void;
+  pinApp: (app: App) => void;
   deleteApp: (id: number) => void;
   updateAppHandler: (app: App) => void;
 }
@@ -18,6 +19,12 @@ const AppTable = (props: ComponentProps): JSX.Element => {
 
     if (proceed) {
       props.deleteApp(app.id);
+    }
+  }
+
+  const keyboardActionHandler = (e: KeyboardEvent, app: App, handler: Function) => {
+    if (e.key === 'Enter') {
+      handler(app);
     }
   }
 
@@ -42,16 +49,27 @@ const AppTable = (props: ComponentProps): JSX.Element => {
                 <td className={classes.TableActions}>
                   <div
                     className={classes.TableAction}
-                    onClick={() => deleteAppHandler(app)}>
+                    onClick={() => deleteAppHandler(app)}
+                    onKeyDown={(e) => keyboardActionHandler(e, app, deleteAppHandler)}
+                    tabIndex={0}>
                     <Icon icon='mdiDelete' />
                   </div>
                   <div
                     className={classes.TableAction}
-                    onClick={() => props.updateAppHandler(app)}>
+                    onClick={() => props.updateAppHandler(app)}
+                    onKeyDown={(e) => keyboardActionHandler(e, app, props.updateAppHandler)}
+                    tabIndex={0}>
                     <Icon icon='mdiPencil' />
                   </div>
-                  <div className={classes.TableAction} onClick={() => props.pinApp(app.id, app.isPinned)}>
-                    {app.isPinned? <Icon icon='mdiPinOff' color='var(--color-accent)' /> : <Icon icon='mdiPin' />}
+                  <div
+                    className={classes.TableAction}
+                    onClick={() => props.pinApp(app)}
+                    onKeyDown={(e) => keyboardActionHandler(e, app, props.pinApp)}
+                    tabIndex={0}>
+                    {app.isPinned
+                      ? <Icon icon='mdiPinOff' color='var(--color-accent)' />
+                      : <Icon icon='mdiPin' />
+                    }
                   </div>
                 </td>
               </tr>
