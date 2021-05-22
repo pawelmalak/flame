@@ -14,6 +14,7 @@ api.use(express.json());
 api.use('/api/apps', require('./routes/apps'));
 api.use('/api/config', require('./routes/config'));
 api.use('/api/weather', require('./routes/weather'));
+api.use('/api/categories', require('./routes/category'));
 
 // Custom error handler
 api.use(errorHandler);
