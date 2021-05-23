@@ -1,4 +1,4 @@
-import { Model } from './Api';
+import { Model } from '.';
 
 export interface Weather extends Model {
   externalLastUpdate: string;

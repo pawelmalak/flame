@@ -10,6 +10,7 @@ import classes from './App.module.css';
 import Home from './components/Home/Home';
 import Apps from './components/Apps/Apps';
 import Settings from './components/Settings/Settings';
+import Bookmarks from './components/Bookmarks/Bookmarks';
 
 if (localStorage.theme) {
   store.dispatch<any>(setTheme(localStorage.theme));
@@ -23,6 +24,7 @@ const App = (): JSX.Element => {
           <Route exact path='/' component={Home} />
           <Route path='/settings' component={Settings} />
           <Route path='/applications' component={Apps} />
+          <Route path='/bookmarks' component={Bookmarks} />
         </Switch>
       </BrowserRouter>
     </Provider>

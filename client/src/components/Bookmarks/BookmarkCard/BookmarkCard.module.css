@@ -1,0 +1,27 @@
+.BookmarkCard {
+  /* margin-top: 10px; */
+  margin-bottom: 30px;
+}
+
+.BookmarkCard h3 {
+  color: var(--color-accent);
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.Bookmarks {
+  display: flex;
+  flex-direction: column;
+}
+
+.Bookmarks a {
+  line-height: 2;
+  transition: all 0.25s;
+}
+
+.BookmarkCard a:hover {
+  text-decoration: underline;
+  padding-left: 10px;
+}

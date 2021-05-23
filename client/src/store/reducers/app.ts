@@ -4,7 +4,7 @@ import { App } from '../../interfaces/App';
 export interface State {
   loading: boolean;
   apps: App[];
-  errors: '' | undefined;
+  errors: string | undefined;
 }
 
 const initialState: State = {

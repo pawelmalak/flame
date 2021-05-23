@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
+import _ from 'underscore';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect, useSelector, useDispatch } from 'react-redux';
 import { GlobalState } from '../../interfaces/GlobalState';
-import { getApps } from '../../store/actions';
+import { getApps, getCategories } from '../../store/actions';
 
 import Icon from '../UI/Icons/Icon/Icon';
 
@@ -10,20 +11,32 @@ import classes from './Home.module.css';
 import { Container } from '../UI/Layout/Layout';
 import SectionHeadline from '../UI/Headlines/SectionHeadline/SectionHeadline';
 import AppGrid from '../Apps/AppGrid/AppGrid';
-import { App } from '../../interfaces';
+import { App, Category } from '../../interfaces';
 import Spinner from '../UI/Spinner/Spinner';
 import WeatherWidget from '../Widgets/WeatherWidget/WeatherWidget';
+import BookmarkGrid from '../Bookmarks/BookmarkGrid/BookmarkGrid';
 
 interface ComponentProps {
   getApps: Function;
-  loading: boolean;
+  getCategories: Function;
+  appsLoading: boolean;
   apps: App[];
+  categoriesLoading: boolean;
+  categories: Category[];
 }
 
 const Home = (props: ComponentProps): JSX.Element => {
   useEffect(() => {
-    props.getApps();
+    if (props.apps.length === 0) {
+      props.getApps();
+    }
   }, [props.getApps]);
+
+  useEffect(() => {
+    if (props.categories.length === 0) {
+      props.getCategories();
+    }
+  }, [props.getCategories]);
 
   const dateAndTime = (): string => {
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -68,15 +81,19 @@ const Home = (props: ComponentProps): JSX.Element => {
       </header>
       
       <SectionHeadline title='Applications' link='/applications' />
-      {props.loading
+      {props.appsLoading
         ? <Spinner />
         : <AppGrid apps={props.apps.filter((app: App) => app.isPinned)} />
       }
 
       <SectionHeadline title='Bookmarks' link='/bookmarks' />
+      {props.categoriesLoading
+        ? <Spinner />
+        : <BookmarkGrid categories={props.categories.filter((category: Category) => category.isPinned)} />
+      }
 
       <Link to='/settings' className={classes.SettingsButton}>
-        <Icon icon='mdiCog' />
+        <Icon icon='mdiCog' color='var(--color-background)' />
       </Link>
     </Container>
   )
@@ -84,9 +101,11 @@ const Home = (props: ComponentProps): JSX.Element => {
 
 const mapStateToProps = (state: GlobalState) => {
   return {
-    loading: state.app.loading,
-    apps: state.app.apps
+    appsLoading: state.app.loading,
+    apps: state.app.apps,
+    categoriesLoading: state.bookmark.loading,
+    categories: state.bookmark.categories
   }
 }
 
-export default connect(mapStateToProps, { getApps })(Home);
+export default connect(mapStateToProps, { getApps, getCategories })(Home);
