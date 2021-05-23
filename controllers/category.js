@@ -19,10 +19,12 @@ exports.createCategory = asyncWrapper(async (req, res, next) => {
 // @route     GET /api/categories
 // @access    Public
 exports.getCategories = asyncWrapper(async (req, res, next) => {
-  // const categories = await Category.findAll({
-  //   include: Bookmark
-  // });
-  const categories = await Category.findAll();
+  const categories = await Category.findAll({
+    include: [{
+      model: Bookmark,
+      as: 'bookmarks'
+    }]
+  });
 
   res.status(200).json({
     success: true,
@@ -35,7 +37,11 @@ exports.getCategories = asyncWrapper(async (req, res, next) => {
 // @access    Public
 exports.getCategory = asyncWrapper(async (req, res, next) => {
   const category = await Category.findOne({
-    where: { id: req.params.id }
+    where: { id: req.params.id },
+    include: [{
+      model: Bookmark,
+      as: 'bookmarks'
+    }]
   });
 
   if (!category) {

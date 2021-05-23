@@ -20,7 +20,7 @@ const Config = sequelize.define('Config', {
     defaultValue: false
   }
 }, {
-  freezeTableName: true
+  tableName: 'config'
 });
 
 module.exports = Config;

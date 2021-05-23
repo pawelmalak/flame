@@ -19,6 +19,8 @@ const App = sequelize.define('App', {
     type: DataTypes.BOOLEAN,
     defaultValue: false
   }
+}, {
+  tableName: 'apps'
 });
 
 module.exports = App;

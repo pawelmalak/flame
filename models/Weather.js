@@ -9,7 +9,7 @@ const Weather = sequelize.define('Weather', {
   conditionText: DataTypes.TEXT,
   conditionCode: DataTypes.INTEGER
 }, {
-  freezeTableName: true
+  tableName: 'weather'
 });
 
 module.exports = Weather;
