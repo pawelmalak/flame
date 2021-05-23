@@ -24,7 +24,7 @@
   height: 35px;
   background-color: var(--color-accent);
   border-radius: 50%;
-  position: absolute;
+  position: fixed;
   bottom: 10px;
   left: 10px;
   display: flex;
@@ -32,9 +32,25 @@
   align-items: center;
   opacity: 0.25;
   transition: all 0.3s;
+  visibility: hidden;
 }
 
 .SettingsButton:hover {
   cursor: pointer;
   opacity: 1;
+}
+
+.SettingsLink {
+  visibility: visible;
+  color: var(--color-accent);
+}
+
+@media (min-width: 769px) {
+  .SettingsButton {
+    visibility: visible;
+  }
+
+  .SettingsLink {
+    visibility: hidden;
+  }
 }

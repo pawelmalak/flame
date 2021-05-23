@@ -1,20 +1,27 @@
 import { useEffect } from 'react';
-import _ from 'underscore';
 import { Link } from 'react-router-dom';
-import { connect, useSelector, useDispatch } from 'react-redux';
-import { GlobalState } from '../../interfaces/GlobalState';
+
+// Redux
+import { connect } from 'react-redux';
 import { getApps, getCategories } from '../../store/actions';
 
-import Icon from '../UI/Icons/Icon/Icon';
+// Typescript
+import { GlobalState } from '../../interfaces/GlobalState';
+import { App, Category } from '../../interfaces';
 
-import classes from './Home.module.css';
+// UI
+import Icon from '../UI/Icons/Icon/Icon';
 import { Container } from '../UI/Layout/Layout';
 import SectionHeadline from '../UI/Headlines/SectionHeadline/SectionHeadline';
-import AppGrid from '../Apps/AppGrid/AppGrid';
-import { App, Category } from '../../interfaces';
 import Spinner from '../UI/Spinner/Spinner';
-import WeatherWidget from '../Widgets/WeatherWidget/WeatherWidget';
+
+// CSS
+import classes from './Home.module.css';
+
+// Components
+import AppGrid from '../Apps/AppGrid/AppGrid';
 import BookmarkGrid from '../Bookmarks/BookmarkGrid/BookmarkGrid';
+import WeatherWidget from '../Widgets/WeatherWidget/WeatherWidget';
 
 interface ComponentProps {
   getApps: Function;
@@ -74,6 +81,7 @@ const Home = (props: ComponentProps): JSX.Element => {
     <Container>
       <header className={classes.Header}>
         <p>{dateAndTime()}</p>
+        <Link to='/settings' className={classes.SettingsLink}>Go to Settings</Link>
         <span className={classes.HeaderMain}>
           <h1>{greeter()}</h1>
           <WeatherWidget />
