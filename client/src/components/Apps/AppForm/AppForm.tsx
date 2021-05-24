@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, ChangeEvent, SyntheticEvent } from 'react';
 import { connect } from 'react-redux';
 import { addApp, updateApp } from '../../../store/actions';
-import { App, NewApp } from '../../../interfaces/App';
+import { App, NewApp } from '../../../interfaces';
 
 import ModalForm from '../../UI/Forms/ModalForm/ModalForm';
 import InputGroup from '../../UI/Forms/InputGroup/InputGroup';

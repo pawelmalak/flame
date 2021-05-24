@@ -12,6 +12,8 @@ import Apps from './components/Apps/Apps';
 import Settings from './components/Settings/Settings';
 import Bookmarks from './components/Bookmarks/Bookmarks';
 
+import NotificationCenter from './components/NotificationCenter/NotificationCenter';
+
 if (localStorage.theme) {
   store.dispatch<any>(setTheme(localStorage.theme));
 }
@@ -27,6 +29,7 @@ const App = (): JSX.Element => {
           <Route path='/bookmarks' component={Bookmarks} />
         </Switch>
       </BrowserRouter>
+      <NotificationCenter />
     </Provider>
   );
 }

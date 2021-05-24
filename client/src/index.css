@@ -10,6 +10,7 @@ body {
   --color-background: #2B2C56;
   --color-primary: #EFF1FC;
   --color-accent: #6677EB;
+  --spacing-ui: 10px;
 
   background-color: var(--color-background);
   transition: background-color 0.3s;

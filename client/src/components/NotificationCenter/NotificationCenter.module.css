@@ -1,0 +1,8 @@
+.NotificationCenter {
+  position: fixed;
+  right: var(--spacing-ui);
+  bottom: var(--spacing-ui);
+  max-width: 300px;
+  z-index: 500;
+  color: white;
+}
