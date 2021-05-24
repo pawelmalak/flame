@@ -5,12 +5,14 @@ import ModalForm from '../../UI/Forms/ModalForm/ModalForm';
 import InputGroup from '../../UI/Forms/InputGroup/InputGroup';
 import { Category, GlobalState, NewBookmark, NewCategory } from '../../../interfaces';
 import { FormContentType } from '../Bookmarks';
-import { getCategories } from '../../../store/actions';
+import { getCategories, addCategory, addBookmark } from '../../../store/actions';
 
 interface ComponentProps {
   modalHandler: () => void;
   contentType: FormContentType;
   categories: Category[];
+  addCategory: (formData: NewCategory) => void;
+  addBookmark: (formData: NewBookmark) => void;
 }
 
 const BookmarkForm = (props: ComponentProps): JSX.Element => {
@@ -27,8 +29,21 @@ const BookmarkForm = (props: ComponentProps): JSX.Element => {
   const formSubmitHandler = (e: SyntheticEvent<HTMLFormElement>): void => {
     e.preventDefault();
     
-    if (formData.categoryId === -1) {
-      alert('select category');
+    if (props.contentType === FormContentType.category) {
+      props.addCategory(categoryName);
+      setCategoryName({ name: '' });
+    } else if (props.contentType === FormContentType.bookmark) {
+      if (formData.categoryId === -1) {
+        alert('select category');
+        return;
+      }
+
+      props.addBookmark(formData);
+      setFormData({
+        name: '',
+        url: '',
+        categoryId: formData.categoryId
+      })
     }
   }
 
@@ -129,4 +144,4 @@ const mapStateToProps = (state: GlobalState) => {
   }
 }
 
-export default connect(mapStateToProps, { getCategories })(BookmarkForm);
+export default connect(mapStateToProps, { getCategories, addCategory, addBookmark })(BookmarkForm);

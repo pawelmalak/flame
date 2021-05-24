@@ -23,7 +23,8 @@ exports.getCategories = asyncWrapper(async (req, res, next) => {
     include: [{
       model: Bookmark,
       as: 'bookmarks'
-    }]
+    }],
+    order: [['name', 'ASC']]
   });
 
   res.status(200).json({

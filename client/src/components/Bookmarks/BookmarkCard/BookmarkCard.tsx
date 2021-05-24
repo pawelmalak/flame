@@ -14,7 +14,7 @@ const BookmarkCard = (props: ComponentProps): JSX.Element => {
           <a
             href={`http://${bookmark.url}`}
             target='blank'
-            key={bookmark.id}>
+            key={`bookmark-${bookmark.id}`}>
             {bookmark.name}
           </a>
         ))}
