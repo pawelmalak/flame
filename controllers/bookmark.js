@@ -18,7 +18,9 @@ exports.createBookmark = asyncWrapper(async (req, res, next) => {
 // @route     GET /api/bookmarks
 // @access    Public
 exports.getBookmarks = asyncWrapper(async (req, res, next) => {
-  const bookmarks = await Bookmark.findAll();
+  const bookmarks = await Bookmark.findAll({
+    order: [['name', 'ASC']]
+  });
 
   res.status(200).json({
     success: true,

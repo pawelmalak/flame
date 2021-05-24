@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 
 // Redux
 import { connect } from 'react-redux';
-import { getApps, pinApp, addApp } from '../../store/actions';
+import { getApps } from '../../store/actions';
 
 // Typescript
-import { App, GlobalState, NewApp } from '../../interfaces';
+import { App, GlobalState } from '../../interfaces';
 
 // CSS
 import classes from './Apps.module.css';
@@ -25,7 +25,6 @@ import AppTable from './AppTable/AppTable';
 
 interface ComponentProps {
   getApps: Function;
-  addApp: (formData: NewApp) => void;
   apps: App[];
   loading: boolean;
 }
@@ -120,4 +119,4 @@ const mapStateToProps = (state: GlobalState) => {
   }
 }
 
-export default connect(mapStateToProps, { getApps, addApp })(Apps);
+export default connect(mapStateToProps, { getApps })(Apps);

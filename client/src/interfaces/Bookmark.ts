@@ -5,3 +5,9 @@ export interface Bookmark extends Model {
   url: string;
   categoryId: number;
 }
+
+export interface NewBookmark {
+  name: string;
+  url: string;
+  categoryId: number;
+}
