@@ -1,0 +1,20 @@
+.ModalForm {
+  background-color: var(--color-background);
+  color: var(--color-primary);
+  border-radius: 6px;
+  width: 60%;
+  position: relative;
+  /* height: 50vh; */
+  padding: 50px 50px;
+}
+
+.ModalFormIcon {
+  width: 40px;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}
+
+.ModalFormIcon:hover {
+  cursor: pointer;
+}
