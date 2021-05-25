@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Dispatch } from 'redux';
 import { ActionTypes } from './actionTypes';
 import { Category, ApiResponse, NewCategory, Bookmark, NewBookmark } from '../../interfaces';
+import { CreateNotificationAction } from './notification';
 
 export interface GetCategoriesAction<T> {
   type: ActionTypes.getCategories | ActionTypes.getCategoriesSuccess | ActionTypes.getCategoriesError;
@@ -35,6 +36,14 @@ export const addCategory = (formData: NewCategory) => async (dispatch: Dispatch)
   try {
     const res = await axios.post<ApiResponse<Category>>('/api/categories', formData);
 
+    dispatch<CreateNotificationAction>({
+      type: ActionTypes.createNotification,
+      payload: {
+        title: 'Success',
+        message: `Category ${formData.name} created`
+      }
+    })
+
     dispatch<AddCategoryAction>({
       type: ActionTypes.addCategory,
       payload: res.data.data
@@ -52,6 +61,14 @@ export interface AddBookmarkAction {
 export const addBookmark = (formData: NewBookmark) => async (dispatch: Dispatch) => {
   try {
     const res = await axios.post<ApiResponse<Bookmark>>('/api/bookmarks', formData);
+
+    dispatch<CreateNotificationAction>({
+      type: ActionTypes.createNotification,
+      payload: {
+        title: 'Success',
+        message: `Bookmark ${formData.name} created`
+      }
+    })
 
     dispatch<AddBookmarkAction>({
       type: ActionTypes.addBookmark,

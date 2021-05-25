@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import ModalForm from '../../UI/Forms/ModalForm/ModalForm';
 import InputGroup from '../../UI/Forms/InputGroup/InputGroup';
 import { Category, GlobalState, NewBookmark, NewCategory } from '../../../interfaces';
-import { FormContentType } from '../Bookmarks';
+import { ContentType } from '../Bookmarks';
 import { getCategories, addCategory, addBookmark } from '../../../store/actions';
 
 interface ComponentProps {
   modalHandler: () => void;
-  contentType: FormContentType;
+  contentType: ContentType;
   categories: Category[];
   addCategory: (formData: NewCategory) => void;
   addBookmark: (formData: NewBookmark) => void;
@@ -29,10 +29,10 @@ const BookmarkForm = (props: ComponentProps): JSX.Element => {
   const formSubmitHandler = (e: SyntheticEvent<HTMLFormElement>): void => {
     e.preventDefault();
     
-    if (props.contentType === FormContentType.category) {
+    if (props.contentType === ContentType.category) {
       props.addCategory(categoryName);
       setCategoryName({ name: '' });
-    } else if (props.contentType === FormContentType.bookmark) {
+    } else if (props.contentType === ContentType.bookmark) {
       if (formData.categoryId === -1) {
         alert('select category');
         return;
@@ -66,7 +66,7 @@ const BookmarkForm = (props: ComponentProps): JSX.Element => {
       modalHandler={props.modalHandler}
       formHandler={formSubmitHandler}
     >
-      {props.contentType === FormContentType.category
+      {props.contentType === ContentType.category
         ? (
           <Fragment>
             <InputGroup>

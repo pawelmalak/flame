@@ -5,6 +5,7 @@ import { pinApp, deleteApp } from '../../../store/actions';
 
 import classes from './AppTable.module.css';
 import Icon from '../../UI/Icons/Icon/Icon';
+import Table from '../../UI/Table/Table';
 
 interface ComponentProps {
   apps: App[];
@@ -29,55 +30,48 @@ const AppTable = (props: ComponentProps): JSX.Element => {
   }
 
   return (
-    <div className={classes.TableContainer}>
-      <table className={classes.Table}>
-        <thead className={classes.TableHead}>
-          <tr>
-            <th>Name</th>
-            <th>Url</th>
-            <th>Icon</th>
-            <th>Actions</th>
+    <Table headers={[
+      'Name',
+      'URL',
+      'Icon',
+      'Actions'
+    ]}>
+      {props.apps.map((app: App): JSX.Element => {
+        return (
+          <tr key={app.id}>
+            <td>{app.name}</td>
+            <td>{app.url}</td>
+            <td>{app.icon}</td>
+            <td className={classes.TableActions}>
+              <div
+                className={classes.TableAction}
+                onClick={() => deleteAppHandler(app)}
+                onKeyDown={(e) => keyboardActionHandler(e, app, deleteAppHandler)}
+                tabIndex={0}>
+                <Icon icon='mdiDelete' />
+              </div>
+              <div
+                className={classes.TableAction}
+                onClick={() => props.updateAppHandler(app)}
+                onKeyDown={(e) => keyboardActionHandler(e, app, props.updateAppHandler)}
+                tabIndex={0}>
+                <Icon icon='mdiPencil' />
+              </div>
+              <div
+                className={classes.TableAction}
+                onClick={() => props.pinApp(app)}
+                onKeyDown={(e) => keyboardActionHandler(e, app, props.pinApp)}
+                tabIndex={0}>
+                {app.isPinned
+                  ? <Icon icon='mdiPinOff' color='var(--color-accent)' />
+                  : <Icon icon='mdiPin' />
+                }
+              </div>
+            </td>
           </tr>
-        </thead>
-        <tbody className={classes.TableBody}>
-          {props.apps.map((app: App): JSX.Element => {
-            return (
-              <tr key={app.id}>
-                <td>{app.name}</td>
-                <td>{app.url}</td>
-                <td>{app.icon}</td>
-                <td className={classes.TableActions}>
-                  <div
-                    className={classes.TableAction}
-                    onClick={() => deleteAppHandler(app)}
-                    onKeyDown={(e) => keyboardActionHandler(e, app, deleteAppHandler)}
-                    tabIndex={0}>
-                    <Icon icon='mdiDelete' />
-                  </div>
-                  <div
-                    className={classes.TableAction}
-                    onClick={() => props.updateAppHandler(app)}
-                    onKeyDown={(e) => keyboardActionHandler(e, app, props.updateAppHandler)}
-                    tabIndex={0}>
-                    <Icon icon='mdiPencil' />
-                  </div>
-                  <div
-                    className={classes.TableAction}
-                    onClick={() => props.pinApp(app)}
-                    onKeyDown={(e) => keyboardActionHandler(e, app, props.pinApp)}
-                    tabIndex={0}>
-                    {app.isPinned
-                      ? <Icon icon='mdiPinOff' color='var(--color-accent)' />
-                      : <Icon icon='mdiPin' />
-                    }
-                  </div>
-                </td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
-    </div>
+        )
+      })}
+    </Table>
   )
 }
 

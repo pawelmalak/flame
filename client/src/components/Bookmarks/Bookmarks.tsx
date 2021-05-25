@@ -14,6 +14,7 @@ import { Category, GlobalState } from '../../interfaces';
 import Spinner from '../UI/Spinner/Spinner';
 import Modal from '../UI/Modal/Modal';
 import BookmarkForm from './BookmarkForm/BookmarkForm';
+import BookmarkTable from './BookmarkTable/BookmarkTable';
 
 interface ComponentProps {
   loading: boolean;
@@ -21,14 +22,16 @@ interface ComponentProps {
   getCategories: () => void;
 }
 
-export enum FormContentType {
+export enum ContentType {
   category,
   bookmark
 }
 
 const Bookmarks = (props: ComponentProps): JSX.Element => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [formContentType, setFormContentType] = useState(FormContentType.category);
+  const [formContentType, setFormContentType] = useState(ContentType.category);
+  const [isInEdit, setIsInEdit] = useState(false);
+  const [tableContentType, setTableContentType] = useState(ContentType.category);
 
   useEffect(() => {
     if (props.categories.length === 0) {
@@ -40,24 +43,29 @@ const Bookmarks = (props: ComponentProps): JSX.Element => {
     setModalIsOpen(!modalIsOpen);
   }
 
-  const addActionHandler = (contentType: FormContentType) => {
+  const addActionHandler = (contentType: ContentType) => {
     setFormContentType(contentType);
     toggleModal();
+  }
+
+  const toggleEdit = (): void => {
+    setIsInEdit(!isInEdit);
+  }
+
+  const editActionHandler = (contentType: ContentType) => {
+    // We're in the edit mode and the same button was clicked - go back to list
+    if (isInEdit && contentType === tableContentType) {
+      setIsInEdit(false);
+    } else {
+      setIsInEdit(true);
+      setTableContentType(contentType);
+    }
   }
 
   return (
     <Container>
       <Modal isOpen={modalIsOpen} setIsOpen={toggleModal}>
-        {formContentType === FormContentType.category
-          ? <BookmarkForm
-              modalHandler={toggleModal}
-              contentType={FormContentType.category}
-            />
-          : <BookmarkForm
-              modalHandler={toggleModal}
-              contentType={FormContentType.bookmark}
-            />
-        }
+        <BookmarkForm modalHandler={toggleModal} contentType={formContentType} />
       </Modal>
 
       <Headline
@@ -69,26 +77,30 @@ const Bookmarks = (props: ComponentProps): JSX.Element => {
         <ActionButton
           name='Add Category'
           icon='mdiPlusBox'
-          handler={() => addActionHandler(FormContentType.category)}
+          handler={() => addActionHandler(ContentType.category)}
         />
         <ActionButton
           name='Add Bookmark'
           icon='mdiPlusBox'
-          handler={() => addActionHandler(FormContentType.bookmark)}
+          handler={() => addActionHandler(ContentType.bookmark)}
         />
         <ActionButton
           name='Edit Categories'
           icon='mdiPencil'
+          handler={() => editActionHandler(ContentType.category)}
         />
         <ActionButton
           name='Edit Bookmarks'
           icon='mdiPencil'
+          handler={() => editActionHandler(ContentType.bookmark)}
         />
       </div>
 
       {props.loading
         ? <Spinner />
-        : <BookmarkGrid categories={props.categories} />
+        : (!isInEdit
+          ? <BookmarkGrid categories={props.categories} />
+          : <BookmarkTable contentType={tableContentType} categories={props.categories} />)
       }
     </Container>
   )

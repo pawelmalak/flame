@@ -1,6 +1,10 @@
 import classes from './Layout.module.css';
 
-export const Container = (props: any): JSX.Element => {
+interface ComponentProps {
+  children: JSX.Element | JSX.Element[];
+}
+
+export const Container = (props: ComponentProps): JSX.Element => {
   return (
     <div className={classes.Container}>
       {props.children}

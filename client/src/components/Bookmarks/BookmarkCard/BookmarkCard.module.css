@@ -21,7 +21,8 @@
   transition: all 0.25s;
 }
 
-.BookmarkCard a:hover {
+.BookmarkCard a:hover,
+.BookmarkCard a:focus {
   text-decoration: underline;
   padding-left: 10px;
 }
