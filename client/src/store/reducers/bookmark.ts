@@ -55,12 +55,37 @@ const addBookmark = (state: State, action: Action): State => {
   }
 }
 
+const pinCategory = (state: State, action: Action): State => {
+  const tmpCategories = [...state.categories];
+  const changedCategory = tmpCategories.find((category: Category) => category.id === action.payload.id);
+
+  if (changedCategory) {
+    changedCategory.isPinned = action.payload.isPinned;
+  }
+
+  return {
+    ...state,
+    categories: tmpCategories
+  }
+}
+
+const deleteCategory = (state: State, action: Action): State => {
+  const tmpCategories = [...state.categories].filter((category: Category) => category.id !== action.payload);
+
+  return {
+    ...state,
+    categories: tmpCategories
+  }
+}
+
 const bookmarkReducer = (state = initialState, action: Action) => {
   switch (action.type) {
     case ActionTypes.getCategories: return getCategories(state, action);
     case ActionTypes.getCategoriesSuccess: return getCategoriesSuccess(state, action);
     case ActionTypes.addCategory: return addCategory(state, action);
     case ActionTypes.addBookmark: return addBookmark(state, action);
+    case ActionTypes.pinCategory: return pinCategory(state, action);
+    case ActionTypes.deleteCategory: return deleteCategory(state, action);
     default: return state;
   }
 }

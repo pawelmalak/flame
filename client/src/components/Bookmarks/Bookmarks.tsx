@@ -99,7 +99,9 @@ const Bookmarks = (props: ComponentProps): JSX.Element => {
       {props.loading
         ? <Spinner />
         : (!isInEdit
-          ? <BookmarkGrid categories={props.categories} />
+          ? props.categories.length > 0
+            ? <BookmarkGrid categories={props.categories} />
+            : <p className={classes.BookmarksMessage}>You don't have any bookmarks. You can a new one from <Link to='/bookmarks'>/bookmarks</Link> menu</p>
           : <BookmarkTable contentType={tableContentType} categories={props.categories} />)
       }
     </Container>

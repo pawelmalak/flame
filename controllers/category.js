@@ -79,6 +79,24 @@ exports.updateCategory = asyncWrapper(async (req, res, next) => {
 // @route     DELETE /api/categories/:id
 // @access    Public
 exports.deleteCategory = asyncWrapper(async (req, res, next) => {
+  const category = await Category.findOne({
+    where: { id: req.params.id },
+    include: [{
+      model: Bookmark,
+      as: 'bookmarks'
+    }]
+  });
+
+  if (!category) {
+    return next(new ErrorResponse(`Category with id of ${req.params.id} was not found`, 404))
+  }
+
+  category.bookmarks.forEach(async (bookmark) => {
+    await Bookmark.destroy({
+      where: { id: bookmark.id }
+    })
+  })
+
   await Category.destroy({
     where: { id: req.params.id }
   })
