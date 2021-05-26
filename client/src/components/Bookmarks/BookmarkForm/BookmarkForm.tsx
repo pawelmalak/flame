@@ -3,16 +3,20 @@ import { connect } from 'react-redux';
 
 import ModalForm from '../../UI/Forms/ModalForm/ModalForm';
 import InputGroup from '../../UI/Forms/InputGroup/InputGroup';
-import { Category, GlobalState, NewBookmark, NewCategory } from '../../../interfaces';
+import { Category, GlobalState, NewBookmark, NewCategory, NewNotification } from '../../../interfaces';
 import { ContentType } from '../Bookmarks';
-import { getCategories, addCategory, addBookmark } from '../../../store/actions';
+import { getCategories, addCategory, addBookmark, updateCategory, createNotification } from '../../../store/actions';
+import Button from '../../UI/Buttons/Button/Button';
 
 interface ComponentProps {
   modalHandler: () => void;
   contentType: ContentType;
   categories: Category[];
+  category?: Category;
   addCategory: (formData: NewCategory) => void;
   addBookmark: (formData: NewBookmark) => void;
+  updateCategory: (id: number, formData: NewCategory) => void;
+  createNotification: (notification: NewNotification) => void;
 }
 
 const BookmarkForm = (props: ComponentProps): JSX.Element => {
@@ -26,24 +30,46 @@ const BookmarkForm = (props: ComponentProps): JSX.Element => {
     categoryId: -1
   })
 
+  useEffect(() => {
+    if (props.category) {
+      setCategoryName({ name: props.category.name });
+    } else {
+      setCategoryName({ name: '' });
+    }
+  }, [props.category])
+
   const formSubmitHandler = (e: SyntheticEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    
-    if (props.contentType === ContentType.category) {
-      props.addCategory(categoryName);
-      setCategoryName({ name: '' });
-    } else if (props.contentType === ContentType.bookmark) {
-      if (formData.categoryId === -1) {
-        alert('select category');
-        return;
+
+    if (!props.category) {
+      // Add new
+      if (props.contentType === ContentType.category) {
+        props.addCategory(categoryName);
+        setCategoryName({ name: '' });
+      } else if (props.contentType === ContentType.bookmark) {
+        if (formData.categoryId === -1) {
+          props.createNotification({
+            title: 'Error',
+            message: 'Please select category'
+          })
+          return;
+        }
+  
+        props.addBookmark(formData);
+        setFormData({
+          name: '',
+          url: '',
+          categoryId: formData.categoryId
+        })
+      }
+    } else {
+      // Update
+      if (props.contentType === ContentType.category) {
+        props.updateCategory(props.category.id, categoryName);
+        setCategoryName({ name: '' });
       }
 
-      props.addBookmark(formData);
-      setFormData({
-        name: '',
-        url: '',
-        categoryId: formData.categoryId
-      })
+      props.modalHandler();
     }
   }
 
@@ -133,7 +159,10 @@ const BookmarkForm = (props: ComponentProps): JSX.Element => {
           </Fragment>
         )
       }
-      <button type='submit'>add</button>
+      {!props.category
+        ? <Button>Add new category</Button>
+        : <Button>Update category</Button>
+      }
     </ModalForm>
   )
 }
@@ -144,4 +173,12 @@ const mapStateToProps = (state: GlobalState) => {
   }
 }
 
-export default connect(mapStateToProps, { getCategories, addCategory, addBookmark })(BookmarkForm);
+const dispatchMap = {
+  getCategories,
+  addCategory,
+  addBookmark,
+  updateCategory,
+  createNotification
+}
+
+export default connect(mapStateToProps, dispatchMap)(BookmarkForm);

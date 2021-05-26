@@ -13,6 +13,7 @@ interface ComponentProps {
   categories: Category[];
   pinCategory: (category: Category) => void;
   deleteCategory: (id: number) => void;
+  updateCategoryHandler: (category: Category) => void;
 }
 
 const BookmarkTable = (props: ComponentProps): JSX.Element => {
@@ -50,7 +51,7 @@ const BookmarkTable = (props: ComponentProps): JSX.Element => {
                 </div>
                 <div
                   className={classes.TableAction}
-                  // onClick={() => props.updateAppHandler(app)}
+                  onClick={() => props.updateCategoryHandler(category)}
                   // onKeyDown={(e) => keyboardActionHandler(e, app, props.updateAppHandler)}
                   tabIndex={0}>
                   <Icon icon='mdiPencil' />

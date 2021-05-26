@@ -32,6 +32,15 @@ const Bookmarks = (props: ComponentProps): JSX.Element => {
   const [formContentType, setFormContentType] = useState(ContentType.category);
   const [isInEdit, setIsInEdit] = useState(false);
   const [tableContentType, setTableContentType] = useState(ContentType.category);
+  const [isInUpdate, setIsInUpdate] = useState(false);
+  const [categoryInUpdate, setCategoryInUpdate] = useState<Category>({
+    name: '',
+    id: -1,
+    isPinned: false,
+    bookmarks: [],
+    createdAt: new Date(),
+    updatedAt: new Date()
+  })
 
   useEffect(() => {
     if (props.categories.length === 0) {
@@ -45,6 +54,7 @@ const Bookmarks = (props: ComponentProps): JSX.Element => {
 
   const addActionHandler = (contentType: ContentType) => {
     setFormContentType(contentType);
+    setIsInUpdate(false);
     toggleModal();
   }
 
@@ -62,10 +72,21 @@ const Bookmarks = (props: ComponentProps): JSX.Element => {
     }
   }
 
+  const goToUpdateMode = (category: Category): void => {
+    setIsInUpdate(true);
+    setCategoryInUpdate(category);
+    toggleModal();
+  }
+
+  let modalForm: JSX.Element;
+
   return (
     <Container>
       <Modal isOpen={modalIsOpen} setIsOpen={toggleModal}>
-        <BookmarkForm modalHandler={toggleModal} contentType={formContentType} />
+        {!isInUpdate
+          ? <BookmarkForm modalHandler={toggleModal} contentType={formContentType} />
+          : <BookmarkForm modalHandler={toggleModal} contentType={formContentType} category={categoryInUpdate} />
+        }
       </Modal>
 
       <Headline
@@ -101,8 +122,13 @@ const Bookmarks = (props: ComponentProps): JSX.Element => {
         : (!isInEdit
           ? props.categories.length > 0
             ? <BookmarkGrid categories={props.categories} />
-            : <p className={classes.BookmarksMessage}>You don't have any bookmarks. You can a new one from <Link to='/bookmarks'>/bookmarks</Link> menu</p>
-          : <BookmarkTable contentType={tableContentType} categories={props.categories} />)
+            : <p className={classes.BookmarksMessage}>You don't have any bookmarks. You can add a new one from <Link to='/bookmarks'>/bookmarks</Link> menu</p>
+          : (<BookmarkTable
+              contentType={tableContentType}
+              categories={props.categories}
+              updateCategoryHandler={goToUpdateMode}
+            />)
+          )
       }
     </Container>
   )

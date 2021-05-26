@@ -104,7 +104,7 @@ const Apps = (props: ComponentProps): JSX.Element => {
           : (!isInEdit
               ? props.apps.length > 0
                 ? <AppGrid apps={props.apps} />
-                : <p className={classes.AppsMessage}>You don't have any applications. You can a new one from <Link to='/applications'>/application</Link> menu</p>
+                : <p className={classes.AppsMessage}>You don't have any applications. You can add a new one from <Link to='/applications'>/application</Link> menu</p>
               : <AppTable updateAppHandler={toggleUpdate} />)
         }
       </div>

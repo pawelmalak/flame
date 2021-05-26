@@ -148,3 +148,32 @@ export const deleteCategory = (id: number) => async (dispatch: Dispatch) => {
     console.log(err);
   }
 }
+
+/**
+ * UPDATE CATEGORY
+ */
+export interface UpdateCategoryAction {
+  type: ActionTypes.updateCategory,
+  payload: Category
+}
+
+export const updateCategory = (id: number, formData: NewCategory) => async (dispatch: Dispatch) => {
+  try {
+    const res = await axios.put<ApiResponse<Category>>(`/api/categories/${id}`, formData);
+
+    dispatch<CreateNotificationAction>({
+      type: ActionTypes.createNotification,
+      payload: {
+        title: 'Success',
+        message: `Category ${formData.name} updated`
+      }
+    })
+
+    dispatch<UpdateCategoryAction>({
+      type: ActionTypes.updateCategory,
+      payload: res.data.data
+    })
+  } catch (err) {
+    console.log(err);
+  }
+}

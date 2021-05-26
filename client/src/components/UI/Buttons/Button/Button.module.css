@@ -1,0 +1,14 @@
+.Button {
+  padding: 8px 15px;
+  border: 1px solid var(--color-accent);
+  background-color: var(--color-background);
+  color: var(--color-primary);
+  border-radius: 4px;
+}
+
+.Button:hover,
+.Button:focus {
+  cursor: pointer;
+  background-color: var(--color-accent);
+  color: var(--color-background);
+}

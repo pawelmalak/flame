@@ -5,6 +5,7 @@ import { App, NewApp } from '../../../interfaces';
 
 import ModalForm from '../../UI/Forms/ModalForm/ModalForm';
 import InputGroup from '../../UI/Forms/InputGroup/InputGroup';
+import Button from '../../UI/Buttons/Button/Button';
 
 interface ComponentProps {
   modalHandler: () => void;
@@ -34,6 +35,12 @@ const AppForm = (props: ComponentProps): JSX.Element => {
         name: props.app.name,
         url: props.app.url,
         icon: props.app.icon
+      })
+    } else {
+      setFormData({
+        name: '',
+        url: '',
+        icon: ''
       })
     }
   }, [props.app])
@@ -114,8 +121,8 @@ const AppForm = (props: ComponentProps): JSX.Element => {
         </span>
       </InputGroup>
       {!props.app
-        ? <button type="submit">add</button>
-        : <button type="submit">update</button>
+        ? <Button>Add new application</Button>
+        : <Button>Update application</Button>
       }
     </ModalForm>
   )

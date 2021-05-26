@@ -13,6 +13,7 @@ import {
   AddBookmarkAction,
   PinCategoryAction,
   DeleteCategoryAction,
+  UpdateCategoryAction,
   // Notifications
   CreateNotificationAction,
   ClearNotificationAction
@@ -38,6 +39,7 @@ export enum ActionTypes {
   addBookmark = 'ADD_BOOKMARK',
   pinCategory = 'PIN_CATEGORY',
   deleteCategory = 'DELETE_CATEGORY',
+  updateCategory = 'UPDATE_CATEGORY',
   // Notifications
   createNotification = 'CREATE_NOTIFICATION',
   clearNotification = 'CLEAR_NOTIFICATION'
@@ -58,6 +60,7 @@ export type Action =
   AddBookmarkAction |
   PinCategoryAction |
   DeleteCategoryAction |
+  UpdateCategoryAction |
   // Notifications
   CreateNotificationAction |
   ClearNotificationAction;
