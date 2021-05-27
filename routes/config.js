@@ -6,13 +6,15 @@ const {
   getAllPairs,
   getSinglePair,
   updateValue,
-  deletePair
+  updateValues,
+  deletePair,
 } = require('../controllers/config');
 
 router
   .route('')
   .post(createPair)
-  .get(getAllPairs);
+  .get(getAllPairs)
+  .put(updateValues);
 
 router
   .route('/:key')

@@ -86,6 +86,22 @@ exports.updateValue = asyncWrapper(async (req, res, next) => {
   })
 })
 
+// @desc      Update multiple values
+// @route     PUT /api/config/
+// @access    Public
+exports.updateValues = asyncWrapper(async (req, res, next) => {
+  Object.entries(req.body).forEach(async ([key, value]) => {
+    await Config.update({ value }, {
+      where: { key }
+    })
+  })
+  
+  res.status(200).send({
+    success: true,
+    data: {}
+  })
+})
+
 // @desc      Delete key:value pair
 // @route     DELETE /api/config/:key
 // @access    Public
