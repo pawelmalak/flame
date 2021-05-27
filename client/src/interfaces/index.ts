@@ -6,3 +6,4 @@ export * from './Weather';
 export * from './Bookmark';
 export * from './Category';
 export * from './Notification';
+export * from './Config';

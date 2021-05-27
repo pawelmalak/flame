@@ -25,7 +25,7 @@ const WeatherIcon = (props: ComponentProps): JSX.Element => {
     return () => {
       clearTimeout(delay);
     }
-  }, []);
+  }, [props.weatherStatusCode]);
 
   return <canvas id={`weather-icon`} width='50' height='50'></canvas>
 }

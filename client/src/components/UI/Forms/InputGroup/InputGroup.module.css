@@ -27,3 +27,7 @@
 .InputGroup span a {
   color: var(--color-accent);
 }
+
+.InputGroup label {
+  color: var(--color-primary);
+}

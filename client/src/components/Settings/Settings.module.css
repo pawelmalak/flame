@@ -1,11 +1,10 @@
 .Settings {
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 3fr;
+  grid-template-columns: 1fr;
 }
 
 .SettingsNav {
-  /* background-color: coral; */
   display: flex;
   flex-direction: column;
 }
@@ -19,7 +18,8 @@
   transition: all 0.3s;
 }
 
-.SettingsNavLink:hover {
+.SettingsNavLink:hover,
+.SettingsNavLink:focus {
   border-left: 3px solid var(--color-primary);
 }
 
@@ -27,6 +27,14 @@
   border-left: 3px solid var(--color-primary);
 }
 
-.SettingsContent {
-  /* background-color:springgreen; */
+@media (min-width: 480px) {
+  .Settings {
+    grid-template-columns: 1fr 2fr;
+  }
+}
+
+@media (min-width: 500px) {
+  .Settings {
+    grid-template-columns: 1fr 3fr;
+  }
 }

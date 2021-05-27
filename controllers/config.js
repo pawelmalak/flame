@@ -1,6 +1,7 @@
 const asyncWrapper = require('../middleware/asyncWrapper');
 const ErrorResponse = require('../utils/ErrorResponse');
 const Config = require('../models/Config');
+const { Op } = require('sequelize');
 
 // @desc      Insert new key:value pair
 // @route     POST /api/config
@@ -16,9 +17,26 @@ exports.createPair = asyncWrapper(async (req, res, next) => {
 
 // @desc      Get all key:value pairs
 // @route     GET /api/config
+// @route     GET /api/config?keys=foo,bar,baz
 // @access    Public
 exports.getAllPairs = asyncWrapper(async (req, res, next) => {
-  const pairs = await Config.findAll();
+  let pairs;
+
+  if (req.query.keys) {
+    // Check for specific keys to get in a single query
+    const keys = req.query.keys
+      .split(',')
+      .map((key) => { return { key } });
+
+    pairs = await Config.findAll({
+      where: {
+        [Op.or]: keys
+      }
+    });
+  } else {
+    // Else get all
+    pairs = await Config.findAll();
+  }
 
   res.status(200).json({
     success: true,

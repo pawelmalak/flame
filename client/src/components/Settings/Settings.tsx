@@ -1,16 +1,13 @@
-import { NavLink, Link, Switch, Route, withRouter, match } from 'react-router-dom';
+import { NavLink, Link, Switch, Route, withRouter } from 'react-router-dom';
 
 import classes from './Settings.module.css';
 
 import { Container } from '../UI/Layout/Layout';
 import Headline from '../UI/Headlines/Headline/Headline';
 import Themer from '../Themer/Themer';
+import WeatherSettings from './WeatherSettings/WeatherSettings';
 
-interface ComponentProps {
-  match: match;
-}
-
-const Settings = (props: ComponentProps): JSX.Element => {
+const Settings = (): JSX.Element => {
   return (
     <Container>
       <Headline
@@ -30,13 +27,14 @@ const Settings = (props: ComponentProps): JSX.Element => {
             className={classes.SettingsNavLink}
             activeClassName={classes.SettingsNavLinkActive}
             exact
-            to='/settings/nothig'>
+            to='/settings/weather'>
             Weather
           </NavLink>
         </nav>
         <section className={classes.SettingsContent}>
           <Switch>
             <Route exact path='/settings' component={Themer} />
+            <Route path='/settings/weather' component={WeatherSettings} />
           </Switch>
         </section>
       </div>
