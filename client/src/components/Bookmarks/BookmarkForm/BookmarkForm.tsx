@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 
 import ModalForm from '../../UI/Forms/ModalForm/ModalForm';
 import InputGroup from '../../UI/Forms/InputGroup/InputGroup';
-import { Category, GlobalState, NewBookmark, NewCategory, NewNotification } from '../../../interfaces';
+import { Bookmark, Category, GlobalState, NewBookmark, NewCategory, NewNotification } from '../../../interfaces';
 import { ContentType } from '../Bookmarks';
-import { getCategories, addCategory, addBookmark, updateCategory, createNotification } from '../../../store/actions';
+import { getCategories, addCategory, addBookmark, updateCategory, updateBookmark, createNotification } from '../../../store/actions';
 import Button from '../../UI/Buttons/Button/Button';
 
 interface ComponentProps {
@@ -13,9 +13,11 @@ interface ComponentProps {
   contentType: ContentType;
   categories: Category[];
   category?: Category;
+  bookmark?: Bookmark;
   addCategory: (formData: NewCategory) => void;
   addBookmark: (formData: NewBookmark) => void;
   updateCategory: (id: number, formData: NewCategory) => void;
+  updateBookmark: (id: number, formData: NewBookmark) => void;
   createNotification: (notification: NewNotification) => void;
 }
 
@@ -38,15 +40,33 @@ const BookmarkForm = (props: ComponentProps): JSX.Element => {
     }
   }, [props.category])
 
+  useEffect(() => {
+    if (props.bookmark) {
+      setFormData({
+        name: props.bookmark.name,
+        url: props.bookmark.url,
+        categoryId: props.bookmark.categoryId
+      })
+    } else {
+      setFormData({
+        name: '',
+        url: '',
+        categoryId: -1
+      })
+    }
+  }, [props.bookmark])
+
   const formSubmitHandler = (e: SyntheticEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
-    if (!props.category) {
+    if (!props.category && !props.bookmark) {
       // Add new
       if (props.contentType === ContentType.category) {
+        // Add category
         props.addCategory(categoryName);
         setCategoryName({ name: '' });
       } else if (props.contentType === ContentType.bookmark) {
+        // Add bookmark
         if (formData.categoryId === -1) {
           props.createNotification({
             title: 'Error',
@@ -64,9 +84,18 @@ const BookmarkForm = (props: ComponentProps): JSX.Element => {
       }
     } else {
       // Update
-      if (props.contentType === ContentType.category) {
+      if (props.contentType === ContentType.category && props.category) {
+        // Update category
         props.updateCategory(props.category.id, categoryName);
         setCategoryName({ name: '' });
+      } else if (props.contentType === ContentType.bookmark && props.bookmark) {
+        // Update bookmark
+        props.updateBookmark(props.bookmark.id, formData);
+        setFormData({
+          name: '',
+          url: '',
+          categoryId: -1
+        })
       }
 
       props.modalHandler();
@@ -85,6 +114,20 @@ const BookmarkForm = (props: ComponentProps): JSX.Element => {
       ...formData,
       categoryId: parseInt(e.target.value)
     })
+  }
+
+  let button = <Button>Submit</Button>
+
+  if (!props.category && !props.bookmark) {
+    if (props.contentType === ContentType.category) {
+      button = <Button>Add new category</Button>;
+    } else {
+      button = <Button>Add new bookmark</Button>;
+    }
+  } else if (props.category) {
+    button = <Button>Update category</Button>
+  } else if (props.bookmark) {
+    button = <Button>Update bookmark</Button>
   }
 
   return (
@@ -142,6 +185,7 @@ const BookmarkForm = (props: ComponentProps): JSX.Element => {
                 id='categoryId'
                 required
                 onChange={(e) => selectChangeHandler(e)}
+                value={formData.categoryId}
               >
                 <option value={-1}>Select category</option>
                 {props.categories.map((category: Category): JSX.Element => {
@@ -159,10 +203,7 @@ const BookmarkForm = (props: ComponentProps): JSX.Element => {
           </Fragment>
         )
       }
-      {!props.category
-        ? <Button>Add new category</Button>
-        : <Button>Update category</Button>
-      }
+      {button}
     </ModalForm>
   )
 }
@@ -178,6 +219,7 @@ const dispatchMap = {
   addCategory,
   addBookmark,
   updateCategory,
+  updateBookmark,
   createNotification
 }
 

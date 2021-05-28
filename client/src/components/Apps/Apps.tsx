@@ -90,12 +90,6 @@ const Apps = (props: ComponentProps): JSX.Element => {
           icon='mdiPencil'
           handler={toggleEdit}
         />
-        {isInEdit && <Fragment>
-          <ActionButton
-            name='Pin All'
-            icon='mdiPin'
-          />
-        </Fragment>}
       </div>
 
       <div className={classes.Apps}>

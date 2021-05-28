@@ -10,10 +10,13 @@ import {
   // Categories
   GetCategoriesAction,
   AddCategoryAction,
-  AddBookmarkAction,
   PinCategoryAction,
   DeleteCategoryAction,
   UpdateCategoryAction,
+  // Bookmarks
+  AddBookmarkAction,
+  DeleteBookmarkAction,
+  UpdateBookmarkAction,
   // Notifications
   CreateNotificationAction,
   ClearNotificationAction
@@ -36,10 +39,13 @@ export enum ActionTypes {
   getCategoriesSuccess = 'GET_CATEGORIES_SUCCESS',
   getCategoriesError = 'GET_CATEGORIES_ERROR',
   addCategory = 'ADD_CATEGORY',
-  addBookmark = 'ADD_BOOKMARK',
   pinCategory = 'PIN_CATEGORY',
   deleteCategory = 'DELETE_CATEGORY',
   updateCategory = 'UPDATE_CATEGORY',
+  // Bookmarks
+  addBookmark = 'ADD_BOOKMARK',
+  deleteBookmark = 'DELETE_BOOKMARK',
+  updateBookmark = 'UPDATE_BOOKMARK',
   // Notifications
   createNotification = 'CREATE_NOTIFICATION',
   clearNotification = 'CLEAR_NOTIFICATION'
@@ -57,10 +63,13 @@ export type Action =
   // Categories
   GetCategoriesAction<any> |
   AddCategoryAction |
-  AddBookmarkAction |
   PinCategoryAction |
   DeleteCategoryAction |
   UpdateCategoryAction |
+  // Bookmarks
+  AddBookmarkAction |
+  DeleteBookmarkAction |
+  UpdateBookmarkAction |
   // Notifications
   CreateNotificationAction |
   ClearNotificationAction;

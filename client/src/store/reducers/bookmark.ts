@@ -92,6 +92,26 @@ const updateCategory = (state: State, action: Action): State => {
   }
 }
 
+const deleteBookmark = (state: State, action: Action): State => {
+  const tmpCategories = [...state.categories];
+  const categoryInUpdate = tmpCategories.find((category: Category) => category.id === action.payload.categoryId);
+
+  if (categoryInUpdate) {
+    categoryInUpdate.bookmarks = categoryInUpdate.bookmarks.filter((bookmark: Bookmark) => bookmark.id !== action.payload.bookmarkId);
+  }
+
+  return {
+    ...state,
+    categories: tmpCategories
+  }
+}
+
+const updateBookmark = (state: State, action: Action): State => {
+  return {
+    ...state
+  }
+}
+
 const bookmarkReducer = (state = initialState, action: Action) => {
   switch (action.type) {
     case ActionTypes.getCategories: return getCategories(state, action);
@@ -101,6 +121,8 @@ const bookmarkReducer = (state = initialState, action: Action) => {
     case ActionTypes.pinCategory: return pinCategory(state, action);
     case ActionTypes.deleteCategory: return deleteCategory(state, action);
     case ActionTypes.updateCategory: return updateCategory(state, action);
+    case ActionTypes.deleteBookmark: return deleteBookmark(state, action);
+    case ActionTypes.updateBookmark: return updateBookmark(state, action);
     default: return state;
   }
 }

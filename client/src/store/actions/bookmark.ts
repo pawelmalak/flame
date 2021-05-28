@@ -177,3 +177,67 @@ export const updateCategory = (id: number, formData: NewCategory) => async (disp
     console.log(err);
   }
 }
+
+/**
+ * DELETE BOOKMARK
+ */
+export interface DeleteBookmarkAction {
+  type: ActionTypes.deleteBookmark,
+  payload: {
+    bookmarkId: number,
+    categoryId: number
+  }
+}
+
+export const deleteBookmark = (bookmarkId: number, categoryId: number) => async (dispatch: Dispatch) => {
+  try {
+    const res = await axios.delete<ApiResponse<{}>>(`/api/bookmarks/${bookmarkId}`);
+
+    dispatch<CreateNotificationAction>({
+      type: ActionTypes.createNotification,
+      payload: {
+        title: 'Success',
+        message: 'Bookmark deleted'
+      }
+    })
+
+    dispatch<DeleteBookmarkAction>({
+      type: ActionTypes.deleteBookmark,
+      payload: {
+        bookmarkId,
+        categoryId
+      }
+    })
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+/**
+ * UPDATE BOOKMARK
+ */
+export interface UpdateBookmarkAction {
+  type: ActionTypes.updateBookmark,
+  payload: Bookmark
+}
+
+export const updateBookmark = (bookmarkId: number, formData: NewBookmark) => async (dispatch: Dispatch) => {
+  try {
+    const res = await axios.put<ApiResponse<Bookmark>>(`/api/bookmarks/${bookmarkId}`, formData);
+
+    dispatch<CreateNotificationAction>({
+      type: ActionTypes.createNotification,
+      payload: {
+        title: 'Success',
+        message: `Bookmark ${formData.name} updated`
+      }
+    })
+
+    dispatch<UpdateBookmarkAction>({
+      type: ActionTypes.updateBookmark,
+      payload: res.data.data
+    })
+  } catch (err) {
+    console.log(err);
+  }
+}

@@ -1,7 +1,7 @@
 import { ContentType } from '../Bookmarks';
 import classes from './BookmarkTable.module.css';
 import { connect } from 'react-redux';
-import { pinCategory, deleteCategory } from '../../../store/actions';
+import { pinCategory, deleteCategory, deleteBookmark } from '../../../store/actions';
 import { KeyboardEvent } from 'react';
 
 import Table from '../../UI/Table/Table';
@@ -13,7 +13,8 @@ interface ComponentProps {
   categories: Category[];
   pinCategory: (category: Category) => void;
   deleteCategory: (id: number) => void;
-  updateCategoryHandler: (category: Category) => void;
+  updateHandler: (data: Category | Bookmark) => void;
+  deleteBookmark: (bookmarkId: number, categoryId: number) => void;
 }
 
 const BookmarkTable = (props: ComponentProps): JSX.Element => {
@@ -22,6 +23,14 @@ const BookmarkTable = (props: ComponentProps): JSX.Element => {
 
     if (proceed) {
       props.deleteCategory(category.id);
+    }
+  }
+
+  const deleteBookmarkHandler = (bookmark: Bookmark): void => {
+    const proceed = window.confirm(`Are you sure you want to delete ${bookmark.name}?`);
+
+    if (proceed) {
+      props.deleteBookmark(bookmark.id, bookmark.categoryId);
     }
   }
 
@@ -51,7 +60,7 @@ const BookmarkTable = (props: ComponentProps): JSX.Element => {
                 </div>
                 <div
                   className={classes.TableAction}
-                  onClick={() => props.updateCategoryHandler(category)}
+                  onClick={() => props.updateHandler(category)}
                   // onKeyDown={(e) => keyboardActionHandler(e, app, props.updateAppHandler)}
                   tabIndex={0}>
                   <Icon icon='mdiPencil' />
@@ -99,14 +108,14 @@ const BookmarkTable = (props: ComponentProps): JSX.Element => {
               <td className={classes.TableActions}>
                 <div
                   className={classes.TableAction}
-                  // onClick={() => deleteAppHandler(app)}
+                  onClick={() => deleteBookmarkHandler(bookmark.bookmark)}
                   // onKeyDown={(e) => keyboardActionHandler(e, app, deleteAppHandler)}
                   tabIndex={0}>
                   <Icon icon='mdiDelete' />
                 </div>
                 <div
                   className={classes.TableAction}
-                  // onClick={() => props.updateAppHandler(app)}
+                  onClick={() => props.updateHandler(bookmark.bookmark)}
                   // onKeyDown={(e) => keyboardActionHandler(e, app, props.updateAppHandler)}
                   tabIndex={0}>
                   <Icon icon='mdiPencil' />
@@ -120,4 +129,4 @@ const BookmarkTable = (props: ComponentProps): JSX.Element => {
   }
 }
 
-export default connect(null, { pinCategory, deleteCategory })(BookmarkTable);
+export default connect(null, { pinCategory, deleteCategory, deleteBookmark })(BookmarkTable);

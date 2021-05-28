@@ -10,7 +10,7 @@ import Headline from '../UI/Headlines/Headline/Headline';
 import ActionButton from '../UI/Buttons/ActionButton/ActionButton';
 
 import BookmarkGrid from './BookmarkGrid/BookmarkGrid';
-import { Category, GlobalState } from '../../interfaces';
+import { Category, GlobalState, Bookmark } from '../../interfaces';
 import Spinner from '../UI/Spinner/Spinner';
 import Modal from '../UI/Modal/Modal';
 import BookmarkForm from './BookmarkForm/BookmarkForm';
@@ -41,6 +41,14 @@ const Bookmarks = (props: ComponentProps): JSX.Element => {
     createdAt: new Date(),
     updatedAt: new Date()
   })
+  const [bookmarkInUpdate, setBookmarkInUpdate] = useState<Bookmark>({
+    name: '',
+    url: '',
+    categoryId: -1,
+    id: -1,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  })
 
   useEffect(() => {
     if (props.categories.length === 0) {
@@ -58,10 +66,6 @@ const Bookmarks = (props: ComponentProps): JSX.Element => {
     toggleModal();
   }
 
-  const toggleEdit = (): void => {
-    setIsInEdit(!isInEdit);
-  }
-
   const editActionHandler = (contentType: ContentType) => {
     // We're in the edit mode and the same button was clicked - go back to list
     if (isInEdit && contentType === tableContentType) {
@@ -72,20 +76,30 @@ const Bookmarks = (props: ComponentProps): JSX.Element => {
     }
   }
 
-  const goToUpdateMode = (category: Category): void => {
-    setIsInUpdate(true);
-    setCategoryInUpdate(category);
-    toggleModal();
+  const instanceOfCategory = (object: any): object is Category => {
+    return 'bookmarks' in object;
   }
 
-  let modalForm: JSX.Element;
+  const goToUpdateMode = (data: Category | Bookmark): void => {
+    setIsInUpdate(true);
+    if (instanceOfCategory(data)) {
+      setFormContentType(ContentType.category);
+      setCategoryInUpdate(data);
+    } else {
+      setFormContentType(ContentType.bookmark);
+      setBookmarkInUpdate(data);
+    }
+    toggleModal();
+  }
 
   return (
     <Container>
       <Modal isOpen={modalIsOpen} setIsOpen={toggleModal}>
         {!isInUpdate
           ? <BookmarkForm modalHandler={toggleModal} contentType={formContentType} />
-          : <BookmarkForm modalHandler={toggleModal} contentType={formContentType} category={categoryInUpdate} />
+          : formContentType === ContentType.category
+            ? <BookmarkForm modalHandler={toggleModal} contentType={formContentType} category={categoryInUpdate} />
+            : <BookmarkForm modalHandler={toggleModal} contentType={formContentType} bookmark={bookmarkInUpdate} />
         }
       </Modal>
 
@@ -126,7 +140,7 @@ const Bookmarks = (props: ComponentProps): JSX.Element => {
           : (<BookmarkTable
               contentType={tableContentType}
               categories={props.categories}
-              updateCategoryHandler={goToUpdateMode}
+              updateHandler={goToUpdateMode}
             />)
           )
       }
