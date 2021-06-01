@@ -1,9 +1,11 @@
-import { useState, ChangeEvent, Fragment, useEffect, FormEvent } from 'react';
+import { useState, ChangeEvent, useEffect, FormEvent } from 'react';
+import { connect } from 'react-redux';
 import axios from 'axios';
-import { ApiResponse, Config } from '../../../interfaces';
+import { ApiResponse, Config, NewNotification } from '../../../interfaces';
 
 import InputGroup from '../../UI/Forms/InputGroup/InputGroup';
 import Button from '../../UI/Buttons/Button/Button';
+import { createNotification } from '../../../store/actions';
 
 interface FormState {
   WEATHER_API_KEY: string;
@@ -12,7 +14,11 @@ interface FormState {
   isCelsius: number;
 }
 
-const WeatherSettings = (): JSX.Element => {
+interface ComponentProps {
+  createNotification: (notification: NewNotification) => void;
+}
+
+const WeatherSettings = (props: ComponentProps): JSX.Element => {
   const [formData, setFormData] = useState<FormState>({
     WEATHER_API_KEY: '',
     lat: 0,
@@ -59,7 +65,12 @@ const WeatherSettings = (): JSX.Element => {
     e.preventDefault();
 
     axios.put<ApiResponse<{}>>('/api/config', formData)
-      .then(data => console.log(data.data.success))
+      .then(data => {
+        props.createNotification({
+          title: 'Success',
+          message: 'Settings updated'
+        })
+      })
       .catch(err => console.log(err));
   }
 
@@ -131,4 +142,4 @@ const WeatherSettings = (): JSX.Element => {
   )
 }
 
-export default WeatherSettings;
+export default connect(null, { createNotification })(WeatherSettings);

@@ -17,7 +17,7 @@ interface ComponentProps {
   addCategory: (formData: NewCategory) => void;
   addBookmark: (formData: NewBookmark) => void;
   updateCategory: (id: number, formData: NewCategory) => void;
-  updateBookmark: (id: number, formData: NewBookmark) => void;
+  updateBookmark: (id: number, formData: NewBookmark, categoryWasChanged: boolean) => void;
   createNotification: (notification: NewNotification) => void;
 }
 
@@ -90,7 +90,7 @@ const BookmarkForm = (props: ComponentProps): JSX.Element => {
         setCategoryName({ name: '' });
       } else if (props.contentType === ContentType.bookmark && props.bookmark) {
         // Update bookmark
-        props.updateBookmark(props.bookmark.id, formData);
+        props.updateBookmark(props.bookmark.id, formData, props.bookmark.categoryId !== formData.categoryId);
         setFormData({
           name: '',
           url: '',

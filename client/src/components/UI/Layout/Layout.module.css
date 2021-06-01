@@ -1,7 +1,15 @@
 .Container {
   width: 100%;
   padding: 20px;
+  margin: 0 auto;
 }
+
+/* .Container {
+  width: 60%;
+  margin: 0 auto;
+  padding: 20px;
+  padding-top: 20px;
+} */
 
 /* 320px — 480px: Mobile devices.
 481px — 768px: iPads, Tablets.
@@ -11,7 +19,8 @@
 
 @media (min-width: 769px) {
   .Container {
-    padding: 25px 40px;
+    /* padding: 25px 40px; */
+    width: 90%;
   }
 }
 

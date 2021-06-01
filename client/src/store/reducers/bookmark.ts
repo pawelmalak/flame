@@ -107,8 +107,38 @@ const deleteBookmark = (state: State, action: Action): State => {
 }
 
 const updateBookmark = (state: State, action: Action): State => {
+  const { bookmark, categoryWasChanged } = action.payload;
+  const tmpCategories = [...state.categories];
+
+  let categoryIndex = state.categories.findIndex((category: Category) => category.id === bookmark.categoryId);
+  let bookmarkIndex = state.categories[categoryIndex].bookmarks.findIndex((bookmark: Bookmark) => bookmark.id === bookmark.id);
+
+  // if (categoryWasChanged) {
+  //   const categoryInUpdate = tmpCategories.find((category: Category) => category.id === bookmark.categoryId);
+
+  //   if (categoryInUpdate) {
+  //     categoryInUpdate.bookmarks = categoryInUpdate.bookmarks.filter((_bookmark: Bookmark) => _bookmark.id === bookmark.id);
+  //   }
+
+  //   console.log(categoryInUpdate);
+  // }
+
   return {
-    ...state
+    ...state,
+    categories: [
+      ...state.categories.slice(0, categoryIndex),
+      {
+        ...state.categories[categoryIndex],
+        bookmarks: [
+          ...state.categories[categoryIndex].bookmarks.slice(0, bookmarkIndex),
+          {
+            ...bookmark
+          },
+          ...state.categories[categoryIndex].bookmarks.slice(bookmarkIndex + 1)
+        ]
+      },
+      ...state.categories.slice(categoryIndex + 1)
+    ]
   }
 }
 
