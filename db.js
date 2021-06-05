@@ -2,13 +2,15 @@ const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: './db.sqlite'
+  storage: './data/db.sqlite',
+  logging: false
 });
 
 const connectDB = async () => {
   try {
     await sequelize.authenticate({ logging: false });
     console.log('Connected to database'.cyan.underline);
+    
     await sequelize.sync({
       // alter: true,
       logging: false

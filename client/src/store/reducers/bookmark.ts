@@ -30,28 +30,36 @@ const getCategoriesSuccess = (state: State, action: Action): State => {
 }
 
 const addCategory = (state: State, action: Action): State => {
-  const tmpCategories = [...state.categories, {
-    ...action.payload,
-    bookmarks: []
-  }];
-
   return {
     ...state,
-    categories: tmpCategories
+    categories: [
+      ...state.categories,
+      {
+        ...action.payload,
+        bookmarks: []
+      }
+    ]
   }
 }
 
 const addBookmark = (state: State, action: Action): State => {
-  const tmpCategories = [...state.categories];
-  const tmpCategory = tmpCategories.find((category: Category) => category.id === action.payload.categoryId);
-
-  if (tmpCategory) {
-    tmpCategory.bookmarks.push(action.payload);
-  }
+  const categoryIndex = state.categories.findIndex((category: Category) => category.id === action.payload.categoryId);
 
   return {
     ...state,
-    categories: tmpCategories
+    categories: [
+      ...state.categories.slice(0, categoryIndex),
+      {
+        ...state.categories[categoryIndex],
+        bookmarks: [
+          ...state.categories[categoryIndex].bookmarks,
+          {
+            ...action.payload
+          }
+        ]
+      },
+      ...state.categories.slice(categoryIndex + 1)
+    ]
   }
 }
 
@@ -70,11 +78,14 @@ const pinCategory = (state: State, action: Action): State => {
 }
 
 const deleteCategory = (state: State, action: Action): State => {
-  const tmpCategories = [...state.categories].filter((category: Category) => category.id !== action.payload);
+  const categoryIndex = state.categories.findIndex((category: Category) => category.id === action.payload);
 
   return {
     ...state,
-    categories: tmpCategories
+    categories: [
+      ...state.categories.slice(0, categoryIndex),
+      ...state.categories.slice(categoryIndex + 1)
+    ]
   }
 }
 
@@ -100,6 +111,7 @@ const deleteBookmark = (state: State, action: Action): State => {
     categoryInUpdate.bookmarks = categoryInUpdate.bookmarks.filter((bookmark: Bookmark) => bookmark.id !== action.payload.bookmarkId);
   }
 
+  
   return {
     ...state,
     categories: tmpCategories
@@ -107,21 +119,8 @@ const deleteBookmark = (state: State, action: Action): State => {
 }
 
 const updateBookmark = (state: State, action: Action): State => {
-  const { bookmark, categoryWasChanged } = action.payload;
-  const tmpCategories = [...state.categories];
-
-  let categoryIndex = state.categories.findIndex((category: Category) => category.id === bookmark.categoryId);
-  let bookmarkIndex = state.categories[categoryIndex].bookmarks.findIndex((bookmark: Bookmark) => bookmark.id === bookmark.id);
-
-  // if (categoryWasChanged) {
-  //   const categoryInUpdate = tmpCategories.find((category: Category) => category.id === bookmark.categoryId);
-
-  //   if (categoryInUpdate) {
-  //     categoryInUpdate.bookmarks = categoryInUpdate.bookmarks.filter((_bookmark: Bookmark) => _bookmark.id === bookmark.id);
-  //   }
-
-  //   console.log(categoryInUpdate);
-  // }
+  let categoryIndex = state.categories.findIndex((category: Category) => category.id === action.payload.categoryId);
+  let bookmarkIndex = state.categories[categoryIndex].bookmarks.findIndex((bookmark: Bookmark) => bookmark.id === action.payload.id);
 
   return {
     ...state,
@@ -132,7 +131,7 @@ const updateBookmark = (state: State, action: Action): State => {
         bookmarks: [
           ...state.categories[categoryIndex].bookmarks.slice(0, bookmarkIndex),
           {
-            ...bookmark
+            ...action.payload
           },
           ...state.categories[categoryIndex].bookmarks.slice(bookmarkIndex + 1)
         ]

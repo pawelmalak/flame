@@ -218,13 +218,10 @@ export const deleteBookmark = (bookmarkId: number, categoryId: number) => async 
  */
 export interface UpdateBookmarkAction {
   type: ActionTypes.updateBookmark,
-  payload: {
-    bookmark: Bookmark,
-    categoryWasChanged: boolean
-  }
+  payload: Bookmark
 }
 
-export const updateBookmark = (bookmarkId: number, formData: NewBookmark, categoryWasChanged: boolean) => async (dispatch: Dispatch) => {
+export const updateBookmark = (bookmarkId: number, formData: NewBookmark, previousCategoryId: number) => async (dispatch: Dispatch) => {
   try {
     const res = await axios.put<ApiResponse<Bookmark>>(`/api/bookmarks/${bookmarkId}`, formData);
     
@@ -236,13 +233,31 @@ export const updateBookmark = (bookmarkId: number, formData: NewBookmark, catego
       }
     })
 
-    dispatch<UpdateBookmarkAction>({
-      type: ActionTypes.updateBookmark,
-      payload: {
-        bookmark: res.data.data,
-        categoryWasChanged
-      }
-    })
+    // Check if category was changed
+    const categoryWasChanged = formData.categoryId !== previousCategoryId;
+
+    if (categoryWasChanged) {
+      // Delete bookmark from old category
+      dispatch<DeleteBookmarkAction>({
+        type: ActionTypes.deleteBookmark,
+        payload: {
+          bookmarkId,
+          categoryId: previousCategoryId
+        }
+      })
+
+      // Add bookmark to the new category
+      dispatch<AddBookmarkAction>({
+        type: ActionTypes.addBookmark,
+        payload: res.data.data
+      })
+    } else {
+      // Else update only name/url
+      dispatch<UpdateBookmarkAction>({
+        type: ActionTypes.updateBookmark,
+        payload: res.data.data
+      })
+    }
   } catch (err) {
     console.log(err);
   }
