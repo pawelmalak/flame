@@ -1,10 +1,13 @@
+const path = require('path');
 const express = require('express');
 const errorHandler = require('./middleware/errorHandler');
 
 const api = express();
 
-api.get('/', (req, res) => {
-  res.send('Server is working');
+// Static files
+api.use(express.static(path.join(__dirname, 'public')));
+api.get(/^\/(?!api)/, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/index.html'));
 })
 
 // Body parser

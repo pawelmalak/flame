@@ -9,13 +9,13 @@ const sequelize = new Sequelize({
 const connectDB = async () => {
   try {
     await sequelize.authenticate({ logging: false });
-    console.log('Connected to database'.cyan.underline);
+    console.log('Connected to database');
     
     await sequelize.sync({
       // alter: true,
       logging: false
     });
-    console.log('All models were synced'.cyan.underline);
+    console.log('All models were synced');
   } catch (error) {
     console.error('Unable to connect to the database:', error);
   }

@@ -11,7 +11,7 @@ const errorHandler = (err, req, res, next) => {
   // }
 
   console.log(error);
-  console.log(`${err}`.bgRed);
+  console.log(`${err}`);
 
   res.status(err.statusCode || 500).json({
     success: false,

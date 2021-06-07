@@ -5,10 +5,13 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "server": "nodemon server.js",
-    "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "dev-lines": "git ls-files | grep -v '.json' | xargs wc -l"
+    "init-server": "echo Instaling server dependencies && npm install",
+    "init-client": "cd client && echo Instaling client dependencies && npm install",
+    "dev-init": "npm run init-server && npm run init-client",
+    "dev-server": "nodemon server.js",
+    "dev-client": "npm start --prefix client",
+    "dev": "concurrently \"npm run dev-server\" \"npm run dev-client\"",
+    "build": "docker build -t flame ."
   },
   "author": "",
   "license": "ISC",
