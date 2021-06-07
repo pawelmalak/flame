@@ -1,7 +1,7 @@
 import { useState, ChangeEvent, useEffect, FormEvent } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { ApiResponse, Config, NewNotification } from '../../../interfaces';
+import { ApiResponse, Config, NewNotification, Weather } from '../../../interfaces';
 
 import InputGroup from '../../UI/Forms/InputGroup/InputGroup';
 import Button from '../../UI/Buttons/Button/Button';
@@ -65,13 +65,31 @@ const WeatherSettings = (props: ComponentProps): JSX.Element => {
     e.preventDefault();
 
     axios.put<ApiResponse<{}>>('/api/config', formData)
-      .then(data => {
+      .then(() => {
         props.createNotification({
           title: 'Success',
           message: 'Settings updated'
         })
+
+        // Update weather with new settings
+        axios.get<ApiResponse<Weather>>('/api/weather/update')
+          .then(() => {
+            props.createNotification({
+              title: 'Success',
+              message: 'Weather updated'
+            })
+          })
+          .catch((err) => {
+            props.createNotification({
+              title: 'Error',
+              message: err.response.data.error
+            })
+          });
       })
       .catch(err => console.log(err));
+    
+    // set localStorage
+    localStorage.setItem('isCelsius', JSON.stringify(formData.isCelsius === 1))
   }
 
   return (

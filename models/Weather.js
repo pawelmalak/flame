@@ -6,6 +6,7 @@ const Weather = sequelize.define('Weather', {
   tempC: DataTypes.FLOAT,
   tempF: DataTypes.FLOAT,
   isDay: DataTypes.INTEGER,
+  cloud: DataTypes.INTEGER,
   conditionText: DataTypes.TEXT,
   conditionCode: DataTypes.INTEGER
 }, {

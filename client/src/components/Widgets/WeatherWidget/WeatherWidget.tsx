@@ -1,5 +1,5 @@
 import { useState, useEffect, Fragment } from 'react';
-import { Weather, ApiResponse } from '../../../interfaces';
+import { Weather, ApiResponse, Config } from '../../../interfaces';
 import axios from 'axios';
 
 import WeatherIcon from '../../UI/Icons/WeatherIcon/WeatherIcon';
@@ -12,6 +12,7 @@ const WeatherWidget = (): JSX.Element => {
     tempC: 0,
     tempF: 0,
     isDay: 1,
+    cloud: 0,
     conditionText: '',
     conditionCode: 1000,
     id: -1,
@@ -19,9 +20,11 @@ const WeatherWidget = (): JSX.Element => {
     updatedAt: new Date()
   });
   const [isLoading, setIsLoading] = useState(true);
+  const [isCelsius, setIsCelsius] = useState(true);
 
   // Initial request to get data
   useEffect(() => {
+    // get weather
     axios.get<ApiResponse<Weather[]>>('/api/weather')
       .then(data => {
         const weatherData = data.data.data[0];
@@ -31,19 +34,23 @@ const WeatherWidget = (): JSX.Element => {
         setIsLoading(false);
       })
       .catch(err => console.log(err));
+    
+    // get config
+    if (!localStorage.isCelsius) {
+      axios.get<ApiResponse<Config>>('/api/config/isCelsius')
+        .then((data) => {
+          setIsCelsius(parseInt(data.data.data.value) === 1);
+          localStorage.setItem('isCelsius', JSON.stringify(isCelsius));
+        })
+        .catch((err) => console.log(err));
+    } else {
+      setIsCelsius(JSON.parse(localStorage.isCelsius));
+    }
   }, []);
 
   // Open socket for data updates
   useEffect(() => {
     const webSocketClient = new WebSocket('ws://localhost:5005');
-
-    webSocketClient.onopen = () => {
-      console.log('WebSocket opened');
-    }
-
-    webSocketClient.onclose = () => {
-      console.log('WebSocket closed')
-    }
 
     webSocketClient.onmessage = (e) => {
       const data = JSON.parse(e.data);
@@ -69,8 +76,11 @@ const WeatherWidget = (): JSX.Element => {
                 />
               </div>
               <div className={classes.WeatherDetails}>
-                <span>{weather.tempC}°C</span>
-                <span>{weather.conditionCode}</span>
+                {isCelsius
+                  ? <span>{weather.tempC}°C</span>
+                  : <span>{weather.tempF}°F</span>
+                }
+                <span>{weather.cloud}%</span>
               </div>
             </Fragment>)
         )

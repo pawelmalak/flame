@@ -12,21 +12,16 @@ const getExternalWeather = async () => {
   const long = config.find(pair => pair.key === 'long');
 
   if (!secret) {
-    console.log('API key was not found. Weather updated failed');
-    return;
+    throw new Error('API key was not found. Weather updated failed');
   }
 
   if (!lat || !long) {
-    console.log('Location was not found. Weather updated failed');
-    return;
+    throw new Error('Location was not found. Weather updated failed');
   }
 
   // Fetch data from external API
   try {
     const res = await axios.get(`http://api.weatherapi.com/v1/current.json?key=${secret.value}&q=${lat.value},${long.value}`);
-
-    // For dev
-    // console.log(res.data);
 
     // Save weather data
     const cursor = res.data.current;
@@ -35,6 +30,7 @@ const getExternalWeather = async () => {
       tempC: cursor.temp_c,
       tempF: cursor.temp_f,
       isDay: cursor.is_day,
+      cloud: cursor.cloud,
       conditionText: cursor.condition.text,
       conditionCode: cursor.condition.code
     });

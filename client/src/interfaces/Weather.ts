@@ -5,6 +5,7 @@ export interface Weather extends Model {
   tempC: number;
   tempF: number;
   isDay: number;
+  cloud: number;
   conditionText: string;
   conditionCode: number;
 }

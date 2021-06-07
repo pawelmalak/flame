@@ -11,7 +11,7 @@ const {
 } = require('../controllers/config');
 
 router
-  .route('')
+  .route('/')
   .post(createPair)
   .get(getAllPairs)
   .put(updateValues);
