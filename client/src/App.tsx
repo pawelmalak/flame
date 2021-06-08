@@ -18,6 +18,10 @@ if (localStorage.theme) {
   store.dispatch<any>(setTheme(localStorage.theme));
 }
 
+if (localStorage.customTitle) {
+  document.title = localStorage.customTitle;
+}
+
 const App = (): JSX.Element => {
   return (
     <Provider store={store}>

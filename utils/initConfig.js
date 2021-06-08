@@ -3,8 +3,8 @@ const Config = require('../models/Config');
 
 const initConfig = async () => {
   // Config keys
-  const keys = ['WEATHER_API_KEY', 'lat', 'long', 'isCelsius'];
-  const values = ['', 0, 0, true];
+  const keys = ['WEATHER_API_KEY', 'lat', 'long', 'isCelsius', 'customTitle'];
+  const values = ['', 0, 0, true, 'Flame'];
 
   // Get config values
   const configPairs = await Config.findAll({
