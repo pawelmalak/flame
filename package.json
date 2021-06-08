@@ -10,8 +10,7 @@
     "dev-init": "npm run init-server && npm run init-client",
     "dev-server": "nodemon server.js",
     "dev-client": "npm start --prefix client",
-    "dev": "concurrently \"npm run dev-server\" \"npm run dev-client\"",
-    "build": "docker build -t flame ."
+    "dev": "concurrently \"npm run dev-server\" \"npm run dev-client\""
   },
   "author": "",
   "license": "ISC",

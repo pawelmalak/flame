@@ -89,7 +89,7 @@ const WeatherSettings = (props: ComponentProps): JSX.Element => {
       .catch(err => console.log(err));
     
     // set localStorage
-    localStorage.setItem('isCelsius', JSON.stringify(formData.isCelsius === 1))
+    localStorage.setItem('isCelsius', JSON.stringify(parseInt(`${formData.isCelsius}`) === 1))
   }
 
   return (

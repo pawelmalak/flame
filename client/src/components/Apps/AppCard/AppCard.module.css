@@ -1,25 +1,18 @@
 .AppCard {
   width: 100%;
-  /* height: 50px; */
-  /* max-width: 150px; */
-  /* border: 1px solid red; */
   display: flex;
   align-items: center;
   margin-bottom: 20px;
 }
 
 .AppCardIcon {
-  /* height: 64px; */
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   margin-right: 0.5em;
 }
 
 .AppCardDetails {
   text-transform: uppercase;
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center; */
 }
 
 .AppCardDetails h5 {

@@ -2,9 +2,8 @@
   background-color: var(--color-background);
   color: var(--color-primary);
   border-radius: 6px;
-  width: 60%;
+  width: 95%;
   position: relative;
-  /* height: 50vh; */
   padding: 50px 50px;
 }
 
@@ -17,4 +16,28 @@
 
 .ModalFormIcon:hover {
   cursor: pointer;
+}
+
+@media (min-width: 430px) {
+  .ModalForm {
+    width: 90%;
+  }
+}
+
+@media (min-width: 800px) {
+  .ModalForm {
+    width: 70%;
+  }
+}
+
+@media (min-width: 1000px) {
+  .ModalForm {
+    width: 60%;
+  }
+}
+
+@media (min-width: 1400px) {
+  .ModalForm {
+    width: 40%;
+  }
 }

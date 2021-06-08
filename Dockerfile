@@ -8,10 +8,15 @@ RUN npm install --only=production
 
 COPY . .
 
-RUN mkdir -p ./public ./data
-RUN mv ./client/build/* ./public
-RUN rm -rf ./client
+RUN mkdir -p ./public ./data \
+    && cd ./client \
+    && npm run build \
+    && cd .. \
+    && mv ./client/build/* ./public \
+    && rm -rf ./client
 
 EXPOSE 5005
+
+ENV NODE_ENV=production
 
 CMD ["node", "server.js"]
