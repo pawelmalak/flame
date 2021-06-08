@@ -81,7 +81,10 @@ const Home = (props: ComponentProps): JSX.Element => {
       <SectionHeadline title='Applications' link='/applications' />
       {props.appsLoading
         ? <Spinner />
-        : <AppGrid apps={props.apps.filter((app: App) => app.isPinned)} />
+        : <AppGrid
+          apps={props.apps.filter((app: App) => app.isPinned)}
+          totalApps={props.apps.length}
+        />
       }
 
       <div className={classes.HomeSpace}></div>
@@ -89,7 +92,10 @@ const Home = (props: ComponentProps): JSX.Element => {
       <SectionHeadline title='Bookmarks' link='/bookmarks' />
       {props.categoriesLoading
         ? <Spinner />
-        : <BookmarkGrid categories={props.categories.filter((category: Category) => category.isPinned)} />
+        : <BookmarkGrid
+            categories={props.categories.filter((category: Category) => category.isPinned)}
+            totalCategories={props.categories.length}
+        />
       }
 
       <Link to='/settings' className={classes.SettingsButton}>

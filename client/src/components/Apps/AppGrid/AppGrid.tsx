@@ -6,6 +6,7 @@ import AppCard from '../AppCard/AppCard';
 
 interface ComponentProps {
   apps: App[];
+  totalApps?: number;
 }
 
 const AppGrid = (props: ComponentProps): JSX.Element => {
@@ -23,9 +24,15 @@ const AppGrid = (props: ComponentProps): JSX.Element => {
       </div>
     )
   } else {
-    apps = (
-      <p className={classes.AppsMessage}>You don't have any applications. You can add a new one from <Link to='/applications'>/application</Link> menu</p>
-    );
+    if (props.totalApps) {
+      apps = (
+        <p className={classes.AppsMessage}>There are no pinned applications. You can pin them from the <Link to='/applications'>/applications</Link> menu</p>
+      );
+    } else {
+      apps = (
+        <p className={classes.AppsMessage}>You don't have any applications. You can add a new one from <Link to='/applications'>/applications</Link> menu</p>
+      );
+    }
   }
 
   return apps;

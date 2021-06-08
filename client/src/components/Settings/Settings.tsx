@@ -6,6 +6,7 @@ import { Container } from '../UI/Layout/Layout';
 import Headline from '../UI/Headlines/Headline/Headline';
 import Themer from '../Themer/Themer';
 import WeatherSettings from './WeatherSettings/WeatherSettings';
+import OtherSettings from './OtherSettings/OtherSettings';
 
 const Settings = (): JSX.Element => {
   return (
@@ -30,11 +31,19 @@ const Settings = (): JSX.Element => {
             to='/settings/weather'>
             Weather
           </NavLink>
+          <NavLink
+            className={classes.SettingsNavLink}
+            activeClassName={classes.SettingsNavLinkActive}
+            exact
+            to='/settings/other'>
+            Other
+          </NavLink>
         </nav>
         <section className={classes.SettingsContent}>
           <Switch>
             <Route exact path='/settings' component={Themer} />
             <Route path='/settings/weather' component={WeatherSettings} />
+            <Route path='/settings/other' component={OtherSettings} />
           </Switch>
         </section>
       </div>

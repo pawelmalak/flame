@@ -98,7 +98,7 @@ const AppForm = (props: ComponentProps): JSX.Element => {
           value={formData.url}
           onChange={(e) => inputChangeHandler(e)}
         />
-        <span>Use URL without protocol</span>
+        <span>Only urls without http[s]:// are supported</span>
       </InputGroup>
       <InputGroup>
         <label htmlFor='icon'>App Icon</label>

@@ -177,6 +177,7 @@ const BookmarkForm = (props: ComponentProps): JSX.Element => {
                 value={formData.url}
                 onChange={(e) => inputChangeHandler(e)}
               />
+              <span>Only urls without http[s]:// are supported</span>
             </InputGroup>
             <InputGroup>
               <label htmlFor='categoryId'>Bookmark Category</label>
