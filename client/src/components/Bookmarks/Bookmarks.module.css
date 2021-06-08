@@ -2,12 +2,3 @@
   display: flex;
   align-items: center;
 }
-
-.BookmarksMessage {
-  color: var(--color-primary);
-}
-
-.BookmarksMessage a {
-  color: var(--color-accent);
-  font-weight: 600;
-}

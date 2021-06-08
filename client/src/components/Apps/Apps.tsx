@@ -96,9 +96,7 @@ const Apps = (props: ComponentProps): JSX.Element => {
         {props.loading
           ? <Spinner />
           : (!isInEdit
-              ? props.apps.length > 0
-                ? <AppGrid apps={props.apps} />
-                : <p className={classes.AppsMessage}>You don't have any applications. You can add a new one from <Link to='/applications'>/application</Link> menu</p>
+              ? <AppGrid apps={props.apps} />
               : <AppTable updateAppHandler={toggleUpdate} />)
         }
       </div>

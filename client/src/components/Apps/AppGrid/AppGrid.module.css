@@ -29,3 +29,12 @@
   color: var(--color-accent);
   font-weight: 600;
 }
+
+.AppsMessage {
+  color: var(--color-primary);
+}
+
+.AppsMessage a {
+  color: var(--color-accent);
+  font-weight: 600;
+}
