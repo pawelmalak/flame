@@ -28,7 +28,8 @@
 
 .BookmarkIcon {
   width: 20px;
+  height: 20px;
   display: flex;
-  margin-bottom: 1px;
+  margin-top: 3px;
   margin-right: 2px;
 }

@@ -1,5 +1,6 @@
 const schedule = require('node-schedule');
 const getExternalWeather = require('./getExternalWeather');
+const clearWeatherData = require('./clearWeatherData');
 const Sockets = require('../Sockets');
 
 // Update weather data every 15 minutes
@@ -14,6 +15,6 @@ const weatherJob = schedule.scheduleJob('updateWeather', '0 */15 * * * *', async
 })
 
 // Clear old weather data every 4 hours
-const weatherCleanerJob = schedule.scheduleJob('clearWeather', '0 0 */4 * * *', async () => {
-  console.log('clean')
+const weatherCleanerJob = schedule.scheduleJob('clearWeather', '0 5 */4 * * *', async () => {
+  clearWeatherData();
 })
