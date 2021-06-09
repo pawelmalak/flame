@@ -13,6 +13,10 @@ const Bookmark = sequelize.define('Bookmark', {
   categoryId: {
     type: DataTypes.INTEGER,
     allowNull: false
+  },
+  icon: {
+    type: DataTypes.STRING,
+    defaultValue: ''
   }
 }, {
   tableName: 'bookmarks'

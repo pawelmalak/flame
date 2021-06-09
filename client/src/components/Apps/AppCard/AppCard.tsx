@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 
 import classes from './AppCard.module.css';
 import Icon from '../../UI/Icons/Icon/Icon';
+import { iconParser } from '../../../utility/iconParser';
 
 import { App } from '../../../interfaces';
 
@@ -11,16 +12,6 @@ interface ComponentProps {
 }
 
 const AppCard = (props: ComponentProps): JSX.Element => {
-  const iconParser = (mdiName: string): string => {
-    let parsedName = mdiName
-      .split('-')
-      .map((word: string) => `${word[0].toUpperCase()}${word.slice(1)}`)
-      .join('');
-    parsedName = `mdi${parsedName}`;
-
-    return parsedName;
-  }
-
   const redirectHandler = (url: string): void => {
     window.open(url);
   }

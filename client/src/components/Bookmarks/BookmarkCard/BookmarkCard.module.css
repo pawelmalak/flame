@@ -18,9 +18,17 @@
 .Bookmarks a {
   line-height: 2;
   transition: all 0.25s;
+  display: flex;
 }
 
 .BookmarkCard a:hover {
   text-decoration: underline;
   padding-left: 10px;
+}
+
+.BookmarkIcon {
+  width: 20px;
+  display: flex;
+  margin-bottom: 1px;
+  margin-right: 2px;
 }

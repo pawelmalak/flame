@@ -8,13 +8,10 @@ const sequelize = new Sequelize({
 
 const connectDB = async () => {
   try {
-    await sequelize.authenticate({ logging: false });
+    await sequelize.authenticate();
     console.log('Connected to database');
     
-    await sequelize.sync({
-      // alter: true,
-      logging: false
-    });
+    await sequelize.sync({ alter: true });
     console.log('All models were synced');
   } catch (error) {
     console.error('Unable to connect to the database:', error);

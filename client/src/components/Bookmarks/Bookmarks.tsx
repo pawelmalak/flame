@@ -45,6 +45,7 @@ const Bookmarks = (props: ComponentProps): JSX.Element => {
     name: '',
     url: '',
     categoryId: -1,
+    icon: '',
     id: -1,
     createdAt: new Date(),
     updatedAt: new Date()

@@ -96,6 +96,7 @@ const BookmarkTable = (props: ComponentProps): JSX.Element => {
       <Table headers={[
         'Name',
         'URL',
+        'Icon',
         'Category',
         'Actions'
       ]}>
@@ -104,6 +105,7 @@ const BookmarkTable = (props: ComponentProps): JSX.Element => {
             <tr key={bookmark.bookmark.id}>
               <td>{bookmark.bookmark.name}</td>
               <td>{bookmark.bookmark.url}</td>
+              <td>{bookmark.bookmark.icon}</td>
               <td>{bookmark.categoryName}</td>
               <td className={classes.TableActions}>
                 <div
