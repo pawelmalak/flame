@@ -64,6 +64,15 @@ const WeatherSettings = (props: ComponentProps): JSX.Element => {
   const formSubmitHandler = (e: FormEvent) => {
     e.preventDefault();
 
+    // Check for api key input
+    if ((formData.lat || formData.long) && !formData.WEATHER_API_KEY) {
+      props.createNotification({
+        title: 'Warning',
+        message: 'API Key is missing. Weather Module will NOT work'
+      })
+    }
+
+    // Save settings
     axios.put<ApiResponse<{}>>('/api/config', formData)
       .then(() => {
         props.createNotification({
@@ -111,6 +120,7 @@ const WeatherSettings = (props: ComponentProps): JSX.Element => {
             target='blank'>
             {' '}Weather API
           </a>
+          . Key is required for weather module to work.
         </span>
       </InputGroup>
       <InputGroup>
