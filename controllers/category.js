@@ -2,12 +2,29 @@ const asyncWrapper = require('../middleware/asyncWrapper');
 const ErrorResponse = require('../utils/ErrorResponse');
 const Category = require('../models/Category');
 const Bookmark = require('../models/Bookmark');
+const Config = require('../models/Config');
 
 // @desc      Create new category
 // @route     POST /api/categories
 // @access    Public
 exports.createCategory = asyncWrapper(async (req, res, next) => {
-  const category = await Category.create(req.body);
+  // Get config from database
+  const pinCategories = await Config.findOne({
+    where: { key: 'pinCategoriesByDefault' }
+  });
+
+  let category;
+
+  if (pinCategories) {
+    if (parseInt(pinCategories.value)) {
+      category = await Category.create({
+        ...req.body,
+        isPinned: true
+      })
+    } else {
+      category = await Category.create(req.body);
+    }
+  }
 
   res.status(201).json({
     success: true,

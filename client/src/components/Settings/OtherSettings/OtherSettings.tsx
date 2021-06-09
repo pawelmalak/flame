@@ -9,6 +9,8 @@ import { ApiResponse, Config, NewNotification } from '../../../interfaces';
 
 interface FormState {
   customTitle: string;
+  pinAppsByDefault: number;
+  pinCategoriesByDefault: number;
 }
 
 interface ComponentProps {
@@ -17,12 +19,14 @@ interface ComponentProps {
 
 const OtherSettings = (props: ComponentProps): JSX.Element => {
   const [formData, setFormData] = useState<FormState>({
-    customTitle: document.title
+    customTitle: document.title,
+    pinAppsByDefault: 0,
+    pinCategoriesByDefault: 0
   })
 
   // get initial config
   useEffect(() => {
-    axios.get<ApiResponse<Config[]>>('/api/config?keys=customTitle')
+    axios.get<ApiResponse<Config[]>>('/api/config?keys=customTitle,pinAppsByDefault,pinCategoriesByDefault')
       .then(data => {
         let tmpFormData = { ...formData };
 
@@ -60,10 +64,16 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
     document.title = formData.customTitle;
   }
 
-  const inputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  const inputChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>, isNumber?: boolean) => {
+    let value: string | number = e.target.value;
+
+    if (isNumber) {
+      value = parseFloat(value);
+    }
+
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: value
     })
   }
 
@@ -79,6 +89,30 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           value={formData.customTitle}
           onChange={(e) => inputChangeHandler(e)}
         />
+      </InputGroup>
+      <InputGroup>
+        <label htmlFor='pinAppsByDefault'>Pin new applications by default</label>
+        <select
+          id='pinAppsByDefault'
+          name='pinAppsByDefault'
+          value={formData.pinAppsByDefault}
+          onChange={(e) => inputChangeHandler(e, true)}
+        >
+          <option value={1}>True</option>
+          <option value={0}>False</option>
+        </select>
+      </InputGroup>
+      <InputGroup>
+        <label htmlFor='pinCategoriesByDefault'>Pin new categories by default</label>
+        <select
+          id='pinCategoriesByDefault'
+          name='pinCategoriesByDefault'
+          value={formData.pinCategoriesByDefault}
+          onChange={(e) => inputChangeHandler(e, true)}
+        >
+          <option value={1}>True</option>
+          <option value={0}>False</option>
+        </select>
       </InputGroup>
     <Button>Save changes</Button>
     </form>
