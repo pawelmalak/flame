@@ -1,5 +1,9 @@
 # Flame
 
+[![JS Badge](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://shields.io/)
+[![TS Badge](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://shields.io/)
+[![React Badge](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://shields.io/)
+
 ![Homescreen screenshot](./github/_home.png)
 
 ## Description
@@ -10,7 +14,7 @@ Flame is self-hosted startpage for your server. It's inspired (heavily) by [SUI]
   - Node.js + Express
   - Sequelize ORM + SQLite
 - Frontend
-  - React
+  - React 
   - Redux
   - TypeScript
 - Deployment
