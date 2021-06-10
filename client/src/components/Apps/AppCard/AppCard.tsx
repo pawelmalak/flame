@@ -17,7 +17,7 @@ const AppCard = (props: ComponentProps): JSX.Element => {
   }
 
   return (
-    <a href={`http://${props.app.url}`} target='blank' className={classes.AppCard}>
+    <a href={`http://${props.app.url}`} target='_blank' className={classes.AppCard}>
       <div className={classes.AppCardIcon}>
         <Icon icon={iconParser(props.app.icon)} />
       </div>
