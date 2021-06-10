@@ -9,7 +9,7 @@ class Socket {
     })
 
     this.webSocketServer.on('connection', (webSocketClient) => {
-      console.log('Socket: new connection');
+      // console.log('Socket: new connection');
     })
   }
 
