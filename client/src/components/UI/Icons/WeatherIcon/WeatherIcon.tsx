@@ -12,8 +12,8 @@ interface ComponentProps {
 
 const WeatherIcon = (props: ComponentProps): JSX.Element => {
   const icon = props.isDay
-    ? (new IconMapping).mapIcon(props.weatherStatusCode, TimeOfDay.day)
-    : (new IconMapping).mapIcon(props.weatherStatusCode, TimeOfDay.night);
+    ? new IconMapping().mapIcon(props.weatherStatusCode, TimeOfDay.day)
+    : new IconMapping().mapIcon(props.weatherStatusCode, TimeOfDay.night);
 
   useEffect(() => {
     const delay = setTimeout(() => {
@@ -25,7 +25,7 @@ const WeatherIcon = (props: ComponentProps): JSX.Element => {
     return () => {
       clearTimeout(delay);
     }
-  }, [props.weatherStatusCode]);
+  }, [props.weatherStatusCode, icon, props.theme.colors.accent]);
 
   return <canvas id={`weather-icon`} width='50' height='50'></canvas>
 }

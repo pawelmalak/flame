@@ -50,7 +50,11 @@ const WeatherWidget = (): JSX.Element => {
 
   // Open socket for data updates
   useEffect(() => {
-    const webSocketClient = new WebSocket('ws://localhost:5005');
+    const webSocketClient = new WebSocket(`ws://${window.location.host}/socket`);
+
+    webSocketClient.onopen = () => {
+      console.log('Socket: listen')
+    }
 
     webSocketClient.onmessage = (e) => {
       const data = JSON.parse(e.data);

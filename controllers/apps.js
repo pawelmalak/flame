@@ -1,12 +1,29 @@
 const asyncWrapper = require('../middleware/asyncWrapper');
 const ErrorResponse = require('../utils/ErrorResponse');
 const App = require('../models/App');
+const Config = require('../models/Config');
 
 // @desc      Create new app
 // @route     POST /api/apps
 // @access    Public
 exports.createApp = asyncWrapper(async (req, res, next) => {
-  const app = await App.create(req.body);
+  // Get config from database
+  const pinApps = await Config.findOne({
+    where: { key: 'pinAppsByDefault' }
+  });
+
+  let app;
+
+  if (pinApps) {
+    if (parseInt(pinApps.value)) {
+      app = await App.create({
+        ...req.body,
+        isPinned: true
+      })
+    } else {
+      app = await App.create(req.body);
+    }
+  }
 
   res.status(201).json({
     success: true,

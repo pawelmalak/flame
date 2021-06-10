@@ -23,10 +23,7 @@ export const getApps = () => async (dispatch: Dispatch) => {
       payload: res.data.data
     })
   } catch (err) {
-    dispatch<GetAppsAction<string>>({
-      type: ActionTypes.getAppsError,
-      payload: err.data.data
-    })
+    console.log(err);
   }
 }
 

@@ -29,9 +29,11 @@ const BookmarkForm = (props: ComponentProps): JSX.Element => {
   const [formData, setFormData] = useState<NewBookmark>({
     name: '',
     url: '',
-    categoryId: -1
+    categoryId: -1,
+    icon: ''
   })
 
+  // Load category data if provided for editing
   useEffect(() => {
     if (props.category) {
       setCategoryName({ name: props.category.name });
@@ -40,18 +42,21 @@ const BookmarkForm = (props: ComponentProps): JSX.Element => {
     }
   }, [props.category])
 
+  // Load bookmark data if provided for editing
   useEffect(() => {
     if (props.bookmark) {
       setFormData({
         name: props.bookmark.name,
         url: props.bookmark.url,
-        categoryId: props.bookmark.categoryId
+        categoryId: props.bookmark.categoryId,
+        icon: props.bookmark.icon
       })
     } else {
       setFormData({
         name: '',
         url: '',
-        categoryId: -1
+        categoryId: -1,
+        icon: ''
       })
     }
   }, [props.bookmark])
@@ -79,7 +84,8 @@ const BookmarkForm = (props: ComponentProps): JSX.Element => {
         setFormData({
           name: '',
           url: '',
-          categoryId: formData.categoryId
+          categoryId: formData.categoryId,
+          icon: ''
         })
       }
     } else {
@@ -94,7 +100,8 @@ const BookmarkForm = (props: ComponentProps): JSX.Element => {
         setFormData({
           name: '',
           url: '',
-          categoryId: -1
+          categoryId: -1,
+          icon: ''
         })
       }
 
@@ -200,6 +207,25 @@ const BookmarkForm = (props: ComponentProps): JSX.Element => {
                   )
                 })}
               </select>
+            </InputGroup>
+            <InputGroup>
+              <label htmlFor='icon'>Bookmark Icon (optional)</label>
+              <input
+                type='text'
+                name='icon'
+                id='icon'
+                placeholder='book-open-outline'
+                value={formData.icon}
+                onChange={(e) => inputChangeHandler(e)}
+              />
+              <span>
+                Use icon name from MDI. 
+                <a
+                  href='https://materialdesignicons.com/'
+                  target='blank'>
+                  {' '}Click here for reference
+                </a>
+              </span>
             </InputGroup>
           </Fragment>
         )

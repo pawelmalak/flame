@@ -5,11 +5,11 @@ class Socket {
     this.webSocketServer = new WebSocket.Server({ server })
 
     this.webSocketServer.on('listening', () => {
-      console.log('socket listen');
+      console.log('Socket: listen');
     })
 
     this.webSocketServer.on('connection', (webSocketClient) => {
-      console.log('new connection');
+      console.log('Socket: new connection');
     })
   }
 

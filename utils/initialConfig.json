@@ -1,0 +1,32 @@
+{
+  "config": [
+    {
+      "key": "WEATHER_API_KEY",
+      "value": ""
+    },
+    {
+      "key": "lat",
+      "value": 0
+    },
+    {
+      "key": "long",
+      "value": 0
+    },
+    {
+      "key": "isCelsius",
+      "value": true
+    },
+    {
+      "key": "customTitle",
+      "value": "Flame"
+    },
+    {
+      "key": "pinAppsByDefault",
+      "value": true
+    },
+    {
+      "key": "pinCategoriesByDefault",
+      "value": true
+    }
+  ]
+}
