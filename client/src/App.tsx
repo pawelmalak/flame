@@ -11,7 +11,6 @@ import Home from './components/Home/Home';
 import Apps from './components/Apps/Apps';
 import Settings from './components/Settings/Settings';
 import Bookmarks from './components/Bookmarks/Bookmarks';
-
 import NotificationCenter from './components/NotificationCenter/NotificationCenter';
 
 if (localStorage.theme) {

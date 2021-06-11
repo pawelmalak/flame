@@ -60,3 +60,16 @@ docker run -p 5005:5005 -v <host_dir>:/app/data flame
   - Customize your page by choosing from 12 color themes 
 
 ![Homescreen screenshot](./github/_themes.png)
+
+## Usage
+### Supported links for applications and bookmarks
+#### Rules
+- URL starts with `http://`
+  - Format: `http://www.domain.com`, `http://domain.com`
+  - Redirect: `{dest}`
+- URL starts with `https://`
+  - Format: `https://www.domain.com`, `https://domain.com`
+  - Redirect: `https://{dest}`
+- URL without protocol
+  - Format: `www.domain.com`, `domain.com`, `sub.domain.com`, `local`, `ip`, `ip:port`
+  - Redirect: `http://{dest}`
