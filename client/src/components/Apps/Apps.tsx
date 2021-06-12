@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 // Redux
@@ -30,6 +30,12 @@ interface ComponentProps {
 }
 
 const Apps = (props: ComponentProps): JSX.Element => {
+  const {
+    getApps,
+    apps,
+    loading
+  } = props;
+
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isInEdit, setIsInEdit] = useState(false);
   const [isInUpdate, setIsInUpdate] = useState(false);
@@ -44,10 +50,10 @@ const Apps = (props: ComponentProps): JSX.Element => {
   })
 
   useEffect(() => {
-    if (props.apps.length === 0) {
-      props.getApps();
+    if (apps.length === 0) {
+      getApps();
     }
-  }, [props.getApps]);
+  }, [getApps, apps]);
 
   const toggleModal = (): void => {
     setModalIsOpen(!modalIsOpen);
@@ -93,10 +99,10 @@ const Apps = (props: ComponentProps): JSX.Element => {
       </div>
 
       <div className={classes.Apps}>
-        {props.loading
+        {loading
           ? <Spinner />
           : (!isInEdit
-              ? <AppGrid apps={props.apps} />
+              ? <AppGrid apps={apps} />
               : <AppTable updateAppHandler={toggleUpdate} />)
         }
       </div>

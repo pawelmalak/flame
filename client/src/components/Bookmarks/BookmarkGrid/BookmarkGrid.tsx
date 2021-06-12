@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 import classes from './BookmarkGrid.module.css';
 
-import { Bookmark, Category } from '../../../interfaces';
+import { Category } from '../../../interfaces';
 
 import BookmarkCard from '../BookmarkCard/BookmarkCard';
 

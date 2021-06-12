@@ -14,12 +14,13 @@ const BookmarkCard = (props: ComponentProps): JSX.Element => {
       <h3>{props.category.name}</h3>
       <div className={classes.Bookmarks}>
         {props.category.bookmarks.map((bookmark: Bookmark) => {
-          const [displayUrl, redirectUrl] = urlParser(bookmark.url);
+          const redirectUrl = urlParser(bookmark.url)[1];
 
           return (
             <a
               href={redirectUrl}
               target='_blank'
+              rel='noreferrer'
               key={`bookmark-${bookmark.id}`}>
               {bookmark.icon && (
                 <div className={classes.BookmarkIcon}>

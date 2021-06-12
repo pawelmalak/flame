@@ -13,7 +13,12 @@ const AppCard = (props: ComponentProps): JSX.Element => {
   const [displayUrl, redirectUrl] = urlParser(props.app.url);
 
   return (
-    <a href={redirectUrl} target='_blank' className={classes.AppCard}>
+    <a
+      href={redirectUrl}
+      target='_blank'
+      rel='noreferrer'
+      className={classes.AppCard}
+    >
       <div className={classes.AppCardIcon}>
         <Icon icon={iconParser(props.app.icon)} />
       </div>

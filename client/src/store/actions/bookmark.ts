@@ -130,7 +130,7 @@ export interface DeleteCategoryAction {
 
 export const deleteCategory = (id: number) => async (dispatch: Dispatch) => {
   try {
-    const res = await axios.delete<ApiResponse<{}>>(`/api/categories/${id}`);
+    await axios.delete<ApiResponse<{}>>(`/api/categories/${id}`);
 
     dispatch<CreateNotificationAction>({
       type: ActionTypes.createNotification,
@@ -191,7 +191,7 @@ export interface DeleteBookmarkAction {
 
 export const deleteBookmark = (bookmarkId: number, categoryId: number) => async (dispatch: Dispatch) => {
   try {
-    const res = await axios.delete<ApiResponse<{}>>(`/api/bookmarks/${bookmarkId}`);
+    await axios.delete<ApiResponse<{}>>(`/api/bookmarks/${bookmarkId}`);
 
     dispatch<CreateNotificationAction>({
       type: ActionTypes.createNotification,

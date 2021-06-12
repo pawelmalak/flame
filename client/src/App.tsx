@@ -5,8 +5,6 @@ import { getConfig, setTheme } from './store/actions';
 import { store } from './store/store';
 import { Provider } from 'react-redux';
 
-import classes from './App.module.css';
-
 import Home from './components/Home/Home';
 import Apps from './components/Apps/Apps';
 import Settings from './components/Settings/Settings';

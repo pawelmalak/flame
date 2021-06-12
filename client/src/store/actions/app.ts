@@ -89,7 +89,7 @@ export interface DeleteAppAction {
 
 export const deleteApp = (id: number) => async (dispatch: Dispatch) => {
   try {
-    const res = await axios.delete<ApiResponse<{}>>(`/api/apps/${id}`);
+    await axios.delete<ApiResponse<{}>>(`/api/apps/${id}`);
 
     dispatch<CreateNotificationAction>({
       type: ActionTypes.createNotification,

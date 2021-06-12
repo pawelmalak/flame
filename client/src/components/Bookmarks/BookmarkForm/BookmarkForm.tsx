@@ -184,7 +184,15 @@ const BookmarkForm = (props: ComponentProps): JSX.Element => {
                 value={formData.url}
                 onChange={(e) => inputChangeHandler(e)}
               />
-              <span>Only urls without http[s]:// are supported</span>
+              <span>
+                <a
+                  href='https://github.com/pawelmalak/flame#supported-URL-formats-for-applications-and-bookmarks'
+                  target='_blank'
+                  rel='noreferrer'
+                  >
+                  {' '}Check supported URL formats
+                </a>
+              </span>
             </InputGroup>
             <InputGroup>
               <label htmlFor='categoryId'>Bookmark Category</label>
