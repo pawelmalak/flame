@@ -1,8 +1,8 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { setTheme } from './store/actions';
+import { getConfig, setTheme } from './store/actions';
 
 // Redux
-import store from './store/store';
+import { store } from './store/store';
 import { Provider } from 'react-redux';
 
 import classes from './App.module.css';
@@ -12,6 +12,9 @@ import Apps from './components/Apps/Apps';
 import Settings from './components/Settings/Settings';
 import Bookmarks from './components/Bookmarks/Bookmarks';
 import NotificationCenter from './components/NotificationCenter/NotificationCenter';
+
+// Get config pairs from database
+store.dispatch<any>(getConfig());
 
 if (localStorage.theme) {
   store.dispatch<any>(setTheme(localStorage.theme));

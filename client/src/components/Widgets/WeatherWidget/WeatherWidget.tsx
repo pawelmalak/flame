@@ -1,12 +1,27 @@
 import { useState, useEffect, Fragment } from 'react';
-import { Weather, ApiResponse, Config } from '../../../interfaces';
 import axios from 'axios';
 
-import WeatherIcon from '../../UI/Icons/WeatherIcon/WeatherIcon';
+// Redux
+import { connect } from 'react-redux';
 
+// Typescript
+import { Weather, ApiResponse, Config, GlobalState } from '../../../interfaces';
+
+// CSS
 import classes from './WeatherWidget.module.css';
 
-const WeatherWidget = (): JSX.Element => {
+// UI
+import WeatherIcon from '../../UI/Icons/WeatherIcon/WeatherIcon';
+
+// Utils
+import { searchConfig } from '../../../utility';
+
+interface ComponentProps {
+  configLoading: boolean;
+  config: Config[];
+}
+
+const WeatherWidget = (props: ComponentProps): JSX.Element => {
   const [weather, setWeather] = useState<Weather>({
     externalLastUpdate: '',
     tempC: 0,
@@ -20,11 +35,9 @@ const WeatherWidget = (): JSX.Element => {
     updatedAt: new Date()
   });
   const [isLoading, setIsLoading] = useState(true);
-  const [isCelsius, setIsCelsius] = useState(true);
 
   // Initial request to get data
   useEffect(() => {
-    // get weather
     axios.get<ApiResponse<Weather[]>>('/api/weather')
       .then(data => {
         const weatherData = data.data.data[0];
@@ -34,18 +47,6 @@ const WeatherWidget = (): JSX.Element => {
         setIsLoading(false);
       })
       .catch(err => console.log(err));
-    
-    // get config
-    if (!localStorage.isCelsius) {
-      axios.get<ApiResponse<Config>>('/api/config/isCelsius')
-        .then((data) => {
-          setIsCelsius(parseInt(data.data.data.value) === 1);
-          localStorage.setItem('isCelsius', JSON.stringify(isCelsius));
-        })
-        .catch((err) => console.log(err));
-    } else {
-      setIsCelsius(JSON.parse(localStorage.isCelsius));
-    }
   }, []);
 
   // Open socket for data updates
@@ -67,9 +68,8 @@ const WeatherWidget = (): JSX.Element => {
 
   return (
     <div className={classes.WeatherWidget}>
-      {isLoading
-        ? 'loading'
-        : (weather.id > 0 && 
+      {isLoading || props.configLoading || searchConfig('WEATHER_API_KEY', '') && 
+         (weather.id > 0 && 
             (<Fragment>
               <div className={classes.WeatherIcon}>
                 <WeatherIcon
@@ -78,7 +78,7 @@ const WeatherWidget = (): JSX.Element => {
                 />
               </div>
               <div className={classes.WeatherDetails}>
-                {isCelsius
+                {searchConfig('isCelsius', true)
                   ? <span>{weather.tempC}°C</span>
                   : <span>{weather.tempF}°F</span>
                 }
@@ -91,4 +91,11 @@ const WeatherWidget = (): JSX.Element => {
   )
 }
 
-export default WeatherWidget;
+const mapStateToProps = (state: GlobalState) => {
+  return {
+    configLoading: state.config.loading,
+    config: state.config.config
+  }
+}
+
+export default connect(mapStateToProps)(WeatherWidget);

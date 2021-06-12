@@ -1,25 +1,28 @@
 import { useState, ChangeEvent, useEffect, FormEvent } from 'react';
-import { connect } from 'react-redux';
 import axios from 'axios';
-import { ApiResponse, Config, NewNotification, Weather } from '../../../interfaces';
 
+// Redux
+import { connect } from 'react-redux';
+import { createNotification, updateConfig } from '../../../store/actions';
+
+// Typescript
+import { ApiResponse, GlobalState, NewNotification, Weather, WeatherForm } from '../../../interfaces';
+
+// UI
 import InputGroup from '../../UI/Forms/InputGroup/InputGroup';
 import Button from '../../UI/Buttons/Button/Button';
-import { createNotification } from '../../../store/actions';
 
-interface FormState {
-  WEATHER_API_KEY: string;
-  lat: number;
-  long: number;
-  isCelsius: number;
-}
+// Utils
+import { searchConfig } from '../../../utility';
 
 interface ComponentProps {
   createNotification: (notification: NewNotification) => void;
+  updateConfig: (formData: WeatherForm) => void;
+  loading: boolean;
 }
 
 const WeatherSettings = (props: ComponentProps): JSX.Element => {
-  const [formData, setFormData] = useState<FormState>({
+  const [formData, setFormData] = useState<WeatherForm>({
     WEATHER_API_KEY: '',
     lat: 0,
     long: 0,
@@ -40,28 +43,15 @@ const WeatherSettings = (props: ComponentProps): JSX.Element => {
   }
 
   useEffect(() => {
-    axios.get<ApiResponse<Config[]>>('/api/config?keys=WEATHER_API_KEY,lat,long,isCelsius')
-      .then(data => {
-        let tmpFormData = { ...formData };
+    setFormData({
+      WEATHER_API_KEY: searchConfig('WEATHER_API_KEY', ''),
+      lat: searchConfig('lat', 0),
+      long: searchConfig('long', 0),
+      isCelsius: searchConfig('isCelsius', 1)
+    })
+  }, [props.loading]);
 
-        data.data.data.forEach((config: Config) => {
-          let value: string | number = config.value;
-          if (config.valueType === 'number') {
-            value = parseFloat(value);
-          }
-
-          tmpFormData = {
-            ...tmpFormData,
-            [config.key]: value
-          }
-        })
-
-        setFormData(tmpFormData);
-      })
-      .catch(err => console.log(err));
-  }, []);
-
-  const formSubmitHandler = (e: FormEvent) => {
+  const formSubmitHandler = async (e: FormEvent) => {
     e.preventDefault();
 
     // Check for api key input
@@ -73,32 +63,22 @@ const WeatherSettings = (props: ComponentProps): JSX.Element => {
     }
 
     // Save settings
-    axios.put<ApiResponse<{}>>('/api/config', formData)
+    await props.updateConfig(formData);
+    
+    // Update weather
+    axios.get<ApiResponse<Weather>>('/api/weather/update')
       .then(() => {
         props.createNotification({
           title: 'Success',
-          message: 'Settings updated'
+          message: 'Weather updated'
         })
-
-        // Update weather with new settings
-        axios.get<ApiResponse<Weather>>('/api/weather/update')
-          .then(() => {
-            props.createNotification({
-              title: 'Success',
-              message: 'Weather updated'
-            })
-          })
-          .catch((err) => {
-            props.createNotification({
-              title: 'Error',
-              message: err.response.data.error
-            })
-          });
       })
-      .catch(err => console.log(err));
-    
-    // set localStorage
-    localStorage.setItem('isCelsius', JSON.stringify(parseInt(`${formData.isCelsius}`) === 1))
+      .catch((err) => {
+        props.createNotification({
+          title: 'Error',
+          message: err.response.data.error
+        })
+      });
   }
 
   return (
@@ -170,4 +150,10 @@ const WeatherSettings = (props: ComponentProps): JSX.Element => {
   )
 }
 
-export default connect(null, { createNotification })(WeatherSettings);
+const mapStateToProps = (state: GlobalState) => {
+  return {
+    loading: state.config.loading
+  }
+}
+
+export default connect(mapStateToProps, { createNotification, updateConfig })(WeatherSettings);

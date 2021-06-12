@@ -7,3 +7,4 @@ export * from './Bookmark';
 export * from './Category';
 export * from './Notification';
 export * from './Config';
+export * from './Forms';
