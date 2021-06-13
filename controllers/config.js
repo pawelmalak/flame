@@ -96,9 +96,11 @@ exports.updateValues = asyncWrapper(async (req, res, next) => {
     })
   })
   
+  const config = await Config.findAll();
+
   res.status(200).send({
     success: true,
-    data: {}
+    data: config
   })
 })
 

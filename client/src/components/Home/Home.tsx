@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 // Redux
@@ -23,6 +23,13 @@ import AppGrid from '../Apps/AppGrid/AppGrid';
 import BookmarkGrid from '../Bookmarks/BookmarkGrid/BookmarkGrid';
 import WeatherWidget from '../Widgets/WeatherWidget/WeatherWidget';
 
+// Functions
+import { greeter } from './functions/greeter';
+import { dateTime } from './functions/dateTime';
+
+// Utils
+import { searchConfig } from '../../utility';
+
 interface ComponentProps {
   getApps: Function;
   getCategories: Function;
@@ -33,68 +40,84 @@ interface ComponentProps {
 }
 
 const Home = (props: ComponentProps): JSX.Element => {
+  const {
+    getApps,
+    apps,
+    appsLoading,
+    getCategories,
+    categories,
+    categoriesLoading
+  } = props;
+
+  const [header, setHeader] = useState({
+    dateTime: dateTime(),
+    greeting: greeter()
+  })
+
+  // Load applications
   useEffect(() => {
-    if (props.apps.length === 0) {
-      props.getApps();
+    if (apps.length === 0) {
+      getApps();
     }
-  }, [props.getApps]);
+  }, [getApps, apps]);
 
+  // Load bookmark categories
   useEffect(() => {
-    if (props.categories.length === 0) {
-      props.getCategories();
+    if (categories.length === 0) {
+      getCategories();
     }
-  }, [props.getCategories]);
+  }, [getCategories, categories]);
 
-  const dateAndTime = (): string => {
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  // Refresh greeter and time
+  useEffect(() => {
+    let interval: any;
 
-    const now = new Date();
+    // Start interval only when hideHeader is false
+    if (searchConfig('hideHeader', 0) !== 1) {
+      interval = setInterval(() => {
+        setHeader({
+          dateTime: dateTime(),
+          greeting: greeter()
+        })
+      }, 1000);
+    }
 
-    return `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
-  }
-
-  const greeter = (): string => {
-    const now = new Date().getHours();
-    let msg: string;
-
-    if (now >= 18) msg = 'Good evening!';
-    else if (now >= 12) msg = 'Good afternoon!';
-    else if (now >= 6) msg = 'Good morning!';
-    else if (now >= 0) msg = 'Good night!';
-    else msg = 'Hello!';
-
-    return msg;
-  }
-
+    return () => clearInterval(interval);
+  }, [])
+  
   return (
     <Container>
-      <header className={classes.Header}>
-        <p>{dateAndTime()}</p>
-        <Link to='/settings' className={classes.SettingsLink}>Go to Settings</Link>
-        <span className={classes.HeaderMain}>
-          <h1>{greeter()}</h1>
-          <WeatherWidget />
-        </span>
-      </header>
+      {searchConfig('hideHeader', 0) !== 1
+        ? (
+          <header className={classes.Header}>
+            <p>{header.dateTime}</p>
+            <Link to='/settings' className={classes.SettingsLink}>Go to Settings</Link>
+            <span className={classes.HeaderMain}>
+              <h1>{header.greeting}</h1>
+              <WeatherWidget />
+            </span>
+          </header>
+          )
+        : <div></div>
+      }
       
       <SectionHeadline title='Applications' link='/applications' />
-      {props.appsLoading
+      {appsLoading
         ? <Spinner />
         : <AppGrid
-          apps={props.apps.filter((app: App) => app.isPinned)}
-          totalApps={props.apps.length}
+          apps={apps.filter((app: App) => app.isPinned)}
+          totalApps={apps.length}
         />
       }
 
       <div className={classes.HomeSpace}></div>
 
       <SectionHeadline title='Bookmarks' link='/bookmarks' />
-      {props.categoriesLoading
+      {categoriesLoading
         ? <Spinner />
         : <BookmarkGrid
-            categories={props.categories.filter((category: Category) => category.isPinned)}
-            totalCategories={props.categories.length}
+            categories={categories.filter((category: Category) => category.isPinned)}
+            totalCategories={categories.length}
         />
       }
 

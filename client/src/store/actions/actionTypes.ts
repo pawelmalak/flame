@@ -19,7 +19,10 @@ import {
   UpdateBookmarkAction,
   // Notifications
   CreateNotificationAction,
-  ClearNotificationAction
+  ClearNotificationAction,
+  // Config
+  GetConfigAction,
+  UpdateConfigAction
 } from './';
 
 export enum ActionTypes {
@@ -48,7 +51,10 @@ export enum ActionTypes {
   updateBookmark = 'UPDATE_BOOKMARK',
   // Notifications
   createNotification = 'CREATE_NOTIFICATION',
-  clearNotification = 'CLEAR_NOTIFICATION'
+  clearNotification = 'CLEAR_NOTIFICATION',
+  // Config
+  getConfig = 'GET_CONFIG',
+  updateConfig = 'UPDATE_CONFIG'
 }
 
 export type Action = 
@@ -72,4 +78,7 @@ export type Action =
   UpdateBookmarkAction |
   // Notifications
   CreateNotificationAction |
-  ClearNotificationAction;
+  ClearNotificationAction |
+  // Config
+  GetConfigAction |
+  UpdateConfigAction;

@@ -28,6 +28,12 @@ export enum ContentType {
 }
 
 const Bookmarks = (props: ComponentProps): JSX.Element => {
+  const {
+    getCategories,
+    categories,
+    loading
+  } = props;
+
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [formContentType, setFormContentType] = useState(ContentType.category);
   const [isInEdit, setIsInEdit] = useState(false);
@@ -52,10 +58,10 @@ const Bookmarks = (props: ComponentProps): JSX.Element => {
   })
 
   useEffect(() => {
-    if (props.categories.length === 0) {
-      props.getCategories();
+    if (categories.length === 0) {
+      getCategories();
     }
-  }, [props.getCategories])
+  }, [getCategories, categories])
 
   const toggleModal = (): void => {
     setModalIsOpen(!modalIsOpen);
@@ -132,13 +138,13 @@ const Bookmarks = (props: ComponentProps): JSX.Element => {
         />
       </div>
 
-      {props.loading
+      {loading
         ? <Spinner />
         : (!isInEdit
-          ? <BookmarkGrid categories={props.categories} />
+          ? <BookmarkGrid categories={categories} />
           : <BookmarkTable
               contentType={tableContentType}
-              categories={props.categories}
+              categories={categories}
               updateHandler={goToUpdateMode}
             />
           )

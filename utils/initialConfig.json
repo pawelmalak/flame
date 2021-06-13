@@ -27,6 +27,10 @@
     {
       "key": "pinCategoriesByDefault",
       "value": true
+    },
+    {
+      "key": "hideHeader",
+      "value": false
     }
   ]
 }

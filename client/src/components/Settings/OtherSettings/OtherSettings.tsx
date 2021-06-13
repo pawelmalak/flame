@@ -1,69 +1,56 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import axios from 'axios';
-import { connect } from 'react-redux';
 
+// Redux
+import { connect } from 'react-redux';
+import { createNotification, updateConfig } from '../../../store/actions';
+
+// Typescript
+import { GlobalState, NewNotification, SettingsForm } from '../../../interfaces';
+
+// UI
 import InputGroup from '../../UI/Forms/InputGroup/InputGroup';
 import Button from '../../UI/Buttons/Button/Button';
-import { createNotification } from '../../../store/actions';
-import { ApiResponse, Config, NewNotification } from '../../../interfaces';
 
-interface FormState {
-  customTitle: string;
-  pinAppsByDefault: number;
-  pinCategoriesByDefault: number;
-}
+// Utils
+import { searchConfig } from '../../../utility';
 
 interface ComponentProps {
   createNotification: (notification: NewNotification) => void;
+  updateConfig: (formData: SettingsForm) => void;
+  loading: boolean;
 }
 
 const OtherSettings = (props: ComponentProps): JSX.Element => {
-  const [formData, setFormData] = useState<FormState>({
+  // Initial state
+  const [formData, setFormData] = useState<SettingsForm>({
     customTitle: document.title,
-    pinAppsByDefault: 0,
-    pinCategoriesByDefault: 0
+    pinAppsByDefault: 1,
+    pinCategoriesByDefault: 1,
+    hideHeader: 0
   })
 
-  // get initial config
+  // Get config
   useEffect(() => {
-    axios.get<ApiResponse<Config[]>>('/api/config?keys=customTitle,pinAppsByDefault,pinCategoriesByDefault')
-      .then(data => {
-        let tmpFormData = { ...formData };
+    setFormData({
+      customTitle: searchConfig('customTitle', 'Flame'),
+      pinAppsByDefault: searchConfig('pinAppsByDefault', 1),
+      pinCategoriesByDefault: searchConfig('pinCategoriesByDefault', 1),
+      hideHeader: searchConfig('hideHeader', 0)
+    })
+  }, [props.loading]);
 
-        data.data.data.forEach((config: Config) => {
-          let value: string | number = config.value;
-          if (config.valueType === 'number') {
-            value = parseFloat(value);
-          }
-
-          tmpFormData = {
-            ...tmpFormData,
-            [config.key]: value
-          }
-        })
-
-        setFormData(tmpFormData);
-      })
-      .catch(err => console.log(err));
-  }, [])
-
-  const formSubmitHandler = (e: FormEvent) => {
+  // Form handler
+  const formSubmitHandler = async (e: FormEvent) => {
     e.preventDefault();
 
-    axios.put<ApiResponse<{}>>('/api/config', formData)
-      .then(() => {
-        props.createNotification({
-          title: 'Success',
-          message: 'Settings updated'
-        })
-      })
-      .catch((err) => console.log(err));
+    // Save settings
+    await props.updateConfig(formData);
 
     // update local page title
-    localStorage.setItem('customTitle', formData.customTitle);
     document.title = formData.customTitle;
   }
 
+  // Input handler
   const inputChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>, isNumber?: boolean) => {
     let value: string | number = e.target.value;
 
@@ -80,7 +67,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
   return (
     <form onSubmit={(e) => formSubmitHandler(e)}>
       <InputGroup>
-        <label htmlFor='customTitle'>Custom Page Title</label>
+        <label htmlFor='customTitle'>Custom page title</label>
         <input
           type='text'
           id='customTitle'
@@ -114,9 +101,27 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           <option value={0}>False</option>
         </select>
       </InputGroup>
+      <InputGroup>
+        <label htmlFor='hideHeader'>Hide greeting and date</label>
+        <select
+          id='hideHeader'
+          name='hideHeader'
+          value={formData.hideHeader}
+          onChange={(e) => inputChangeHandler(e, true)}
+        >
+          <option value={1}>True</option>
+          <option value={0}>False</option>
+        </select>
+      </InputGroup>
     <Button>Save changes</Button>
     </form>
   )
 }
 
-export default connect(null, { createNotification })(OtherSettings);
+const mapStateToProps = (state: GlobalState) => {
+  return {
+    loading: state.config.loading
+  }
+}
+
+export default connect(mapStateToProps, { createNotification, updateConfig })(OtherSettings);
