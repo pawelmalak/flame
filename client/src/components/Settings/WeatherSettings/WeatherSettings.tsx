@@ -22,6 +22,7 @@ interface ComponentProps {
 }
 
 const WeatherSettings = (props: ComponentProps): JSX.Element => {
+  // Initial state
   const [formData, setFormData] = useState<WeatherForm>({
     WEATHER_API_KEY: '',
     lat: 0,
@@ -29,19 +30,7 @@ const WeatherSettings = (props: ComponentProps): JSX.Element => {
     isCelsius: 1
   })
 
-  const inputChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>, isNumber?: boolean) => {
-    let value: string | number = e.target.value;
-
-    if (isNumber) {
-      value = parseFloat(value);
-    }
-
-    setFormData({
-      ...formData,
-      [e.target.name]: value
-    })
-  }
-
+  // Get config
   useEffect(() => {
     setFormData({
       WEATHER_API_KEY: searchConfig('WEATHER_API_KEY', ''),
@@ -51,6 +40,7 @@ const WeatherSettings = (props: ComponentProps): JSX.Element => {
     })
   }, [props.loading]);
 
+  // Form handler
   const formSubmitHandler = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -58,7 +48,7 @@ const WeatherSettings = (props: ComponentProps): JSX.Element => {
     if ((formData.lat || formData.long) && !formData.WEATHER_API_KEY) {
       props.createNotification({
         title: 'Warning',
-        message: 'API Key is missing. Weather Module will NOT work'
+        message: 'API key is missing. Weather Module will NOT work'
       })
     }
 
@@ -81,10 +71,24 @@ const WeatherSettings = (props: ComponentProps): JSX.Element => {
       });
   }
 
+  // Input handler
+  const inputChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>, isNumber?: boolean) => {
+    let value: string | number = e.target.value;
+
+    if (isNumber) {
+      value = parseFloat(value);
+    }
+
+    setFormData({
+      ...formData,
+      [e.target.name]: value
+    })
+  }
+
   return (
     <form onSubmit={(e) => formSubmitHandler(e)}>
       <InputGroup>
-        <label htmlFor='WEATHER_API_KEY'>API Key</label>
+        <label htmlFor='WEATHER_API_KEY'>API key</label>
         <input
           type='text'
           id='WEATHER_API_KEY'
@@ -104,7 +108,7 @@ const WeatherSettings = (props: ComponentProps): JSX.Element => {
         </span>
       </InputGroup>
       <InputGroup>
-        <label htmlFor='lat'>Location Latitude</label>
+        <label htmlFor='lat'>Location latitude</label>
         <input
           type='number'
           id='lat'
@@ -123,7 +127,7 @@ const WeatherSettings = (props: ComponentProps): JSX.Element => {
         </span>
       </InputGroup>
       <InputGroup>
-        <label htmlFor='long'>Location Longitude</label>
+        <label htmlFor='long'>Location longitude</label>
         <input
           type='number'
           id='long'
@@ -134,7 +138,7 @@ const WeatherSettings = (props: ComponentProps): JSX.Element => {
         />
       </InputGroup>
       <InputGroup>
-        <label htmlFor='isCelsius'>Temperature Unit</label>
+        <label htmlFor='isCelsius'>Temperature unit</label>
         <select
           id='isCelsius'
           name='isCelsius'

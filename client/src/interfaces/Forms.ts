@@ -4,3 +4,10 @@ export interface WeatherForm {
   long: number;
   isCelsius: number;
 }
+
+export interface SettingsForm {
+  customTitle: string;
+  pinAppsByDefault: number;
+  pinCategoriesByDefault: number;
+  hideHeader: number;
+}

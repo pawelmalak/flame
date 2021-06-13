@@ -5,7 +5,7 @@ import { store } from '../store/store';
  * @param key Config pair key to search
  * @param _default Value to return if key is not found
  */
-export const searchConfig = (key: string, _default: any)=> {
+export const searchConfig = (key: string, _default: any) => {
   const state = store.getState();
 
   const pair = state.config.config.find(p => p.key === key);

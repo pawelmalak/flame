@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import { ActionTypes } from './actionTypes';
-import { Config, ApiResponse, WeatherForm } from '../../interfaces';
+import { Config, ApiResponse } from '../../interfaces';
 import { CreateNotificationAction } from './notification';
+import { searchConfig } from '../../utility';
 
 export interface GetConfigAction {
   type: ActionTypes.getConfig;
@@ -12,11 +13,14 @@ export interface GetConfigAction {
 export const getConfig = () => async (dispatch: Dispatch) => {
   try {
     const res = await axios.get<ApiResponse<Config[]>>('/api/config');
-
+   
     dispatch<GetConfigAction>({
       type: ActionTypes.getConfig,
       payload: res.data.data
     })
+
+    // Set custom page title if set
+    document.title = searchConfig('customTitle', 'Flame');
   } catch (err) {
     console.log(err)
   }
@@ -27,7 +31,7 @@ export interface UpdateConfigAction {
   payload: Config[];
 }
 
-export const updateConfig = (formData: WeatherForm) => async (dispatch: Dispatch) => {
+export const updateConfig = (formData: any) => async (dispatch: Dispatch) => {
   try {
     const res = await axios.put<ApiResponse<Config[]>>('/api/config', formData);
     dispatch<CreateNotificationAction>({

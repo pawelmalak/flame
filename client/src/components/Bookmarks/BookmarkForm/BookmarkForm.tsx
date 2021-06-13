@@ -186,10 +186,10 @@ const BookmarkForm = (props: ComponentProps): JSX.Element => {
               />
               <span>
                 <a
-                  href='https://github.com/pawelmalak/flame#supported-URL-formats-for-applications-and-bookmarks'
+                  href='https://github.com/pawelmalak/flame#supported-url-formats-for-applications-and-bookmarks'
                   target='_blank'
                   rel='noreferrer'
-                  >
+                >
                   {' '}Check supported URL formats
                 </a>
               </span>

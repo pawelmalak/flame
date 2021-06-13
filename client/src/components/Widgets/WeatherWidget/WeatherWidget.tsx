@@ -68,7 +68,7 @@ const WeatherWidget = (props: ComponentProps): JSX.Element => {
 
   return (
     <div className={classes.WeatherWidget}>
-      {isLoading || props.configLoading || searchConfig('WEATHER_API_KEY', '') && 
+      {(isLoading || props.configLoading || searchConfig('WEATHER_API_KEY', '')) && 
          (weather.id > 0 && 
             (<Fragment>
               <div className={classes.WeatherIcon}>

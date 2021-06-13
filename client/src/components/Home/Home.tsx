@@ -27,6 +27,9 @@ import WeatherWidget from '../Widgets/WeatherWidget/WeatherWidget';
 import { greeter } from './functions/greeter';
 import { dateTime } from './functions/dateTime';
 
+// Utils
+import { searchConfig } from '../../utility';
+
 interface ComponentProps {
   getApps: Function;
   getCategories: Function;
@@ -67,26 +70,36 @@ const Home = (props: ComponentProps): JSX.Element => {
 
   // Refresh greeter and time
   useEffect(() => {
-    const interval = setInterval(() => {
-      setHeader({
-        dateTime: dateTime(),
-        greeting: greeter()
-      })
-    }, 1000);
+    let interval: any;
+
+    // Start interval only when hideHeader is false
+    if (searchConfig('hideHeader', 0) !== 1) {
+      interval = setInterval(() => {
+        setHeader({
+          dateTime: dateTime(),
+          greeting: greeter()
+        })
+      }, 1000);
+    }
 
     return () => clearInterval(interval);
   }, [])
-
+  
   return (
     <Container>
-      <header className={classes.Header}>
-        <p>{header.dateTime}</p>
-        <Link to='/settings' className={classes.SettingsLink}>Go to Settings</Link>
-        <span className={classes.HeaderMain}>
-          <h1>{header.greeting}</h1>
-          <WeatherWidget />
-        </span>
-      </header>
+      {searchConfig('hideHeader', 0) !== 1
+        ? (
+          <header className={classes.Header}>
+            <p>{header.dateTime}</p>
+            <Link to='/settings' className={classes.SettingsLink}>Go to Settings</Link>
+            <span className={classes.HeaderMain}>
+              <h1>{header.greeting}</h1>
+              <WeatherWidget />
+            </span>
+          </header>
+          )
+        : <div></div>
+      }
       
       <SectionHeadline title='Applications' link='/applications' />
       {appsLoading
