@@ -61,7 +61,7 @@ const Bookmarks = (props: ComponentProps): JSX.Element => {
     if (categories.length === 0) {
       getCategories();
     }
-  }, [getCategories, categories])
+  }, [getCategories])
 
   const toggleModal = (): void => {
     setModalIsOpen(!modalIsOpen);

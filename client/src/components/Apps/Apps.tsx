@@ -53,7 +53,7 @@ const Apps = (props: ComponentProps): JSX.Element => {
     if (apps.length === 0) {
       getApps();
     }
-  }, [getApps, apps]);
+  }, [getApps]);
 
   const toggleModal = (): void => {
     setModalIsOpen(!modalIsOpen);
