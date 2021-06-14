@@ -1,0 +1,10 @@
+version: "3"
+services:
+  flame:
+    image: pawelmalak/flame
+    container_name: flame
+    volumes:
+      - /path/to/data:/app/data
+    ports:
+      - 5005:5005
+    restart: unless-stopped

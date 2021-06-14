@@ -59,14 +59,14 @@ const Home = (props: ComponentProps): JSX.Element => {
     if (apps.length === 0) {
       getApps();
     }
-  }, [getApps, apps]);
+  }, [getApps]);
 
   // Load bookmark categories
   useEffect(() => {
     if (categories.length === 0) {
       getCategories();
     }
-  }, [getCategories, categories]);
+  }, [getCategories]);
 
   // Refresh greeter and time
   useEffect(() => {
