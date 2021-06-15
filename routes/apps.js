@@ -6,7 +6,8 @@ const {
   getApps,
   getApp,
   updateApp,
-  deleteApp
+  deleteApp,
+  reorderApps
 } = require('../controllers/apps');
 
 router
@@ -19,5 +20,9 @@ router
   .get(getApp)
   .put(updateApp)
   .delete(deleteApp);
+
+router
+  .route('/0/reorder')
+  .put(reorderApps);
 
 module.exports = router;

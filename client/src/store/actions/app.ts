@@ -133,3 +133,35 @@ export const updateApp = (id: number, formData: NewApp) => async (dispatch: Disp
     console.log(err);
   }
 }
+
+export interface ReorderAppAction {
+  type: ActionTypes.reorderApp;
+  payload: App[]
+}
+
+interface ReorderQuery {
+  apps: {
+    id: number;
+    orderId: number;
+  }[]
+}
+
+export const reorderApp = (apps: App[]) => async (dispatch: Dispatch) => {
+  try {
+    const updateQuery: ReorderQuery = { apps: [] }
+
+    apps.forEach((app, index) => updateQuery.apps.push({
+      id: app.id,
+      orderId: index + 1
+    }))
+
+    await axios.put<{}>('/api/apps/0/reorder', updateQuery);
+
+    dispatch<ReorderAppAction>({
+      type: ActionTypes.reorderApp,
+      payload: apps
+    })
+  } catch (err) {
+    console.log(err);
+  }
+}

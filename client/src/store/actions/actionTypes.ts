@@ -7,6 +7,7 @@ import {
   AddAppAction,
   DeleteAppAction,
   UpdateAppAction,
+  ReorderAppAction,
   // Categories
   GetCategoriesAction,
   AddCategoryAction,
@@ -37,6 +38,7 @@ export enum ActionTypes {
   addAppSuccess = 'ADD_APP_SUCCESS',
   deleteApp = 'DELETE_APP',
   updateApp = 'UPDATE_APP',
+  reorderApp = 'REORDER_APP',
   // Categories
   getCategories = 'GET_CATEGORIES',
   getCategoriesSuccess = 'GET_CATEGORIES_SUCCESS',
@@ -66,6 +68,7 @@ export type Action =
   AddAppAction |
   DeleteAppAction |
   UpdateAppAction |
+  ReorderAppAction |
   // Categories
   GetCategoriesAction<any> |
   AddCategoryAction |

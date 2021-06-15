@@ -52,8 +52,12 @@ const pinApp = (state: State, action: Action): State => {
 }
 
 const addAppSuccess = (state: State, action: Action): State => {
-  const tmpApps = [...state.apps, action.payload];
-
+  const tmpApps: App[] = [...state.apps, action.payload].sort((a: App, b: App) => {
+    if (a.name.toLowerCase() < b.name.toLowerCase()) { return -1 }
+    if (a.name.toLowerCase() > b.name.toLowerCase()) { return 1 }
+    return 0;
+  });
+  
   return {
     ...state,
     apps: tmpApps
@@ -85,6 +89,13 @@ const updateApp = (state: State, action: Action): State => {
   }
 }
 
+const reorderApp = (state: State, action: Action): State => {
+  return {
+    ...state,
+    apps: action.payload
+  }
+}
+
 const appReducer = (state = initialState, action: Action) => {
   switch (action.type) {
     case ActionTypes.getApps: return getApps(state, action);
@@ -94,6 +105,7 @@ const appReducer = (state = initialState, action: Action) => {
     case ActionTypes.addAppSuccess: return addAppSuccess(state, action);
     case ActionTypes.deleteApp: return deleteApp(state, action);
     case ActionTypes.updateApp: return updateApp(state, action);
+    case ActionTypes.reorderApp: return reorderApp(state, action);
     default: return state;
   }
 }

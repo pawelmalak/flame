@@ -3,11 +3,12 @@ import classes from './Table.module.css';
 interface ComponentProps {
   children: JSX.Element | JSX.Element[];
   headers: string[];
+  innerRef?: any;
 }
 
 const Table = (props: ComponentProps): JSX.Element => {
   return (
-    <div className={classes.TableContainer}>
+    <div className={classes.TableContainer} ref={props.innerRef}>
       <table className={classes.Table}>
         <thead className={classes.TableHead}>
           <tr>

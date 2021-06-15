@@ -36,8 +36,11 @@ exports.createApp = asyncWrapper(async (req, res, next) => {
 // @route     GET /api/apps
 // @access    Public
 exports.getApps = asyncWrapper(async (req, res, next) => {
+  // const apps = await App.findAll({
+  //   order: [[ Sequelize.fn('lower', Sequelize.col('name')), 'ASC' ]]
+  // });
   const apps = await App.findAll({
-    order: [[ Sequelize.fn('lower', Sequelize.col('name')), 'ASC' ]]
+    order: [[ 'orderId', 'ASC' ]]
   });
 
   res.status(200).json({
@@ -90,6 +93,22 @@ exports.updateApp = asyncWrapper(async (req, res, next) => {
 exports.deleteApp = asyncWrapper(async (req, res, next) => {
   await App.destroy({
     where: { id: req.params.id }
+  })
+
+  res.status(200).json({
+    success: true,
+    data: {}
+  })
+})
+
+// @desc      Reorder apps
+// @route     PUT /api/apps/0/reorder
+// @access    Public
+exports.reorderApps = asyncWrapper(async (req, res, next) => {
+  req.body.apps.forEach(async ({ id, orderId }) => {
+    await App.update({ orderId }, {
+      where: { id }
+    })
   })
 
   res.status(200).json({
