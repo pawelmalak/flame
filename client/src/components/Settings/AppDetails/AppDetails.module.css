@@ -1,0 +1,8 @@
+.AppVersion {
+  color: var(--color-primary);
+  margin-bottom: 15px;
+}
+
+.AppVersion a {
+  color: var(--color-accent);
+}

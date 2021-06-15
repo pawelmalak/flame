@@ -3,6 +3,7 @@ const ErrorResponse = require('../utils/ErrorResponse');
 const Category = require('../models/Category');
 const Bookmark = require('../models/Bookmark');
 const Config = require('../models/Config');
+const { Sequelize } = require('sequelize')
 
 // @desc      Create new category
 // @route     POST /api/categories
@@ -41,7 +42,7 @@ exports.getCategories = asyncWrapper(async (req, res, next) => {
       model: Bookmark,
       as: 'bookmarks'
     }],
-    order: [['name', 'ASC']]
+    order: [[ Sequelize.fn('lower', Sequelize.col('Category.name')), 'ASC' ]]
   });
 
   res.status(200).json({

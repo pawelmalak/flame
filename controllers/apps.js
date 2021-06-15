@@ -2,6 +2,7 @@ const asyncWrapper = require('../middleware/asyncWrapper');
 const ErrorResponse = require('../utils/ErrorResponse');
 const App = require('../models/App');
 const Config = require('../models/Config');
+const { Sequelize } = require('sequelize');
 
 // @desc      Create new app
 // @route     POST /api/apps
@@ -36,7 +37,7 @@ exports.createApp = asyncWrapper(async (req, res, next) => {
 // @access    Public
 exports.getApps = asyncWrapper(async (req, res, next) => {
   const apps = await App.findAll({
-    order: [['name', 'ASC']]
+    order: [[ Sequelize.fn('lower', Sequelize.col('name')), 'ASC' ]]
   });
 
   res.status(200).json({
