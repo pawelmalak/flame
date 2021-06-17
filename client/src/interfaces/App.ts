@@ -5,6 +5,7 @@ export interface App extends Model {
   url: string;
   icon: string;
   isPinned: boolean;
+  orderId: number;
 }
 
 export interface NewApp {

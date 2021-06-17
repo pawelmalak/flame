@@ -10,3 +10,20 @@
 .TableAction:hover {
   cursor: pointer;
 }
+
+.Message {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  color: var(--color-primary);
+  margin-bottom: 20px;
+}
+
+.Message span {
+  color: var(--color-accent);
+}
+
+.Message span:hover {
+  cursor: pointer;
+}

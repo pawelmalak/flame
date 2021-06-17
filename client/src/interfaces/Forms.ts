@@ -10,4 +10,5 @@ export interface SettingsForm {
   pinAppsByDefault: number;
   pinCategoriesByDefault: number;
   hideHeader: number;
+  useOrdering: string;
 }

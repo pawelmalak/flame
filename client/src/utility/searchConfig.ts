@@ -18,7 +18,7 @@ export const searchConfig = (key: string, _default: any) => {
     } else {
       return pair.value;
     }
-  } else {
-    return _default;
   }
+  
+  return _default;
 }

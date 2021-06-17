@@ -36,12 +36,23 @@ exports.createApp = asyncWrapper(async (req, res, next) => {
 // @route     GET /api/apps
 // @access    Public
 exports.getApps = asyncWrapper(async (req, res, next) => {
-  // const apps = await App.findAll({
-  //   order: [[ Sequelize.fn('lower', Sequelize.col('name')), 'ASC' ]]
-  // });
-  const apps = await App.findAll({
-    order: [[ 'orderId', 'ASC' ]]
+  // Get config from database
+  const useOrdering = await Config.findOne({
+    where: { key: 'useOrdering' }
   });
+
+  const orderType = useOrdering ? useOrdering.value : 'createdAt';
+  let apps;
+
+  if (orderType == 'name') {
+    apps = await App.findAll({
+      order: [[ Sequelize.fn('lower', Sequelize.col('name')), 'ASC' ]]
+    });
+  } else {
+    apps = await App.findAll({
+      order: [[ orderType, 'ASC' ]]
+    });
+  }
 
   res.status(200).json({
     success: true,
