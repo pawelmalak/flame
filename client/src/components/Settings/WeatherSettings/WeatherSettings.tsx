@@ -116,6 +116,8 @@ const WeatherSettings = (props: ComponentProps): JSX.Element => {
           placeholder='52.22'
           value={formData.lat}
           onChange={(e) => inputChangeHandler(e, true)}
+          step='any'
+          lang='en-150'
         />
         <span>
           You can use
@@ -135,6 +137,8 @@ const WeatherSettings = (props: ComponentProps): JSX.Element => {
           placeholder='21.01'
           value={formData.long}
           onChange={(e) => inputChangeHandler(e, true)}
+          step='any'
+          lang='en-150'
         />
       </InputGroup>
       <InputGroup>
