@@ -31,6 +31,10 @@
     {
       "key": "hideHeader",
       "value": false
+    },
+    {
+      "key": "useOrdering",
+      "value": "createdAt"
     }
   ]
 }

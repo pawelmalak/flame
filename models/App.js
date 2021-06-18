@@ -18,6 +18,11 @@ const App = sequelize.define('App', {
   isPinned: {
     type: DataTypes.BOOLEAN,
     defaultValue: false
+  },
+  orderId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    defaultValue: null
   }
 }, {
   tableName: 'apps'

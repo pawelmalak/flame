@@ -6,7 +6,8 @@ const {
   getCategories,
   getCategory,
   updateCategory,
-  deleteCategory
+  deleteCategory,
+  reorderCategories
 } = require('../controllers/category');
 
 router
@@ -19,5 +20,9 @@ router
   .get(getCategory)
   .put(updateCategory)
   .delete(deleteCategory);
+
+router
+  .route('/0/reorder')
+  .put(reorderCategories);
 
 module.exports = router;

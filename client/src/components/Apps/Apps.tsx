@@ -44,6 +44,7 @@ const Apps = (props: ComponentProps): JSX.Element => {
     url: 'string',
     icon: 'string',
     isPinned: false,
+    orderId: 0,
     id: 0,
     createdAt: new Date(),
     updatedAt: new Date()

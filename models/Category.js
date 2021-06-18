@@ -9,6 +9,11 @@ const Category = sequelize.define('Category', {
   isPinned: {
     type: DataTypes.BOOLEAN,
     defaultValue: false
+  },
+  orderId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    defaultValue: null
   }
 }, {
   tableName: 'categories'

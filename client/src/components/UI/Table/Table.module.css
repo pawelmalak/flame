@@ -8,15 +8,17 @@
   text-align: left;
   font-size: 16px;
   color: var(--color-primary);
+  table-layout: fixed;
 }
 
 .Table th,
 .Table td {
   padding: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Head */
-
 .Table th {
   --header-radius: 4px;
   background-color: var(--color-primary);
@@ -34,8 +36,6 @@
 }
 
 /* Body */
-
 .Table td {
-  /* opacity: 0.5; */
   transition: all 0.2s;
 }

@@ -2,6 +2,7 @@ const asyncWrapper = require('../middleware/asyncWrapper');
 const ErrorResponse = require('../utils/ErrorResponse');
 const App = require('../models/App');
 const Config = require('../models/Config');
+const { Sequelize } = require('sequelize');
 
 // @desc      Create new app
 // @route     POST /api/apps
@@ -35,9 +36,23 @@ exports.createApp = asyncWrapper(async (req, res, next) => {
 // @route     GET /api/apps
 // @access    Public
 exports.getApps = asyncWrapper(async (req, res, next) => {
-  const apps = await App.findAll({
-    order: [['name', 'ASC']]
+  // Get config from database
+  const useOrdering = await Config.findOne({
+    where: { key: 'useOrdering' }
   });
+
+  const orderType = useOrdering ? useOrdering.value : 'createdAt';
+  let apps;
+
+  if (orderType == 'name') {
+    apps = await App.findAll({
+      order: [[ Sequelize.fn('lower', Sequelize.col('name')), 'ASC' ]]
+    });
+  } else {
+    apps = await App.findAll({
+      order: [[ orderType, 'ASC' ]]
+    });
+  }
 
   res.status(200).json({
     success: true,
@@ -89,6 +104,22 @@ exports.updateApp = asyncWrapper(async (req, res, next) => {
 exports.deleteApp = asyncWrapper(async (req, res, next) => {
   await App.destroy({
     where: { id: req.params.id }
+  })
+
+  res.status(200).json({
+    success: true,
+    data: {}
+  })
+})
+
+// @desc      Reorder apps
+// @route     PUT /api/apps/0/reorder
+// @access    Public
+exports.reorderApps = asyncWrapper(async (req, res, next) => {
+  req.body.apps.forEach(async ({ id, orderId }) => {
+    await App.update({ orderId }, {
+      where: { id }
+    })
   })
 
   res.status(200).json({

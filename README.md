@@ -8,7 +8,7 @@
 ![Homescreen screenshot](./github/_home.png)
 
 ## Description
-Flame is self-hosted startpage for your server. It's inspired (heavily) by [SUI](https://github.com/jeroenpardon/sui)
+Flame is self-hosted startpage for your server. Its design is inspired (heavily) by [SUI](https://github.com/jeroenpardon/sui). Flame is very easy to setup and use. With built-in editors it allows you to setup your very own appliaction hub in no time - no file editing necessary.
 
 ## Technology
 - Backend
@@ -23,6 +23,7 @@ Flame is self-hosted startpage for your server. It's inspired (heavily) by [SUI]
 
 ## Development
 ```sh
+# clone repository
 git clone https://github.com/pawelmalak/flame
 cd flame
 
@@ -33,13 +34,23 @@ npm run dev-init
 npm run dev
 ```
 
-## Deployment with Docker
+## Building Docker images
 ```sh
-# build image
+# build image for amd64 only
 docker build -t flame .
 
+# build multiarch image for amd64, armv7 and arm64
+# building failed multiple times with 2GB memory usage limit so you might want to increase it
+docker buildx build \
+  --platform linux/arm/v7,linux/arm64,linux/amd64 \
+  -f Dockerfile.multiarch \
+  -t flame:multiarch .
+```
+
+## Deployment with Docker
+```sh
 # run container
-docker run -p 5005:5005 -v <host_dir>:/app/data flame
+docker run -p 5005:5005 -v /path/to/data:/app/data flame
 ```
 
 ## Functionality
@@ -74,3 +85,8 @@ docker run -p 5005:5005 -v <host_dir>:/app/data flame
 - URL without protocol
   - Format: `www.domain.com`, `domain.com`, `sub.domain.com`, `local`, `ip`, `ip:port`
   - Redirect: `http://{dest}`
+
+## Support
+If you want to support development of Flame and my upcoming self-hosted and open source projects you can use the following link:
+
+[![PayPal Badge](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.com/paypalme/pawelmalak)

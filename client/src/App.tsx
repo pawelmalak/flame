@@ -5,6 +5,10 @@ import { getConfig, setTheme } from './store/actions';
 import { store } from './store/store';
 import { Provider } from 'react-redux';
 
+// Utils
+import { checkVersion } from './utility';
+
+// Routes
 import Home from './components/Home/Home';
 import Apps from './components/Apps/Apps';
 import Settings from './components/Settings/Settings';
@@ -14,9 +18,13 @@ import NotificationCenter from './components/NotificationCenter/NotificationCent
 // Get config pairs from database
 store.dispatch<any>(getConfig());
 
+// Set theme
 if (localStorage.theme) {
   store.dispatch<any>(setTheme(localStorage.theme));
 }
+
+// Check for updates
+checkVersion();
 
 const App = (): JSX.Element => {
   return (

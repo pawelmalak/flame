@@ -6,8 +6,7 @@
   border-radius: 4px;
 }
 
-.Button:hover,
-.Button:focus {
+.Button:hover {
   cursor: pointer;
   background-color: var(--color-accent);
   color: var(--color-background);

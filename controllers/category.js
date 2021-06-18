@@ -3,6 +3,7 @@ const ErrorResponse = require('../utils/ErrorResponse');
 const Category = require('../models/Category');
 const Bookmark = require('../models/Bookmark');
 const Config = require('../models/Config');
+const { Sequelize } = require('sequelize')
 
 // @desc      Create new category
 // @route     POST /api/categories
@@ -36,13 +37,31 @@ exports.createCategory = asyncWrapper(async (req, res, next) => {
 // @route     GET /api/categories
 // @access    Public
 exports.getCategories = asyncWrapper(async (req, res, next) => {
-  const categories = await Category.findAll({
-    include: [{
-      model: Bookmark,
-      as: 'bookmarks'
-    }],
-    order: [['name', 'ASC']]
+  // Get config from database
+  const useOrdering = await Config.findOne({
+    where: { key: 'useOrdering' }
   });
+
+  const orderType = useOrdering ? useOrdering.value : 'createdAt';
+  let categories;
+
+  if (orderType == 'name') {
+    categories = await Category.findAll({
+      include: [{
+        model: Bookmark,
+        as: 'bookmarks'
+      }],
+      order: [[ Sequelize.fn('lower', Sequelize.col('Category.name')), 'ASC' ]]
+    });
+  } else {
+    categories = await Category.findAll({
+      include: [{
+        model: Bookmark,
+        as: 'bookmarks'
+      }],
+      order: [[ orderType, 'ASC' ]]
+    });
+  }
 
   res.status(200).json({
     success: true,
@@ -116,6 +135,22 @@ exports.deleteCategory = asyncWrapper(async (req, res, next) => {
 
   await Category.destroy({
     where: { id: req.params.id }
+  })
+
+  res.status(200).json({
+    success: true,
+    data: {}
+  })
+})
+
+// @desc      Reorder categories
+// @route     PUT /api/categories/0/reorder
+// @access    Public
+exports.reorderCategories = asyncWrapper(async (req, res, next) => {
+  req.body.categories.forEach(async ({ id, orderId }) => {
+    await Category.update({ orderId }, {
+      where: { id }
+    })
   })
 
   res.status(200).json({

@@ -2,7 +2,7 @@ import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 
 // Redux
 import { connect } from 'react-redux';
-import { createNotification, updateConfig } from '../../../store/actions';
+import { createNotification, updateConfig, sortApps, sortCategories } from '../../../store/actions';
 
 // Typescript
 import { GlobalState, NewNotification, SettingsForm } from '../../../interfaces';
@@ -17,6 +17,8 @@ import { searchConfig } from '../../../utility';
 interface ComponentProps {
   createNotification: (notification: NewNotification) => void;
   updateConfig: (formData: SettingsForm) => void;
+  sortApps: () => void;
+  sortCategories: () => void;
   loading: boolean;
 }
 
@@ -26,7 +28,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
     customTitle: document.title,
     pinAppsByDefault: 1,
     pinCategoriesByDefault: 1,
-    hideHeader: 0
+    hideHeader: 0,
+    useOrdering: 'createdAt'
   })
 
   // Get config
@@ -35,7 +38,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
       customTitle: searchConfig('customTitle', 'Flame'),
       pinAppsByDefault: searchConfig('pinAppsByDefault', 1),
       pinCategoriesByDefault: searchConfig('pinCategoriesByDefault', 1),
-      hideHeader: searchConfig('hideHeader', 0)
+      hideHeader: searchConfig('hideHeader', 0),
+      useOrdering: searchConfig('useOrdering', 'createdAt')
     })
   }, [props.loading]);
 
@@ -46,8 +50,12 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
     // Save settings
     await props.updateConfig(formData);
 
-    // update local page title
+    // Update local page title
     document.title = formData.customTitle;
+
+    // Sort apps and categories with new settings
+    props.sortApps();
+    props.sortCategories();
   }
 
   // Input handler
@@ -113,6 +121,19 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           <option value={0}>False</option>
         </select>
       </InputGroup>
+      <InputGroup>
+        <label htmlFor='useOrdering'>Sorting type</label>
+        <select
+          id='useOrdering'
+          name='useOrdering'
+          value={formData.useOrdering}
+          onChange={(e) => inputChangeHandler(e)}
+        >
+          <option value='createdAt'>By creation date</option>
+          <option value='name'>Alphabetical order</option>
+          <option value='orderId'>Custom order</option>
+        </select>
+      </InputGroup>
     <Button>Save changes</Button>
     </form>
   )
@@ -124,4 +145,11 @@ const mapStateToProps = (state: GlobalState) => {
   }
 }
 
-export default connect(mapStateToProps, { createNotification, updateConfig })(OtherSettings);
+const actions = {
+  createNotification,
+  updateConfig,
+  sortApps,
+  sortCategories
+}
+
+export default connect(mapStateToProps, actions)(OtherSettings);
