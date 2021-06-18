@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import { ActionTypes } from './actionTypes';
-import { App, ApiResponse, NewApp } from '../../interfaces';
+import { App, ApiResponse, NewApp, Config } from '../../interfaces';
 import { CreateNotificationAction } from './notification';
 
 export interface GetAppsAction<T> {
@@ -73,10 +73,13 @@ export const addApp = (formData: NewApp) => async (dispatch: Dispatch) => {
       }
     })
 
-    dispatch<AddAppAction>({
+    await dispatch<AddAppAction>({
       type: ActionTypes.addAppSuccess,
       payload: res.data.data
     })
+
+    // Sort apps
+    dispatch<any>(sortApps())
   } catch (err) {
     console.log(err);
   }
@@ -125,17 +128,20 @@ export const updateApp = (id: number, formData: NewApp) => async (dispatch: Disp
       }
     })
 
-    dispatch<UpdateAppAction>({
+    await dispatch<UpdateAppAction>({
       type: ActionTypes.updateApp,
       payload: res.data.data
     })
+
+    // Sort apps
+    dispatch<any>(sortApps())
   } catch (err) {
     console.log(err);
   }
 }
 
-export interface ReorderAppAction {
-  type: ActionTypes.reorderApp;
+export interface ReorderAppsAction {
+  type: ActionTypes.reorderApps;
   payload: App[]
 }
 
@@ -146,7 +152,7 @@ interface ReorderQuery {
   }[]
 }
 
-export const reorderApp = (apps: App[]) => async (dispatch: Dispatch) => {
+export const reorderApps = (apps: App[]) => async (dispatch: Dispatch) => {
   try {
     const updateQuery: ReorderQuery = { apps: [] }
 
@@ -157,9 +163,37 @@ export const reorderApp = (apps: App[]) => async (dispatch: Dispatch) => {
 
     await axios.put<{}>('/api/apps/0/reorder', updateQuery);
 
-    dispatch<ReorderAppAction>({
-      type: ActionTypes.reorderApp,
+    dispatch<CreateNotificationAction>({
+      type: ActionTypes.createNotification,
+      payload: {
+        title: 'Success',
+        message: 'New order saved'
+      }
+    })
+
+    dispatch<ReorderAppsAction>({
+      type: ActionTypes.reorderApps,
       payload: apps
+    })
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export interface SortAppsAction {
+  type: ActionTypes.sortApps;
+  payload: {};
+}
+
+export const sortApps = () => async (dispatch: Dispatch) => {
+  try {
+    const res = await axios.get<ApiResponse<Config>>('/api/config/useOrdering');
+
+    console.log(res.data.data);
+
+    dispatch<SortAppsAction>({
+      type: ActionTypes.sortApps,
+      payload: res.data.data.value
     })
   } catch (err) {
     console.log(err);

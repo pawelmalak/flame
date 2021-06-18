@@ -1,5 +1,6 @@
 import { ActionTypes, Action } from '../actions';
 import { App } from '../../interfaces/App';
+import { sortData } from '../../utility';
 
 export interface State {
   loading: boolean;
@@ -52,15 +53,9 @@ const pinApp = (state: State, action: Action): State => {
 }
 
 const addAppSuccess = (state: State, action: Action): State => {
-  const tmpApps: App[] = [...state.apps, action.payload].sort((a: App, b: App) => {
-    if (a.name.toLowerCase() < b.name.toLowerCase()) { return -1 }
-    if (a.name.toLowerCase() > b.name.toLowerCase()) { return 1 }
-    return 0;
-  });
-  
   return {
     ...state,
-    apps: tmpApps
+    apps: [...state.apps, action.payload]
   }
 }
 
@@ -89,10 +84,19 @@ const updateApp = (state: State, action: Action): State => {
   }
 }
 
-const reorderApp = (state: State, action: Action): State => {
+const reorderApps = (state: State, action: Action): State => {
   return {
     ...state,
     apps: action.payload
+  }
+}
+
+const sortApps = (state: State, action: Action): State => {
+  const sortedApps = sortData<App>(state.apps, action.payload);
+
+  return {
+    ...state,
+    apps: sortedApps
   }
 }
 
@@ -105,7 +109,8 @@ const appReducer = (state = initialState, action: Action) => {
     case ActionTypes.addAppSuccess: return addAppSuccess(state, action);
     case ActionTypes.deleteApp: return deleteApp(state, action);
     case ActionTypes.updateApp: return updateApp(state, action);
-    case ActionTypes.reorderApp: return reorderApp(state, action);
+    case ActionTypes.reorderApps: return reorderApps(state, action);
+    case ActionTypes.sortApps: return sortApps(state, action);
     default: return state;
   }
 }
