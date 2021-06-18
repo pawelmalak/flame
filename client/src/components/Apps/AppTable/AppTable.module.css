@@ -20,10 +20,10 @@
   margin-bottom: 20px;
 }
 
-.Message span {
+.Message a {
   color: var(--color-accent);
 }
 
-.Message span:hover {
+.Message a:hover {
   cursor: pointer;
 }

@@ -161,15 +161,7 @@ export const reorderApps = (apps: App[]) => async (dispatch: Dispatch) => {
       orderId: index + 1
     }))
 
-    await axios.put<{}>('/api/apps/0/reorder', updateQuery);
-
-    dispatch<CreateNotificationAction>({
-      type: ActionTypes.createNotification,
-      payload: {
-        title: 'Success',
-        message: 'New order saved'
-      }
-    })
+    await axios.put<ApiResponse<{}>>('/api/apps/0/reorder', updateQuery);
 
     dispatch<ReorderAppsAction>({
       type: ActionTypes.reorderApps,
@@ -188,8 +180,6 @@ export interface SortAppsAction {
 export const sortApps = () => async (dispatch: Dispatch) => {
   try {
     const res = await axios.get<ApiResponse<Config>>('/api/config/useOrdering');
-
-    console.log(res.data.data);
 
     dispatch<SortAppsAction>({
       type: ActionTypes.sortApps,
