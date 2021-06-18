@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import { ActionTypes } from './actionTypes';
-import { Category, ApiResponse, NewCategory, Bookmark, NewBookmark } from '../../interfaces';
+import { Category, ApiResponse, NewCategory, Bookmark, NewBookmark, Config } from '../../interfaces';
 import { CreateNotificationAction } from './notification';
 
 /**
@@ -54,6 +54,8 @@ export const addCategory = (formData: NewCategory) => async (dispatch: Dispatch)
       type: ActionTypes.addCategory,
       payload: res.data.data
     })
+
+    dispatch<any>(sortCategories());
   } catch (err) {
     console.log(err);
   }
@@ -173,6 +175,8 @@ export const updateCategory = (id: number, formData: NewCategory) => async (disp
       type: ActionTypes.updateCategory,
       payload: res.data.data
     })
+
+    dispatch<any>(sortCategories());
   } catch (err) {
     console.log(err);
   }
@@ -258,6 +262,62 @@ export const updateBookmark = (bookmarkId: number, formData: NewBookmark, previo
         payload: res.data.data
       })
     }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+/**
+ * SORT CATEGORIES
+ */
+export interface SortCategoriesAction {
+  type: ActionTypes.sortCategories;
+  payload: string;
+}
+
+export const sortCategories = () => async (dispatch: Dispatch) => {
+  try {
+    const res = await axios.get<ApiResponse<Config>>('/api/config/useOrdering');
+
+    dispatch<SortCategoriesAction>({
+      type: ActionTypes.sortCategories,
+      payload: res.data.data.value
+    })
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+/**
+ * REORDER CATEGORIES
+ */
+export interface ReorderCategoriesAction {
+  type: ActionTypes.reorderCategories;
+  payload: Category[];
+}
+
+interface ReorderQuery {
+  categories: {
+    id: number;
+    orderId: number;
+  }[]
+}
+
+export const reorderCategories = (categories: Category[]) => async (dispatch: Dispatch) => {
+  try {
+    const updateQuery: ReorderQuery = { categories: [] }
+
+    categories.forEach((category, index) => updateQuery.categories.push({
+      id: category.id,
+      orderId: index + 1
+    }))
+
+    await axios.put<ApiResponse<{}>>('/api/categories/0/reorder', updateQuery);
+
+    dispatch<ReorderCategoriesAction>({
+      type: ActionTypes.reorderCategories,
+      payload: categories
+    })
   } catch (err) {
     console.log(err);
   }

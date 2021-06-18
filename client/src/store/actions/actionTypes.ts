@@ -15,6 +15,8 @@ import {
   PinCategoryAction,
   DeleteCategoryAction,
   UpdateCategoryAction,
+  SortCategoriesAction,
+  ReorderCategoriesAction,
   // Bookmarks
   AddBookmarkAction,
   DeleteBookmarkAction,
@@ -49,6 +51,8 @@ export enum ActionTypes {
   pinCategory = 'PIN_CATEGORY',
   deleteCategory = 'DELETE_CATEGORY',
   updateCategory = 'UPDATE_CATEGORY',
+  sortCategories = 'SORT_CATEGORIES',
+  reorderCategories = 'REORDER_CATEGORIES',
   // Bookmarks
   addBookmark = 'ADD_BOOKMARK',
   deleteBookmark = 'DELETE_BOOKMARK',
@@ -78,6 +82,8 @@ export type Action =
   PinCategoryAction |
   DeleteCategoryAction |
   UpdateCategoryAction |
+  SortCategoriesAction |
+  ReorderCategoriesAction |
   // Bookmarks
   AddBookmarkAction |
   DeleteBookmarkAction |

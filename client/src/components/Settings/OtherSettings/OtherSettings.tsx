@@ -2,7 +2,7 @@ import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 
 // Redux
 import { connect } from 'react-redux';
-import { createNotification, updateConfig, sortApps } from '../../../store/actions';
+import { createNotification, updateConfig, sortApps, sortCategories } from '../../../store/actions';
 
 // Typescript
 import { GlobalState, NewNotification, SettingsForm } from '../../../interfaces';
@@ -18,6 +18,7 @@ interface ComponentProps {
   createNotification: (notification: NewNotification) => void;
   updateConfig: (formData: SettingsForm) => void;
   sortApps: () => void;
+  sortCategories: () => void;
   loading: boolean;
 }
 
@@ -52,8 +53,9 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
     // Update local page title
     document.title = formData.customTitle;
 
-    // Get sorted apps
+    // Sort apps and categories with new settings
     props.sortApps();
+    props.sortCategories();
   }
 
   // Input handler
@@ -143,4 +145,11 @@ const mapStateToProps = (state: GlobalState) => {
   }
 }
 
-export default connect(mapStateToProps, { createNotification, updateConfig, sortApps })(OtherSettings);
+const actions = {
+  createNotification,
+  updateConfig,
+  sortApps,
+  sortCategories
+}
+
+export default connect(mapStateToProps, actions)(OtherSettings);

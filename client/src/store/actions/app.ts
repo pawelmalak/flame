@@ -174,7 +174,7 @@ export const reorderApps = (apps: App[]) => async (dispatch: Dispatch) => {
 
 export interface SortAppsAction {
   type: ActionTypes.sortApps;
-  payload: {};
+  payload: string;
 }
 
 export const sortApps = () => async (dispatch: Dispatch) => {
