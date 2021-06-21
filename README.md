@@ -34,7 +34,10 @@ npm run dev-init
 npm run dev
 ```
 
-## Building Docker images
+## Installation 
+
+### With Docker (recommended)
+#### Building images
 ```sh
 # build image for amd64 only
 docker build -t flame .
@@ -47,33 +50,43 @@ docker buildx build \
   -t flame:multiarch .
 ```
 
-## Deployment with Docker
+#### Deployment
 ```sh
 # run container
 docker run -p 5005:5005 -v /path/to/data:/app/data flame
 ```
 
+### Without Docker
+Follow instructions from wiki: [Installation without Docker](https://github.com/pawelmalak/flame/wiki/Installation-without-docker)
+
 ## Functionality
 - Applications
-  - Create, update and delete applications using GUI
+  - Create, update, delete and organize applications using GUI
   - Pin your favourite apps to homescreen
 
 ![Homescreen screenshot](./github/_apps.png)
 
 - Bookmarks
-  - Create, update and delete bookmarks and categories using GUI
+  - Create, update, delete and organize bookmarks and categories using GUI
   - Pin your favourite categories to homescreen
 
 ![Homescreen screenshot](./github/_bookmarks.png)
 
 - Weather
   - Get current temperature, cloud coverage and weather status with animated icons
+
 - Themes
   - Customize your page by choosing from 12 color themes 
 
 ![Homescreen screenshot](./github/_themes.png)
 
 ## Usage
+### Setting up weather module
+1. Obtain API Key from [Weather API](https://www.weatherapi.com/pricing.aspx).
+   > Free plan allows for 1M calls per month. Flame is making less then 3K API calls per month.
+2. Get lat/long for your location. You can get them from [latlong.net](https://www.latlong.net/convert-address-to-lat-long.html).
+3. Enter and save data. Weather widget will now update and should be visible on Home page.
+
 ### Supported URL formats for applications and bookmarks
 #### Rules
 - URL starts with `http://`
