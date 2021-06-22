@@ -1,5 +1,7 @@
 const ErrorResponse = require('../utils/ErrorResponse');
 const colors = require('colors');
+const Logger = require('../utils/Logger');
+const logger = new Logger();
 
 const errorHandler = (err, req, res, next) => {
   let error = { ...err };
@@ -10,8 +12,7 @@ const errorHandler = (err, req, res, next) => {
   //   error = new ErrorResponse(`Field ${msg}`, 400);
   // }
 
-  console.log(error);
-  console.log(`${err}`);
+  logger.log(error.message.split(',')[0], 'ERROR');
 
   res.status(err.statusCode || 500).json({
     success: false,

@@ -1,11 +1,13 @@
 const WebSocket = require('ws');
+const Logger = require('./utils/Logger');
+const logger = new Logger();
 
 class Socket {
   constructor(server) {
     this.webSocketServer = new WebSocket.Server({ server })
 
     this.webSocketServer.on('listening', () => {
-      console.log('Socket: listen');
+      logger.log('Socket: listen');
     })
 
     this.webSocketServer.on('connection', (webSocketClient) => {

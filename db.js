@@ -1,4 +1,6 @@
 const { Sequelize } = require('sequelize');
+const Logger = require('./utils/Logger');
+const logger = new Logger();
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
@@ -9,17 +11,18 @@ const sequelize = new Sequelize({
 const connectDB = async () => {
   try {
     await sequelize.authenticate();
-    console.log('Connected to database');
+    logger.log('Connected to database');
     
-    const syncModels = true;
-
+    const syncModels = false;
+    
     if (syncModels) {
-      console.log('Starting model synchronization');
+      logger.log('Starting model synchronization');
       await sequelize.sync({ alter: true });
-      console.log('All models were synchronized');
+      logger.log('All models were synchronized');
     }
   } catch (error) {
-    throw new Error(`Unable to connect to the database: ${error.message}`);
+    logger.log(`Unable to connect to the database: ${error.message}`, 'ERROR');
+    process.exit(1);
   }
 }
 

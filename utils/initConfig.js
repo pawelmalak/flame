@@ -1,6 +1,8 @@
 const { Op } = require('sequelize');
 const Config = require('../models/Config');
 const { config } = require('./initialConfig.json');
+const Logger = require('./Logger');
+const logger = new Logger();
 
 const initConfig = async () => {
   // Get config values
@@ -26,7 +28,7 @@ const initConfig = async () => {
     }
   })
 
-  console.log('Initial config created');
+  logger.log('Initial config created');
   return;
 }
 

@@ -1,40 +1,39 @@
-const fs = require('fs');
-
 class Logger {
-  constructor() {
-    this.logFileHandler();
+  log(message, level = 'INFO') {
+    console.log(`[${this.generateTimestamp()}] [${level}] ${message}`)
   }
 
-  logFileHandler() {
-    if (!fs.existsSync('./flame.log')) {
-      fs.writeFileSync('./flame.log', '');
-    } else {
-      console.log('file exists');
+  generateTimestamp() {
+    const d = new Date();
+
+    // Date
+    const year = d.getFullYear();
+    const month = this.parseDate(d.getMonth() + 1);
+    const day = this.parseDate(d.getDate());
+
+    // Time
+    const hour = this.parseDate(d.getHours());
+    const minutes = this.parseDate(d.getMinutes());
+    const seconds = this.parseDate(d.getSeconds());
+    const miliseconds = this.parseDate(d.getMilliseconds(), true);
+
+    // Timezone
+    const tz = -d.getTimezoneOffset() / 60;
+
+    return `${year}-${month}-${day} ${hour}:${minutes}:${seconds}.${miliseconds} UTC${tz > 0 ? '+' + tz : tz}`;
+  }
+
+  parseDate(date, ms = false) {
+    if (ms) {
+      if (date >= 10 && date < 100) {
+        return `0${date}`;
+      } else if (date < 10) {
+        return `00${date}`;
+      }
     }
-  }
 
-  writeLog(logMsg, logType) {
-
-  }
-
-  generateLog(logMsg, logType) {
-    const now = new Date();
-    const date = `${this.parseNumber(now.getDate())}-${this.parseNumber(now.getMonth() + 1)}-${now.getFullYear()}`;
-    const time = `${this.parseNumber(now.getHours())}:${this.parseNumber(now.getMinutes())}:${this.parseNumber(now.getSeconds())}.${now.getMilliseconds()}`;
-    const log = `[${date} ${time}]: ${logType} ${logMsg}`;
-    return log;
-    //  const timestamp = new Date().toISOString();
-  }
-
-  parseNumber(number) {
-    if (number > 9) {
-      return number;
-    } else {
-      return `0${number}`;
-    }
+    return date < 10 ? `0${date}` : date.toString();
   }
 }
 
-// console.log(logger.generateLog('testMsg', 'INFO'));
-
-module.exports = new Logger();
+module.exports = Logger;

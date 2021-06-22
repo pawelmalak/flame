@@ -7,6 +7,8 @@ const Socket = require('./Socket');
 const Sockets = require('./Sockets');
 const associateModels = require('./models/associateModels');
 const initConfig = require('./utils/initConfig');
+const Logger = require('./utils/Logger');
+const logger = new Logger();
 
 const PORT = process.env.PORT || 5005;
 
@@ -24,6 +26,6 @@ const PORT = process.env.PORT || 5005;
   Sockets.registerSocket('weather', weatherSocket);
 
   server.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT} in ${process.env.NODE_ENV} mode`);
+    logger.log(`Server is running on port ${PORT} in ${process.env.NODE_ENV} mode`);
   })
 })();
