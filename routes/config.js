@@ -8,6 +8,8 @@ const {
   updateValue,
   updateValues,
   deletePair,
+  updateCss,
+  getCss,
 } = require('../controllers/config');
 
 router
@@ -21,5 +23,10 @@ router
   .get(getSinglePair)
   .put(updateValue)
   .delete(deletePair);
+
+router
+  .route('/0/css')
+  .get(getCss)
+  .put(updateCss);
 
 module.exports = router;

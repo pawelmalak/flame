@@ -9,6 +9,7 @@ import Themer from '../Themer/Themer';
 import WeatherSettings from './WeatherSettings/WeatherSettings';
 import OtherSettings from './OtherSettings/OtherSettings';
 import AppDetails from './AppDetails/AppDetails';
+import StyleSettings from './StyleSettings/StyleSettings';
 
 const Settings = (): JSX.Element => {
   return (
@@ -44,6 +45,13 @@ const Settings = (): JSX.Element => {
             className={classes.SettingsNavLink}
             activeClassName={classes.SettingsNavLinkActive}
             exact
+            to='/settings/css'>
+            CSS
+          </NavLink>
+          <NavLink
+            className={classes.SettingsNavLink}
+            activeClassName={classes.SettingsNavLinkActive}
+            exact
             to='/settings/app'>
             App
           </NavLink>
@@ -53,6 +61,7 @@ const Settings = (): JSX.Element => {
             <Route exact path='/settings' component={Themer} />
             <Route path='/settings/weather' component={WeatherSettings} />
             <Route path='/settings/other' component={OtherSettings} />
+            <Route path='/settings/css' component={StyleSettings} />
             <Route path='/settings/app' component={AppDetails} />
           </Switch>
         </section>

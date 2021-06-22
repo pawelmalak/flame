@@ -10,20 +10,20 @@ const initConfig = require('./utils/initConfig');
 
 const PORT = process.env.PORT || 5005;
 
-connectDB()
-  .then(() => {
-    associateModels();
-    initConfig();
-  });
+(async () => {
+  await connectDB();
+  await associateModels();
+  await initConfig();
 
-// Create server for Express API and WebSockets
-const server = http.createServer();
-server.on('request', api);
+  // Create server for Express API and WebSockets
+  const server = http.createServer();
+  server.on('request', api);
 
-// Register weatherSocket
-const weatherSocket = new Socket(server);
-Sockets.registerSocket('weather', weatherSocket);
+  // Register weatherSocket
+  const weatherSocket = new Socket(server);
+  Sockets.registerSocket('weather', weatherSocket);
 
-server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT} in ${process.env.NODE_ENV} mode`);
-})
+  server.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT} in ${process.env.NODE_ENV} mode`);
+  })
+})();

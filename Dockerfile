@@ -1,5 +1,7 @@
 FROM node:14-alpine
 
+RUN apk update && apk add --no-cache nano
+
 WORKDIR /app
 
 COPY package*.json ./
