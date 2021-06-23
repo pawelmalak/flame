@@ -35,6 +35,10 @@
     {
       "key": "useOrdering",
       "value": "createdAt"
+    },
+    {
+      "key": "openSameTab",
+      "value": false
     }
   ]
 }

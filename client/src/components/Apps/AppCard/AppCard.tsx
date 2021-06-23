@@ -3,6 +3,7 @@ import Icon from '../../UI/Icons/Icon/Icon';
 import { iconParser, urlParser } from '../../../utility';
 
 import { App } from '../../../interfaces';
+import { searchConfig } from '../../../utility';
 
 interface ComponentProps {
   app: App;
@@ -15,12 +16,19 @@ const AppCard = (props: ComponentProps): JSX.Element => {
   return (
     <a
       href={redirectUrl}
-      target='_blank'
+      target={searchConfig('openSameTab', false) ? '' : '_blank'}
       rel='noreferrer'
       className={classes.AppCard}
     >
       <div className={classes.AppCardIcon}>
-        <Icon icon={iconParser(props.app.icon)} />
+        {(/.(jpeg|jpg|png)$/).test(props.app.icon)
+          ? <img
+              src={`/uploads/${props.app.icon}`}
+              alt={`${props.app.name} icon`}
+              className={classes.CustomIcon}
+            />
+          : <Icon icon={iconParser(props.app.icon)} />
+        }
       </div>
       <div className={classes.AppCardDetails}>
         <h5>{props.app.name}</h5>

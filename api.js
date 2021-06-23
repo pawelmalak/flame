@@ -1,14 +1,16 @@
-const path = require('path');
+const { join } = require('path');
 const express = require('express');
 const errorHandler = require('./middleware/errorHandler');
 
 const api = express();
 
 // Static files
-api.use(express.static(path.join(__dirname, 'public')));
+api.use(express.static(join(__dirname, 'public')));
+api.use('/uploads', express.static(join(__dirname, 'data/uploads')));
 api.get(/^\/(?!api)/, (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/index.html'));
+  res.sendFile(join(__dirname, 'public/index.html'));
 })
+
 
 // Body parser
 api.use(express.json());

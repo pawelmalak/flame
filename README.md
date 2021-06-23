@@ -99,6 +99,11 @@ Follow instructions from wiki: [Installation without Docker](https://github.com/
   - Format: `www.domain.com`, `domain.com`, `sub.domain.com`, `local`, `ip`, `ip:port`
   - Redirect: `http://{dest}`
 
+### Custom CSS
+> This is an experimental feature. Its behaviour might change in the future.
+> 
+Follow instructions from wiki: [Custom CSS](https://github.com/pawelmalak/flame/wiki/Custom-CSS)
+
 ## Support
 If you want to support development of Flame and my upcoming self-hosted and open source projects you can use the following link:
 

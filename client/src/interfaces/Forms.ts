@@ -11,4 +11,5 @@ export interface SettingsForm {
   pinCategoriesByDefault: number;
   hideHeader: number;
   useOrdering: string;
+  openSameTab: number;
 }

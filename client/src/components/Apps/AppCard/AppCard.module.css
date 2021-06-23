@@ -40,3 +40,11 @@
     background-color: rgba(0,0,0,0.2);
   }
 }
+
+.CustomIcon {
+  width: 90%;
+  height: 90%;
+  margin-top: 2px;
+  margin-left: 2px;
+  object-fit: contain;
+}

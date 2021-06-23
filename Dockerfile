@@ -12,6 +12,7 @@ COPY . .
 
 RUN mkdir -p ./public ./data \
     && cd ./client \
+    && npm install --production \
     && npm run build \
     && cd .. \
     && mv ./client/build/* ./public \

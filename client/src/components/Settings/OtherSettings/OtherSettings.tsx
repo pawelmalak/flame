@@ -29,7 +29,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
     pinAppsByDefault: 1,
     pinCategoriesByDefault: 1,
     hideHeader: 0,
-    useOrdering: 'createdAt'
+    useOrdering: 'createdAt',
+    openSameTab: 0
   })
 
   // Get config
@@ -39,7 +40,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
       pinAppsByDefault: searchConfig('pinAppsByDefault', 1),
       pinCategoriesByDefault: searchConfig('pinCategoriesByDefault', 1),
       hideHeader: searchConfig('hideHeader', 0),
-      useOrdering: searchConfig('useOrdering', 'createdAt')
+      useOrdering: searchConfig('useOrdering', 'createdAt'),
+      openSameTab: searchConfig('openSameTab', 0)
     })
   }, [props.loading]);
 
@@ -132,6 +134,18 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           <option value='createdAt'>By creation date</option>
           <option value='name'>Alphabetical order</option>
           <option value='orderId'>Custom order</option>
+        </select>
+      </InputGroup>
+      <InputGroup>
+        <label htmlFor='openSameTab'>Open all links in the same tab</label>
+        <select
+          id='openSameTab'
+          name='openSameTab'
+          value={formData.openSameTab}
+          onChange={(e) => inputChangeHandler(e, true)}
+        >
+          <option value={1}>True</option>
+          <option value={0}>False</option>
         </select>
       </InputGroup>
     <Button>Save changes</Button>
