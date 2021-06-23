@@ -17,7 +17,6 @@ exports.createApp = asyncWrapper(async (req, res, next) => {
   let _body = { ...req.body };
 
   if (req.file) {
-    console.log(req.file.filename)
     _body.icon = req.file.filename;
   }
 

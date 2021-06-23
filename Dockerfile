@@ -10,7 +10,7 @@ RUN npm install --production
 
 COPY . .
 
-RUN mkdir -p ./public ./data \
+RUN mkdir -p ./public ./data ./data/uploads \
     && cd ./client \
     && npm install --production \
     && npm run build \
