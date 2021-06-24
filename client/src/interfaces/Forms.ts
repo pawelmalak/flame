@@ -10,6 +10,8 @@ export interface SettingsForm {
   pinAppsByDefault: number;
   pinCategoriesByDefault: number;
   hideHeader: number;
+  hideApps: number;
+  hideCategories: number;
   useOrdering: string;
   openSameTab: number;
 }

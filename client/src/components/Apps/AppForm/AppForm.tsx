@@ -18,7 +18,7 @@ interface ComponentProps {
 }
 
 const AppForm = (props: ComponentProps): JSX.Element => {
-  const [useCustomIcon, toggleUseCustomIcon] = useState<boolean>(true);
+  const [useCustomIcon, toggleUseCustomIcon] = useState<boolean>(false);
   const [customIcon, setCustomIcon] = useState<File | null>(null);
   const [formData, setFormData] = useState<NewApp>({
     name: '',

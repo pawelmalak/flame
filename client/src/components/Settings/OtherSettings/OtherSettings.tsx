@@ -11,6 +11,9 @@ import { GlobalState, NewNotification, SettingsForm } from '../../../interfaces'
 import InputGroup from '../../UI/Forms/InputGroup/InputGroup';
 import Button from '../../UI/Buttons/Button/Button';
 
+// CSS
+import classes from './OtherSettings.module.css';
+
 // Utils
 import { searchConfig } from '../../../utility';
 
@@ -29,6 +32,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
     pinAppsByDefault: 1,
     pinCategoriesByDefault: 1,
     hideHeader: 0,
+    hideApps: 0,
+    hideCategories: 0,
     useOrdering: 'createdAt',
     openSameTab: 0
   })
@@ -40,6 +45,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
       pinAppsByDefault: searchConfig('pinAppsByDefault', 1),
       pinCategoriesByDefault: searchConfig('pinCategoriesByDefault', 1),
       hideHeader: searchConfig('hideHeader', 0),
+      hideApps: searchConfig('hideApps', 0),
+      hideCategories: searchConfig('hideCategories', 0),
       useOrdering: searchConfig('useOrdering', 'createdAt'),
       openSameTab: searchConfig('openSameTab', 0)
     })
@@ -76,6 +83,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
 
   return (
     <form onSubmit={(e) => formSubmitHandler(e)}>
+      {/* OTHER OPTIONS */}
+      <h2 className={classes.SettingsSection}>Miscellaneous</h2>
       <InputGroup>
         <label htmlFor='customTitle'>Custom page title</label>
         <input
@@ -87,6 +96,9 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           onChange={(e) => inputChangeHandler(e)}
         />
       </InputGroup>
+
+      {/* BEAHVIOR OPTIONS */}
+      <h2 className={classes.SettingsSection}>App Behavior</h2>
       <InputGroup>
         <label htmlFor='pinAppsByDefault'>Pin new applications by default</label>
         <select
@@ -112,18 +124,6 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
         </select>
       </InputGroup>
       <InputGroup>
-        <label htmlFor='hideHeader'>Hide greeting and date</label>
-        <select
-          id='hideHeader'
-          name='hideHeader'
-          value={formData.hideHeader}
-          onChange={(e) => inputChangeHandler(e, true)}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
-      </InputGroup>
-      <InputGroup>
         <label htmlFor='useOrdering'>Sorting type</label>
         <select
           id='useOrdering'
@@ -142,6 +142,45 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           id='openSameTab'
           name='openSameTab'
           value={formData.openSameTab}
+          onChange={(e) => inputChangeHandler(e, true)}
+        >
+          <option value={1}>True</option>
+          <option value={0}>False</option>
+        </select>
+      </InputGroup>
+
+      {/* MODULES OPTIONS */}
+      <h2 className={classes.SettingsSection}>Modules</h2>
+      <InputGroup>
+        <label htmlFor='hideHeader'>Hide greeting and date</label>
+        <select
+          id='hideHeader'
+          name='hideHeader'
+          value={formData.hideHeader}
+          onChange={(e) => inputChangeHandler(e, true)}
+        >
+          <option value={1}>True</option>
+          <option value={0}>False</option>
+        </select>
+      </InputGroup>
+      <InputGroup>
+        <label htmlFor='hideApps'>Hide applications</label>
+        <select
+          id='hideApps'
+          name='hideApps'
+          value={formData.hideApps}
+          onChange={(e) => inputChangeHandler(e, true)}
+        >
+          <option value={1}>True</option>
+          <option value={0}>False</option>
+        </select>
+      </InputGroup>
+      <InputGroup>
+        <label htmlFor='hideCategories'>Hide categories</label>
+        <select
+          id='hideCategories'
+          name='hideCategories'
+          value={formData.hideCategories}
           onChange={(e) => inputChangeHandler(e, true)}
         >
           <option value={1}>True</option>

@@ -1,0 +1,9 @@
+.SettingsSection {
+  color: var(--color-primary);
+  padding-bottom: 3px;
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: 500;
+  border-bottom: 2px solid var(--color-accent);
+  display: inline-block;
+}

@@ -39,6 +39,14 @@
     {
       "key": "openSameTab",
       "value": false
+    },
+    {
+      "key": "hideApps",
+      "value": false
+    },
+    {
+      "key": "hideCategories",
+      "value": false
     }
   ]
 }

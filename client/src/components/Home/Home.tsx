@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 // Redux
@@ -101,24 +101,33 @@ const Home = (props: ComponentProps): JSX.Element => {
         : <div></div>
       }
       
-      <SectionHeadline title='Applications' link='/applications' />
-      {appsLoading
-        ? <Spinner />
-        : <AppGrid
-          apps={apps.filter((app: App) => app.isPinned)}
-          totalApps={apps.length}
-        />
+      {searchConfig('hideApps', 0) !== 1
+        ? (<Fragment>
+            <SectionHeadline title='Applications' link='/applications' />
+            {appsLoading
+              ? <Spinner />
+              : <AppGrid
+                apps={apps.filter((app: App) => app.isPinned)}
+                totalApps={apps.length}
+              />
+            }
+            <div className={classes.HomeSpace}></div>
+          </Fragment>)
+        : <div></div>
       }
 
-      <div className={classes.HomeSpace}></div>
-
-      <SectionHeadline title='Bookmarks' link='/bookmarks' />
-      {categoriesLoading
-        ? <Spinner />
-        : <BookmarkGrid
-            categories={categories.filter((category: Category) => category.isPinned)}
-            totalCategories={categories.length}
-        />
+      {searchConfig('hideCategories', 0) !== 1
+        ? (<Fragment>
+            <SectionHeadline title='Bookmarks' link='/bookmarks' />
+            {categoriesLoading
+              ? <Spinner />
+              : <BookmarkGrid
+                  categories={categories.filter((category: Category) => category.isPinned)}
+                  totalCategories={categories.length}
+              />
+            }
+          </Fragment>)
+        : <div></div>
       }
 
       <Link to='/settings' className={classes.SettingsButton}>
