@@ -13,7 +13,7 @@ const connectDB = async () => {
     await sequelize.authenticate();
     logger.log('Connected to database');
     
-    const syncModels = false;
+    const syncModels = true;
     
     if (syncModels) {
       logger.log('Starting model synchronization');

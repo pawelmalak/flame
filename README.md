@@ -81,6 +81,23 @@ Follow instructions from wiki: [Installation without Docker](https://github.com/
 ![Homescreen screenshot](./github/_themes.png)
 
 ## Usage
+### Search bar
+> While opening links, module will follow `Open all links in the same tab` setting
+#### Supported search engines
+| Name       | Prefix | Search URL                          |
+|------------|--------|-------------------------------------|
+| Disroot    | /ds    | http://search.disroot.org/search?q= |
+| DuckDuckGo | /d     | https://duckduckgo.com/?q=          |
+| Google     | /g     | https://www.google.com/search?q=    |
+
+#### Supported services
+| Name               | Prefix | Search URL                                    |
+|--------------------|--------|-----------------------------------------------|
+| IMDb               | /im    | https://www.imdb.com/find?q=                  |
+| Reddit             | /r     | -https://www.reddit.com/search?q=             |
+| The Movie Database | /mv    | https://www.themoviedb.org/search?query=      |
+| Youtube            | /yt    | https://www.youtube.com/results?search_query= |
+
 ### Setting up weather module
 1. Obtain API Key from [Weather API](https://www.weatherapi.com/pricing.aspx).
    > Free plan allows for 1M calls per month. Flame is making less then 3K API calls per month.

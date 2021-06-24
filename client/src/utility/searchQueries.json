@@ -1,0 +1,39 @@
+{
+  "queries": [
+    {
+      "name": "Google",
+      "prefix": "g",
+      "template": "https://www.google.com/search?q="
+    },
+    {
+      "name": "DuckDuckGo",
+      "prefix": "d",
+      "template": "https://duckduckgo.com/?q="
+    },
+    {
+      "name": "Disroot",
+      "prefix": "ds",
+      "template": "http://search.disroot.org/search?q="
+    },
+    {
+      "name": "YouTube",
+      "prefix": "yt",
+      "template": "https://www.youtube.com/results?search_query="
+    },
+    {
+      "name": "Reddit",
+      "prefix": "r",
+      "template": "https://www.reddit.com/search?q="
+    },
+    {
+      "name": "IMDb",
+      "prefix": "im",
+      "template": "https://www.imdb.com/find?q="
+    },
+    {
+      "name": "The Movie Database",
+      "prefix": "mv",
+      "template": "https://www.themoviedb.org/search?query="
+    }
+  ]
+}

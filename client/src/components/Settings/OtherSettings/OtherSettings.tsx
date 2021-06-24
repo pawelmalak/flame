@@ -34,6 +34,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
     hideHeader: 0,
     hideApps: 0,
     hideCategories: 0,
+    hideSearch: 0,
     useOrdering: 'createdAt',
     openSameTab: 0
   })
@@ -47,6 +48,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
       hideHeader: searchConfig('hideHeader', 0),
       hideApps: searchConfig('hideApps', 0),
       hideCategories: searchConfig('hideCategories', 0),
+      hideSearch: searchConfig('hideSearch', 0),
       useOrdering: searchConfig('useOrdering', 'createdAt'),
       openSameTab: searchConfig('openSameTab', 0)
     })
@@ -151,6 +153,18 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
 
       {/* MODULES OPTIONS */}
       <h2 className={classes.SettingsSection}>Modules</h2>
+      <InputGroup>
+        <label htmlFor='hideSearch'>Hide search bar</label>
+        <select
+          id='hideSearch'
+          name='hideSearch'
+          value={formData.hideSearch}
+          onChange={(e) => inputChangeHandler(e, true)}
+        >
+          <option value={1}>True</option>
+          <option value={0}>False</option>
+        </select>
+      </InputGroup>
       <InputGroup>
         <label htmlFor='hideHeader'>Hide greeting and date</label>
         <select

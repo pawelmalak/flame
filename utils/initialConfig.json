@@ -47,6 +47,10 @@
     {
       "key": "hideCategories",
       "value": false
+    },
+    {
+      "key": "hideSearch",
+      "value": false
     }
   ]
 }

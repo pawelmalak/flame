@@ -22,6 +22,7 @@ import classes from './Home.module.css';
 import AppGrid from '../Apps/AppGrid/AppGrid';
 import BookmarkGrid from '../Bookmarks/BookmarkGrid/BookmarkGrid';
 import WeatherWidget from '../Widgets/WeatherWidget/WeatherWidget';
+import SearchBox from '../SearchBox/SearchBox';
 
 // Functions
 import { greeter } from './functions/greeter';
@@ -87,6 +88,11 @@ const Home = (props: ComponentProps): JSX.Element => {
   
   return (
     <Container>
+      {searchConfig('hideSearch', 0) !== 1
+        ? <SearchBox />
+        : <div></div>
+      }
+
       {searchConfig('hideHeader', 0) !== 1
         ? (
           <header className={classes.Header}>

@@ -8,3 +8,4 @@ export * from './Category';
 export * from './Notification';
 export * from './Config';
 export * from './Forms';
+export * from './Query';

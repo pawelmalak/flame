@@ -1,7 +1,9 @@
 const fs = require('fs');
-const { join } = require('path');
 const multer = require('multer');
-const uuid = require('uuid');
+
+if (!fs.existsSync('data/uploads')) {
+  fs.mkdirSync('data/uploads');
+}
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
