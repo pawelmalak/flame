@@ -14,11 +14,17 @@ exports.createApp = asyncWrapper(async (req, res, next) => {
   });
 
   let app;
+  let _body = { ...req.body };
+
+  if (req.file) {
+    _body.icon = req.file.filename;
+  }
+
 
   if (pinApps) {
     if (parseInt(pinApps.value)) {
       app = await App.create({
-        ...req.body,
+        ..._body,
         isPinned: true
       })
     } else {

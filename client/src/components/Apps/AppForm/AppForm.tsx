@@ -3,18 +3,23 @@ import { connect } from 'react-redux';
 import { addApp, updateApp } from '../../../store/actions';
 import { App, NewApp } from '../../../interfaces';
 
+import classes from './AppForm.module.css';
+
 import ModalForm from '../../UI/Forms/ModalForm/ModalForm';
 import InputGroup from '../../UI/Forms/InputGroup/InputGroup';
 import Button from '../../UI/Buttons/Button/Button';
+import axios from 'axios';
 
 interface ComponentProps {
   modalHandler: () => void;
-  addApp: (formData: NewApp) => any;
+  addApp: (formData: NewApp | FormData) => any;
   updateApp: (id: number, formData: NewApp) => any;
   app?: App;
 }
 
 const AppForm = (props: ComponentProps): JSX.Element => {
+  const [useCustomIcon, toggleUseCustomIcon] = useState<boolean>(false);
+  const [customIcon, setCustomIcon] = useState<File | null>(null);
   const [formData, setFormData] = useState<NewApp>({
     name: '',
     url: '',
@@ -52,11 +57,27 @@ const AppForm = (props: ComponentProps): JSX.Element => {
     })
   }
 
+  const fileChangeHandler = (e: ChangeEvent<HTMLInputElement>): void => {
+    if (e.target.files) {
+      setCustomIcon(e.target.files[0]);
+    }
+  }
+
   const formSubmitHandler = (e: SyntheticEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
     if (!props.app) {
-      props.addApp(formData);
+      if (customIcon) {
+        const data = new FormData();
+        data.append('icon', customIcon);
+
+        data.append('name', formData.name);
+        data.append('url', formData.url);
+
+        props.addApp(data);
+      } else {
+        props.addApp(formData);
+      }
     } else {
       props.updateApp(props.app.id, formData);
       props.modalHandler();
@@ -108,26 +129,51 @@ const AppForm = (props: ComponentProps): JSX.Element => {
           </a>
         </span>
       </InputGroup>
-      <InputGroup>
-        <label htmlFor='icon'>App Icon</label>
-        <input
-          type='text'
-          name='icon'
-          id='icon'
-          placeholder='book-open-outline'
-          required
-          value={formData.icon}
-          onChange={(e) => inputChangeHandler(e)}
-        />
-        <span>
-          Use icon name from MDI. 
-          <a
-            href='https://materialdesignicons.com/'
-            target='blank'>
-            {' '}Click here for reference
-          </a>
-        </span>
-      </InputGroup>
+      {!useCustomIcon
+        // use mdi icon
+        ? (<InputGroup>
+            <label htmlFor='icon'>App Icon</label>
+            <input
+              type='text'
+              name='icon'
+              id='icon'
+              placeholder='book-open-outline'
+              required
+              value={formData.icon}
+              onChange={(e) => inputChangeHandler(e)}
+            />
+            <span>
+              Use icon name from MDI. 
+              <a
+                href='https://materialdesignicons.com/'
+                target='blank'>
+                {' '}Click here for reference
+              </a>
+            </span>
+            <span
+              onClick={() => toggleUseCustomIcon(!useCustomIcon)}
+              className={classes.Switch}>
+              Switch to custom icon upload
+            </span>
+          </InputGroup>)
+        // upload custom icon
+        : (<InputGroup>
+            <label htmlFor='icon'>App Icon</label>
+            <input
+              type='file'
+              name='icon'
+              id='icon'
+              required
+              onChange={(e) => fileChangeHandler(e)}
+              accept='.jpg,.jpeg,.png'
+            />
+            <span
+              onClick={() => toggleUseCustomIcon(!useCustomIcon)}
+              className={classes.Switch}>
+              Switch to MDI
+            </span>
+          </InputGroup>)
+      }
       {!props.app
         ? <Button>Add new application</Button>
         : <Button>Update application</Button>

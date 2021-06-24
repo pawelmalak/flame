@@ -4,12 +4,14 @@
 
 .InputGroup label,
 .InputGroup span,
-.InputGroup input {
+.InputGroup input,
+.InputGroup textarea {
   display: block;
 }
 
 .InputGroup input,
-.InputGroup select {
+.InputGroup select,
+.InputGroup textarea {
   margin: 8px 0;
   width: 100%;
   border: none;
@@ -30,4 +32,9 @@
 
 .InputGroup label {
   color: var(--color-primary);
+}
+
+.InputGroup textarea {
+  resize: none;
+  height: 50vh;
 }

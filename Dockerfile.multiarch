@@ -1,5 +1,7 @@
 FROM node:14-alpine
 
+RUN apk update && apk add --no-cache nano
+
 WORKDIR /app
 
 COPY package*.json ./
@@ -11,6 +13,7 @@ COPY . .
 
 RUN mkdir -p ./public ./data \
     && cd ./client \
+    && npm install --production \
     && npm run build \
     && cd .. \
     && mv ./client/build/* ./public \

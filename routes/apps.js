@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const upload = require('../middleware/multer');
 
 const {
   createApp,
@@ -12,7 +13,7 @@ const {
 
 router
   .route('/')
-  .post(createApp)
+  .post(upload, createApp)
   .get(getApps);
 
 router

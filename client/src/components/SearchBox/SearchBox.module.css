@@ -1,0 +1,17 @@
+.SearchBox {
+  width: 100%;
+  padding: 10px 0;
+  color: var(--color-primary);
+  /* font-size: 20px; */
+  margin-bottom: 20px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid var(--color-accent);
+  opacity: 0.5;
+  transition: all 0.2s;
+}
+
+.SearchBox:focus {
+  opacity: 1;
+  outline: none;
+}

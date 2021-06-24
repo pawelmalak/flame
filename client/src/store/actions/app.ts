@@ -61,7 +61,7 @@ export interface AddAppAction {
   payload: App;
 }
 
-export const addApp = (formData: NewApp) => async (dispatch: Dispatch) => {
+export const addApp = (formData: NewApp | FormData) => async (dispatch: Dispatch) => {
   try {
     const res = await axios.post<ApiResponse<App>>('/api/apps', formData);
 
@@ -69,7 +69,7 @@ export const addApp = (formData: NewApp) => async (dispatch: Dispatch) => {
       type: ActionTypes.createNotification,
       payload: {
         title: 'Success',
-        message: `App ${formData.name} added`
+        message: `App added`
       }
     })
 
@@ -116,7 +116,7 @@ export interface UpdateAppAction {
   payload: App;
 }
 
-export const updateApp = (id: number, formData: NewApp) => async (dispatch: Dispatch) => {
+export const updateApp = (id: number, formData: NewApp | FormData) => async (dispatch: Dispatch) => {
   try {
     const res = await axios.put<ApiResponse<App>>(`/api/apps/${id}`, formData);
 
@@ -124,7 +124,7 @@ export const updateApp = (id: number, formData: NewApp) => async (dispatch: Disp
       type: ActionTypes.createNotification,
       payload: {
         title: 'Success',
-        message: `App ${formData.name} updated`
+        message: `App updated`
       }
     })
 

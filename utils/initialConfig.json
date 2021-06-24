@@ -35,6 +35,22 @@
     {
       "key": "useOrdering",
       "value": "createdAt"
+    },
+    {
+      "key": "openSameTab",
+      "value": false
+    },
+    {
+      "key": "hideApps",
+      "value": false
+    },
+    {
+      "key": "hideCategories",
+      "value": false
+    },
+    {
+      "key": "hideSearch",
+      "value": false
     }
   ]
 }

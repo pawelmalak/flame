@@ -2,6 +2,8 @@ const asyncWrapper = require('../middleware/asyncWrapper');
 const ErrorResponse = require('../utils/ErrorResponse');
 const Config = require('../models/Config');
 const { Op } = require('sequelize');
+const File = require('../utils/File');
+const { join } = require('path');
 
 // @desc      Insert new key:value pair
 // @route     POST /api/config
@@ -121,6 +123,33 @@ exports.deletePair = asyncWrapper(async (req, res, next) => {
   }
 
   await pair.destroy();
+
+  res.status(200).json({
+    success: true,
+    data: {}
+  })
+})
+
+// @desc      Get custom CSS file
+// @route     GET /api/config/0/css
+// @access    Public
+exports.getCss = asyncWrapper(async (req, res, next) => {
+  const file = new File(join(__dirname, '../public/flame.css'));
+  const content = file.read();
+
+  res.status(200).json({
+    success: true,
+    data: content
+  })
+})
+
+
+// @desc      Update custom CSS file
+// @route     PUT /api/config/0/css
+// @access    Public
+exports.updateCss = asyncWrapper(async (req, res, next) => {
+  const file = new File(join(__dirname, '../public/flame.css'));
+  file.write(req.body.styles);
 
   res.status(200).json({
     success: true,

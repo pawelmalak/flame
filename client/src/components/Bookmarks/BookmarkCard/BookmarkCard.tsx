@@ -2,7 +2,7 @@ import { Bookmark, Category } from '../../../interfaces';
 import classes from './BookmarkCard.module.css';
 
 import Icon from '../../UI/Icons/Icon/Icon';
-import { iconParser, urlParser } from '../../../utility';
+import { iconParser, urlParser, searchConfig } from '../../../utility';
 
 interface ComponentProps {
   category: Category;
@@ -19,7 +19,7 @@ const BookmarkCard = (props: ComponentProps): JSX.Element => {
           return (
             <a
               href={redirectUrl}
-              target='_blank'
+              target={searchConfig('openSameTab', false) ? '' : '_blank'}
               rel='noreferrer'
               key={`bookmark-${bookmark.id}`}>
               {bookmark.icon && (
