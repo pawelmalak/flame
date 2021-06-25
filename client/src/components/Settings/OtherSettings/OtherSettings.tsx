@@ -36,7 +36,9 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
     hideCategories: 0,
     hideSearch: 0,
     useOrdering: 'createdAt',
-    openSameTab: 0
+    appsSameTab: 0,
+    bookmarksSameTab: 0,
+    searchSameTab: 0
   })
 
   // Get config
@@ -50,7 +52,9 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
       hideCategories: searchConfig('hideCategories', 0),
       hideSearch: searchConfig('hideSearch', 0),
       useOrdering: searchConfig('useOrdering', 'createdAt'),
-      openSameTab: searchConfig('openSameTab', 0)
+      appsSameTab: searchConfig('appsSameTab', 0),
+      bookmarksSameTab: searchConfig('bookmarksSameTab', 0),
+      searchSameTab: searchConfig('searchSameTab', 0)
     })
   }, [props.loading]);
 
@@ -139,18 +143,41 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
         </select>
       </InputGroup>
       <InputGroup>
-        <label htmlFor='openSameTab'>Open all links in the same tab</label>
+        <label htmlFor='searchSameTab'>Open search results in the same tab</label>
         <select
-          id='openSameTab'
-          name='openSameTab'
-          value={formData.openSameTab}
+          id='searchSameTab'
+          name='searchSameTab'
+          value={formData.searchSameTab}
           onChange={(e) => inputChangeHandler(e, true)}
         >
           <option value={1}>True</option>
           <option value={0}>False</option>
         </select>
       </InputGroup>
-
+      <InputGroup>
+        <label htmlFor='appsSameTab'>Open applications in the same tab</label>
+        <select
+          id='appsSameTab'
+          name='appsSameTab'
+          value={formData.appsSameTab}
+          onChange={(e) => inputChangeHandler(e, true)}
+        >
+          <option value={1}>True</option>
+          <option value={0}>False</option>
+        </select>
+      </InputGroup>
+      <InputGroup>
+        <label htmlFor='bookmarksSameTab'>Open bookmarks in the same tab</label>
+        <select
+          id='bookmarksSameTab'
+          name='bookmarksSameTab'
+          value={formData.bookmarksSameTab}
+          onChange={(e) => inputChangeHandler(e, true)}
+        >
+          <option value={1}>True</option>
+          <option value={0}>False</option>
+        </select>
+      </InputGroup>
       {/* MODULES OPTIONS */}
       <h2 className={classes.SettingsSection}>Modules</h2>
       <InputGroup>

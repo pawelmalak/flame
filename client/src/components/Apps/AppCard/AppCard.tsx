@@ -16,7 +16,7 @@ const AppCard = (props: ComponentProps): JSX.Element => {
   return (
     <a
       href={redirectUrl}
-      target={searchConfig('openSameTab', false) ? '' : '_blank'}
+      target={searchConfig('appsSameTab', false) ? '' : '_blank'}
       rel='noreferrer'
       className={classes.AppCard}
     >

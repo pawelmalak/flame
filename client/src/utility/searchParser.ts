@@ -11,7 +11,7 @@ export const searchParser = (searchQuery: string): boolean => {
   const query = queries.find((q: Query) => q.prefix === prefix);
 
   if (query) {
-    const sameTab = searchConfig('openSameTab', false);
+    const sameTab = searchConfig('searchSameTab', false);
 
     if (sameTab) {
       document.location.replace(`${query.template}${search}`);

@@ -19,7 +19,7 @@ const BookmarkCard = (props: ComponentProps): JSX.Element => {
           return (
             <a
               href={redirectUrl}
-              target={searchConfig('openSameTab', false) ? '' : '_blank'}
+              target={searchConfig('bookmarksSameTab', false) ? '' : '_blank'}
               rel='noreferrer'
               key={`bookmark-${bookmark.id}`}>
               {bookmark.icon && (

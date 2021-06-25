@@ -37,7 +37,15 @@
       "value": "createdAt"
     },
     {
-      "key": "openSameTab",
+      "key": "appsSameTab",
+      "value": false
+    },
+    {
+      "key": "bookmarksSameTab",
+      "value": false
+    },
+    {
+      "key": "searchSameTab",
       "value": false
     },
     {
