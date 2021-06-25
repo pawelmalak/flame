@@ -2,7 +2,7 @@ const fs = require('fs');
 const multer = require('multer');
 
 if (!fs.existsSync('data/uploads')) {
-  fs.mkdirSync('data/uploads');
+  fs.mkdirSync('data/uploads', { recursive: true });
 }
 
 const storage = multer.diskStorage({

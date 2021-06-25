@@ -82,7 +82,11 @@ Follow instructions from wiki: [Installation without Docker](https://github.com/
 
 ## Usage
 ### Search bar
-> While opening links, module will follow `Open all links in the same tab` setting
+#### Searching
+To use search bar you need to type your search query with selected prefix. For example, to search for "what is docker" using google search you would type: `/g what is docker`.
+
+> You can change where to open search results (same/new tab) in the settings
+
 #### Supported search engines
 | Name       | Prefix | Search URL                          |
 |------------|--------|-------------------------------------|
@@ -94,7 +98,8 @@ Follow instructions from wiki: [Installation without Docker](https://github.com/
 | Name               | Prefix | Search URL                                    |
 |--------------------|--------|-----------------------------------------------|
 | IMDb               | /im    | https://www.imdb.com/find?q=                  |
-| Reddit             | /r     | -https://www.reddit.com/search?q=             |
+| Reddit             | /r     | https://www.reddit.com/search?q=              |
+| Spotify            | /sp    | https://open.spotify.com/search/              |
 | The Movie Database | /mv    | https://www.themoviedb.org/search?query=      |
 | Youtube            | /yt    | https://www.youtube.com/results?search_query= |
 

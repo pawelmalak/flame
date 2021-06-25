@@ -34,6 +34,11 @@
       "name": "The Movie Database",
       "prefix": "mv",
       "template": "https://www.themoviedb.org/search?query="
+    },
+    {
+      "name": "Spotify",
+      "prefix": "sp",
+      "template": "https://open.spotify.com/search/"
     }
   ]
 }

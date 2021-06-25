@@ -1,4 +1,4 @@
-.SearchBox {
+.SearchBar {
   width: 100%;
   padding: 10px 0;
   color: var(--color-primary);
@@ -11,7 +11,7 @@
   transition: all 0.2s;
 }
 
-.SearchBox:focus {
+.SearchBar:focus {
   opacity: 1;
   outline: none;
 }
