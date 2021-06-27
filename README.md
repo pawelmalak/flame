@@ -37,6 +37,9 @@ npm run dev
 ## Installation 
 
 ### With Docker (recommended)
+
+[Docker Hub](https://hub.docker.com/r/pawelmalak/flame)
+
 #### Building images
 ```sh
 # build image for amd64 only
@@ -54,6 +57,20 @@ docker buildx build \
 ```sh
 # run container
 docker run -p 5005:5005 -v /path/to/data:/app/data flame
+```
+
+#### Docker-Compose
+```yaml
+version: "2.1"
+services:
+  flame:
+    image: pawelmalak/flame:latest
+    container_name: flame
+    volumes:
+      - <host_dir>:/app/data
+    ports:
+      - 5005:5005
+    restart: unless-stopped
 ```
 
 ### Without Docker
