@@ -4,12 +4,13 @@ import { Query } from '../interfaces';
 import { searchConfig } from '.';
 
 export const searchParser = (searchQuery: string): boolean => {
-  const space = searchQuery.indexOf(' ');
-  const prefix = searchQuery.slice(1, space);
-  const search = encodeURIComponent(searchQuery.slice(space + 1));
+  const splitQuery = searchQuery.match(/^\/([a-z]+)[ ](.+)$/i);
+  const prefix = splitQuery ? splitQuery[1] : searchConfig('defaultSearchProvider', 'd');
+  const search = splitQuery ? encodeURIComponent(splitQuery[2]) : encodeURIComponent(searchQuery);
 
   const query = queries.find((q: Query) => q.prefix === prefix);
 
+  console.log("QUERY IS  " + query);
   if (query) {
     const sameTab = searchConfig('searchSameTab', false);
 

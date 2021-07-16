@@ -13,6 +13,7 @@ export interface SettingsForm {
   hideApps: number;
   hideCategories: number;
   hideSearch: number;
+  defaultSearchProvider: string;
   useOrdering: string;
   appsSameTab: number;
   bookmarksSameTab: number;

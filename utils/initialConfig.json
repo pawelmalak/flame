@@ -59,6 +59,10 @@
     {
       "key": "hideSearch",
       "value": false
+    },
+    {
+      "key": "defaultSearchProvider",
+      "value": "d"
     }
   ]
 }

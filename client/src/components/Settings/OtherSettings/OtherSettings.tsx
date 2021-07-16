@@ -35,6 +35,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
     hideApps: 0,
     hideCategories: 0,
     hideSearch: 0,
+    defaultSearchProvider: 'd',
     useOrdering: 'createdAt',
     appsSameTab: 0,
     bookmarksSameTab: 0,
@@ -51,6 +52,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
       hideApps: searchConfig('hideApps', 0),
       hideCategories: searchConfig('hideCategories', 0),
       hideSearch: searchConfig('hideSearch', 0),
+      defaultSearchProvider: searchConfig('defaultSearchProvider', 'd'),
       useOrdering: searchConfig('useOrdering', 'createdAt'),
       appsSameTab: searchConfig('appsSameTab', 0),
       bookmarksSameTab: searchConfig('bookmarksSameTab', 0),
@@ -190,6 +192,24 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
         >
           <option value={1}>True</option>
           <option value={0}>False</option>
+        </select>
+      </InputGroup>
+      <InputGroup>
+        <label htmlFor='defaultSearchProvider'>Default Search Provider</label>
+        <select
+          id='defaultSearchProvider'
+          name='defaultSearchProvider'
+          value={formData.defaultSearchProvider}
+          onChange={(e) => inputChangeHandler(e)}
+        >
+          <option value='d'>DuckDuckGo</option>
+          <option value='g'>Google</option>
+          <option value='s'>Disroot</option>
+          <option value='yt'>YouTube</option>
+          <option value='r'>Reddit</option>
+          <option value='im'>IMDb</option>
+          <option value='mv'>The Movie Database</option>
+          <option value='sp'>Spotify</option>
         </select>
       </InputGroup>
       <InputGroup>
