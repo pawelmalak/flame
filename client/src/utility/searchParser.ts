@@ -10,7 +10,6 @@ export const searchParser = (searchQuery: string): boolean => {
 
   const query = queries.find((q: Query) => q.prefix === prefix);
 
-  console.log("QUERY IS  " + query);
   if (query) {
     const sameTab = searchConfig('searchSameTab', false);
 
