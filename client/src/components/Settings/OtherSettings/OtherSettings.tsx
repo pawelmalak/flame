@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { createNotification, updateConfig, sortApps, sortCategories } from '../../../store/actions';
 
 // Typescript
-import { GlobalState, NewNotification, SettingsForm } from '../../../interfaces';
+import { GlobalState, NewNotification, Query, SettingsForm } from '../../../interfaces';
 
 // UI
 import InputGroup from '../../UI/Forms/InputGroup/InputGroup';
@@ -16,6 +16,7 @@ import classes from './OtherSettings.module.css';
 
 // Utils
 import { searchConfig } from '../../../utility';
+import { queries } from '../../../utility/searchQueries.json';
 
 interface ComponentProps {
   createNotification: (notification: NewNotification) => void;
@@ -145,6 +146,17 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
         </select>
       </InputGroup>
       <InputGroup>
+        <label htmlFor='defaultSearchProvider'>Default Search Provider</label>
+        <select
+          id='defaultSearchProvider'
+          name='defaultSearchProvider'
+          value={formData.defaultSearchProvider}
+          onChange={(e) => inputChangeHandler(e)}
+        >
+          {queries.map((query: Query) => (<option value={query.prefix}>{query.name}</option>))}
+        </select>
+      </InputGroup>
+      <InputGroup>
         <label htmlFor='searchSameTab'>Open search results in the same tab</label>
         <select
           id='searchSameTab'
@@ -180,6 +192,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           <option value={0}>False</option>
         </select>
       </InputGroup>
+
       {/* MODULES OPTIONS */}
       <h2 className={classes.SettingsSection}>Modules</h2>
       <InputGroup>
@@ -192,24 +205,6 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
         >
           <option value={1}>True</option>
           <option value={0}>False</option>
-        </select>
-      </InputGroup>
-      <InputGroup>
-        <label htmlFor='defaultSearchProvider'>Default Search Provider</label>
-        <select
-          id='defaultSearchProvider'
-          name='defaultSearchProvider'
-          value={formData.defaultSearchProvider}
-          onChange={(e) => inputChangeHandler(e)}
-        >
-          <option value='d'>DuckDuckGo</option>
-          <option value='g'>Google</option>
-          <option value='s'>Disroot</option>
-          <option value='yt'>YouTube</option>
-          <option value='r'>Reddit</option>
-          <option value='im'>IMDb</option>
-          <option value='mv'>The Movie Database</option>
-          <option value='sp'>Spotify</option>
         </select>
       </InputGroup>
       <InputGroup>
