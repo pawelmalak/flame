@@ -7,6 +7,7 @@ const Socket = require('./Socket');
 const Sockets = require('./Sockets');
 const associateModels = require('./models/associateModels');
 const initConfig = require('./utils/initConfig');
+const findCss = require('./utils/findCss');
 const Logger = require('./utils/Logger');
 const logger = new Logger();
 
@@ -16,6 +17,7 @@ const PORT = process.env.PORT || 5005;
   await connectDB();
   await associateModels();
   await initConfig();
+  findCss();
 
   // Create server for Express API and WebSockets
   const server = http.createServer();

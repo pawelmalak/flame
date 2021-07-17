@@ -146,6 +146,17 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
         </select>
       </InputGroup>
       <InputGroup>
+        <label htmlFor='defaultSearchProvider'>Default Search Provider</label>
+        <select
+          id='defaultSearchProvider'
+          name='defaultSearchProvider'
+          value={formData.defaultSearchProvider}
+          onChange={(e) => inputChangeHandler(e)}
+        >
+          {queries.map((query: Query) => (<option value={query.prefix}>{query.name}</option>))}
+        </select>
+      </InputGroup>
+      <InputGroup>
         <label htmlFor='searchSameTab'>Open search results in the same tab</label>
         <select
           id='searchSameTab'
@@ -194,17 +205,6 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
         >
           <option value={1}>True</option>
           <option value={0}>False</option>
-        </select>
-      </InputGroup>
-      <InputGroup>
-        <label htmlFor='defaultSearchProvider'>Default Search Provider</label>
-        <select
-          id='defaultSearchProvider'
-          name='defaultSearchProvider'
-          value={formData.defaultSearchProvider}
-          onChange={(e) => inputChangeHandler(e)}
-        >
-          {queries.map((query: Query) => (<option value={query.prefix}>{query.name}</option>))}
         </select>
       </InputGroup>
       <InputGroup>

@@ -4,6 +4,7 @@ const Config = require('../models/Config');
 const { Op } = require('sequelize');
 const File = require('../utils/File');
 const { join } = require('path');
+const fs = require('fs');
 
 // @desc      Insert new key:value pair
 // @route     POST /api/config
@@ -150,6 +151,9 @@ exports.getCss = asyncWrapper(async (req, res, next) => {
 exports.updateCss = asyncWrapper(async (req, res, next) => {
   const file = new File(join(__dirname, '../public/flame.css'));
   file.write(req.body.styles);
+
+  // Copy file to docker volume
+  fs.copyFileSync(join(__dirname, '../public/flame.css'), join(__dirname, '../data/flame.css'));
 
   res.status(200).json({
     success: true,
