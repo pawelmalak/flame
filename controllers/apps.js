@@ -20,7 +20,6 @@ exports.createApp = asyncWrapper(async (req, res, next) => {
     _body.icon = req.file.filename;
   }
 
-
   if (pinApps) {
     if (parseInt(pinApps.value)) {
       app = await App.create({
@@ -96,7 +95,13 @@ exports.updateApp = asyncWrapper(async (req, res, next) => {
     return next(new ErrorResponse(`App with id of ${req.params.id} was not found`, 404));
   }
 
-  app = await app.update({ ...req.body });
+  let _body = { ...req.body };
+
+  if (req.file) {
+    _body.icon = req.file.filename;
+  }
+
+  app = await app.update(_body);
 
   res.status(200).json({
     success: true,

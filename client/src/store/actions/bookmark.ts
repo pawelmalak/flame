@@ -69,7 +69,7 @@ export interface AddBookmarkAction {
   payload: Bookmark
 }
 
-export const addBookmark = (formData: NewBookmark) => async (dispatch: Dispatch) => {
+export const addBookmark = (formData: NewBookmark | FormData) => async (dispatch: Dispatch) => {
   try {
     const res = await axios.post<ApiResponse<Bookmark>>('/api/bookmarks', formData);
 
@@ -77,7 +77,7 @@ export const addBookmark = (formData: NewBookmark) => async (dispatch: Dispatch)
       type: ActionTypes.createNotification,
       payload: {
         title: 'Success',
-        message: `Bookmark ${formData.name} created`
+        message: `Bookmark created`
       }
     })
 
@@ -225,7 +225,14 @@ export interface UpdateBookmarkAction {
   payload: Bookmark
 }
 
-export const updateBookmark = (bookmarkId: number, formData: NewBookmark, previousCategoryId: number) => async (dispatch: Dispatch) => {
+export const updateBookmark = (
+  bookmarkId: number,
+  formData: NewBookmark | FormData,
+  category: {
+    prev: number,
+    curr: number
+  }
+) => async (dispatch: Dispatch) => {
   try {
     const res = await axios.put<ApiResponse<Bookmark>>(`/api/bookmarks/${bookmarkId}`, formData);
     
@@ -233,12 +240,12 @@ export const updateBookmark = (bookmarkId: number, formData: NewBookmark, previo
       type: ActionTypes.createNotification,
       payload: {
         title: 'Success',
-        message: `Bookmark ${formData.name} updated`
+        message: `Bookmark updated`
       }
     })
 
     // Check if category was changed
-    const categoryWasChanged = formData.categoryId !== previousCategoryId;
+    const categoryWasChanged = category.curr !== category.prev;
 
     if (categoryWasChanged) {
       // Delete bookmark from old category
@@ -246,7 +253,7 @@ export const updateBookmark = (bookmarkId: number, formData: NewBookmark, previo
         type: ActionTypes.deleteBookmark,
         payload: {
           bookmarkId,
-          categoryId: previousCategoryId
+          categoryId: category.prev
         }
       })
 
@@ -256,7 +263,7 @@ export const updateBookmark = (bookmarkId: number, formData: NewBookmark, previo
         payload: res.data.data
       })
     } else {
-      // Else update only name/url
+      // Else update only name/url/icon
       dispatch<UpdateBookmarkAction>({
         type: ActionTypes.updateBookmark,
         payload: res.data.data

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, ChangeEvent, SyntheticEvent } from 'react';
+import { useState, useEffect, ChangeEvent, SyntheticEvent } from 'react';
 import { connect } from 'react-redux';
 import { addApp, updateApp } from '../../../store/actions';
 import { App, NewApp } from '../../../interfaces';
@@ -8,12 +8,11 @@ import classes from './AppForm.module.css';
 import ModalForm from '../../UI/Forms/ModalForm/ModalForm';
 import InputGroup from '../../UI/Forms/InputGroup/InputGroup';
 import Button from '../../UI/Buttons/Button/Button';
-import axios from 'axios';
 
 interface ComponentProps {
   modalHandler: () => void;
   addApp: (formData: NewApp | FormData) => any;
-  updateApp: (id: number, formData: NewApp) => any;
+  updateApp: (id: number, formData: NewApp | FormData) => any;
   app?: App;
 }
 
@@ -25,14 +24,6 @@ const AppForm = (props: ComponentProps): JSX.Element => {
     url: '',
     icon: ''
   });
-
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [inputRef])
 
   useEffect(() => {
     if (props.app) {
@@ -66,21 +57,32 @@ const AppForm = (props: ComponentProps): JSX.Element => {
   const formSubmitHandler = (e: SyntheticEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
+    const createFormData = (): FormData => {
+      const data = new FormData();
+      if (customIcon) {
+        data.append('icon', customIcon);
+      }
+      data.append('name', formData.name);
+      data.append('url', formData.url);
+
+      return data;
+    }
+
     if (!props.app) {
       if (customIcon) {
-        const data = new FormData();
-        data.append('icon', customIcon);
-
-        data.append('name', formData.name);
-        data.append('url', formData.url);
-
+        const data = createFormData();
         props.addApp(data);
       } else {
         props.addApp(formData);
       }
     } else {
-      props.updateApp(props.app.id, formData);
-      props.modalHandler();
+      if (customIcon) {
+        const data = createFormData();
+        props.updateApp(props.app.id, data);
+      } else {
+        props.updateApp(props.app.id, formData);
+        props.modalHandler();
+      }
     }
 
     setFormData({
@@ -88,6 +90,8 @@ const AppForm = (props: ComponentProps): JSX.Element => {
       url: '',
       icon: ''
     })
+
+    setCustomIcon(null);
   }
 
   return (
@@ -105,7 +109,6 @@ const AppForm = (props: ComponentProps): JSX.Element => {
           required
           value={formData.name}
           onChange={(e) => inputChangeHandler(e)}
-          ref={inputRef}
         />
       </InputGroup>
       <InputGroup>

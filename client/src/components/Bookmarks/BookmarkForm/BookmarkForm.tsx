@@ -7,6 +7,7 @@ import { Bookmark, Category, GlobalState, NewBookmark, NewCategory, NewNotificat
 import { ContentType } from '../Bookmarks';
 import { getCategories, addCategory, addBookmark, updateCategory, updateBookmark, createNotification } from '../../../store/actions';
 import Button from '../../UI/Buttons/Button/Button';
+import classes from './BookmarkForm.module.css';
 
 interface ComponentProps {
   modalHandler: () => void;
@@ -15,13 +16,22 @@ interface ComponentProps {
   category?: Category;
   bookmark?: Bookmark;
   addCategory: (formData: NewCategory) => void;
-  addBookmark: (formData: NewBookmark) => void;
+  addBookmark: (formData: NewBookmark | FormData) => void;
   updateCategory: (id: number, formData: NewCategory) => void;
-  updateBookmark: (id: number, formData: NewBookmark, previousCategoryId: number) => void;
+  updateBookmark: (
+    id: number,
+    formData: NewBookmark | FormData,
+    category: {
+      prev: number,
+      curr: number
+    }
+  ) => void;
   createNotification: (notification: NewNotification) => void;
 }
 
 const BookmarkForm = (props: ComponentProps): JSX.Element => {
+  const [useCustomIcon, toggleUseCustomIcon] = useState<boolean>(false);
+  const [customIcon, setCustomIcon] = useState<File | null>(null);
   const [categoryName, setCategoryName] = useState<NewCategory>({
     name: ''
   })
@@ -64,6 +74,18 @@ const BookmarkForm = (props: ComponentProps): JSX.Element => {
   const formSubmitHandler = (e: SyntheticEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
+    const createFormData = (): FormData => {
+      const data = new FormData();
+      if (customIcon) {
+        data.append('icon', customIcon);
+      }
+      data.append('name', formData.name);
+      data.append('url', formData.url);
+      data.append('categoryId', `${formData.categoryId}`);
+
+      return data;
+    }
+
     if (!props.category && !props.bookmark) {
       // Add new
       if (props.contentType === ContentType.category) {
@@ -79,14 +101,22 @@ const BookmarkForm = (props: ComponentProps): JSX.Element => {
           })
           return;
         }
-  
-        props.addBookmark(formData);
+
+        if (customIcon) {
+          const data = createFormData();
+          props.addBookmark(data);
+        } else {
+          props.addBookmark(formData);
+        }
+        
         setFormData({
           name: '',
           url: '',
           categoryId: formData.categoryId,
           icon: ''
         })
+
+        setCustomIcon(null)
       }
     } else {
       // Update
@@ -96,13 +126,35 @@ const BookmarkForm = (props: ComponentProps): JSX.Element => {
         setCategoryName({ name: '' });
       } else if (props.contentType === ContentType.bookmark && props.bookmark) {
         // Update bookmark
-        props.updateBookmark(props.bookmark.id, formData, props.bookmark.categoryId);
+        if (customIcon) {
+          const data = createFormData();
+          props.updateBookmark(
+            props.bookmark.id,
+            data,
+            {
+              prev: props.bookmark.categoryId,
+              curr: formData.categoryId
+            }
+          )
+        } else {
+          props.updateBookmark(
+            props.bookmark.id,
+            formData,
+            {
+              prev: props.bookmark.categoryId,
+              curr: formData.categoryId
+            }
+          );
+        }
+
         setFormData({
           name: '',
           url: '',
           categoryId: -1,
           icon: ''
         })
+
+        setCustomIcon(null)
       }
 
       props.modalHandler();
@@ -121,6 +173,12 @@ const BookmarkForm = (props: ComponentProps): JSX.Element => {
       ...formData,
       categoryId: parseInt(e.target.value)
     })
+  }
+
+  const fileChangeHandler = (e: ChangeEvent<HTMLInputElement>): void => {
+    if (e.target.files) {
+      setCustomIcon(e.target.files[0]);
+    }
   }
 
   let button = <Button>Submit</Button>
@@ -216,25 +274,49 @@ const BookmarkForm = (props: ComponentProps): JSX.Element => {
                 })}
               </select>
             </InputGroup>
-            <InputGroup>
-              <label htmlFor='icon'>Bookmark Icon (optional)</label>
-              <input
-                type='text'
-                name='icon'
-                id='icon'
-                placeholder='book-open-outline'
-                value={formData.icon}
-                onChange={(e) => inputChangeHandler(e)}
-              />
-              <span>
-                Use icon name from MDI. 
-                <a
-                  href='https://materialdesignicons.com/'
-                  target='blank'>
-                  {' '}Click here for reference
-                </a>
-              </span>
-            </InputGroup>
+            {!useCustomIcon
+              // mdi
+              ? (<InputGroup>
+                <label htmlFor='icon'>Bookmark Icon (optional)</label>
+                <input
+                  type='text'
+                  name='icon'
+                  id='icon'
+                  placeholder='book-open-outline'
+                  value={formData.icon}
+                  onChange={(e) => inputChangeHandler(e)}
+                />
+                <span>
+                  Use icon name from MDI. 
+                  <a
+                    href='https://materialdesignicons.com/'
+                    target='blank'>
+                    {' '}Click here for reference
+                  </a>
+                </span>
+                <span
+                  onClick={() => toggleUseCustomIcon(!useCustomIcon)}
+                  className={classes.Switch}>
+                  Switch to custom icon upload
+                </span>
+              </InputGroup>)
+              // custom
+              : (<InputGroup>
+                <label htmlFor='icon'>Bookmark Icon (optional)</label>
+                <input
+                  type='file'
+                  name='icon'
+                  id='icon'
+                  onChange={(e) => fileChangeHandler(e)}
+                  accept='.jpg,.jpeg,.png'
+                />
+                <span
+                  onClick={() => toggleUseCustomIcon(!useCustomIcon)}
+                  className={classes.Switch}>
+                  Switch to MDI
+                </span>
+              </InputGroup>)
+            }
           </Fragment>
         )
       }

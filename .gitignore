@@ -1,3 +1,4 @@
 node_modules
 data
 public
+build.sh

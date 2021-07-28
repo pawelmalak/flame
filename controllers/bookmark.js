@@ -7,7 +7,18 @@ const { Sequelize } = require('sequelize');
 // @route     POST /api/bookmarks
 // @access    Public
 exports.createBookmark = asyncWrapper(async (req, res, next) => {
-  const bookmark = await Bookmark.create(req.body);
+  let bookmark;
+
+  let _body = {
+    ...req.body,
+    categoryId: parseInt(req.body.categoryId)
+  };
+
+  if (req.file) {
+    _body.icon = req.file.filename;
+  }
+
+  bookmark = await Bookmark.create(_body);
 
   res.status(201).json({
     success: true,
@@ -59,7 +70,16 @@ exports.updateBookmark = asyncWrapper(async (req, res, next) => {
     return next(new ErrorResponse(`Bookmark with id of ${req.params.id} was not found`, 404));
   }
 
-  bookmark = await bookmark.update({ ...req.body });
+  let _body = {
+    ...req.body,
+    categoryId: parseInt(req.body.categoryId)
+  };
+
+  if (req.file) {
+    _body.icon = req.file.filename;
+  }
+
+  bookmark = await bookmark.update(_body);
 
   res.status(200).json({
     success: true,
