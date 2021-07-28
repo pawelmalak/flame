@@ -19,7 +19,7 @@ router
 router
   .route('/:id')
   .get(getApp)
-  .put(updateApp)
+  .put(upload, updateApp)
   .delete(deleteApp);
 
 router

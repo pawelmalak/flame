@@ -21,7 +21,7 @@ const AppCard = (props: ComponentProps): JSX.Element => {
       className={classes.AppCard}
     >
       <div className={classes.AppCardIcon}>
-        {(/.(jpeg|jpg|png)$/).test(props.app.icon)
+        {(/.(jpeg|jpg|png)$/i).test(props.app.icon)
           ? <img
               src={`/uploads/${props.app.icon}`}
               alt={`${props.app.name} icon`}

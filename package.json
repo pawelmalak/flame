@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "init-server": "echo Instaling server dependencies && npm install",
+    "init-server": "echo Instaling server dependencies && npm install && mkdir public && touch public/flame.css",
     "init-client": "cd client && echo Instaling client dependencies && npm install",
     "dev-init": "npm run init-server && npm run init-client",
     "dev-server": "nodemon server.js",
