@@ -17,6 +17,15 @@ const AppDetails = (): JSX.Element => {
         {' '}
         version {process.env.REACT_APP_VERSION}
       </p>
+      <p className={classes.AppVersion}>
+        See changelog {' '}
+        <a
+          href='https://github.com/pawelmalak/flame/CHANGELOG.md'
+          target='_blank'
+          rel='noreferrer'>
+          here
+        </a>
+      </p>
       <Button click={() => checkVersion(true)}>Check for updates</Button>
     </Fragment>
   )

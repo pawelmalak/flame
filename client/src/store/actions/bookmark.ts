@@ -72,7 +72,7 @@ export interface AddBookmarkAction {
 export const addBookmark = (formData: NewBookmark | FormData) => async (dispatch: Dispatch) => {
   try {
     const res = await axios.post<ApiResponse<Bookmark>>('/api/bookmarks', formData);
-    console.log(res.data.data)
+
     dispatch<CreateNotificationAction>({
       type: ActionTypes.createNotification,
       payload: {
