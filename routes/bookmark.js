@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const upload = require('../middleware/multer');
 
 const {
   createBookmark,
@@ -11,13 +12,13 @@ const {
 
 router
   .route('/')
-  .post(createBookmark)
+  .post(upload, createBookmark)
   .get(getBookmarks);
 
 router
   .route('/:id')
   .get(getBookmark)
-  .put(updateBookmark)
+  .put(upload, updateBookmark)
   .delete(deleteBookmark);
 
 module.exports = router;

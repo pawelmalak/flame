@@ -1,0 +1,7 @@
+.Switch {
+  text-decoration: underline;
+}
+
+.Switch:hover {
+  cursor: pointer;
+}

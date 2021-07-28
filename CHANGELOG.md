@@ -1,3 +1,7 @@
+### v1.6.1 (2021-07-28)
+- Added option to upload custom icons for bookmarks ([#52](https://github.com/pawelmalak/flame/issues/52))
+- Fixed custom icons not updating ([#58](https://github.com/pawelmalak/flame/issues/58))
+
 ### v1.6 (2021-07-17)
 - Added support for Steam URLs ([#62](https://github.com/pawelmalak/flame/issues/62))
 - Fixed bug with custom CSS not persisting ([#64](https://github.com/pawelmalak/flame/issues/64))
