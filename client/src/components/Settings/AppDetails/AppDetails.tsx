@@ -20,7 +20,7 @@ const AppDetails = (): JSX.Element => {
       <p className={classes.AppVersion}>
         See changelog {' '}
         <a
-          href='https://github.com/pawelmalak/flame/CHANGELOG.md'
+          href='https://github.com/pawelmalak/flame/blob/master/CHANGELOG.md'
           target='_blank'
           rel='noreferrer'>
           here
