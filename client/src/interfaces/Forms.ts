@@ -18,4 +18,6 @@ export interface SettingsForm {
   appsSameTab: number;
   bookmarksSameTab: number;
   searchSameTab: number;
+  dockerApps: number;
+  unpinStoppedApps: number;
 }

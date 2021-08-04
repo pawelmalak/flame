@@ -3,6 +3,7 @@ const ErrorResponse = require('../utils/ErrorResponse');
 const App = require('../models/App');
 const Config = require('../models/Config');
 const { Sequelize } = require('sequelize');
+const axios = require('axios');
 
 // @desc      Create new app
 // @route     POST /api/apps
@@ -45,9 +46,60 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
   const useOrdering = await Config.findOne({
     where: { key: 'useOrdering' }
   });
+  const useDockerApi = await Config.findOne({
+    where: { key: 'dockerApps' }
+  });
+  const unpinStoppedApps = await Config.findOne({
+    where: { key: 'unpinStoppedApps' }
+  });
 
   const orderType = useOrdering ? useOrdering.value : 'createdAt';
   let apps;
+
+
+  if (useDockerApi && useDockerApi.value==1) {
+    let {data:containers} = await axios.get('http://localhost/containers/json?{"status":["running"]}', {
+      socketPath: '/var/run/docker.sock'
+    });
+
+    if (containers) {
+      apps = await App.findAll({
+        order: [[ orderType, 'ASC' ]]
+      });
+
+      containers = containers.filter((e) => Object.keys(e.Labels).length !== 0);
+      const dockerApps = [];
+      for (const container of containers) {
+        const labels = container.Labels;
+
+        if ('flame.name' in labels && 'flame.url' in labels && (labels['flame.type']==='application' || labels['flame.type']==='app')) {
+          dockerApps.push({
+            name: labels['flame.name'],
+            url: labels['flame.url'],
+            icon: labels['flame.icon'] || 'docker'
+          })
+        }
+      }
+
+      if (unpinStoppedApps && unpinStoppedApps.value==1) {
+        for (const app of apps) {
+          await app.update({ isPinned: false });
+        }
+      }
+
+      for (const item of dockerApps) {
+        if (apps.some(app => app.name === item.name)) {
+          const app = apps.filter(e => e.name === item.name)[0];
+          await app.update({ ...item,isPinned: true });
+        } else {
+          await App.create({
+            ...item,
+            isPinned: true
+          })
+        }
+      }
+    }
+  }
 
   if (orderType == 'name') {
     apps = await App.findAll({
@@ -59,7 +111,8 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
     });
   }
 
-  res.status(200).json({
+  // Set header to fetch containers info every time
+  res.status(200).setHeader('Cache-Control','no-store').json({
     success: true,
     data: apps
   })

@@ -40,7 +40,9 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
     useOrdering: 'createdAt',
     appsSameTab: 0,
     bookmarksSameTab: 0,
-    searchSameTab: 0
+    searchSameTab: 0,
+    dockerApps:1,
+    unpinStoppedApps: 1
   })
 
   // Get config
@@ -57,7 +59,9 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
       useOrdering: searchConfig('useOrdering', 'createdAt'),
       appsSameTab: searchConfig('appsSameTab', 0),
       bookmarksSameTab: searchConfig('bookmarksSameTab', 0),
-      searchSameTab: searchConfig('searchSameTab', 0)
+      searchSameTab: searchConfig('searchSameTab', 0),
+      dockerApps: searchConfig('dockerApps', 1),
+      unpinStoppedApps: searchConfig('unpinStoppedApps', 1)
     })
   }, [props.loading]);
 
@@ -237,6 +241,31 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           id='hideCategories'
           name='hideCategories'
           value={formData.hideCategories}
+          onChange={(e) => inputChangeHandler(e, true)}
+        >
+          <option value={1}>True</option>
+          <option value={0}>False</option>
+        </select>
+      </InputGroup>
+      <h2 className={classes.SettingsSection}>Docker</h2>
+      <InputGroup>
+        <label htmlFor='dockerApps'>Use Docker API</label>
+        <select
+          id='dockerApps'
+          name='dockerApps'
+          value={formData.dockerApps}
+          onChange={(e) => inputChangeHandler(e, true)}
+        >
+          <option value={1}>True</option>
+          <option value={0}>False</option>
+        </select>
+      </InputGroup>
+      <InputGroup>
+        <label htmlFor='unpinStoppedApps'>Unpin stopped containers / other apps</label>
+        <select
+          id='unpinStoppedApps'
+          name='unpinStoppedApps'
+          value={formData.unpinStoppedApps}
           onChange={(e) => inputChangeHandler(e, true)}
         >
           <option value={1}>True</option>
