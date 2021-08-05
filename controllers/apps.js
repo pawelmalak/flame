@@ -4,6 +4,8 @@ const App = require('../models/App');
 const Config = require('../models/Config');
 const { Sequelize } = require('sequelize');
 const axios = require('axios');
+const Logger = require('../utils/Logger');
+const logger = new Logger();
 
 // @desc      Create new app
 // @route     POST /api/apps
@@ -58,9 +60,14 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
 
 
   if (useDockerApi && useDockerApi.value==1) {
-    let {data:containers} = await axios.get('http://localhost/containers/json?{"status":["running"]}', {
+    let containers = null;
+
+    try {
+    let {data} = await axios.get('http://localhost/containers/json?{"status":["running"]}', {
       socketPath: '/var/run/docker.sock'
     });
+    containers = data;
+    } catch{logger.log("Can't connect to the docker socket","ERROR")}
 
     if (containers) {
       apps = await App.findAll({
@@ -72,7 +79,7 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
       for (const container of containers) {
         const labels = container.Labels;
 
-        if ('flame.name' in labels && 'flame.url' in labels && (labels['flame.type']==='application' || labels['flame.type']==='app')) {
+        if ('flame.name' in labels && 'flame.url' in labels && /^app/.test(labels['flame.type'])) {
           dockerApps.push({
             name: labels['flame.name'],
             url: labels['flame.url'],
