@@ -2,10 +2,20 @@ import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 
 // Redux
 import { connect } from 'react-redux';
-import { createNotification, updateConfig, sortApps, sortCategories } from '../../../store/actions';
+import {
+  createNotification,
+  updateConfig,
+  sortApps,
+  sortCategories
+} from '../../../store/actions';
 
 // Typescript
-import { GlobalState, NewNotification, Query, SettingsForm } from '../../../interfaces';
+import {
+  GlobalState,
+  NewNotification,
+  Query,
+  SettingsForm
+} from '../../../interfaces';
 
 // UI
 import InputGroup from '../../UI/Forms/InputGroup/InputGroup';
@@ -41,9 +51,9 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
     appsSameTab: 0,
     bookmarksSameTab: 0,
     searchSameTab: 0,
-    dockerApps:1,
+    dockerApps: 1,
     unpinStoppedApps: 1
-  })
+  });
 
   // Get config
   useEffect(() => {
@@ -60,9 +70,9 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
       appsSameTab: searchConfig('appsSameTab', 0),
       bookmarksSameTab: searchConfig('bookmarksSameTab', 0),
       searchSameTab: searchConfig('searchSameTab', 0),
-      dockerApps: searchConfig('dockerApps', 1),
-      unpinStoppedApps: searchConfig('unpinStoppedApps', 1)
-    })
+      dockerApps: searchConfig('dockerApps', 0),
+      unpinStoppedApps: searchConfig('unpinStoppedApps', 0)
+    });
   }, [props.loading]);
 
   // Form handler
@@ -78,10 +88,13 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
     // Sort apps and categories with new settings
     props.sortApps();
     props.sortCategories();
-  }
+  };
 
   // Input handler
-  const inputChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>, isNumber?: boolean) => {
+  const inputChangeHandler = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    isNumber?: boolean
+  ) => {
     let value: string | number = e.target.value;
 
     if (isNumber) {
@@ -91,11 +104,11 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
     setFormData({
       ...formData,
       [e.target.name]: value
-    })
-  }
+    });
+  };
 
   return (
-    <form onSubmit={(e) => formSubmitHandler(e)}>
+    <form onSubmit={e => formSubmitHandler(e)}>
       {/* OTHER OPTIONS */}
       <h2 className={classes.SettingsSection}>Miscellaneous</h2>
       <InputGroup>
@@ -106,31 +119,35 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           name='customTitle'
           placeholder='Flame'
           value={formData.customTitle}
-          onChange={(e) => inputChangeHandler(e)}
+          onChange={e => inputChangeHandler(e)}
         />
       </InputGroup>
 
       {/* BEAHVIOR OPTIONS */}
       <h2 className={classes.SettingsSection}>App Behavior</h2>
       <InputGroup>
-        <label htmlFor='pinAppsByDefault'>Pin new applications by default</label>
+        <label htmlFor='pinAppsByDefault'>
+          Pin new applications by default
+        </label>
         <select
           id='pinAppsByDefault'
           name='pinAppsByDefault'
           value={formData.pinAppsByDefault}
-          onChange={(e) => inputChangeHandler(e, true)}
+          onChange={e => inputChangeHandler(e, true)}
         >
           <option value={1}>True</option>
           <option value={0}>False</option>
         </select>
       </InputGroup>
       <InputGroup>
-        <label htmlFor='pinCategoriesByDefault'>Pin new categories by default</label>
+        <label htmlFor='pinCategoriesByDefault'>
+          Pin new categories by default
+        </label>
         <select
           id='pinCategoriesByDefault'
           name='pinCategoriesByDefault'
           value={formData.pinCategoriesByDefault}
-          onChange={(e) => inputChangeHandler(e, true)}
+          onChange={e => inputChangeHandler(e, true)}
         >
           <option value={1}>True</option>
           <option value={0}>False</option>
@@ -142,7 +159,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           id='useOrdering'
           name='useOrdering'
           value={formData.useOrdering}
-          onChange={(e) => inputChangeHandler(e)}
+          onChange={e => inputChangeHandler(e)}
         >
           <option value='createdAt'>By creation date</option>
           <option value='name'>Alphabetical order</option>
@@ -155,18 +172,22 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           id='defaultSearchProvider'
           name='defaultSearchProvider'
           value={formData.defaultSearchProvider}
-          onChange={(e) => inputChangeHandler(e)}
+          onChange={e => inputChangeHandler(e)}
         >
-          {queries.map((query: Query) => (<option value={query.prefix}>{query.name}</option>))}
+          {queries.map((query: Query) => (
+            <option value={query.prefix}>{query.name}</option>
+          ))}
         </select>
       </InputGroup>
       <InputGroup>
-        <label htmlFor='searchSameTab'>Open search results in the same tab</label>
+        <label htmlFor='searchSameTab'>
+          Open search results in the same tab
+        </label>
         <select
           id='searchSameTab'
           name='searchSameTab'
           value={formData.searchSameTab}
-          onChange={(e) => inputChangeHandler(e, true)}
+          onChange={e => inputChangeHandler(e, true)}
         >
           <option value={1}>True</option>
           <option value={0}>False</option>
@@ -178,7 +199,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           id='appsSameTab'
           name='appsSameTab'
           value={formData.appsSameTab}
-          onChange={(e) => inputChangeHandler(e, true)}
+          onChange={e => inputChangeHandler(e, true)}
         >
           <option value={1}>True</option>
           <option value={0}>False</option>
@@ -190,7 +211,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           id='bookmarksSameTab'
           name='bookmarksSameTab'
           value={formData.bookmarksSameTab}
-          onChange={(e) => inputChangeHandler(e, true)}
+          onChange={e => inputChangeHandler(e, true)}
         >
           <option value={1}>True</option>
           <option value={0}>False</option>
@@ -205,7 +226,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           id='hideSearch'
           name='hideSearch'
           value={formData.hideSearch}
-          onChange={(e) => inputChangeHandler(e, true)}
+          onChange={e => inputChangeHandler(e, true)}
         >
           <option value={1}>True</option>
           <option value={0}>False</option>
@@ -217,7 +238,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           id='hideHeader'
           name='hideHeader'
           value={formData.hideHeader}
-          onChange={(e) => inputChangeHandler(e, true)}
+          onChange={e => inputChangeHandler(e, true)}
         >
           <option value={1}>True</option>
           <option value={0}>False</option>
@@ -229,7 +250,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           id='hideApps'
           name='hideApps'
           value={formData.hideApps}
-          onChange={(e) => inputChangeHandler(e, true)}
+          onChange={e => inputChangeHandler(e, true)}
         >
           <option value={1}>True</option>
           <option value={0}>False</option>
@@ -241,12 +262,14 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           id='hideCategories'
           name='hideCategories'
           value={formData.hideCategories}
-          onChange={(e) => inputChangeHandler(e, true)}
+          onChange={e => inputChangeHandler(e, true)}
         >
           <option value={1}>True</option>
           <option value={0}>False</option>
         </select>
       </InputGroup>
+
+      {/* DOCKER SETTINGS */}
       <h2 className={classes.SettingsSection}>Docker</h2>
       <InputGroup>
         <label htmlFor='dockerApps'>Use Docker API</label>
@@ -254,40 +277,42 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           id='dockerApps'
           name='dockerApps'
           value={formData.dockerApps}
-          onChange={(e) => inputChangeHandler(e, true)}
+          onChange={e => inputChangeHandler(e, true)}
         >
           <option value={1}>True</option>
           <option value={0}>False</option>
         </select>
       </InputGroup>
       <InputGroup>
-        <label htmlFor='unpinStoppedApps'>Unpin stopped containers / other apps</label>
+        <label htmlFor='unpinStoppedApps'>
+          Unpin stopped containers / other apps
+        </label>
         <select
           id='unpinStoppedApps'
           name='unpinStoppedApps'
           value={formData.unpinStoppedApps}
-          onChange={(e) => inputChangeHandler(e, true)}
+          onChange={e => inputChangeHandler(e, true)}
         >
           <option value={1}>True</option>
           <option value={0}>False</option>
         </select>
       </InputGroup>
-    <Button>Save changes</Button>
+      <Button>Save changes</Button>
     </form>
-  )
-}
+  );
+};
 
 const mapStateToProps = (state: GlobalState) => {
   return {
     loading: state.config.loading
-  }
-}
+  };
+};
 
 const actions = {
   createNotification,
   updateConfig,
   sortApps,
   sortCategories
-}
+};
 
 export default connect(mapStateToProps, actions)(OtherSettings);

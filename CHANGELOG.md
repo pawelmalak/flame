@@ -1,3 +1,7 @@
+### v1.6.2 (2021-08-06)
+- Fixed changelog link
+- Added support for Docker API ([#14](https://github.com/pawelmalak/flame/issues/14))
+
 ### v1.6.1 (2021-07-28)
 - Added option to upload custom icons for bookmarks ([#52](https://github.com/pawelmalak/flame/issues/52))
 - Fixed custom icons not updating ([#58](https://github.com/pawelmalak/flame/issues/58))

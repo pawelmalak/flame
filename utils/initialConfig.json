@@ -66,11 +66,11 @@
     },
     {
       "key": "dockerApps",
-      "value": true
+      "value": false
     },
     {
       "key": "unpinStoppedApps",
-      "value": true
+      "value": false
     }
   ]
 }
