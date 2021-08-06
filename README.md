@@ -74,6 +74,7 @@ services:
     container_name: flame
     volumes:
       - <host_dir>:/app/data
+      - /var/run/docker.sock:/var/sock/docker.sock # optional but required for Docker integration feature
     ports:
       - 5005:5005
     restart: unless-stopped
@@ -154,6 +155,20 @@ To use search bar you need to type your search query with selected prefix. For e
 - URL without protocol
   - Format: `www.domain.com`, `domain.com`, `sub.domain.com`, `local`, `ip`, `ip:port`
   - Redirect: `http://{dest}`
+
+### Docker integration
+
+In order to use the Docker integration, each container must have the following labels:
+
+```yml
+labels:
+  - flame.type=application # "app" works too
+  - flame.name=My container
+  - flame.url=https://example.com
+  - flame.icon=icon-name # Optional, default is "docker"
+```
+
+And you must have activated the Docker sync option in the settings panel.
 
 ### Custom CSS
 
