@@ -16,31 +16,52 @@ const BookmarkCard = (props: ComponentProps): JSX.Element => {
         {props.category.bookmarks.map((bookmark: Bookmark) => {
           const redirectUrl = urlParser(bookmark.url)[1];
 
+          let iconEl: JSX.Element;
+          const { icon, name } = bookmark;
+
+          if (/.(jpeg|jpg|png)$/i.test(icon)) {
+            iconEl = (
+              <div className={classes.BookmarkIcon}>
+                <img
+                  src={`/uploads/${icon}`}
+                  alt={`${name} icon`}
+                  className={classes.CustomIcon}
+                />
+              </div>
+            );
+          } else if (/.(svg)$/i.test(icon)) {
+            iconEl = (
+              <div className={classes.BookmarkIcon}>
+                <svg
+                  data-src={`/uploads/${icon}`}
+                  fill='var(--color-primary)'
+                  className={classes.BookmarkIconSvg}
+                ></svg>
+              </div>
+            );
+          } else {
+            iconEl = (
+              <div className={classes.BookmarkIcon}>
+                <Icon icon={iconParser(icon)} />
+              </div>
+            );
+          }
+
           return (
             <a
               href={redirectUrl}
               target={searchConfig('bookmarksSameTab', false) ? '' : '_blank'}
               rel='noreferrer'
-              key={`bookmark-${bookmark.id}`}>
-              {bookmark.icon && (
-                <div className={classes.BookmarkIcon}>
-                  {(/.(jpeg|jpg|png)$/i).test(bookmark.icon)
-                    ? <img
-                        src={`/uploads/${bookmark.icon}`}
-                        alt={`${bookmark.name} icon`}
-                        className={classes.CustomIcon}
-                      />
-                    : <Icon icon={iconParser(bookmark.icon)} />
-                  }
-                </div>
-              )}
+              key={`bookmark-${bookmark.id}`}
+            >
+              {icon && iconEl}
               {bookmark.name}
             </a>
-          )
+          );
         })}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default BookmarkCard;

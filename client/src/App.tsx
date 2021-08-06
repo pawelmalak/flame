@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { getConfig, setTheme } from './store/actions';
+import 'external-svg-loader';
 
 // Redux
 import { store } from './store/store';
@@ -40,6 +41,6 @@ const App = (): JSX.Element => {
       <NotificationCenter />
     </Provider>
   );
-}
+};
 
 export default App;

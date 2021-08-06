@@ -32,4 +32,14 @@
   display: flex;
   margin-top: 3px;
   margin-right: 2px;
+  justify-content: center;
+  align-items: center;
+}
+
+.BookmarkIconSvg {
+  width: 80%;
+  height: 80%;
+  margin-top: 2px;
+  margin-left: 2px;
+  object-fit: contain;
 }

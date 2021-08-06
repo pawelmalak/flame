@@ -6,15 +6,15 @@ const sequelize = new Sequelize({
   dialect: 'sqlite',
   storage: './data/db.sqlite',
   logging: false
-})
+});
 
 const connectDB = async () => {
   try {
     await sequelize.authenticate();
     logger.log('Connected to database');
-    
+
     const syncModels = true;
-    
+
     if (syncModels) {
       logger.log('Starting model synchronization');
       await sequelize.sync({ alter: true });
@@ -24,9 +24,9 @@ const connectDB = async () => {
     logger.log(`Unable to connect to the database: ${error.message}`, 'ERROR');
     process.exit(1);
   }
-}
+};
 
 module.exports = {
   connectDB,
   sequelize
-}
+};

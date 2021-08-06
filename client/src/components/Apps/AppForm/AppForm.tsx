@@ -31,28 +31,28 @@ const AppForm = (props: ComponentProps): JSX.Element => {
         name: props.app.name,
         url: props.app.url,
         icon: props.app.icon
-      })
+      });
     } else {
       setFormData({
         name: '',
         url: '',
         icon: ''
-      })
+      });
     }
-  }, [props.app])
+  }, [props.app]);
 
   const inputChangeHandler = (e: ChangeEvent<HTMLInputElement>): void => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
-    })
-  }
+    });
+  };
 
   const fileChangeHandler = (e: ChangeEvent<HTMLInputElement>): void => {
     if (e.target.files) {
       setCustomIcon(e.target.files[0]);
     }
-  }
+  };
 
   const formSubmitHandler = (e: SyntheticEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -66,7 +66,7 @@ const AppForm = (props: ComponentProps): JSX.Element => {
       data.append('url', formData.url);
 
       return data;
-    }
+    };
 
     if (!props.app) {
       if (customIcon) {
@@ -89,10 +89,10 @@ const AppForm = (props: ComponentProps): JSX.Element => {
       name: '',
       url: '',
       icon: ''
-    })
+    });
 
     setCustomIcon(null);
-  }
+  };
 
   return (
     <ModalForm
@@ -108,7 +108,7 @@ const AppForm = (props: ComponentProps): JSX.Element => {
           placeholder='Bookstack'
           required
           value={formData.name}
-          onChange={(e) => inputChangeHandler(e)}
+          onChange={e => inputChangeHandler(e)}
         />
       </InputGroup>
       <InputGroup>
@@ -120,7 +120,7 @@ const AppForm = (props: ComponentProps): JSX.Element => {
           placeholder='bookstack.example.com'
           required
           value={formData.url}
-          onChange={(e) => inputChangeHandler(e)}
+          onChange={e => inputChangeHandler(e)}
         />
         <span>
           <a
@@ -128,61 +128,65 @@ const AppForm = (props: ComponentProps): JSX.Element => {
             target='_blank'
             rel='noreferrer'
           >
-            {' '}Check supported URL formats
+            {' '}
+            Check supported URL formats
           </a>
         </span>
       </InputGroup>
-      {!useCustomIcon
+      {!useCustomIcon ? (
         // use mdi icon
-        ? (<InputGroup>
-            <label htmlFor='icon'>App Icon</label>
-            <input
-              type='text'
-              name='icon'
-              id='icon'
-              placeholder='book-open-outline'
-              required
-              value={formData.icon}
-              onChange={(e) => inputChangeHandler(e)}
-            />
-            <span>
-              Use icon name from MDI. 
-              <a
-                href='https://materialdesignicons.com/'
-                target='blank'>
-                {' '}Click here for reference
-              </a>
-            </span>
-            <span
-              onClick={() => toggleUseCustomIcon(!useCustomIcon)}
-              className={classes.Switch}>
-              Switch to custom icon upload
-            </span>
-          </InputGroup>)
+        <InputGroup>
+          <label htmlFor='icon'>App Icon</label>
+          <input
+            type='text'
+            name='icon'
+            id='icon'
+            placeholder='book-open-outline'
+            required
+            value={formData.icon}
+            onChange={e => inputChangeHandler(e)}
+          />
+          <span>
+            Use icon name from MDI.
+            <a href='https://materialdesignicons.com/' target='blank'>
+              {' '}
+              Click here for reference
+            </a>
+          </span>
+          <span
+            onClick={() => toggleUseCustomIcon(!useCustomIcon)}
+            className={classes.Switch}
+          >
+            Switch to custom icon upload
+          </span>
+        </InputGroup>
+      ) : (
         // upload custom icon
-        : (<InputGroup>
-            <label htmlFor='icon'>App Icon</label>
-            <input
-              type='file'
-              name='icon'
-              id='icon'
-              required
-              onChange={(e) => fileChangeHandler(e)}
-              accept='.jpg,.jpeg,.png'
-            />
-            <span
-              onClick={() => toggleUseCustomIcon(!useCustomIcon)}
-              className={classes.Switch}>
-              Switch to MDI
-            </span>
-          </InputGroup>)
-      }
-      {!props.app
-        ? <Button>Add new application</Button>
-        : <Button>Update application</Button>
-      }
+        <InputGroup>
+          <label htmlFor='icon'>App Icon</label>
+          <input
+            type='file'
+            name='icon'
+            id='icon'
+            required
+            onChange={e => fileChangeHandler(e)}
+            accept='.jpg,.jpeg,.png,.svg'
+          />
+          <span
+            onClick={() => toggleUseCustomIcon(!useCustomIcon)}
+            className={classes.Switch}
+          >
+            Switch to MDI
+          </span>
+        </InputGroup>
+      )}
+      {!props.app ? (
+        <Button>Add new application</Button>
+      ) : (
+        <Button>Update application</Button>
+      )}
     </ModalForm>
-  )
-}
+  );
+};
 
 export default connect(null, { addApp, updateApp })(AppForm);

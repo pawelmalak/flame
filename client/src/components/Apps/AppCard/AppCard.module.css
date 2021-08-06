@@ -33,11 +33,11 @@
   .AppCard {
     padding: 2px;
     border-radius: 4px;
-    transition: all 0.10s;
+    transition: all 0.1s;
   }
 
   .AppCard:hover {
-    background-color: rgba(0,0,0,0.2);
+    background-color: rgba(0, 0, 0, 0.2);
   }
 }
 
