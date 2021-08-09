@@ -1,5 +1,6 @@
-### v1.6.3 (TBA)
+### v1.6.3 (2021-08-09)
 - Added support for custom SVG icons ([#73](https://github.com/pawelmalak/flame/issues/73))
+- Added Deezer and Tidal to search queries
 
 ### v1.6.2 (2021-08-06)
 - Fixed changelog link

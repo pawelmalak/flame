@@ -1,6 +1,11 @@
 {
   "queries": [
     {
+      "name": "Deezer",
+      "prefix": "dz",
+      "template": "https://www.deezer.com/search/"
+    },
+    {
       "name": "Disroot",
       "prefix": "ds",
       "template": "http://search.disroot.org/search?q="
@@ -34,6 +39,11 @@
       "name": "The Movie Database",
       "prefix": "mv",
       "template": "https://www.themoviedb.org/search?query="
+    },
+    {
+      "name": "Tidal",
+      "prefix": "td",
+      "template": "https://listen.tidal.com/search?q="
     },
     {
       "name": "YouTube",
