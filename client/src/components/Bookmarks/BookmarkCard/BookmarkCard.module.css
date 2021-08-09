@@ -43,3 +43,10 @@
   margin-left: 2px;
   object-fit: contain;
 }
+
+.CustomIcon {
+  width: 90%;
+  height: 90%;
+  margin-top: 2px;
+  object-fit: contain;
+}
