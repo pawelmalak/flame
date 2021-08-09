@@ -74,7 +74,7 @@ services:
     container_name: flame
     volumes:
       - <host_dir>:/app/data
-      - /var/run/docker.sock:/var/sock/docker.sock # optional but required for Docker integration feature
+      - /var/run/docker.sock:/var/run/docker.sock # optional but required for Docker integration feature
     ports:
       - 5005:5005
     restart: unless-stopped
@@ -175,9 +175,3 @@ And you must have activated the Docker sync option in the settings panel.
 > This is an experimental feature. Its behaviour might change in the future.
 >
 > Follow instructions from wiki: [Custom CSS](https://github.com/pawelmalak/flame/wiki/Custom-CSS)
-
-## Support
-
-If you want to support development of Flame and my upcoming self-hosted and open source projects you can use the following link:
-
-[![PayPal Badge](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.com/paypalme/pawelmalak)

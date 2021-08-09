@@ -1,14 +1,9 @@
 {
   "queries": [
     {
-      "name": "Google",
-      "prefix": "g",
-      "template": "https://www.google.com/search?q="
-    },
-    {
-      "name": "DuckDuckGo",
-      "prefix": "d",
-      "template": "https://duckduckgo.com/?q="
+      "name": "Deezer",
+      "prefix": "dz",
+      "template": "https://www.deezer.com/search/"
     },
     {
       "name": "Disroot",
@@ -16,14 +11,14 @@
       "template": "http://search.disroot.org/search?q="
     },
     {
-      "name": "YouTube",
-      "prefix": "yt",
-      "template": "https://www.youtube.com/results?search_query="
+      "name": "DuckDuckGo",
+      "prefix": "d",
+      "template": "https://duckduckgo.com/?q="
     },
     {
-      "name": "Reddit",
-      "prefix": "r",
-      "template": "https://www.reddit.com/search?q="
+      "name": "Google",
+      "prefix": "g",
+      "template": "https://www.google.com/search?q="
     },
     {
       "name": "IMDb",
@@ -31,14 +26,29 @@
       "template": "https://www.imdb.com/find?q="
     },
     {
-      "name": "The Movie Database",
-      "prefix": "mv",
-      "template": "https://www.themoviedb.org/search?query="
+      "name": "Reddit",
+      "prefix": "r",
+      "template": "https://www.reddit.com/search?q="
     },
     {
       "name": "Spotify",
       "prefix": "sp",
       "template": "https://open.spotify.com/search/"
+    },
+    {
+      "name": "The Movie Database",
+      "prefix": "mv",
+      "template": "https://www.themoviedb.org/search?query="
+    },
+    {
+      "name": "Tidal",
+      "prefix": "td",
+      "template": "https://listen.tidal.com/search?q="
+    },
+    {
+      "name": "YouTube",
+      "prefix": "yt",
+      "template": "https://www.youtube.com/results?search_query="
     }
   ]
 }

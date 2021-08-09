@@ -9,8 +9,7 @@ api.use(express.static(join(__dirname, 'public')));
 api.use('/uploads', express.static(join(__dirname, 'data/uploads')));
 api.get(/^\/(?!api)/, (req, res) => {
   res.sendFile(join(__dirname, 'public/index.html'));
-})
-
+});
 
 // Body parser
 api.use(express.json());

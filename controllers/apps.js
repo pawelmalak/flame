@@ -126,8 +126,16 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
     });
   }
 
-  // Set header to fetch containers info every time
-  res.status(200).setHeader('Cache-Control', 'no-store').json({
+  if (process.env.NODE_ENV === 'production') {
+    // Set header to fetch containers info every time
+    res.status(200).setHeader('Cache-Control', 'no-store').json({
+      success: true,
+      data: apps
+    });
+    return;
+  }
+
+  res.status(200).json({
     success: true,
     data: apps
   });
