@@ -6,6 +6,7 @@ const { Sequelize } = require('sequelize');
 const axios = require('axios');
 const Logger = require('../utils/Logger');
 const logger = new Logger();
+const k8s = require('@kubernetes/client-node');
 
 // @desc      Create new app
 // @route     POST /api/apps
@@ -50,6 +51,9 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
   });
   const useDockerApi = await Config.findOne({
     where: { key: 'dockerApps' }
+  });
+  const useKubernetesApi = await Config.findOne({
+    where: { key: 'kubernetesApps' }
   });
   const unpinStoppedApps = await Config.findOne({
     where: { key: 'unpinStoppedApps' }
@@ -103,6 +107,64 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
       }
 
       for (const item of dockerApps) {
+        if (apps.some(app => app.name === item.name)) {
+          const app = apps.filter(e => e.name === item.name)[0];
+          await app.update({ ...item, isPinned: true });
+        } else {
+          await App.create({
+            ...item,
+            isPinned: true
+          });
+        }
+      }
+    }
+  }
+
+  if (useKubernetesApi && useKubernetesApi.value == 1) {
+    let ingresses = null;
+
+    try {
+      const kc = new k8s.KubeConfig();
+      kc.loadFromCluster();
+      const k8sNetworkingV1Api = kc.makeApiClient(k8s.NetworkingV1Api);
+      await k8sNetworkingV1Api.listIngressForAllNamespaces()
+      .then((res) => {
+          ingresses = res.body.items;
+      });
+    } catch {
+      logger.log("Can't connect to the kubernetes api", 'ERROR');
+    }
+
+    if (ingresses) {
+      apps = await App.findAll({
+        order: [[orderType, 'ASC']]
+      });
+
+      ingresses = ingresses.filter(e => Object.keys(e.metadata.annotations).length !== 0);
+      const kubernetesApps = [];
+      for (const ingress of ingresses) {
+        const annotations = ingress.metadata.annotations;
+
+        if (
+          'flame.pawelmalak/name' in annotations &&
+          'flame.pawelmalak/url' in annotations &&
+          /^app/.test(annotations['flame.pawelmalak/type'])
+        ) {
+          kubernetesApps.push({
+            name: annotations['flame.pawelmalak/name'],
+            url: annotations['flame.pawelmalak/url'],
+            icon: annotations['flame.pawelmalak/icon'] || 'kubernetes'
+          });
+        }
+      }
+
+      if (unpinStoppedApps && unpinStoppedApps.value == 1) {
+        for (const app of apps) {
+          await app.update({ isPinned: false });
+        }
+      }
+
+      for (const item of kubernetesApps) {
         if (apps.some(app => app.name === item.name)) {
           const app = apps.filter(e => e.name === item.name)[0];
           await app.update({ ...item, isPinned: true });

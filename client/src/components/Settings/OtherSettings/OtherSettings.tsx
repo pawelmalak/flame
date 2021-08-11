@@ -52,6 +52,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
     bookmarksSameTab: 0,
     searchSameTab: 0,
     dockerApps: 1,
+    kubernetesApps: 1,
     unpinStoppedApps: 1
   });
 
@@ -71,6 +72,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
       bookmarksSameTab: searchConfig('bookmarksSameTab', 0),
       searchSameTab: searchConfig('searchSameTab', 0),
       dockerApps: searchConfig('dockerApps', 0),
+      kubernetesApps: searchConfig('kubernetesApps', 0),
       unpinStoppedApps: searchConfig('unpinStoppedApps', 0)
     });
   }, [props.loading]);
@@ -291,6 +293,21 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           id='unpinStoppedApps'
           name='unpinStoppedApps'
           value={formData.unpinStoppedApps}
+          onChange={e => inputChangeHandler(e, true)}
+        >
+          <option value={1}>True</option>
+          <option value={0}>False</option>
+        </select>
+      </InputGroup>
+
+      {/* KUBERNETES SETTINGS */}
+      <h2 className={classes.SettingsSection}>Kubernetes</h2>
+      <InputGroup>
+        <label htmlFor='kubernetesApps'>Use Kubernetes Ingress API</label>
+        <select
+          id='kubernetesApps'
+          name='kubernetesApps'
+          value={formData.kubernetesApps}
           onChange={e => inputChangeHandler(e, true)}
         >
           <option value={1}>True</option>

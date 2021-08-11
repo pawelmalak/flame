@@ -22,6 +22,7 @@ Flame is self-hosted startpage for your server. Its design is inspired (heavily)
   - TypeScript
 - Deployment
   - Docker
+  - Kubernetes
 
 ## Development
 
@@ -78,6 +79,13 @@ services:
     ports:
       - 5005:5005
     restart: unless-stopped
+```
+
+#### Skaffold
+
+```sh
+# use skaffold
+skaffold dev
 ```
 
 ### Without Docker
@@ -169,6 +177,21 @@ labels:
 ```
 
 And you must have activated the Docker sync option in the settings panel.
+
+### Kubernetes integration
+
+In order to use the Kubernetes integration, each ingress must have the following annotations:
+
+```yml
+metadata:
+  annotations:
+  - flame.pawelmalak/type=application # "app" works too
+  - flame.pawelmalak/name=My container
+  - flame.pawelmalak/url=https://example.com
+  - flame.pawelmalak/icon=icon-name # Optional, default is "kubernetes"
+```
+
+And you must have activated the Kubernetes sync option in the settings panel.
 
 ### Custom CSS
 
