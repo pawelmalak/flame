@@ -12,12 +12,20 @@ spec:
       labels:
         app: flame
     spec:
-      serviceAccountName: flame
+      serviceAccountName: flame-dev
       securityContext:
         fsGroup: 1000
       containers:
         - name: flame
           image: shokohsc/flame
+          command:
+            - npm
+          args:
+            - run
+            - skaffold
+          env:
+            - name: NODE_ENV
+              value: development
           ports:
             - name: http
               containerPort: 5005

@@ -6,9 +6,6 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: ca-cluster-issuer
-    forecastle.stakater.com/expose: "true"
-    forecastle.stakater.com/group: dev
-    forecastle.stakater.com/appName: flame
     flame.pawelmalak/name: flame
     flame.pawelmalak/url: dev.flame.shokohsc.home
     flame.pawelmalak/type: app
