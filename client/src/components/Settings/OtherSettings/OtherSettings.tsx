@@ -52,7 +52,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
     bookmarksSameTab: 0,
     searchSameTab: 0,
     dockerApps: 1,
-    kubernetesApps: 1
+    kubernetesApps: 1,
+    unpinStoppedApps: 1
   });
 
   // Get config
@@ -71,7 +72,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
       bookmarksSameTab: searchConfig('bookmarksSameTab', 0),
       searchSameTab: searchConfig('searchSameTab', 0),
       dockerApps: searchConfig('dockerApps', 0),
-      kubernetesApps: searchConfig('kubernetesApps', 0)
+      kubernetesApps: searchConfig('kubernetesApps', 0),
+      unpinStoppedApps: searchConfig('unpinStoppedApps', 0)
     });
   }, [props.loading]);
 
@@ -277,6 +279,20 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           id='dockerApps'
           name='dockerApps'
           value={formData.dockerApps}
+          onChange={e => inputChangeHandler(e, true)}
+        >
+          <option value={1}>True</option>
+          <option value={0}>False</option>
+        </select>
+      </InputGroup>
+      <InputGroup>
+        <label htmlFor='unpinStoppedApps'>
+          Unpin stopped containers / other apps
+        </label>
+        <select
+          id='unpinStoppedApps'
+          name='unpinStoppedApps'
+          value={formData.unpinStoppedApps}
           onChange={e => inputChangeHandler(e, true)}
         >
           <option value={1}>True</option>

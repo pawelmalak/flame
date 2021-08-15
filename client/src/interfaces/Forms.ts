@@ -20,4 +20,5 @@ export interface SettingsForm {
   searchSameTab: number;
   dockerApps: number;
   kubernetesApps: number;
+  unpinStoppedApps: number;
 }

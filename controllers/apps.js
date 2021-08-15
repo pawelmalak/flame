@@ -62,7 +62,6 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
   const orderType = useOrdering ? useOrdering.value : 'createdAt';
   let apps;
 
-  let dockerApps = [];
   if (useDockerApi && useDockerApi.value == 1) {
     let containers = null;
 
@@ -79,7 +78,12 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
     }
 
     if (containers) {
+      apps = await App.findAll({
+        order: [[orderType, 'ASC']]
+      });
+
       containers = containers.filter(e => Object.keys(e.Labels).length !== 0);
+      const dockerApps = [];
       for (const container of containers) {
         const labels = container.Labels;
 
@@ -91,7 +95,24 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
           dockerApps.push({
             name: labels['flame.name'],
             url: labels['flame.url'],
-            icon: labels['flame.icon'] || 'docker',
+            icon: labels['flame.icon'] || 'docker'
+          });
+        }
+      }
+
+      if (unpinStoppedApps && unpinStoppedApps.value == 1) {
+        for (const app of apps) {
+          await app.update({ isPinned: false });
+        }
+      }
+
+      for (const item of dockerApps) {
+        if (apps.some(app => app.name === item.name)) {
+          const app = apps.filter(e => e.name === item.name)[0];
+          await app.update({ ...item, isPinned: true });
+        } else {
+          await App.create({
+            ...item,
             isPinned: true
           });
         }
@@ -99,7 +120,6 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
     }
   }
 
-  let kubernetesApps = [];
   if (useKubernetesApi && useKubernetesApi.value == 1) {
     let ingresses = null;
 
@@ -116,10 +136,14 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
     }
 
     if (ingresses) {
+      apps = await App.findAll({
+        order: [[orderType, 'ASC']]
+      });
+
       ingresses = ingresses.filter(e => Object.keys(e.metadata.annotations).length !== 0);
+      const kubernetesApps = [];
       for (const ingress of ingresses) {
         const annotations = ingress.metadata.annotations;
-        const creationTimestamp = ingress.metadata.creationTimestamp;
 
         if (
           'flame.pawelmalak/name' in annotations &&
@@ -129,8 +153,24 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
           kubernetesApps.push({
             name: annotations['flame.pawelmalak/name'],
             url: annotations['flame.pawelmalak/url'],
-            icon: annotations['flame.pawelmalak/icon'] || 'kubernetes',
-            createdAt: creationTimestamp,
+            icon: annotations['flame.pawelmalak/icon'] || 'kubernetes'
+          });
+        }
+      }
+
+      if (unpinStoppedApps && unpinStoppedApps.value == 1) {
+        for (const app of apps) {
+          await app.update({ isPinned: false });
+        }
+      }
+
+      for (const item of kubernetesApps) {
+        if (apps.some(app => app.name === item.name)) {
+          const app = apps.filter(e => e.name === item.name)[0];
+          await app.update({ ...item, isPinned: true });
+        } else {
+          await App.create({
+            ...item,
             isPinned: true
           });
         }
@@ -139,28 +179,12 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
   }
 
   if (orderType == 'name') {
-    apps = await App.findAll();
-    apps = apps.concat(dockerApps);
-    apps = apps.concat(kubernetesApps);
-    apps.sort((a, b) => {
-      if (a.name < b.name)
-        return -1;
-      if (a.name > b.name)
-        return 1;
-      return 0;
+    apps = await App.findAll({
+      order: [[Sequelize.fn('lower', Sequelize.col('name')), 'ASC']]
     });
   } else {
-    apps = await App.findAll();
-    apps = apps.concat(dockerApps);
-    apps = apps.concat(kubernetesApps);
-    apps.sort((a, b) => {
-      if (!a[orderType] || !b[orderType])
-        return -1;
-      if (a[orderType] < b[orderType])
-        return -1;
-      if (a[orderType] > b[orderType])
-        return 1;
-      return 0;
+    apps = await App.findAll({
+      order: [[orderType, 'ASC']]
     });
   }
 
