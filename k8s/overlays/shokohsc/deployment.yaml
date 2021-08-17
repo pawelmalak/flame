@@ -1,0 +1,36 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: flame
+spec:
+  selector:
+    matchLabels:
+      app: flame
+  template:
+    metadata:
+      labels:
+        app: flame
+    spec:
+      serviceAccountName: flame-dev
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: flame
+          image: shokohsc/flame
+          command:
+            - npm
+          args:
+            - run
+            - skaffold
+          env:
+            - name: NODE_ENV
+              value: development
+          ports:
+            - name: http
+              containerPort: 5005
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http

@@ -69,6 +69,10 @@
       "value": false
     },
     {
+      "key": "kubernetesApps",
+      "value": false
+    },
+    {
       "key": "unpinStoppedApps",
       "value": false
     }

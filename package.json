@@ -10,11 +10,13 @@
     "dev-init": "npm run init-server && npm run init-client",
     "dev-server": "nodemon server.js",
     "dev-client": "npm start --prefix client",
-    "dev": "concurrently \"npm run dev-server\" \"npm run dev-client\""
+    "dev": "concurrently \"npm run dev-server\" \"npm run dev-client\"",
+    "skaffold": "concurrently \"npm run init-client\" \"npm run dev-server\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@kubernetes/client-node": "^0.15.0",
     "@types/express": "^4.17.11",
     "axios": "^0.21.1",
     "colors": "^1.4.0",

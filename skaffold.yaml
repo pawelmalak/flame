@@ -1,0 +1,65 @@
+apiVersion: skaffold/v2beta20
+kind: Config
+metadata:
+  name: flame
+build:
+  artifacts:
+  - image: shokohsc/flame
+    context: .
+    sync:
+      manual:
+      - src: controllers/*.js
+        dest: .
+    docker:
+      dockerfile: Dockerfile.dev
+deploy:
+  kustomize:
+    paths:
+    - k8s/base
+profiles:
+- name: dev
+  activation:
+  - command: dev
+  build:
+    artifacts:
+    - image: shokohsc/flame
+      sync:
+        manual:
+        - src: controllers/*.js
+          dest: .
+      docker:
+        dockerfile: Dockerfile.dev
+- name: shokohsc
+  build:
+    artifacts:
+    - image: shokohsc/flame
+      sync:
+        manual:
+        - src: controllers/*.js
+          dest: .
+      kaniko:
+        dockerfile: Dockerfile.dev
+        cache:
+          repo: shokohsc/flame
+    cluster:
+      dockerConfig:
+        secretName: kaniko-secret
+      namespace: kaniko
+      pullSecretName: kaniko-secret
+  deploy:
+    kustomize:
+      paths:
+      - k8s/overlays/shokohsc
+- name: prod
+  build:
+    artifacts:
+    - image: shokohsc/flame
+      kaniko:
+        dockerfile: Dockerfile
+        cache:
+          repo: shokohsc/flame
+    cluster:
+      dockerConfig:
+        secretName: kaniko-secret
+      namespace: kaniko
+      pullSecretName: kaniko-secret

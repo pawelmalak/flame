@@ -1,0 +1,28 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: flame
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: ca-cluster-issuer
+    flame.pawelmalak/name: flame
+    flame.pawelmalak/url: dev.flame.shokohsc.home
+    flame.pawelmalak/type: app
+    flame.pawelmalak/icon: fire
+spec:
+  rules:
+  - host: dev.flame.shokohsc.home
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: flame
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - dev.flame.shokohsc.home
+    secretName: flame-cert

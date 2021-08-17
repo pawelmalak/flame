@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: flame
+  labels:
+    namespace: flame
+    goldilocks.fairwinds.com/enabled: "true"
