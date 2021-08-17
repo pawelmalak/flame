@@ -1,5 +1,5 @@
 ### v1.6.4 (2021-08-17)
-- Added Kubernetes integration ([#72 continued](https://github.com/pawelmalak/flame/issues/73))
+- Added Kubernetes integration ([#72 continued](https://github.com/pawelmalak/flame/issues/72))
 
 ### v1.6.3 (2021-08-09)
 - Added support for custom SVG icons ([#73](https://github.com/pawelmalak/flame/issues/73))
