@@ -1,24 +1,23 @@
-export const urlParser = (url: string): string[] => {
-  let parsedUrl: string;
-  let displayUrl: string;
+const hasProtocol = (url: string): boolean => /^\w+:\/\//.test(url);
+const isSteamUrl = (url: string): boolean => /^steam:\/\//.test(url);
+const isWebUrl = (url: string): boolean => /^https?:\/\//.test(url);
 
-  if (/(https?|steam):\/\//.test(url)) {
-    // Url starts with http[s]:// or steam:// -> leave it as it is
-    parsedUrl = url;
-  } else {
+export const urlParser = (url: string): string[] => {
+  if (!hasProtocol(url)) {
     // No protocol -> apply http:// prefix
-    parsedUrl = `http://${url}`;
+    url = `http://${url}`;
   }
 
   // Create simplified url to display as text
-  if (/steam:\/\//.test(url)) {
+  let displayUrl: string;
+  if (isSteamUrl(url)) {
     displayUrl = 'Run Steam App';
-  } else {
+  } else if (isWebUrl(url)) {
     displayUrl = url
-    .replace(/https?:\/\//, '')
-    .replace('www.', '')
-    .replace(/\/$/, '');
-  }
-  
-  return [displayUrl, parsedUrl]
-}
+      .replace(/https?:\/\//, '')
+      .replace('www.', '')
+      .replace(/\/$/, '');
+  } else displayUrl = url;
+
+  return [displayUrl, url];
+};
