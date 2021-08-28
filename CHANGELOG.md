@@ -1,3 +1,6 @@
+### v1.6.5 (2021-08-28)
+- Added support for more URL schemes ([#74](https://github.com/pawelmalak/flame/issues/74))
+
 ### v1.6.4 (2021-08-17)
 - Added Kubernetes integration ([#72 continued](https://github.com/pawelmalak/flame/issues/72))
 
