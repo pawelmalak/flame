@@ -9,3 +9,4 @@ export * from './Notification';
 export * from './Config';
 export * from './Forms';
 export * from './Query';
+export * from './SearchResult';

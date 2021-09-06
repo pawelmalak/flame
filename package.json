@@ -5,13 +5,13 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "init-server": "echo Instaling server dependencies && npm install && mkdir public && touch public/flame.css",
-    "init-client": "cd client && echo Instaling client dependencies && npm install",
-    "dev-init": "npm run init-server && npm run init-client",
-    "dev-server": "nodemon server.js",
-    "dev-client": "npm start --prefix client",
-    "dev": "concurrently \"npm run dev-server\" \"npm run dev-client\"",
-    "skaffold": "concurrently \"npm run init-client\" \"npm run dev-server\""
+    "init:server": "echo Instaling server dependencies && npm install && mkdir public && touch public/flame.css",
+    "init:client": "cd client && echo Instaling client dependencies && npm install",
+    "dev:init": "npm run init:server && npm run init:client",
+    "dev:server": "nodemon server.js",
+    "dev:client": "npm start --prefix client",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "skaffold": "concurrently \"npm run init:client\" \"npm run dev:server\""
   },
   "author": "",
   "license": "ISC",

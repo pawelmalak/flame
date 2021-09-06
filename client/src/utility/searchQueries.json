@@ -26,6 +26,11 @@
       "template": "https://www.imdb.com/find?q="
     },
     {
+      "name": "Local search",
+      "prefix": "l",
+      "template": "#"
+    },
+    {
       "name": "Reddit",
       "prefix": "r",
       "template": "https://www.reddit.com/search?q="

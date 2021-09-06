@@ -9,27 +9,27 @@ const initConfig = async () => {
   const configPairs = await Config.findAll({
     where: {
       key: {
-        [Op.or]: config.map(pair => pair.key)
-      }
-    }
-  })
+        [Op.or]: config.map((pair) => pair.key),
+      },
+    },
+  });
 
   // Get key from each pair
   const configKeys = configPairs.map((pair) => pair.key);
 
   // Create missing pairs
-  config.forEach(async ({ key, value}) => {
+  config.forEach(async ({ key, value }) => {
     if (!configKeys.includes(key)) {
       await Config.create({
         key,
         value,
-        valueType: typeof value
-      })
+        valueType: typeof value,
+      });
     }
-  })
+  });
 
   logger.log('Initial config created');
   return;
-}
+};
 
 module.exports = initConfig;
