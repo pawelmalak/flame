@@ -1,3 +1,6 @@
+### v1.6.6 (2021-09-06)
+- Added local search (filter) for apps and bookmarks ([#47](https://github.com/pawelmalak/flame/issues/47))
+
 ### v1.6.5 (2021-08-28)
 - Added support for more URL schemes ([#74](https://github.com/pawelmalak/flame/issues/74))
 
