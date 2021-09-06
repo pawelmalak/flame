@@ -1,5 +1,8 @@
+import { Query } from './Query';
+
 export interface SearchResult {
   isLocal: boolean;
-  prefix: null | string;
-  query: string;
+  sameTab: boolean;
+  search: string;
+  query: Query;
 }

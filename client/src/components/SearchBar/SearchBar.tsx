@@ -28,16 +28,28 @@ const SearchBar = (props: ComponentProps): JSX.Element => {
   }, []);
 
   const searchHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.code === 'Enter') {
-      const searchResult = searchParser(inputRef.current.value);
+    const searchResult = searchParser(inputRef.current.value);
 
-      if (!searchResult.prefix) {
+    if (searchResult.isLocal) {
+      setLocalSearch(searchResult.search);
+    }
+
+    if (e.code === 'Enter') {
+      if (!searchResult.query.prefix) {
         createNotification({
           title: 'Error',
           message: 'Prefix not found',
         });
       } else if (searchResult.isLocal) {
-        setLocalSearch(searchResult.query);
+        setLocalSearch(searchResult.search);
+      } else {
+        if (searchResult.sameTab) {
+          document.location.replace(
+            `${searchResult.query.template}${searchResult.search}`
+          );
+        } else {
+          window.open(`${searchResult.query.template}${searchResult.search}`);
+        }
       }
     }
   };
@@ -47,7 +59,7 @@ const SearchBar = (props: ComponentProps): JSX.Element => {
       ref={inputRef}
       type="text"
       className={classes.SearchBar}
-      onKeyDown={(e) => searchHandler(e)}
+      onKeyUp={(e) => searchHandler(e)}
     />
   );
 };

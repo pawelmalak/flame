@@ -6,8 +6,13 @@ import { searchConfig } from '.';
 export const searchParser = (searchQuery: string): SearchResult => {
   const result: SearchResult = {
     isLocal: false,
-    prefix: null,
-    query: '',
+    sameTab: false,
+    search: '',
+    query: {
+      name: '',
+      prefix: '',
+      template: '',
+    },
   };
 
   const splitQuery = searchQuery.match(/^\/([a-z]+)[ ](.+)$/i);
@@ -23,19 +28,13 @@ export const searchParser = (searchQuery: string): SearchResult => {
   const query = queries.find((q: Query) => q.prefix === prefix);
 
   if (query) {
-    result.prefix = query.prefix;
-    result.query = search;
+    result.query = query;
+    result.search = search;
 
     if (prefix === 'l') {
       result.isLocal = true;
     } else {
-      const sameTab = searchConfig('searchSameTab', false);
-
-      if (sameTab) {
-        document.location.replace(`${query.template}${search}`);
-      } else {
-        window.open(`${query.template}${search}`);
-      }
+      result.sameTab = searchConfig('searchSameTab', false);
     }
 
     return result;
