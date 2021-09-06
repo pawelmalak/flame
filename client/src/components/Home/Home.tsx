@@ -89,6 +89,18 @@ const Home = (props: ComponentProps): JSX.Element => {
     return () => clearInterval(interval);
   }, []);
 
+  // Search bookmarks
+  const searchBookmarks = (query: string): Category[] => {
+    const category = { ...categories[0] };
+    category.name = 'Search Results';
+    category.bookmarks = categories
+      .map(({ bookmarks }) => bookmarks)
+      .flat()
+      .filter(({ name }) => new RegExp(query, 'i').test(name));
+
+    return [category];
+  };
+
   return (
     <Container>
       {searchConfig('hideSearch', 0) !== 1 ? (
@@ -143,10 +155,13 @@ const Home = (props: ComponentProps): JSX.Element => {
             <Spinner />
           ) : (
             <BookmarkGrid
-              categories={categories.filter(
-                (category: Category) => category.isPinned
-              )}
+              categories={
+                !localSearch
+                  ? categories.filter(({ isPinned }) => isPinned)
+                  : searchBookmarks(localSearch)
+              }
               totalCategories={categories.length}
+              searching={!!localSearch}
             />
           )}
         </Fragment>

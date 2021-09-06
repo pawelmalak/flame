@@ -20,24 +20,23 @@ interface ComponentProps {
   loading: boolean;
   categories: Category[];
   getCategories: () => void;
+  searching: boolean;
 }
 
 export enum ContentType {
   category,
-  bookmark
+  bookmark,
 }
 
 const Bookmarks = (props: ComponentProps): JSX.Element => {
-  const {
-    getCategories,
-    categories,
-    loading
-  } = props;
+  const { getCategories, categories, loading, searching = false } = props;
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [formContentType, setFormContentType] = useState(ContentType.category);
   const [isInEdit, setIsInEdit] = useState(false);
-  const [tableContentType, setTableContentType] = useState(ContentType.category);
+  const [tableContentType, setTableContentType] = useState(
+    ContentType.category
+  );
   const [isInUpdate, setIsInUpdate] = useState(false);
   const [categoryInUpdate, setCategoryInUpdate] = useState<Category>({
     name: '',
@@ -46,8 +45,8 @@ const Bookmarks = (props: ComponentProps): JSX.Element => {
     orderId: 0,
     bookmarks: [],
     createdAt: new Date(),
-    updatedAt: new Date()
-  })
+    updatedAt: new Date(),
+  });
   const [bookmarkInUpdate, setBookmarkInUpdate] = useState<Bookmark>({
     name: '',
     url: '',
@@ -55,24 +54,24 @@ const Bookmarks = (props: ComponentProps): JSX.Element => {
     icon: '',
     id: -1,
     createdAt: new Date(),
-    updatedAt: new Date()
-  })
+    updatedAt: new Date(),
+  });
 
   useEffect(() => {
     if (categories.length === 0) {
       getCategories();
     }
-  }, [getCategories])
+  }, [getCategories]);
 
   const toggleModal = (): void => {
     setModalIsOpen(!modalIsOpen);
-  }
+  };
 
   const addActionHandler = (contentType: ContentType) => {
     setFormContentType(contentType);
     setIsInUpdate(false);
     toggleModal();
-  }
+  };
 
   const editActionHandler = (contentType: ContentType) => {
     // We're in the edit mode and the same button was clicked - go back to list
@@ -82,11 +81,11 @@ const Bookmarks = (props: ComponentProps): JSX.Element => {
       setIsInEdit(true);
       setTableContentType(contentType);
     }
-  }
+  };
 
   const instanceOfCategory = (object: any): object is Category => {
     return 'bookmarks' in object;
-  }
+  };
 
   const goToUpdateMode = (data: Category | Bookmark): void => {
     setIsInUpdate(true);
@@ -98,67 +97,76 @@ const Bookmarks = (props: ComponentProps): JSX.Element => {
       setBookmarkInUpdate(data);
     }
     toggleModal();
-  }
+  };
 
   return (
     <Container>
       <Modal isOpen={modalIsOpen} setIsOpen={toggleModal}>
-        {!isInUpdate
-          ? <BookmarkForm modalHandler={toggleModal} contentType={formContentType} />
-          : formContentType === ContentType.category
-            ? <BookmarkForm modalHandler={toggleModal} contentType={formContentType} category={categoryInUpdate} />
-            : <BookmarkForm modalHandler={toggleModal} contentType={formContentType} bookmark={bookmarkInUpdate} />
-        }
+        {!isInUpdate ? (
+          <BookmarkForm
+            modalHandler={toggleModal}
+            contentType={formContentType}
+          />
+        ) : formContentType === ContentType.category ? (
+          <BookmarkForm
+            modalHandler={toggleModal}
+            contentType={formContentType}
+            category={categoryInUpdate}
+          />
+        ) : (
+          <BookmarkForm
+            modalHandler={toggleModal}
+            contentType={formContentType}
+            bookmark={bookmarkInUpdate}
+          />
+        )}
       </Modal>
 
-      <Headline
-        title='All Bookmarks'
-        subtitle={(<Link to='/'>Go back</Link>)}
-      />
-      
+      <Headline title="All Bookmarks" subtitle={<Link to="/">Go back</Link>} />
+
       <div className={classes.ActionsContainer}>
         <ActionButton
-          name='Add Category'
-          icon='mdiPlusBox'
+          name="Add Category"
+          icon="mdiPlusBox"
           handler={() => addActionHandler(ContentType.category)}
         />
         <ActionButton
-          name='Add Bookmark'
-          icon='mdiPlusBox'
+          name="Add Bookmark"
+          icon="mdiPlusBox"
           handler={() => addActionHandler(ContentType.bookmark)}
         />
         <ActionButton
-          name='Edit Categories'
-          icon='mdiPencil'
+          name="Edit Categories"
+          icon="mdiPencil"
           handler={() => editActionHandler(ContentType.category)}
         />
         <ActionButton
-          name='Edit Bookmarks'
-          icon='mdiPencil'
+          name="Edit Bookmarks"
+          icon="mdiPencil"
           handler={() => editActionHandler(ContentType.bookmark)}
         />
       </div>
 
-      {loading
-        ? <Spinner />
-        : (!isInEdit
-          ? <BookmarkGrid categories={categories} />
-          : <BookmarkTable
-              contentType={tableContentType}
-              categories={categories}
-              updateHandler={goToUpdateMode}
-            />
-          )
-      }
+      {loading ? (
+        <Spinner />
+      ) : !isInEdit ? (
+        <BookmarkGrid categories={categories} searching />
+      ) : (
+        <BookmarkTable
+          contentType={tableContentType}
+          categories={categories}
+          updateHandler={goToUpdateMode}
+        />
+      )}
     </Container>
-  )
-}
+  );
+};
 
 const mapStateToProps = (state: GlobalState) => {
   return {
     loading: state.bookmark.loading,
-    categories: state.bookmark.categories
-  }
-}
+    categories: state.bookmark.categories,
+  };
+};
 
 export default connect(mapStateToProps, { getCategories })(Bookmarks);
