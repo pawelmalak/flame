@@ -47,13 +47,16 @@ const Home = (props: ComponentProps): JSX.Element => {
     appsLoading,
     getCategories,
     categories,
-    categoriesLoading
+    categoriesLoading,
   } = props;
 
   const [header, setHeader] = useState({
     dateTime: dateTime(),
-    greeting: greeter()
-  })
+    greeting: greeter(),
+  });
+
+  // Local search query
+  const [localSearch, setLocalSearch] = useState<null | string>(null);
 
   // Load applications
   useEffect(() => {
@@ -78,78 +81,108 @@ const Home = (props: ComponentProps): JSX.Element => {
       interval = setInterval(() => {
         setHeader({
           dateTime: dateTime(),
-          greeting: greeter()
-        })
+          greeting: greeter(),
+        });
       }, 1000);
     }
 
     return () => clearInterval(interval);
-  }, [])
-  
+  }, []);
+
+  // Search bookmarks
+  const searchBookmarks = (query: string): Category[] => {
+    const category = { ...categories[0] };
+    category.name = 'Search Results';
+    category.bookmarks = categories
+      .map(({ bookmarks }) => bookmarks)
+      .flat()
+      .filter(({ name }) => new RegExp(query, 'i').test(name));
+
+    return [category];
+  };
+
   return (
     <Container>
-      {searchConfig('hideSearch', 0) !== 1
-        ? <SearchBar />
-        : <div></div>
-      }
+      {searchConfig('hideSearch', 0) !== 1 ? (
+        <SearchBar setLocalSearch={setLocalSearch} />
+      ) : (
+        <div></div>
+      )}
 
-      {searchConfig('hideHeader', 0) !== 1
-        ? (
-          <header className={classes.Header}>
-            <p>{header.dateTime}</p>
-            <Link to='/settings' className={classes.SettingsLink}>Go to Settings</Link>
-            <span className={classes.HeaderMain}>
-              <h1>{header.greeting}</h1>
-              <WeatherWidget />
-            </span>
-          </header>
-          )
-        : <div></div>
-      }
-      
-      {searchConfig('hideApps', 0) !== 1
-        ? (<Fragment>
-            <SectionHeadline title='Applications' link='/applications' />
-            {appsLoading
-              ? <Spinner />
-              : <AppGrid
-                apps={apps.filter((app: App) => app.isPinned)}
-                totalApps={apps.length}
-              />
-            }
-            <div className={classes.HomeSpace}></div>
-          </Fragment>)
-        : <div></div>
-      }
+      {searchConfig('hideHeader', 0) !== 1 ? (
+        <header className={classes.Header}>
+          <p>{header.dateTime}</p>
+          <Link to="/settings" className={classes.SettingsLink}>
+            Go to Settings
+          </Link>
+          <span className={classes.HeaderMain}>
+            <h1>{header.greeting}</h1>
+            <WeatherWidget />
+          </span>
+        </header>
+      ) : (
+        <div></div>
+      )}
 
-      {searchConfig('hideCategories', 0) !== 1
-        ? (<Fragment>
-            <SectionHeadline title='Bookmarks' link='/bookmarks' />
-            {categoriesLoading
-              ? <Spinner />
-              : <BookmarkGrid
-                  categories={categories.filter((category: Category) => category.isPinned)}
-                  totalCategories={categories.length}
-              />
-            }
-          </Fragment>)
-        : <div></div>
-      }
+      {searchConfig('hideApps', 0) !== 1 ? (
+        <Fragment>
+          <SectionHeadline title="Applications" link="/applications" />
+          {appsLoading ? (
+            <Spinner />
+          ) : (
+            <AppGrid
+              apps={
+                !localSearch
+                  ? apps.filter(({ isPinned }) => isPinned)
+                  : apps.filter(({ name }) =>
+                      new RegExp(localSearch, 'i').test(name)
+                    )
+              }
+              totalApps={apps.length}
+              searching={!!localSearch}
+            />
+          )}
+          <div className={classes.HomeSpace}></div>
+        </Fragment>
+      ) : (
+        <div></div>
+      )}
 
-      <Link to='/settings' className={classes.SettingsButton}>
-        <Icon icon='mdiCog' color='var(--color-background)' />
+      {searchConfig('hideCategories', 0) !== 1 ? (
+        <Fragment>
+          <SectionHeadline title="Bookmarks" link="/bookmarks" />
+          {categoriesLoading ? (
+            <Spinner />
+          ) : (
+            <BookmarkGrid
+              categories={
+                !localSearch
+                  ? categories.filter(({ isPinned }) => isPinned)
+                  : searchBookmarks(localSearch)
+              }
+              totalCategories={categories.length}
+              searching={!!localSearch}
+            />
+          )}
+        </Fragment>
+      ) : (
+        <div></div>
+      )}
+
+      <Link to="/settings" className={classes.SettingsButton}>
+        <Icon icon="mdiCog" color="var(--color-background)" />
       </Link>
     </Container>
-  )
-}
+  );
+};
 
 const mapStateToProps = (state: GlobalState) => {
   return {
     appsLoading: state.app.loading,
     apps: state.app.apps,
     categoriesLoading: state.bookmark.loading,
-    categories: state.bookmark.categories
-  }
-}
+    categories: state.bookmark.categories,
+  };
+};
 
 export default connect(mapStateToProps, { getApps, getCategories })(Home);

@@ -5,7 +5,7 @@ const logger = new Logger();
 const sequelize = new Sequelize({
   dialect: 'sqlite',
   storage: './data/db.sqlite',
-  logging: false
+  logging: false,
 });
 
 const connectDB = async () => {
@@ -28,5 +28,5 @@ const connectDB = async () => {
 
 module.exports = {
   connectDB,
-  sequelize
+  sequelize,
 };

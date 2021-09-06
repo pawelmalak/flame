@@ -32,7 +32,7 @@ git clone https://github.com/pawelmalak/flame
 cd flame
 
 # run only once
-npm run dev-init
+npm run dev:init
 
 # start backend and frontend development servers
 npm run dev

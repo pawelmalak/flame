@@ -27,14 +27,11 @@ interface ComponentProps {
   getApps: Function;
   apps: App[];
   loading: boolean;
+  searching: boolean;
 }
 
 const Apps = (props: ComponentProps): JSX.Element => {
-  const {
-    getApps,
-    apps,
-    loading
-  } = props;
+  const { getApps, apps, loading, searching = false } = props;
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isInEdit, setIsInEdit] = useState(false);
@@ -47,8 +44,8 @@ const Apps = (props: ComponentProps): JSX.Element => {
     orderId: 0,
     id: 0,
     createdAt: new Date(),
-    updatedAt: new Date()
-  })
+    updatedAt: new Date(),
+  });
 
   useEffect(() => {
     if (apps.length === 0) {
@@ -59,63 +56,57 @@ const Apps = (props: ComponentProps): JSX.Element => {
   const toggleModal = (): void => {
     setModalIsOpen(!modalIsOpen);
     setIsInUpdate(false);
-  }
+  };
 
   const toggleEdit = (): void => {
     setIsInEdit(!isInEdit);
     setIsInUpdate(false);
-  }
+  };
 
   const toggleUpdate = (app: App): void => {
     setAppInUpdate(app);
     setIsInUpdate(true);
     setModalIsOpen(true);
-  }
+  };
 
   return (
     <Container>
       <Modal isOpen={modalIsOpen} setIsOpen={setModalIsOpen}>
-        {!isInUpdate
-          ? <AppForm modalHandler={toggleModal} />
-          : <AppForm modalHandler={toggleModal} app={appInUpdate} />
-        }
+        {!isInUpdate ? (
+          <AppForm modalHandler={toggleModal} />
+        ) : (
+          <AppForm modalHandler={toggleModal} app={appInUpdate} />
+        )}
       </Modal>
 
       <Headline
-        title='All Applications'
-        subtitle={(<Link to='/'>Go back</Link>)}
+        title="All Applications"
+        subtitle={<Link to="/">Go back</Link>}
       />
-      
+
       <div className={classes.ActionsContainer}>
-        <ActionButton
-          name='Add'
-          icon='mdiPlusBox'
-          handler={toggleModal}
-        />
-        <ActionButton
-          name='Edit'
-          icon='mdiPencil'
-          handler={toggleEdit}
-        />
+        <ActionButton name="Add" icon="mdiPlusBox" handler={toggleModal} />
+        <ActionButton name="Edit" icon="mdiPencil" handler={toggleEdit} />
       </div>
 
       <div className={classes.Apps}>
-        {loading
-          ? <Spinner />
-          : (!isInEdit
-              ? <AppGrid apps={apps} />
-              : <AppTable updateAppHandler={toggleUpdate} />)
-        }
+        {loading ? (
+          <Spinner />
+        ) : !isInEdit ? (
+          <AppGrid apps={apps} searching />
+        ) : (
+          <AppTable updateAppHandler={toggleUpdate} />
+        )}
       </div>
     </Container>
-  )
-}
+  );
+};
 
 const mapStateToProps = (state: GlobalState) => {
   return {
     apps: state.app.apps,
-    loading: state.app.loading
-  }
-}
+    loading: state.app.loading,
+  };
+};
 
 export default connect(mapStateToProps, { getApps })(Apps);
