@@ -92,11 +92,17 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
           'flame.url' in labels &&
           /^app/.test(labels['flame.type'])
         ) {
-          dockerApps.push({
-            name: labels['flame.name'],
-            url: labels['flame.url'],
-            icon: labels['flame.icon'] || 'docker'
-          });
+
+          for (let i=0; i < labels['flame.name'].split(';').length; i++) {
+            const names = labels['flame.name'].split(';');
+            const urls = labels['flame.url'].split(';');
+            const icons = labels['flame.icon'].split(';');
+            dockerApps.push({
+              name: names[i] || names[0],
+              url: urls[i] || urls[0],
+              icon: icons[i] || 'docker'
+            });
+          }         
         }
       }
 
@@ -107,13 +113,29 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
       }
 
       for (const item of dockerApps) {
-        if (apps.some(app => app.name === item.name)) {
-          const app = apps.filter(e => e.name === item.name)[0];
-          await app.update({ ...item, isPinned: true });
+        if (apps.some((app) => app.name === item.name)) {
+          const app = apps.filter((e) => e.name === item.name)[0];
+
+          if(item.icon === 'custom') {
+            await app.update({
+              name: item.name,
+              url: item.url,
+              isPinned: true,
+            });
+          } else {
+            await app.update({
+              name: item.name,
+              url: item.url,
+              icon: item.icon,
+              isPinned: true,
+            });
+          }
         } else {
           await App.create({
-            ...item,
-            isPinned: true
+            name: item.name,
+            url: item.url,
+            icon: item.icon === 'custom' ? 'docker' : item.icon,
+            isPinned: true,
           });
         }
       }
