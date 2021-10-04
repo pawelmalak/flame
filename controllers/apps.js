@@ -95,7 +95,12 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
           for (let i = 0; i < labels['flame.name'].split(';').length; i++) {
             const names = labels['flame.name'].split(';');
             const urls = labels['flame.url'].split(';');
-            const icons = labels['flame.icon'].split(';');
+            let icons = '';
+
+            if ('flame.icon' in labels) {
+              icons = labels['flame.icon'].split(';');
+            }
+
             dockerApps.push({
               name: names[i] || names[0],
               url: urls[i] || urls[0],
