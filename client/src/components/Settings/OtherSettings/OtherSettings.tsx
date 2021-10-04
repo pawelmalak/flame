@@ -13,7 +13,6 @@ import {
 import {
   GlobalState,
   NewNotification,
-  Query,
   SettingsForm,
 } from '../../../interfaces';
 
@@ -26,7 +25,6 @@ import classes from './OtherSettings.module.css';
 
 // Utils
 import { searchConfig } from '../../../utility';
-import { queries } from '../../../utility/searchQueries.json';
 
 interface ComponentProps {
   createNotification: (notification: NewNotification) => void;
@@ -45,15 +43,12 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
     hideHeader: 0,
     hideApps: 0,
     hideCategories: 0,
-    hideSearch: 0,
-    defaultSearchProvider: 'd',
     useOrdering: 'createdAt',
     appsSameTab: 0,
     bookmarksSameTab: 0,
-    searchSameTab: 0,
-    dockerApps: 1,
-    kubernetesApps: 1,
-    unpinStoppedApps: 1,
+    dockerApps: 0,
+    kubernetesApps: 0,
+    unpinStoppedApps: 0,
   });
 
   // Get config
@@ -65,12 +60,9 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
       hideHeader: searchConfig('hideHeader', 0),
       hideApps: searchConfig('hideApps', 0),
       hideCategories: searchConfig('hideCategories', 0),
-      hideSearch: searchConfig('hideSearch', 0),
-      defaultSearchProvider: searchConfig('defaultSearchProvider', 'd'),
       useOrdering: searchConfig('useOrdering', 'createdAt'),
       appsSameTab: searchConfig('appsSameTab', 0),
       bookmarksSameTab: searchConfig('bookmarksSameTab', 0),
-      searchSameTab: searchConfig('searchSameTab', 0),
       dockerApps: searchConfig('dockerApps', 0),
       kubernetesApps: searchConfig('kubernetesApps', 0),
       unpinStoppedApps: searchConfig('unpinStoppedApps', 0),
@@ -169,35 +161,6 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
         </select>
       </InputGroup>
       <InputGroup>
-        <label htmlFor="defaultSearchProvider">Default Search Provider</label>
-        <select
-          id="defaultSearchProvider"
-          name="defaultSearchProvider"
-          value={formData.defaultSearchProvider}
-          onChange={(e) => inputChangeHandler(e)}
-        >
-          {queries.map((query: Query, idx) => (
-            <option key={idx} value={query.prefix}>
-              {query.name}
-            </option>
-          ))}
-        </select>
-      </InputGroup>
-      <InputGroup>
-        <label htmlFor="searchSameTab">
-          Open search results in the same tab
-        </label>
-        <select
-          id="searchSameTab"
-          name="searchSameTab"
-          value={formData.searchSameTab}
-          onChange={(e) => inputChangeHandler(e, true)}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
-      </InputGroup>
-      <InputGroup>
         <label htmlFor="appsSameTab">Open applications in the same tab</label>
         <select
           id="appsSameTab"
@@ -224,18 +187,6 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
 
       {/* MODULES OPTIONS */}
       <h2 className={classes.SettingsSection}>Modules</h2>
-      <InputGroup>
-        <label htmlFor="hideSearch">Hide search bar</label>
-        <select
-          id="hideSearch"
-          name="hideSearch"
-          value={formData.hideSearch}
-          onChange={(e) => inputChangeHandler(e, true)}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
-      </InputGroup>
       <InputGroup>
         <label htmlFor="hideHeader">Hide greeting and date</label>
         <select
