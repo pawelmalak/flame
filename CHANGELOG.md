@@ -1,3 +1,7 @@
+### v1.6.7 (2021-10-04)
+- Add multiple labels to Docker Compose ([#90](https://github.com/pawelmalak/flame/issues/90))
+- Custom icons via Docker Compose labels ([#91](https://github.com/pawelmalak/flame/issues/91))
+
 ### v1.6.6 (2021-09-06)
 - Added local search (filter) for apps and bookmarks ([#47](https://github.com/pawelmalak/flame/issues/47))
 

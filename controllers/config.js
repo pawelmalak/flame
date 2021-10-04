@@ -14,9 +14,9 @@ exports.createPair = asyncWrapper(async (req, res, next) => {
 
   res.status(201).json({
     success: true,
-    data: pair
-  })
-})
+    data: pair,
+  });
+});
 
 // @desc      Get all key:value pairs
 // @route     GET /api/config
@@ -27,14 +27,14 @@ exports.getAllPairs = asyncWrapper(async (req, res, next) => {
 
   if (req.query.keys) {
     // Check for specific keys to get in a single query
-    const keys = req.query.keys
-      .split(',')
-      .map((key) => { return { key } });
+    const keys = req.query.keys.split(',').map((key) => {
+      return { key };
+    });
 
     pairs = await Config.findAll({
       where: {
-        [Op.or]: keys
-      }
+        [Op.or]: keys,
+      },
     });
   } else {
     // Else get all
@@ -43,16 +43,16 @@ exports.getAllPairs = asyncWrapper(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    data: pairs
-  })
-})
+    data: pairs,
+  });
+});
 
 // @desc      Get single key:value pair
 // @route     GET /api/config/:key
 // @access    Public
 exports.getSinglePair = asyncWrapper(async (req, res, next) => {
   const pair = await Config.findOne({
-    where: { key: req.params.key }
+    where: { key: req.params.key },
   });
 
   if (!pair) {
@@ -61,16 +61,16 @@ exports.getSinglePair = asyncWrapper(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    data: pair
-  })
-})
+    data: pair,
+  });
+});
 
 // @desc      Update value
 // @route     PUT /api/config/:key
 // @access    Public
 exports.updateValue = asyncWrapper(async (req, res, next) => {
   let pair = await Config.findOne({
-    where: { key: req.params.key }
+    where: { key: req.params.key },
   });
 
   if (!pair) {
@@ -78,41 +78,49 @@ exports.updateValue = asyncWrapper(async (req, res, next) => {
   }
 
   if (pair.isLocked) {
-    return next(new ErrorResponse(`Value of key ${req.params.key} is locked and can not be changed`, 400));
+    return next(
+      new ErrorResponse(
+        `Value of key ${req.params.key} is locked and can not be changed`,
+        400
+      )
+    );
   }
 
   pair = await pair.update({ ...req.body });
 
   res.status(200).json({
     success: true,
-    data: pair
-  })
-})
+    data: pair,
+  });
+});
 
 // @desc      Update multiple values
 // @route     PUT /api/config/
 // @access    Public
 exports.updateValues = asyncWrapper(async (req, res, next) => {
   Object.entries(req.body).forEach(async ([key, value]) => {
-    await Config.update({ value }, {
-      where: { key }
-    })
-  })
-  
+    await Config.update(
+      { value },
+      {
+        where: { key },
+      }
+    );
+  });
+
   const config = await Config.findAll();
 
   res.status(200).send({
     success: true,
-    data: config
-  })
-})
+    data: config,
+  });
+});
 
 // @desc      Delete key:value pair
 // @route     DELETE /api/config/:key
 // @access    Public
 exports.deletePair = asyncWrapper(async (req, res, next) => {
   const pair = await Config.findOne({
-    where: { key: req.params.key }
+    where: { key: req.params.key },
   });
 
   if (!pair) {
@@ -120,16 +128,21 @@ exports.deletePair = asyncWrapper(async (req, res, next) => {
   }
 
   if (pair.isLocked) {
-    return next(new ErrorResponse(`Value of key ${req.params.key} is locked and can not be deleted`, 400));
+    return next(
+      new ErrorResponse(
+        `Value of key ${req.params.key} is locked and can not be deleted`,
+        400
+      )
+    );
   }
 
   await pair.destroy();
 
   res.status(200).json({
     success: true,
-    data: {}
-  })
-})
+    data: {},
+  });
+});
 
 // @desc      Get custom CSS file
 // @route     GET /api/config/0/css
@@ -140,10 +153,9 @@ exports.getCss = asyncWrapper(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    data: content
-  })
-})
-
+    data: content,
+  });
+});
 
 // @desc      Update custom CSS file
 // @route     PUT /api/config/0/css
@@ -153,10 +165,13 @@ exports.updateCss = asyncWrapper(async (req, res, next) => {
   file.write(req.body.styles);
 
   // Copy file to docker volume
-  fs.copyFileSync(join(__dirname, '../public/flame.css'), join(__dirname, '../data/flame.css'));
+  fs.copyFileSync(
+    join(__dirname, '../public/flame.css'),
+    join(__dirname, '../data/flame.css')
+  );
 
   res.status(200).json({
     success: true,
-    data: {}
-  })
-})
+    data: {},
+  });
+});

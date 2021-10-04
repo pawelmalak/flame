@@ -9,14 +9,14 @@ const getExternalWeather = require('../utils/getExternalWeather');
 exports.getWeather = asyncWrapper(async (req, res, next) => {
   const weather = await Weather.findAll({
     order: [['createdAt', 'DESC']],
-    limit: 1
+    limit: 1,
   });
 
   res.status(200).json({
     success: true,
-    data: weather
-  })
-})
+    data: weather,
+  });
+});
 
 // @desc      Update weather
 // @route     GET /api/weather/update
@@ -26,6 +26,6 @@ exports.updateWeather = asyncWrapper(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    data: weather
-  })
-})
+    data: weather,
+  });
+});

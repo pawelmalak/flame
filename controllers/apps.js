@@ -14,7 +14,7 @@ const k8s = require('@kubernetes/client-node');
 exports.createApp = asyncWrapper(async (req, res, next) => {
   // Get config from database
   const pinApps = await Config.findOne({
-    where: { key: 'pinAppsByDefault' }
+    where: { key: 'pinAppsByDefault' },
   });
 
   let app;
@@ -28,7 +28,7 @@ exports.createApp = asyncWrapper(async (req, res, next) => {
     if (parseInt(pinApps.value)) {
       app = await App.create({
         ..._body,
-        isPinned: true
+        isPinned: true,
       });
     } else {
       app = await App.create(req.body);
@@ -37,7 +37,7 @@ exports.createApp = asyncWrapper(async (req, res, next) => {
 
   res.status(201).json({
     success: true,
-    data: app
+    data: app,
   });
 });
 
@@ -47,16 +47,16 @@ exports.createApp = asyncWrapper(async (req, res, next) => {
 exports.getApps = asyncWrapper(async (req, res, next) => {
   // Get config from database
   const useOrdering = await Config.findOne({
-    where: { key: 'useOrdering' }
+    where: { key: 'useOrdering' },
   });
   const useDockerApi = await Config.findOne({
-    where: { key: 'dockerApps' }
+    where: { key: 'dockerApps' },
   });
   const useKubernetesApi = await Config.findOne({
-    where: { key: 'kubernetesApps' }
+    where: { key: 'kubernetesApps' },
   });
   const unpinStoppedApps = await Config.findOne({
-    where: { key: 'unpinStoppedApps' }
+    where: { key: 'unpinStoppedApps' },
   });
 
   const orderType = useOrdering ? useOrdering.value : 'createdAt';
@@ -69,7 +69,7 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
       let { data } = await axios.get(
         'http://localhost/containers/json?{"status":["running"]}',
         {
-          socketPath: '/var/run/docker.sock'
+          socketPath: '/var/run/docker.sock',
         }
       );
       containers = data;
@@ -79,10 +79,10 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
 
     if (containers) {
       apps = await App.findAll({
-        order: [[orderType, 'ASC']]
+        order: [[orderType, 'ASC']],
       });
 
-      containers = containers.filter(e => Object.keys(e.Labels).length !== 0);
+      containers = containers.filter((e) => Object.keys(e.Labels).length !== 0);
       const dockerApps = [];
       for (const container of containers) {
         const labels = container.Labels;
@@ -92,17 +92,16 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
           'flame.url' in labels &&
           /^app/.test(labels['flame.type'])
         ) {
-
-          for (let i=0; i < labels['flame.name'].split(';').length; i++) {
+          for (let i = 0; i < labels['flame.name'].split(';').length; i++) {
             const names = labels['flame.name'].split(';');
             const urls = labels['flame.url'].split(';');
             const icons = labels['flame.icon'].split(';');
             dockerApps.push({
               name: names[i] || names[0],
               url: urls[i] || urls[0],
-              icon: icons[i] || 'docker'
+              icon: icons[i] || 'docker',
             });
-          }         
+          }
         }
       }
 
@@ -116,7 +115,7 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
         if (apps.some((app) => app.name === item.name)) {
           const app = apps.filter((e) => e.name === item.name)[0];
 
-          if(item.icon === 'custom') {
+          if (item.icon === 'custom') {
             await app.update({
               name: item.name,
               url: item.url,
@@ -149,9 +148,8 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
       const kc = new k8s.KubeConfig();
       kc.loadFromCluster();
       const k8sNetworkingV1Api = kc.makeApiClient(k8s.NetworkingV1Api);
-      await k8sNetworkingV1Api.listIngressForAllNamespaces()
-      .then((res) => {
-          ingresses = res.body.items;
+      await k8sNetworkingV1Api.listIngressForAllNamespaces().then((res) => {
+        ingresses = res.body.items;
       });
     } catch {
       logger.log("Can't connect to the kubernetes api", 'ERROR');
@@ -159,10 +157,12 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
 
     if (ingresses) {
       apps = await App.findAll({
-        order: [[orderType, 'ASC']]
+        order: [[orderType, 'ASC']],
       });
 
-      ingresses = ingresses.filter(e => Object.keys(e.metadata.annotations).length !== 0);
+      ingresses = ingresses.filter(
+        (e) => Object.keys(e.metadata.annotations).length !== 0
+      );
       const kubernetesApps = [];
       for (const ingress of ingresses) {
         const annotations = ingress.metadata.annotations;
@@ -175,7 +175,7 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
           kubernetesApps.push({
             name: annotations['flame.pawelmalak/name'],
             url: annotations['flame.pawelmalak/url'],
-            icon: annotations['flame.pawelmalak/icon'] || 'kubernetes'
+            icon: annotations['flame.pawelmalak/icon'] || 'kubernetes',
           });
         }
       }
@@ -187,13 +187,13 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
       }
 
       for (const item of kubernetesApps) {
-        if (apps.some(app => app.name === item.name)) {
-          const app = apps.filter(e => e.name === item.name)[0];
+        if (apps.some((app) => app.name === item.name)) {
+          const app = apps.filter((e) => e.name === item.name)[0];
           await app.update({ ...item, isPinned: true });
         } else {
           await App.create({
             ...item,
-            isPinned: true
+            isPinned: true,
           });
         }
       }
@@ -202,11 +202,11 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
 
   if (orderType == 'name') {
     apps = await App.findAll({
-      order: [[Sequelize.fn('lower', Sequelize.col('name')), 'ASC']]
+      order: [[Sequelize.fn('lower', Sequelize.col('name')), 'ASC']],
     });
   } else {
     apps = await App.findAll({
-      order: [[orderType, 'ASC']]
+      order: [[orderType, 'ASC']],
     });
   }
 
@@ -214,14 +214,14 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
     // Set header to fetch containers info every time
     res.status(200).setHeader('Cache-Control', 'no-store').json({
       success: true,
-      data: apps
+      data: apps,
     });
     return;
   }
 
   res.status(200).json({
     success: true,
-    data: apps
+    data: apps,
   });
 });
 
@@ -230,7 +230,7 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
 // @access    Public
 exports.getApp = asyncWrapper(async (req, res, next) => {
   const app = await App.findOne({
-    where: { id: req.params.id }
+    where: { id: req.params.id },
   });
 
   if (!app) {
@@ -241,7 +241,7 @@ exports.getApp = asyncWrapper(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    data: app
+    data: app,
   });
 });
 
@@ -250,7 +250,7 @@ exports.getApp = asyncWrapper(async (req, res, next) => {
 // @access    Public
 exports.updateApp = asyncWrapper(async (req, res, next) => {
   let app = await App.findOne({
-    where: { id: req.params.id }
+    where: { id: req.params.id },
   });
 
   if (!app) {
@@ -269,7 +269,7 @@ exports.updateApp = asyncWrapper(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    data: app
+    data: app,
   });
 });
 
@@ -278,12 +278,12 @@ exports.updateApp = asyncWrapper(async (req, res, next) => {
 // @access    Public
 exports.deleteApp = asyncWrapper(async (req, res, next) => {
   await App.destroy({
-    where: { id: req.params.id }
+    where: { id: req.params.id },
   });
 
   res.status(200).json({
     success: true,
-    data: {}
+    data: {},
   });
 });
 
@@ -295,13 +295,13 @@ exports.reorderApps = asyncWrapper(async (req, res, next) => {
     await App.update(
       { orderId },
       {
-        where: { id }
+        where: { id },
       }
     );
   });
 
   res.status(200).json({
     success: true,
-    data: {}
+    data: {},
   });
 });
