@@ -174,6 +174,17 @@ labels:
   - flame.name=My container
   - flame.url=https://example.com
   - flame.icon=icon-name # Optional, default is "docker"
+# - flame.icon=custom to make changes in app. ie: custom icon upload
+```
+
+You can set up different apps in the same label adding `;` between each one.
+
+```yml
+labels:
+  - flame.type=application
+  - flame.name=First App;Second App
+  - flame.url=https://example1.com;https://example2.com
+  - flame.icon=icon-name1;icon-name2
 ```
 
 And you must have activated the Docker sync option in the settings panel.
