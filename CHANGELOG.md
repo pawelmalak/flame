@@ -1,4 +1,5 @@
 ### v1.7.0 (TBA)
+- Fixed bug related to creating new apps/bookmarks with custom icon ([#83](https://github.com/pawelmalak/flame/issues/83))
 - URL can now be assigned to notifications. Clicking on "New version is available" popup will now redirect to changelog ([#86](https://github.com/pawelmalak/flame/issues/86))
 
 ### v1.6.7 (2021-10-04)
