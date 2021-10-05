@@ -2,6 +2,7 @@ const { Sequelize } = require('sequelize');
 const { join } = require('path');
 const fs = require('fs');
 const Umzug = require('umzug');
+const backupDB = require('./utils/backupDb');
 
 const Logger = require('../utils/Logger');
 const logger = new Logger();
@@ -25,9 +26,7 @@ const umzug = new Umzug({
 
 const connectDB = async () => {
   try {
-    if (fs.existsSync('data/db.sqlite')) {
-      fs.copyFileSync('data/db.sqlite', 'data/backup_db.sqlite');
-    }
+    backupDB();
 
     await sequelize.authenticate();
     logger.log('Connected to database');
