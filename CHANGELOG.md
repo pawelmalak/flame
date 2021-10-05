@@ -1,3 +1,6 @@
+### v1.6.8 (2021-10-05)
+- Implemented migration system for database
+
 ### v1.6.7 (2021-10-04)
 - Add multiple labels to Docker Compose ([#90](https://github.com/pawelmalak/flame/issues/90))
 - Custom icons via Docker Compose labels ([#91](https://github.com/pawelmalak/flame/issues/91))
