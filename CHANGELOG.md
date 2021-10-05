@@ -1,3 +1,6 @@
+### v1.7.0 (TBA)
+- URL can now be assigned to notifications. Clicking on "New version is available" popup will now redirect to changelog ([#86](https://github.com/pawelmalak/flame/issues/86))
+
 ### v1.6.7 (2021-10-04)
 - Add multiple labels to Docker Compose ([#90](https://github.com/pawelmalak/flame/issues/90))
 - Custom icons via Docker Compose labels ([#91](https://github.com/pawelmalak/flame/issues/91))

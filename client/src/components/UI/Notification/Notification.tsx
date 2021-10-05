@@ -8,12 +8,16 @@ interface ComponentProps {
   title: string;
   message: string;
   id: number;
+  url: string | null;
   clearNotification: (id: number) => void;
 }
 
 const Notification = (props: ComponentProps): JSX.Element => {
   const [isOpen, setIsOpen] = useState(true);
-  const elementClasses = [classes.Notification, isOpen ? classes.NotificationOpen : classes.NotificationClose].join(' ');
+  const elementClasses = [
+    classes.Notification,
+    isOpen ? classes.NotificationOpen : classes.NotificationClose,
+  ].join(' ');
 
   useEffect(() => {
     const closeNotification = setTimeout(() => {
@@ -22,21 +26,27 @@ const Notification = (props: ComponentProps): JSX.Element => {
 
     const clearNotification = setTimeout(() => {
       props.clearNotification(props.id);
-    }, 3600)
+    }, 3600);
 
     return () => {
       window.clearTimeout(closeNotification);
       window.clearTimeout(clearNotification);
+    };
+  }, []);
+
+  const clickHandler = () => {
+    if (props.url) {
+      window.open(props.url, '_blank');
     }
-  }, [])
+  };
 
   return (
-    <div className={elementClasses}>
+    <div className={elementClasses} onClick={clickHandler}>
       <h4>{props.title}</h4>
       <p>{props.message}</p>
       <div className={classes.Pog}></div>
     </div>
-  )
-}
+  );
+};
 
 export default connect(null, { clearNotification })(Notification);
