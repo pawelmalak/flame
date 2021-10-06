@@ -11,7 +11,7 @@ import { NewNotification } from '../../interfaces';
 import classes from './SearchBar.module.css';
 
 // Utils
-import { searchParser } from '../../utility';
+import { searchParser, urlParser, redirectUrl } from '../../utility';
 
 interface ComponentProps {
   createNotification: (notification: NewNotification) => void;
@@ -28,28 +28,28 @@ const SearchBar = (props: ComponentProps): JSX.Element => {
   }, []);
 
   const searchHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-    const searchResult = searchParser(inputRef.current.value);
+    const { isLocal, search, query, isURL, sameTab } = searchParser(
+      inputRef.current.value
+    );
 
-    if (searchResult.isLocal) {
-      setLocalSearch(searchResult.search);
+    if (isLocal) {
+      setLocalSearch(search);
     }
 
     if (e.code === 'Enter') {
-      if (!searchResult.query.prefix) {
+      if (!query.prefix) {
         createNotification({
           title: 'Error',
           message: 'Prefix not found',
         });
-      } else if (searchResult.isLocal) {
-        setLocalSearch(searchResult.search);
+      } else if (isURL) {
+        const url = urlParser(inputRef.current.value)[1];
+        redirectUrl(url, sameTab);
+      } else if (isLocal) {
+        setLocalSearch(search);
       } else {
-        if (searchResult.sameTab) {
-          document.location.replace(
-            `${searchResult.query.template}${searchResult.search}`
-          );
-        } else {
-          window.open(`${searchResult.query.template}${searchResult.search}`);
-        }
+        const url = `${query.template}${search}`;
+        redirectUrl(url, sameTab);
       }
     }
   };

@@ -1,6 +1,8 @@
 ### v1.7.0 (TBA)
+- Search bar will now redirect if valid URL or IP is provided ([#67](https://github.com/pawelmalak/flame/issues/67))
 - Fixed bug related to creating new apps/bookmarks with custom icon ([#83](https://github.com/pawelmalak/flame/issues/83))
 - URL can now be assigned to notifications. Clicking on "New version is available" popup will now redirect to changelog ([#86](https://github.com/pawelmalak/flame/issues/86))
+- Added static fonts ([#94](https://github.com/pawelmalak/flame/issues/94))
 
 ### v1.6.7 (2021-10-04)
 - Add multiple labels to Docker Compose ([#90](https://github.com/pawelmalak/flame/issues/90))
