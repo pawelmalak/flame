@@ -177,6 +177,8 @@ labels:
 # - flame.icon=custom to make changes in app. ie: custom icon upload
 ```
 
+And you must have activated the Docker sync option in the settings panel.
+
 You can set up different apps in the same label adding `;` between each one.
 
 ```yml
@@ -187,7 +189,28 @@ labels:
   - flame.icon=icon-name1;icon-name2
 ```
 
-And you must have activated the Docker sync option in the settings panel.
+If you want to use a remote docker host follow this instructions in the host:
+
+- Open the file `/lib/systemd/system/docker.service`, search for `ExecStart` and edit the value
+
+```text
+ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:${PORT} -H unix:///var/run/docker.sock
+```
+
+>The above command will bind the docker engine server to the Unix socket as well as TCP port of your choice. “0.0.0.0” means docker-engine accepts connections from all IP addresses.
+
+- Restart the daemon and Docker service
+
+```shell
+sudo systemctl daemon-reload
+sudo service docker restart
+```
+
+- Test if it is working
+
+```shell
+curl http://${IP}:${PORT}/version
+```
 
 ### Kubernetes integration
 
