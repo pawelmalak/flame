@@ -1,6 +1,6 @@
 import { queries } from './searchQueries.json';
 import { Query, SearchResult } from '../interfaces';
-
+import { store } from '../store/store';
 import { searchConfig } from '.';
 
 export const searchParser = (searchQuery: string): SearchResult => {
@@ -15,6 +15,8 @@ export const searchParser = (searchQuery: string): SearchResult => {
       template: '',
     },
   };
+
+  const customQueries = store.getState().config.customQueries;
 
   // Check if url or ip was passed
   const urlRegex =
@@ -33,7 +35,9 @@ export const searchParser = (searchQuery: string): SearchResult => {
     ? encodeURIComponent(splitQuery[2])
     : encodeURIComponent(searchQuery);
 
-  const query = queries.find((q: Query) => q.prefix === prefix);
+  const query = [...queries, ...customQueries].find(
+    (q: Query) => q.prefix === prefix
+  );
 
   // If search provider was found
   if (query) {

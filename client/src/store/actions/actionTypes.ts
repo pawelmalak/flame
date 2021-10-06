@@ -26,8 +26,9 @@ import {
   ClearNotificationAction,
   // Config
   GetConfigAction,
-  UpdateConfigAction
+  UpdateConfigAction,
 } from './';
+import { FetchQueriesAction } from './config';
 
 export enum ActionTypes {
   // Theme
@@ -62,35 +63,37 @@ export enum ActionTypes {
   clearNotification = 'CLEAR_NOTIFICATION',
   // Config
   getConfig = 'GET_CONFIG',
-  updateConfig = 'UPDATE_CONFIG'
+  updateConfig = 'UPDATE_CONFIG',
+  fetchQueries = 'FETCH_QUERIES',
 }
 
-export type Action = 
+export type Action =
   // Theme
-  SetThemeAction |
+  | SetThemeAction
   // Apps
-  GetAppsAction<any> |
-  PinAppAction |
-  AddAppAction |
-  DeleteAppAction |
-  UpdateAppAction |
-  ReorderAppsAction |
-  SortAppsAction |
+  | GetAppsAction<any>
+  | PinAppAction
+  | AddAppAction
+  | DeleteAppAction
+  | UpdateAppAction
+  | ReorderAppsAction
+  | SortAppsAction
   // Categories
-  GetCategoriesAction<any> |
-  AddCategoryAction |
-  PinCategoryAction |
-  DeleteCategoryAction |
-  UpdateCategoryAction |
-  SortCategoriesAction |
-  ReorderCategoriesAction |
+  | GetCategoriesAction<any>
+  | AddCategoryAction
+  | PinCategoryAction
+  | DeleteCategoryAction
+  | UpdateCategoryAction
+  | SortCategoriesAction
+  | ReorderCategoriesAction
   // Bookmarks
-  AddBookmarkAction |
-  DeleteBookmarkAction |
-  UpdateBookmarkAction |
+  | AddBookmarkAction
+  | DeleteBookmarkAction
+  | UpdateBookmarkAction
   // Notifications
-  CreateNotificationAction |
-  ClearNotificationAction |
+  | CreateNotificationAction
+  | ClearNotificationAction
   // Config
-  GetConfigAction |
-  UpdateConfigAction;
+  | GetConfigAction
+  | UpdateConfigAction
+  | FetchQueriesAction;

@@ -10,23 +10,15 @@ const {
   deletePair,
   updateCss,
   getCss,
+  getQueries,
 } = require('../controllers/config');
 
-router
-  .route('/')
-  .post(createPair)
-  .get(getAllPairs)
-  .put(updateValues);
+router.route('/').post(createPair).get(getAllPairs).put(updateValues);
 
-router
-  .route('/:key')
-  .get(getSinglePair)
-  .put(updateValue)
-  .delete(deletePair);
+router.route('/:key').get(getSinglePair).put(updateValue).delete(deletePair);
 
-router
-  .route('/0/css')
-  .get(getCss)
-  .put(updateCss);
+router.route('/0/css').get(getCss).put(updateCss);
+
+router.route('/0/queries').get(getQueries);
 
 module.exports = router;

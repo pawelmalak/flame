@@ -27,6 +27,7 @@ interface Props {
   createNotification: (notification: NewNotification) => void;
   updateConfig: (formData: SearchForm) => void;
   loading: boolean;
+  customQueries: Query[];
 }
 
 const SearchSettings = (props: Props): JSX.Element => {
@@ -81,7 +82,7 @@ const SearchSettings = (props: Props): JSX.Element => {
           value={formData.defaultSearchProvider}
           onChange={(e) => inputChangeHandler(e)}
         >
-          {queries.map((query: Query, idx) => (
+          {[...queries, ...props.customQueries].map((query: Query, idx) => (
             <option key={idx} value={query.prefix}>
               {query.name}
             </option>
@@ -122,6 +123,7 @@ const SearchSettings = (props: Props): JSX.Element => {
 const mapStateToProps = (state: GlobalState) => {
   return {
     loading: state.config.loading,
+    customQueries: state.config.customQueries,
   };
 };
 

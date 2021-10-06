@@ -162,7 +162,7 @@ exports.getCss = asyncWrapper(async (req, res, next) => {
 // @access    Public
 exports.updateCss = asyncWrapper(async (req, res, next) => {
   const file = new File(join(__dirname, '../public/flame.css'));
-  file.write(req.body.styles);
+  file.write(req.body.styles, false);
 
   // Copy file to docker volume
   fs.copyFileSync(
@@ -173,5 +173,18 @@ exports.updateCss = asyncWrapper(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data: {},
+  });
+});
+
+// @desc      Get custom queries file
+// @route     GET /api/config/0/queries
+// @access    Public
+exports.getQueries = asyncWrapper(async (req, res, next) => {
+  const file = new File(join(__dirname, '../data/customQueries.json'));
+  const content = JSON.parse(file.read());
+
+  res.status(200).json({
+    success: true,
+    data: content.queries,
   });
 });
