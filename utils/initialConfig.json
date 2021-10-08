@@ -69,6 +69,10 @@
       "value": false
     },
     {
+      "key": "dockerHost",
+      "value": "localhost"
+    },
+    {
       "key": "kubernetesApps",
       "value": false
     },

@@ -52,6 +52,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
     bookmarksSameTab: 0,
     searchSameTab: 0,
     dockerApps: 1,
+    dockerHost: 'localhost',
     kubernetesApps: 1,
     unpinStoppedApps: 1,
   });
@@ -72,6 +73,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
       bookmarksSameTab: searchConfig('bookmarksSameTab', 0),
       searchSameTab: searchConfig('searchSameTab', 0),
       dockerApps: searchConfig('dockerApps', 0),
+      dockerHost: searchConfig('dockerHost', 'localhost'),
       kubernetesApps: searchConfig('kubernetesApps', 0),
       unpinStoppedApps: searchConfig('unpinStoppedApps', 0),
     });
@@ -275,6 +277,17 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
 
       {/* DOCKER SETTINGS */}
       <h2 className={classes.SettingsSection}>Docker</h2>
+      <InputGroup>
+        <label htmlFor="dockerHost">Docker Host</label>
+        <input
+          type="text"
+          id="dockerHost"
+          name="dockerHost"
+          placeholder="dockerHost:port"
+          value={formData.dockerHost}
+          onChange={(e) => inputChangeHandler(e)}
+        />
+      </InputGroup>
       <InputGroup>
         <label htmlFor="dockerApps">Use Docker API</label>
         <select
