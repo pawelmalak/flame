@@ -120,7 +120,7 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
         if (apps.some((app) => app.name === item.name)) {
           const app = apps.filter((e) => e.name === item.name)[0];
 
-          if (item.icon === 'custom') {
+          if (item.icon === 'custom' || app.icon != 'docker') {
             await app.update({
               name: item.name,
               url: item.url,
