@@ -66,18 +66,22 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
     let containers = null;
 
     const host = await Config.findOne({
-      where: { key: 'dockerHost' }
+      where: { key: 'dockerHost' },
     });
 
     try {
-      if(host.value.includes('localhost')) {
-        let { data } = await axios.get(`http://${host.value}/containers/json?{"status":["running"]}`,
-        {
-          socketPath: '/var/run/docker.sock'
-        });
+      if (host.value.includes('localhost')) {
+        let { data } = await axios.get(
+          `http://${host.value}/containers/json?{"status":["running"]}`,
+          {
+            socketPath: '/var/run/docker.sock',
+          }
+        );
         containers = data;
       } else {
-        let { data } = await axios.get(`http://${host.value}/containers/json?{"status":["running"]}`);
+        let { data } = await axios.get(
+          `http://${host.value}/containers/json?{"status":["running"]}`
+        );
         containers = data;
       }
     } catch {

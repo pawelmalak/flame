@@ -150,20 +150,6 @@ To use search bar you need to type your search query with selected prefix. For e
 2. Get lat/long for your location. You can get them from [latlong.net](https://www.latlong.net/convert-address-to-lat-long.html).
 3. Enter and save data. Weather widget will now update and should be visible on Home page.
 
-### Supported URL formats for applications and bookmarks
-
-#### Rules
-
-- URL starts with `http://`
-  - Format: `http://www.domain.com`, `http://domain.com`
-  - Redirect: `{dest}`
-- URL starts with `https://`
-  - Format: `https://www.domain.com`, `https://domain.com`
-  - Redirect: `https://{dest}`
-- URL without protocol
-  - Format: `www.domain.com`, `domain.com`, `sub.domain.com`, `local`, `ip`, `ip:port`
-  - Redirect: `http://{dest}`
-
 ### Docker integration
 
 In order to use the Docker integration, each container must have the following labels:
