@@ -65,16 +65,27 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
   if (useDockerApi && useDockerApi.value == 1) {
     let containers = null;
 
+    const host = await Config.findOne({
+      where: { key: 'dockerHost' },
+    });
+
     try {
-      let { data } = await axios.get(
-        'http://localhost/containers/json?{"status":["running"]}',
-        {
-          socketPath: '/var/run/docker.sock',
-        }
-      );
-      containers = data;
+      if (host.value.includes('localhost')) {
+        let { data } = await axios.get(
+          `http://${host.value}/containers/json?{"status":["running"]}`,
+          {
+            socketPath: '/var/run/docker.sock',
+          }
+        );
+        containers = data;
+      } else {
+        let { data } = await axios.get(
+          `http://${host.value}/containers/json?{"status":["running"]}`
+        );
+        containers = data;
+      }
     } catch {
-      logger.log("Can't connect to the docker socket", 'ERROR');
+      logger.log(`Can't connect to the docker api on ${host.value}`, 'ERROR');
     }
 
     if (containers) {

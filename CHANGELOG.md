@@ -1,3 +1,6 @@
+### v1.6.9 (2021-10-09)
+- Added option for remote docker host ([#97](https://github.com/pawelmalak/flame/issues/97))
+
 ### v1.6.8 (2021-10-05)
 - Implemented migration system for database
 

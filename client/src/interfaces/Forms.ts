@@ -19,6 +19,7 @@ export interface SettingsForm {
   bookmarksSameTab: number;
   searchSameTab: number;
   dockerApps: number;
+  dockerHost: string;
   kubernetesApps: number;
   unpinStoppedApps: number;
 }
