@@ -3,7 +3,7 @@ const fs = require('fs');
 class File {
   constructor(path) {
     this.path = path;
-    this.content = '';
+    this.content = null;
   }
 
   read() {
@@ -16,9 +16,12 @@ class File {
     }
   }
 
-  write(data) {
+  write(data, isJSON) {
     this.content = data;
-    fs.writeFileSync(this.path, this.content);
+    fs.writeFileSync(
+      this.path,
+      isJSON ? JSON.stringify(this.content) : this.content
+    );
   }
 }
 

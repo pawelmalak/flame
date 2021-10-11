@@ -162,7 +162,7 @@ exports.getCss = asyncWrapper(async (req, res, next) => {
 // @access    Public
 exports.updateCss = asyncWrapper(async (req, res, next) => {
   const file = new File(join(__dirname, '../public/flame.css'));
-  file.write(req.body.styles);
+  file.write(req.body.styles, false);
 
   // Copy file to docker volume
   fs.copyFileSync(

@@ -1,0 +1,32 @@
+{
+  "files": [
+    {
+      "name": "flame.css",
+      "msg": {
+        "created": "Created empty CSS file",
+        "found": "Custom CSS file found"
+      },
+      "paths": {
+        "src": "../../data",
+        "dest": "../../public"
+      },
+      "template": "",
+      "isJSON": false
+    },
+    {
+      "name": "customQueries.json",
+      "msg": {
+        "created": "Created empty queries file",
+        "found": "Custom queries file found"
+      },
+      "paths": {
+        "src": "../../data",
+        "dest": "../../data"
+      },
+      "template": {
+        "queries": []
+      },
+      "isJSON": true
+    }
+  ]
+}

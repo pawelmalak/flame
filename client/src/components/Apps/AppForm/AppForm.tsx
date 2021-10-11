@@ -22,7 +22,7 @@ const AppForm = (props: ComponentProps): JSX.Element => {
   const [formData, setFormData] = useState<NewApp>({
     name: '',
     url: '',
-    icon: ''
+    icon: '',
   });
 
   useEffect(() => {
@@ -30,13 +30,13 @@ const AppForm = (props: ComponentProps): JSX.Element => {
       setFormData({
         name: props.app.name,
         url: props.app.url,
-        icon: props.app.icon
+        icon: props.app.icon,
       });
     } else {
       setFormData({
         name: '',
         url: '',
-        icon: ''
+        icon: '',
       });
     }
   }, [props.app]);
@@ -44,7 +44,7 @@ const AppForm = (props: ComponentProps): JSX.Element => {
   const inputChangeHandler = (e: ChangeEvent<HTMLInputElement>): void => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -59,6 +59,7 @@ const AppForm = (props: ComponentProps): JSX.Element => {
 
     const createFormData = (): FormData => {
       const data = new FormData();
+
       if (customIcon) {
         data.append('icon', customIcon);
       }
@@ -88,10 +89,8 @@ const AppForm = (props: ComponentProps): JSX.Element => {
     setFormData({
       name: '',
       url: '',
-      icon: ''
+      icon: '',
     });
-
-    setCustomIcon(null);
   };
 
   return (
@@ -100,33 +99,33 @@ const AppForm = (props: ComponentProps): JSX.Element => {
       formHandler={formSubmitHandler}
     >
       <InputGroup>
-        <label htmlFor='name'>App Name</label>
+        <label htmlFor="name">App Name</label>
         <input
-          type='text'
-          name='name'
-          id='name'
-          placeholder='Bookstack'
+          type="text"
+          name="name"
+          id="name"
+          placeholder="Bookstack"
           required
           value={formData.name}
-          onChange={e => inputChangeHandler(e)}
+          onChange={(e) => inputChangeHandler(e)}
         />
       </InputGroup>
       <InputGroup>
-        <label htmlFor='url'>App URL</label>
+        <label htmlFor="url">App URL</label>
         <input
-          type='text'
-          name='url'
-          id='url'
-          placeholder='bookstack.example.com'
+          type="text"
+          name="url"
+          id="url"
+          placeholder="bookstack.example.com"
           required
           value={formData.url}
-          onChange={e => inputChangeHandler(e)}
+          onChange={(e) => inputChangeHandler(e)}
         />
         <span>
           <a
-            href='https://github.com/pawelmalak/flame#supported-url-formats-for-applications-and-bookmarks'
-            target='_blank'
-            rel='noreferrer'
+            href="https://github.com/pawelmalak/flame#supported-url-formats-for-applications-and-bookmarks"
+            target="_blank"
+            rel="noreferrer"
           >
             {' '}
             Check supported URL formats
@@ -136,19 +135,19 @@ const AppForm = (props: ComponentProps): JSX.Element => {
       {!useCustomIcon ? (
         // use mdi icon
         <InputGroup>
-          <label htmlFor='icon'>App Icon</label>
+          <label htmlFor="icon">App Icon</label>
           <input
-            type='text'
-            name='icon'
-            id='icon'
-            placeholder='book-open-outline'
+            type="text"
+            name="icon"
+            id="icon"
+            placeholder="book-open-outline"
             required
             value={formData.icon}
-            onChange={e => inputChangeHandler(e)}
+            onChange={(e) => inputChangeHandler(e)}
           />
           <span>
             Use icon name from MDI.
-            <a href='https://materialdesignicons.com/' target='blank'>
+            <a href="https://materialdesignicons.com/" target="blank">
               {' '}
               Click here for reference
             </a>
@@ -163,17 +162,20 @@ const AppForm = (props: ComponentProps): JSX.Element => {
       ) : (
         // upload custom icon
         <InputGroup>
-          <label htmlFor='icon'>App Icon</label>
+          <label htmlFor="icon">App Icon</label>
           <input
-            type='file'
-            name='icon'
-            id='icon'
+            type="file"
+            name="icon"
+            id="icon"
             required
-            onChange={e => fileChangeHandler(e)}
-            accept='.jpg,.jpeg,.png,.svg'
+            onChange={(e) => fileChangeHandler(e)}
+            accept=".jpg,.jpeg,.png,.svg"
           />
           <span
-            onClick={() => toggleUseCustomIcon(!useCustomIcon)}
+            onClick={() => {
+              setCustomIcon(null);
+              toggleUseCustomIcon(!useCustomIcon);
+            }}
             className={classes.Switch}
           >
             Switch to MDI

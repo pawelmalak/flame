@@ -20,19 +20,20 @@ const NotificationCenter = (props: ComponentProps): JSX.Element => {
           <Notification
             title={notification.title}
             message={notification.message}
+            url={notification.url || null}
             id={notification.id}
             key={notification.id}
           />
-        )
+        );
       })}
     </div>
-  )
-}
+  );
+};
 
 const mapStateToProps = (state: GlobalState) => {
   return {
-    notifications: state.notification.notifications
-  }
-}
+    notifications: state.notification.notifications,
+  };
+};
 
 export default connect(mapStateToProps)(NotificationCenter);

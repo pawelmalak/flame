@@ -1,23 +1,28 @@
 require('dotenv').config();
 const http = require('http');
+
+// Database
 const { connectDB } = require('./db');
+const associateModels = require('./models/associateModels');
+
+// Server
 const api = require('./api');
 const jobs = require('./utils/jobs');
 const Socket = require('./Socket');
 const Sockets = require('./Sockets');
-const associateModels = require('./models/associateModels');
-const initConfig = require('./utils/initConfig');
-const findCss = require('./utils/findCss');
+
+// Utils
+const initApp = require('./utils/init');
 const Logger = require('./utils/Logger');
 const logger = new Logger();
 
-const PORT = process.env.PORT || 5005;
-
 (async () => {
+  const PORT = process.env.PORT || 5005;
+
+  // Init app
   await connectDB();
   await associateModels();
-  await initConfig();
-  findCss();
+  await initApp();
 
   // Create server for Express API and WebSockets
   const server = http.createServer();
@@ -28,6 +33,8 @@ const PORT = process.env.PORT || 5005;
   Sockets.registerSocket('weather', weatherSocket);
 
   server.listen(PORT, () => {
-    logger.log(`Server is running on port ${PORT} in ${process.env.NODE_ENV} mode`);
-  })
+    logger.log(
+      `Server is running on port ${PORT} in ${process.env.NODE_ENV} mode`
+    );
+  });
 })();

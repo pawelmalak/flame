@@ -1,0 +1,28 @@
+{
+  "routes": [
+    {
+      "name": "Theme",
+      "dest": "/settings"
+    },
+    {
+      "name": "Weather",
+      "dest": "/settings/weather"
+    },
+    {
+      "name": "Search",
+      "dest": "/settings/search"
+    },
+    {
+      "name": "Other",
+      "dest": "/settings/other"
+    },
+    {
+      "name": "CSS",
+      "dest": "/settings/css"
+    },
+    {
+      "name": "App",
+      "dest": "/settings/app"
+    }
+  ]
+}

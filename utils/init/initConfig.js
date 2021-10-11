@@ -1,7 +1,8 @@
 const { Op } = require('sequelize');
-const Config = require('../models/Config');
+const Config = require('../../models/Config');
 const { config } = require('./initialConfig.json');
-const Logger = require('./Logger');
+
+const Logger = require('../Logger');
 const logger = new Logger();
 
 const initConfig = async () => {
@@ -28,7 +29,10 @@ const initConfig = async () => {
     }
   });
 
-  logger.log('Initial config created');
+  if (process.env.NODE_ENV == 'development') {
+    logger.log('Initial config created');
+  }
+
   return;
 };
 

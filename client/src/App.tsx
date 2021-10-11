@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { getConfig, setTheme } from './store/actions';
+import { fetchQueries, getConfig, setTheme } from './store/actions';
 import 'external-svg-loader';
 
 // Redux
@@ -27,15 +27,18 @@ if (localStorage.theme) {
 // Check for updates
 checkVersion();
 
+// fetch queries
+store.dispatch<any>(fetchQueries());
+
 const App = (): JSX.Element => {
   return (
     <Provider store={store}>
       <BrowserRouter>
         <Switch>
-          <Route exact path='/' component={Home} />
-          <Route path='/settings' component={Settings} />
-          <Route path='/applications' component={Apps} />
-          <Route path='/bookmarks' component={Bookmarks} />
+          <Route exact path="/" component={Home} />
+          <Route path="/settings" component={Settings} />
+          <Route path="/applications" component={Apps} />
+          <Route path="/bookmarks" component={Bookmarks} />
         </Switch>
       </BrowserRouter>
       <NotificationCenter />
