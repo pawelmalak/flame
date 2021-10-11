@@ -5,18 +5,20 @@ import classes from './CustomQueries.module.css';
 
 import Modal from '../../../UI/Modal/Modal';
 import Icon from '../../../UI/Icons/Icon/Icon';
-import { GlobalState, Query } from '../../../../interfaces';
+import { GlobalState, NewNotification, Query } from '../../../../interfaces';
 import QueriesForm from './QueriesForm';
-import { deleteQuery } from '../../../../store/actions';
+import { deleteQuery, createNotification } from '../../../../store/actions';
 import Button from '../../../UI/Buttons/Button/Button';
+import { searchConfig } from '../../../../utility';
 
 interface Props {
   customQueries: Query[];
   deleteQuery: (prefix: string) => {};
+  createNotification: (notification: NewNotification) => void;
 }
 
 const CustomQueries = (props: Props): JSX.Element => {
-  const { customQueries, deleteQuery } = props;
+  const { customQueries, deleteQuery, createNotification } = props;
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [editableQuery, setEditableQuery] = useState<Query | null>(null);
@@ -27,7 +29,17 @@ const CustomQueries = (props: Props): JSX.Element => {
   };
 
   const deleteHandler = (query: Query) => {
-    if (window.confirm(`Are you sure you want to delete this provider?`)) {
+    const currentProvider = searchConfig('defaultSearchProvider', 'l');
+    const isCurrent = currentProvider === query.prefix;
+
+    if (isCurrent) {
+      createNotification({
+        title: 'Error',
+        message: 'Cannot delete active provider',
+      });
+    } else if (
+      window.confirm(`Are you sure you want to delete this provider?`)
+    ) {
       deleteQuery(query.prefix);
     }
   };
@@ -95,4 +107,6 @@ const mapStateToProps = (state: GlobalState) => {
   };
 };
 
-export default connect(mapStateToProps, { deleteQuery })(CustomQueries);
+export default connect(mapStateToProps, { deleteQuery, createNotification })(
+  CustomQueries
+);
