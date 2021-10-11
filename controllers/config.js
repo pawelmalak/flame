@@ -175,16 +175,3 @@ exports.updateCss = asyncWrapper(async (req, res, next) => {
     data: {},
   });
 });
-
-// @desc      Get custom queries file
-// @route     GET /api/config/0/queries
-// @access    Public
-exports.getQueries = asyncWrapper(async (req, res, next) => {
-  const file = new File(join(__dirname, '../data/customQueries.json'));
-  const content = JSON.parse(file.read());
-
-  res.status(200).json({
-    success: true,
-    data: content.queries,
-  });
-});

@@ -34,6 +34,20 @@ const fetchQueries = (state: State, action: Action): State => {
   };
 };
 
+const addQuery = (state: State, action: Action): State => {
+  return {
+    ...state,
+    customQueries: [...state.customQueries, action.payload],
+  };
+};
+
+const deleteQuery = (state: State, action: Action): State => {
+  return {
+    ...state,
+    customQueries: action.payload,
+  };
+};
+
 const configReducer = (state: State = initialState, action: Action) => {
   switch (action.type) {
     case ActionTypes.getConfig:
@@ -42,6 +56,10 @@ const configReducer = (state: State = initialState, action: Action) => {
       return updateConfig(state, action);
     case ActionTypes.fetchQueries:
       return fetchQueries(state, action);
+    case ActionTypes.addQuery:
+      return addQuery(state, action);
+    case ActionTypes.deleteQuery:
+      return deleteQuery(state, action);
     default:
       return state;
   }

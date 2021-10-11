@@ -60,12 +60,50 @@ export interface FetchQueriesAction {
 export const fetchQueries =
   () => async (dispatch: Dispatch<FetchQueriesAction>) => {
     try {
-      const res = await axios.get<ApiResponse<Query[]>>(
-        '/api/config/0/queries'
-      );
+      const res = await axios.get<ApiResponse<Query[]>>('/api/queries');
 
       dispatch<FetchQueriesAction>({
         type: ActionTypes.fetchQueries,
+        payload: res.data.data,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+export interface AddQueryAction {
+  type: ActionTypes.addQuery;
+  payload: Query;
+}
+
+export const addQuery =
+  (query: Query) => async (dispatch: Dispatch<AddQueryAction>) => {
+    try {
+      const res = await axios.post<ApiResponse<Query>>('/api/queries', query);
+
+      dispatch<AddQueryAction>({
+        type: ActionTypes.addQuery,
+        payload: res.data.data,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+export interface DeleteQueryAction {
+  type: ActionTypes.deleteQuery;
+  payload: Query[];
+}
+
+export const deleteQuery =
+  (prefix: string) => async (dispatch: Dispatch<DeleteQueryAction>) => {
+    try {
+      const res = await axios.delete<ApiResponse<Query[]>>(
+        `/api/queries/${prefix}`
+      );
+
+      dispatch<DeleteQueryAction>({
+        type: ActionTypes.deleteQuery,
         payload: res.data.data,
       });
     } catch (err) {

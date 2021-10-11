@@ -19,9 +19,7 @@ import {
 // UI
 import InputGroup from '../../UI/Forms/InputGroup/InputGroup';
 import Button from '../../UI/Buttons/Button/Button';
-
-// CSS
-import classes from './OtherSettings.module.css';
+import SettingsHeadline from '../../UI/Headlines/SettingsHeadline/SettingsHeadline';
 
 // Utils
 import { searchConfig } from '../../../utility';
@@ -104,7 +102,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
   return (
     <form onSubmit={(e) => formSubmitHandler(e)}>
       {/* OTHER OPTIONS */}
-      <h2 className={classes.SettingsSection}>Miscellaneous</h2>
+      <SettingsHeadline text="Miscellaneous" />
       <InputGroup>
         <label htmlFor="customTitle">Custom page title</label>
         <input
@@ -118,7 +116,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
       </InputGroup>
 
       {/* BEAHVIOR OPTIONS */}
-      <h2 className={classes.SettingsSection}>App Behavior</h2>
+      <SettingsHeadline text="App Behavior" />
       <InputGroup>
         <label htmlFor="pinAppsByDefault">
           Pin new applications by default
@@ -186,7 +184,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
       </InputGroup>
 
       {/* MODULES OPTIONS */}
-      <h2 className={classes.SettingsSection}>Modules</h2>
+      <SettingsHeadline text="Modules" />
       <InputGroup>
         <label htmlFor="hideHeader">Hide greeting and date</label>
         <select
@@ -225,7 +223,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
       </InputGroup>
 
       {/* DOCKER SETTINGS */}
-      <h2 className={classes.SettingsSection}>Docker</h2>
+      <SettingsHeadline text="Docker" />
       <InputGroup>
         <label htmlFor="dockerApps">Use Docker API</label>
         <select
@@ -254,7 +252,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
       </InputGroup>
 
       {/* KUBERNETES SETTINGS */}
-      <h2 className={classes.SettingsSection}>Kubernetes</h2>
+      <SettingsHeadline text="Kubernetes" />
       <InputGroup>
         <label htmlFor="kubernetesApps">Use Kubernetes Ingress API</label>
         <select

@@ -28,7 +28,11 @@ import {
   GetConfigAction,
   UpdateConfigAction,
 } from './';
-import { FetchQueriesAction } from './config';
+import {
+  AddQueryAction,
+  DeleteQueryAction,
+  FetchQueriesAction,
+} from './config';
 
 export enum ActionTypes {
   // Theme
@@ -65,6 +69,8 @@ export enum ActionTypes {
   getConfig = 'GET_CONFIG',
   updateConfig = 'UPDATE_CONFIG',
   fetchQueries = 'FETCH_QUERIES',
+  addQuery = 'ADD_QUERY',
+  deleteQuery = 'DELETE_QUERY',
 }
 
 export type Action =
@@ -96,4 +102,6 @@ export type Action =
   // Config
   | GetConfigAction
   | UpdateConfigAction
-  | FetchQueriesAction;
+  | FetchQueriesAction
+  | AddQueryAction
+  | DeleteQueryAction;

@@ -20,6 +20,7 @@ api.use('/api/config', require('./routes/config'));
 api.use('/api/weather', require('./routes/weather'));
 api.use('/api/categories', require('./routes/category'));
 api.use('/api/bookmarks', require('./routes/bookmark'));
+api.use('/api/queries', require('./routes/queries'));
 
 // Custom error handler
 api.use(errorHandler);

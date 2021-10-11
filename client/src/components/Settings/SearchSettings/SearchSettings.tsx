@@ -1,5 +1,5 @@
 // React
-import { useState, useEffect, FormEvent, ChangeEvent } from 'react';
+import { useState, useEffect, FormEvent, ChangeEvent, Fragment } from 'react';
 import { connect } from 'react-redux';
 
 // State
@@ -13,15 +13,19 @@ import {
   SearchForm,
 } from '../../../interfaces';
 
-// Utils
-import { searchConfig } from '../../../utility';
-import InputGroup from '../../UI/Forms/InputGroup/InputGroup';
-
-// Data
-import { queries } from '../../../utility/searchQueries.json';
+// Components
+import CustomQueries from './CustomQueries/CustomQueries';
 
 // UI
 import Button from '../../UI/Buttons/Button/Button';
+import SettingsHeadline from '../../UI/Headlines/SettingsHeadline/SettingsHeadline';
+import InputGroup from '../../UI/Forms/InputGroup/InputGroup';
+
+// Utils
+import { searchConfig } from '../../../utility';
+
+// Data
+import { queries } from '../../../utility/searchQueries.json';
 
 interface Props {
   createNotification: (notification: NewNotification) => void;
@@ -73,50 +77,65 @@ const SearchSettings = (props: Props): JSX.Element => {
   };
 
   return (
-    <form onSubmit={(e) => formSubmitHandler(e)}>
-      <InputGroup>
-        <label htmlFor="defaultSearchProvider">Default Search Provider</label>
-        <select
-          id="defaultSearchProvider"
-          name="defaultSearchProvider"
-          value={formData.defaultSearchProvider}
-          onChange={(e) => inputChangeHandler(e)}
-        >
-          {[...queries, ...props.customQueries].map((query: Query, idx) => (
-            <option key={idx} value={query.prefix}>
-              {query.name}
-            </option>
-          ))}
-        </select>
-      </InputGroup>
-      <InputGroup>
-        <label htmlFor="searchSameTab">
-          Open search results in the same tab
-        </label>
-        <select
-          id="searchSameTab"
-          name="searchSameTab"
-          value={formData.searchSameTab}
-          onChange={(e) => inputChangeHandler(e, true)}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
-      </InputGroup>
-      <InputGroup>
-        <label htmlFor="hideSearch">Hide search bar</label>
-        <select
-          id="hideSearch"
-          name="hideSearch"
-          value={formData.hideSearch}
-          onChange={(e) => inputChangeHandler(e, true)}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
-      </InputGroup>
-      <Button>Save changes</Button>
-    </form>
+    <Fragment>
+      {/* GENERAL SETTINGS */}
+      <form
+        onSubmit={(e) => formSubmitHandler(e)}
+        style={{ marginBottom: '30px' }}
+      >
+        <SettingsHeadline text="General" />
+        <InputGroup>
+          <label htmlFor="defaultSearchProvider">Default Search Provider</label>
+          <select
+            id="defaultSearchProvider"
+            name="defaultSearchProvider"
+            value={formData.defaultSearchProvider}
+            onChange={(e) => inputChangeHandler(e)}
+          >
+            {[...queries, ...props.customQueries].map((query: Query, idx) => {
+              const isCustom = idx >= queries.length;
+
+              return (
+                <option key={idx} value={query.prefix}>
+                  {isCustom && '+'} {query.name}
+                </option>
+              );
+            })}
+          </select>
+        </InputGroup>
+        <InputGroup>
+          <label htmlFor="searchSameTab">
+            Open search results in the same tab
+          </label>
+          <select
+            id="searchSameTab"
+            name="searchSameTab"
+            value={formData.searchSameTab}
+            onChange={(e) => inputChangeHandler(e, true)}
+          >
+            <option value={1}>True</option>
+            <option value={0}>False</option>
+          </select>
+        </InputGroup>
+        <InputGroup>
+          <label htmlFor="hideSearch">Hide search bar</label>
+          <select
+            id="hideSearch"
+            name="hideSearch"
+            value={formData.hideSearch}
+            onChange={(e) => inputChangeHandler(e, true)}
+          >
+            <option value={1}>True</option>
+            <option value={0}>False</option>
+          </select>
+        </InputGroup>
+        <Button>Save changes</Button>
+      </form>
+
+      {/* CUSTOM QUERIES */}
+      <SettingsHeadline text="Custom search providers" />
+      <CustomQueries />
+    </Fragment>
   );
 };
 

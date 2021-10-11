@@ -1,0 +1,26 @@
+.QueriesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.QueriesGrid span {
+  color: var(--color-primary);
+}
+
+.ActionIcons {
+  display: flex;
+}
+
+.ActionIcons svg {
+  width: 20px;
+}
+
+.ActionIcons svg:hover {
+  cursor: pointer;
+}
+
+.Separator {
+  grid-column: 1 / 4;
+  border-bottom: 1px solid var(--color-primary);
+  margin: 10px 0;
+}
