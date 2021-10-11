@@ -5,6 +5,12 @@ export interface WeatherForm {
   isCelsius: number;
 }
 
+export interface SearchForm {
+  hideSearch: number;
+  defaultSearchProvider: string;
+  searchSameTab: number;
+}
+
 export interface SettingsForm {
   customTitle: string;
   pinAppsByDefault: number;
@@ -12,12 +18,12 @@ export interface SettingsForm {
   hideHeader: number;
   hideApps: number;
   hideCategories: number;
-  hideSearch: number;
-  defaultSearchProvider: string;
+  // hideSearch: number;
+  // defaultSearchProvider: string;
   useOrdering: string;
   appsSameTab: number;
   bookmarksSameTab: number;
-  searchSameTab: number;
+  // searchSameTab: number;
   dockerApps: number;
   dockerHost: string;
   kubernetesApps: number;
