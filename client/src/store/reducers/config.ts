@@ -17,6 +17,7 @@ const getConfig = (state: State, action: Action): State => {
   return {
     ...state,
     loading: false,
+    config: action.payload,
   };
 };
 

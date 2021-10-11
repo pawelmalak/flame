@@ -46,7 +46,7 @@ const SearchSettings = (props: Props): JSX.Element => {
   useEffect(() => {
     setFormData({
       hideSearch: searchConfig('hideSearch', 0),
-      defaultSearchProvider: searchConfig('defaultSearchProvider', 'd'),
+      defaultSearchProvider: searchConfig('defaultSearchProvider', 'l'),
       searchSameTab: searchConfig('searchSameTab', 0),
     });
   }, [props.loading]);

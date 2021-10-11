@@ -1,8 +1,10 @@
-### v1.7.0 (TBA)
+### v1.7.0 (2021-10-11)
 - Search bar will now redirect if valid URL or IP is provided ([#67](https://github.com/pawelmalak/flame/issues/67))
+- Users can now add their custom search providers ([#71](https://github.com/pawelmalak/flame/issues/71))
 - Fixed bug related to creating new apps/bookmarks with custom icon ([#83](https://github.com/pawelmalak/flame/issues/83))
 - URL can now be assigned to notifications. Clicking on "New version is available" popup will now redirect to changelog ([#86](https://github.com/pawelmalak/flame/issues/86))
 - Added static fonts ([#94](https://github.com/pawelmalak/flame/issues/94))
+- Fixed bug with overriding app icon created with docker labels
 
 ### v1.6.9 (2021-10-09)
 - Added option for remote docker host ([#97](https://github.com/pawelmalak/flame/issues/97))
