@@ -110,3 +110,26 @@ export const deleteQuery =
       console.log(err);
     }
   };
+
+export interface UpdateQueryAction {
+  type: ActionTypes.updateQuery;
+  payload: Query[];
+}
+
+export const updateQuery =
+  (query: Query, oldPrefix: string) =>
+  async (dispatch: Dispatch<UpdateQueryAction>) => {
+    try {
+      const res = await axios.put<ApiResponse<Query[]>>(
+        `/api/queries/${oldPrefix}`,
+        query
+      );
+
+      dispatch<UpdateQueryAction>({
+        type: ActionTypes.updateQuery,
+        payload: res.data.data,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };

@@ -7,6 +7,10 @@
   color: var(--color-primary);
 }
 
+.QueriesGrid span:last-child {
+  margin-bottom: 10px;
+}
+
 .ActionIcons {
   display: flex;
 }

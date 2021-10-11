@@ -3,11 +3,9 @@ import { connect } from 'react-redux';
 
 import classes from './CustomQueries.module.css';
 
-import ModalForm from '../../../UI/Forms/ModalForm/ModalForm';
 import Modal from '../../../UI/Modal/Modal';
 import Icon from '../../../UI/Icons/Icon/Icon';
 import { GlobalState, Query } from '../../../../interfaces';
-import InputGroup from '../../../UI/Forms/InputGroup/InputGroup';
 import QueriesForm from './QueriesForm';
 import { deleteQuery } from '../../../../store/actions';
 import Button from '../../../UI/Buttons/Button/Button';
@@ -21,6 +19,12 @@ const CustomQueries = (props: Props): JSX.Element => {
   const { customQueries, deleteQuery } = props;
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [editableQuery, setEditableQuery] = useState<Query | null>(null);
+
+  const updateHandler = (query: Query) => {
+    setEditableQuery(query);
+    setModalIsOpen(true);
+  };
 
   const deleteHandler = (query: Query) => {
     if (window.confirm(`Are you sure you want to delete this provider?`)) {
@@ -34,7 +38,14 @@ const CustomQueries = (props: Props): JSX.Element => {
         isOpen={modalIsOpen}
         setIsOpen={() => setModalIsOpen(!modalIsOpen)}
       >
-        <QueriesForm modalHandler={() => setModalIsOpen(!modalIsOpen)} />
+        {editableQuery ? (
+          <QueriesForm
+            modalHandler={() => setModalIsOpen(!modalIsOpen)}
+            query={editableQuery}
+          />
+        ) : (
+          <QueriesForm modalHandler={() => setModalIsOpen(!modalIsOpen)} />
+        )}
       </Modal>
 
       <div>
@@ -54,7 +65,7 @@ const CustomQueries = (props: Props): JSX.Element => {
               <span>{q.name}</span>
               <span>{q.prefix}</span>
               <span className={classes.ActionIcons}>
-                <span>
+                <span onClick={() => updateHandler(q)}>
                   <Icon icon="mdiPencil" />
                 </span>
                 <span onClick={() => deleteHandler(q)}>
@@ -65,7 +76,12 @@ const CustomQueries = (props: Props): JSX.Element => {
           ))}
         </div>
 
-        <Button click={() => setModalIsOpen(true)}>
+        <Button
+          click={() => {
+            setEditableQuery(null);
+            setModalIsOpen(true);
+          }}
+        >
           Add new search provider
         </Button>
       </div>

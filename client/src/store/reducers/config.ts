@@ -48,6 +48,13 @@ const deleteQuery = (state: State, action: Action): State => {
   };
 };
 
+const updateQuery = (state: State, action: Action): State => {
+  return {
+    ...state,
+    customQueries: action.payload,
+  };
+};
+
 const configReducer = (state: State = initialState, action: Action) => {
   switch (action.type) {
     case ActionTypes.getConfig:
@@ -60,6 +67,8 @@ const configReducer = (state: State = initialState, action: Action) => {
       return addQuery(state, action);
     case ActionTypes.deleteQuery:
       return deleteQuery(state, action);
+    case ActionTypes.updateQuery:
+      return updateQuery(state, action);
     default:
       return state;
   }

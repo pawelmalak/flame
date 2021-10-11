@@ -32,6 +32,7 @@ import {
   AddQueryAction,
   DeleteQueryAction,
   FetchQueriesAction,
+  UpdateQueryAction,
 } from './config';
 
 export enum ActionTypes {
@@ -71,6 +72,7 @@ export enum ActionTypes {
   fetchQueries = 'FETCH_QUERIES',
   addQuery = 'ADD_QUERY',
   deleteQuery = 'DELETE_QUERY',
+  updateQuery = 'UPDATE_QUERY',
 }
 
 export type Action =
@@ -104,4 +106,5 @@ export type Action =
   | UpdateConfigAction
   | FetchQueriesAction
   | AddQueryAction
-  | DeleteQueryAction;
+  | DeleteQueryAction
+  | UpdateQueryAction;
