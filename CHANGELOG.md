@@ -1,3 +1,7 @@
+### v1.7.1 (TBA)
+- Fixed search action not being triggered by Numpad Enter
+- Fixed search bar not redirecting to valid URL if it starts with capital letter ([#118](https://github.com/pawelmalak/flame/issues/118))
+
 ### v1.7.0 (2021-10-11)
 - Search bar will now redirect if valid URL or IP is provided ([#67](https://github.com/pawelmalak/flame/issues/67))
 - Users can now add their custom search providers ([#71](https://github.com/pawelmalak/flame/issues/71))
