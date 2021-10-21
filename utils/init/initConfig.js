@@ -1,39 +1,25 @@
-const { Op } = require('sequelize');
-const Config = require('../../models/Config');
-const { config } = require('./initialConfig.json');
-
-const Logger = require('../Logger');
-const logger = new Logger();
+const { copyFile, readFile, writeFile } = require('fs/promises');
+const checkFileExists = require('../checkFileExists');
+const initialConfig = require('./initialConfig.json');
 
 const initConfig = async () => {
-  // Get config values
-  const configPairs = await Config.findAll({
-    where: {
-      key: {
-        [Op.or]: config.map((pair) => pair.key),
-      },
-    },
-  });
+  const configExists = await checkFileExists('data/config.json');
 
-  // Get key from each pair
-  const configKeys = configPairs.map((pair) => pair.key);
-
-  // Create missing pairs
-  config.forEach(async ({ key, value }) => {
-    if (!configKeys.includes(key)) {
-      await Config.create({
-        key,
-        value,
-        valueType: typeof value,
-      });
-    }
-  });
-
-  if (process.env.NODE_ENV == 'development') {
-    logger.log('Initial config created');
+  if (!configExists) {
+    await copyFile('utils/init/initialConfig.json', 'data/config.json');
   }
 
-  return;
+  const existingConfig = await readFile('data/config.json', 'utf-8');
+  const parsedConfig = JSON.parse(existingConfig);
+
+  // Add new config pairs if necessary
+  for (let key in initialConfig) {
+    if (!Object.keys(parsedConfig).includes(key)) {
+      parsedConfig[key] = initialConfig[key];
+    }
+  }
+
+  await writeFile('data/config.json', JSON.stringify(parsedConfig));
 };
 
 module.exports = initConfig;
