@@ -1,15 +1,9 @@
-const Config = require('../models/Config');
 const Weather = require('../models/Weather');
 const axios = require('axios');
+const loadConfig = require('./loadConfig');
 
 const getExternalWeather = async () => {
-  // Get config from database
-  const config = await Config.findAll();
-
-  // Find and check values
-  const secret = config.find(pair => pair.key === 'WEATHER_API_KEY');
-  const lat = config.find(pair => pair.key === 'lat');
-  const long = config.find(pair => pair.key === 'long');
+  const { WEATHER_API_KEY: secret, lat, long } = await loadConfig();
 
   if (!secret) {
     throw new Error('API key was not found. Weather updated failed');
@@ -21,7 +15,9 @@ const getExternalWeather = async () => {
 
   // Fetch data from external API
   try {
-    const res = await axios.get(`http://api.weatherapi.com/v1/current.json?key=${secret.value}&q=${lat.value},${long.value}`);
+    const res = await axios.get(
+      `http://api.weatherapi.com/v1/current.json?key=${secret}&q=${lat},${long}`
+    );
 
     // Save weather data
     const cursor = res.data.current;
@@ -32,12 +28,12 @@ const getExternalWeather = async () => {
       isDay: cursor.is_day,
       cloud: cursor.cloud,
       conditionText: cursor.condition.text,
-      conditionCode: cursor.condition.code
+      conditionCode: cursor.condition.code,
     });
     return weatherData;
   } catch (err) {
     throw new Error('External API request failed');
   }
-}
+};
 
 module.exports = getExternalWeather;

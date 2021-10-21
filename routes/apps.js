@@ -4,26 +4,17 @@ const upload = require('../middleware/multer');
 
 const {
   createApp,
-  getApps,
-  getApp,
+  getAllApps,
+  getSingleApp,
   updateApp,
   deleteApp,
-  reorderApps
+  reorderApps,
 } = require('../controllers/apps');
 
-router
-  .route('/')
-  .post(upload, createApp)
-  .get(getApps);
+router.route('/').post(upload, createApp).get(getAllApps);
 
-router
-  .route('/:id')
-  .get(getApp)
-  .put(upload, updateApp)
-  .delete(deleteApp);
+router.route('/:id').get(getSingleApp).put(upload, updateApp).delete(deleteApp);
 
-router
-  .route('/0/reorder')
-  .put(reorderApps);
+router.route('/0/reorder').put(reorderApps);
 
 module.exports = router;
