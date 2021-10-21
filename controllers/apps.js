@@ -96,7 +96,33 @@ exports.getApps = asyncWrapper(async (req, res, next) => {
       containers = containers.filter((e) => Object.keys(e.Labels).length !== 0);
       const dockerApps = [];
       for (const container of containers) {
-        const labels = container.Labels;
+        let labels = container.Labels;
+
+        if (!('flame.url' in labels)) {
+          for (const label of Object.keys(labels)) {
+            if (/^traefik.*.frontend.rule/.test(label)) {
+              // Traefik 1.x
+              let value = labels[label];
+              if (value.indexOf('Host') !== -1) {
+                value = value.split('Host:')[1];
+                labels['flame.url'] = 'https://' + value.split(',').join(';https://');
+              }
+            } else if (/^traefik.*?\.rule/.test(label)) {
+              // Traefik 2.x
+              const value = labels[label];
+              if (value.indexOf('Host') !== -1) {
+                const regex = /\`([a-zA-Z0-9\.\-]+)\`/g;
+                const domains = []
+                while ((match = regex.exec(value)) != null) {
+                  domains.push('http://' + match[1]);
+                }
+                if (domains.length > 0) {
+                  labels['flame.url'] = domains.join(';');
+                }
+              }
+            }
+          }
+        }
 
         if (
           'flame.name' in labels &&
