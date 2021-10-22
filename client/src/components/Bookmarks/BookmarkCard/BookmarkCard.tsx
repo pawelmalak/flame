@@ -1,12 +1,14 @@
-import { Bookmark, Category } from '../../../interfaces';
+import { Bookmark, Category, Config, GlobalState } from '../../../interfaces';
 import classes from './BookmarkCard.module.css';
 
 import Icon from '../../UI/Icons/Icon/Icon';
-import { iconParser, urlParser, searchConfig } from '../../../utility';
+import { iconParser, urlParser } from '../../../utility';
 import { Fragment } from 'react';
+import { connect } from 'react-redux';
 
 interface ComponentProps {
   category: Category;
+  config: Config;
 }
 
 const BookmarkCard = (props: ComponentProps): JSX.Element => {
@@ -54,7 +56,7 @@ const BookmarkCard = (props: ComponentProps): JSX.Element => {
           return (
             <a
               href={redirectUrl}
-              target={searchConfig('bookmarksSameTab', false) ? '' : '_blank'}
+              target={props.config.bookmarksSameTab ? '' : '_blank'}
               rel="noreferrer"
               key={`bookmark-${bookmark.id}`}
             >
@@ -68,4 +70,10 @@ const BookmarkCard = (props: ComponentProps): JSX.Element => {
   );
 };
 
-export default BookmarkCard;
+const mapStateToProps = (state: GlobalState) => {
+  return {
+    config: state.config.config,
+  };
+};
+
+export default connect(mapStateToProps)(BookmarkCard);

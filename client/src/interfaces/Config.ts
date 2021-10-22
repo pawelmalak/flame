@@ -1,8 +1,22 @@
-import { Model } from './';
-
-export interface Config extends Model {
-  key: string;
-  value: string;
-  valueType: string;
-  isLocked: boolean;
+export interface Config {
+  WEATHER_API_KEY: string;
+  lat: number;
+  long: number;
+  isCelsius: boolean;
+  customTitle: string;
+  pinAppsByDefault: boolean;
+  pinCategoriesByDefault: boolean;
+  hideHeader: boolean;
+  useOrdering: string;
+  appsSameTab: boolean;
+  bookmarksSameTab: boolean;
+  searchSameTab: boolean;
+  hideApps: boolean;
+  hideCategories: boolean;
+  hideSearch: boolean;
+  defaultSearchProvider: string;
+  dockerApps: boolean;
+  dockerHost: string;
+  kubernetesApps: boolean;
+  unpinStoppedApps: boolean;
 }

@@ -1,7 +1,6 @@
 import { queries } from './searchQueries.json';
 import { Query, SearchResult } from '../interfaces';
 import { store } from '../store/store';
-import { searchConfig } from '.';
 
 export const searchParser = (searchQuery: string): SearchResult => {
   const result: SearchResult = {
@@ -16,7 +15,7 @@ export const searchParser = (searchQuery: string): SearchResult => {
     },
   };
 
-  const customQueries = store.getState().config.customQueries;
+  const { customQueries, config } = store.getState().config;
 
   // Check if url or ip was passed
   const urlRegex =
@@ -27,9 +26,7 @@ export const searchParser = (searchQuery: string): SearchResult => {
   // Match prefix and query
   const splitQuery = searchQuery.match(/^\/([a-z]+)[ ](.+)$/i);
 
-  const prefix = splitQuery
-    ? splitQuery[1]
-    : searchConfig('defaultSearchProvider', 'l');
+  const prefix = splitQuery ? splitQuery[1] : config.defaultSearchProvider;
 
   const search = splitQuery
     ? encodeURIComponent(splitQuery[2])
@@ -47,7 +44,7 @@ export const searchParser = (searchQuery: string): SearchResult => {
     if (prefix === 'l') {
       result.isLocal = true;
     } else {
-      result.sameTab = searchConfig('searchSameTab', false);
+      result.sameTab = config.searchSameTab;
     }
 
     return result;

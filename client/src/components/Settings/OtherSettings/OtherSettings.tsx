@@ -11,9 +11,10 @@ import {
 
 // Typescript
 import {
+  Config,
   GlobalState,
   NewNotification,
-  SettingsForm,
+  OtherSettingsForm,
 } from '../../../interfaces';
 
 // UI
@@ -22,50 +23,29 @@ import Button from '../../UI/Buttons/Button/Button';
 import SettingsHeadline from '../../UI/Headlines/SettingsHeadline/SettingsHeadline';
 
 // Utils
-import { searchConfig } from '../../../utility';
+import { otherSettingsTemplate, inputHandler } from '../../../utility';
 
 interface ComponentProps {
   createNotification: (notification: NewNotification) => void;
-  updateConfig: (formData: SettingsForm) => void;
+  updateConfig: (formData: OtherSettingsForm) => void;
   sortApps: () => void;
   sortCategories: () => void;
   loading: boolean;
+  config: Config;
 }
 
 const OtherSettings = (props: ComponentProps): JSX.Element => {
+  const { config } = props;
+
   // Initial state
-  const [formData, setFormData] = useState<SettingsForm>({
-    customTitle: document.title,
-    pinAppsByDefault: 1,
-    pinCategoriesByDefault: 1,
-    hideHeader: 0,
-    hideApps: 0,
-    hideCategories: 0,
-    useOrdering: 'createdAt',
-    appsSameTab: 0,
-    bookmarksSameTab: 0,
-    dockerApps: 1,
-    dockerHost: 'localhost',
-    kubernetesApps: 1,
-    unpinStoppedApps: 1,
-  });
+  const [formData, setFormData] = useState<OtherSettingsForm>(
+    otherSettingsTemplate
+  );
 
   // Get config
   useEffect(() => {
     setFormData({
-      customTitle: searchConfig('customTitle', 'Flame'),
-      pinAppsByDefault: searchConfig('pinAppsByDefault', 1),
-      pinCategoriesByDefault: searchConfig('pinCategoriesByDefault', 1),
-      hideHeader: searchConfig('hideHeader', 0),
-      hideApps: searchConfig('hideApps', 0),
-      hideCategories: searchConfig('hideCategories', 0),
-      useOrdering: searchConfig('useOrdering', 'createdAt'),
-      appsSameTab: searchConfig('appsSameTab', 0),
-      bookmarksSameTab: searchConfig('bookmarksSameTab', 0),
-      dockerApps: searchConfig('dockerApps', 0),
-      dockerHost: searchConfig('dockerHost', 'localhost'),
-      kubernetesApps: searchConfig('kubernetesApps', 0),
-      unpinStoppedApps: searchConfig('unpinStoppedApps', 0),
+      ...config,
     });
   }, [props.loading]);
 
@@ -87,17 +67,13 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
   // Input handler
   const inputChangeHandler = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-    isNumber?: boolean
+    options?: { isNumber?: boolean; isBool?: boolean }
   ) => {
-    let value: string | number = e.target.value;
-
-    if (isNumber) {
-      value = parseFloat(value);
-    }
-
-    setFormData({
-      ...formData,
-      [e.target.name]: value,
+    inputHandler<OtherSettingsForm>({
+      e,
+      options,
+      setStateHandler: setFormData,
+      state: formData,
     });
   };
 
@@ -126,8 +102,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
         <select
           id="pinAppsByDefault"
           name="pinAppsByDefault"
-          value={formData.pinAppsByDefault}
-          onChange={(e) => inputChangeHandler(e, true)}
+          value={formData.pinAppsByDefault ? 1 : 0}
+          onChange={(e) => inputChangeHandler(e, { isBool: true })}
         >
           <option value={1}>True</option>
           <option value={0}>False</option>
@@ -140,8 +116,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
         <select
           id="pinCategoriesByDefault"
           name="pinCategoriesByDefault"
-          value={formData.pinCategoriesByDefault}
-          onChange={(e) => inputChangeHandler(e, true)}
+          value={formData.pinCategoriesByDefault ? 1 : 0}
+          onChange={(e) => inputChangeHandler(e, { isBool: true })}
         >
           <option value={1}>True</option>
           <option value={0}>False</option>
@@ -165,8 +141,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
         <select
           id="appsSameTab"
           name="appsSameTab"
-          value={formData.appsSameTab}
-          onChange={(e) => inputChangeHandler(e, true)}
+          value={formData.appsSameTab ? 1 : 0}
+          onChange={(e) => inputChangeHandler(e, { isBool: true })}
         >
           <option value={1}>True</option>
           <option value={0}>False</option>
@@ -177,8 +153,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
         <select
           id="bookmarksSameTab"
           name="bookmarksSameTab"
-          value={formData.bookmarksSameTab}
-          onChange={(e) => inputChangeHandler(e, true)}
+          value={formData.bookmarksSameTab ? 1 : 0}
+          onChange={(e) => inputChangeHandler(e, { isBool: true })}
         >
           <option value={1}>True</option>
           <option value={0}>False</option>
@@ -192,8 +168,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
         <select
           id="hideHeader"
           name="hideHeader"
-          value={formData.hideHeader}
-          onChange={(e) => inputChangeHandler(e, true)}
+          value={formData.hideHeader ? 1 : 0}
+          onChange={(e) => inputChangeHandler(e, { isBool: true })}
         >
           <option value={1}>True</option>
           <option value={0}>False</option>
@@ -204,8 +180,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
         <select
           id="hideApps"
           name="hideApps"
-          value={formData.hideApps}
-          onChange={(e) => inputChangeHandler(e, true)}
+          value={formData.hideApps ? 1 : 0}
+          onChange={(e) => inputChangeHandler(e, { isBool: true })}
         >
           <option value={1}>True</option>
           <option value={0}>False</option>
@@ -216,8 +192,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
         <select
           id="hideCategories"
           name="hideCategories"
-          value={formData.hideCategories}
-          onChange={(e) => inputChangeHandler(e, true)}
+          value={formData.hideCategories ? 1 : 0}
+          onChange={(e) => inputChangeHandler(e, { isBool: true })}
         >
           <option value={1}>True</option>
           <option value={0}>False</option>
@@ -242,8 +218,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
         <select
           id="dockerApps"
           name="dockerApps"
-          value={formData.dockerApps}
-          onChange={(e) => inputChangeHandler(e, true)}
+          value={formData.dockerApps ? 1 : 0}
+          onChange={(e) => inputChangeHandler(e, { isBool: true })}
         >
           <option value={1}>True</option>
           <option value={0}>False</option>
@@ -256,8 +232,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
         <select
           id="unpinStoppedApps"
           name="unpinStoppedApps"
-          value={formData.unpinStoppedApps}
-          onChange={(e) => inputChangeHandler(e, true)}
+          value={formData.unpinStoppedApps ? 1 : 0}
+          onChange={(e) => inputChangeHandler(e, { isBool: true })}
         >
           <option value={1}>True</option>
           <option value={0}>False</option>
@@ -271,8 +247,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
         <select
           id="kubernetesApps"
           name="kubernetesApps"
-          value={formData.kubernetesApps}
-          onChange={(e) => inputChangeHandler(e, true)}
+          value={formData.kubernetesApps ? 1 : 0}
+          onChange={(e) => inputChangeHandler(e, { isBool: true })}
         >
           <option value={1}>True</option>
           <option value={0}>False</option>
@@ -286,6 +262,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
 const mapStateToProps = (state: GlobalState) => {
   return {
     loading: state.config.loading,
+    config: state.config.config,
   };
 };
 
