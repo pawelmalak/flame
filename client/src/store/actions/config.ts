@@ -3,16 +3,15 @@ import { Dispatch } from 'redux';
 import { ActionTypes } from './actionTypes';
 import { Config, ApiResponse, Query } from '../../interfaces';
 import { CreateNotificationAction } from './notification';
-import { searchConfig } from '../../utility';
 
 export interface GetConfigAction {
   type: ActionTypes.getConfig;
-  payload: Config[];
+  payload: Config;
 }
 
 export const getConfig = () => async (dispatch: Dispatch) => {
   try {
-    const res = await axios.get<ApiResponse<Config[]>>('/api/config');
+    const res = await axios.get<ApiResponse<Config>>('/api/config');
 
     dispatch<GetConfigAction>({
       type: ActionTypes.getConfig,
@@ -20,7 +19,10 @@ export const getConfig = () => async (dispatch: Dispatch) => {
     });
 
     // Set custom page title if set
-    document.title = searchConfig('customTitle', 'Flame');
+    document.title = res.data.data.customTitle;
+
+    // Store settings for priority UI elements
+    localStorage.setItem('useAmericanDate', `${res.data.data.useAmericanDate}`);
   } catch (err) {
     console.log(err);
   }
@@ -28,12 +30,12 @@ export const getConfig = () => async (dispatch: Dispatch) => {
 
 export interface UpdateConfigAction {
   type: ActionTypes.updateConfig;
-  payload: Config[];
+  payload: Config;
 }
 
 export const updateConfig = (formData: any) => async (dispatch: Dispatch) => {
   try {
-    const res = await axios.put<ApiResponse<Config[]>>('/api/config', formData);
+    const res = await axios.put<ApiResponse<Config>>('/api/config', formData);
 
     dispatch<CreateNotificationAction>({
       type: ActionTypes.createNotification,
@@ -47,6 +49,9 @@ export const updateConfig = (formData: any) => async (dispatch: Dispatch) => {
       type: ActionTypes.updateConfig,
       payload: res.data.data,
     });
+
+    // Store settings for priority UI elements
+    localStorage.setItem('useAmericanDate', `${res.data.data.useAmericanDate}`);
   } catch (err) {
     console.log(err);
   }

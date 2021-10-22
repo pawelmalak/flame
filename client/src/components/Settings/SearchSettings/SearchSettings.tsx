@@ -7,6 +7,7 @@ import { createNotification, updateConfig } from '../../../store/actions';
 
 // Typescript
 import {
+  Config,
   GlobalState,
   NewNotification,
   Query,
@@ -22,7 +23,7 @@ import SettingsHeadline from '../../UI/Headlines/SettingsHeadline/SettingsHeadli
 import InputGroup from '../../UI/Forms/InputGroup/InputGroup';
 
 // Utils
-import { searchConfig } from '../../../utility';
+import { inputHandler, searchSettingsTemplate } from '../../../utility';
 
 // Data
 import { queries } from '../../../utility/searchQueries.json';
@@ -32,22 +33,17 @@ interface Props {
   updateConfig: (formData: SearchForm) => void;
   loading: boolean;
   customQueries: Query[];
+  config: Config;
 }
 
 const SearchSettings = (props: Props): JSX.Element => {
   // Initial state
-  const [formData, setFormData] = useState<SearchForm>({
-    hideSearch: 0,
-    defaultSearchProvider: 'l',
-    searchSameTab: 0,
-  });
+  const [formData, setFormData] = useState<SearchForm>(searchSettingsTemplate);
 
   // Get config
   useEffect(() => {
     setFormData({
-      hideSearch: searchConfig('hideSearch', 0),
-      defaultSearchProvider: searchConfig('defaultSearchProvider', 'l'),
-      searchSameTab: searchConfig('searchSameTab', 0),
+      ...props.config,
     });
   }, [props.loading]);
 
@@ -62,17 +58,13 @@ const SearchSettings = (props: Props): JSX.Element => {
   // Input handler
   const inputChangeHandler = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-    isNumber?: boolean
+    options?: { isNumber?: boolean; isBool?: boolean }
   ) => {
-    let value: string | number = e.target.value;
-
-    if (isNumber) {
-      value = parseFloat(value);
-    }
-
-    setFormData({
-      ...formData,
-      [e.target.name]: value,
+    inputHandler<SearchForm>({
+      e,
+      options,
+      setStateHandler: setFormData,
+      state: formData,
     });
   };
 
@@ -110,8 +102,8 @@ const SearchSettings = (props: Props): JSX.Element => {
           <select
             id="searchSameTab"
             name="searchSameTab"
-            value={formData.searchSameTab}
-            onChange={(e) => inputChangeHandler(e, true)}
+            value={formData.searchSameTab ? 1 : 0}
+            onChange={(e) => inputChangeHandler(e, { isBool: true })}
           >
             <option value={1}>True</option>
             <option value={0}>False</option>
@@ -122,8 +114,8 @@ const SearchSettings = (props: Props): JSX.Element => {
           <select
             id="hideSearch"
             name="hideSearch"
-            value={formData.hideSearch}
-            onChange={(e) => inputChangeHandler(e, true)}
+            value={formData.hideSearch ? 1 : 0}
+            onChange={(e) => inputChangeHandler(e, { isBool: true })}
           >
             <option value={1}>True</option>
             <option value={0}>False</option>
@@ -143,6 +135,7 @@ const mapStateToProps = (state: GlobalState) => {
   return {
     loading: state.config.loading,
     customQueries: state.config.customQueries,
+    config: state.config.config,
   };
 };
 

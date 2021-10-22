@@ -16,7 +16,7 @@ import Settings from './components/Settings/Settings';
 import Bookmarks from './components/Bookmarks/Bookmarks';
 import NotificationCenter from './components/NotificationCenter/NotificationCenter';
 
-// Get config pairs from database
+// Load config
 store.dispatch<any>(getConfig());
 
 // Set theme

@@ -7,7 +7,7 @@ import { getApps, getCategories } from '../../store/actions';
 
 // Typescript
 import { GlobalState } from '../../interfaces/GlobalState';
-import { App, Category } from '../../interfaces';
+import { App, Category, Config } from '../../interfaces';
 
 // UI
 import Icon from '../UI/Icons/Icon/Icon';
@@ -28,9 +28,6 @@ import SearchBar from '../SearchBar/SearchBar';
 import { greeter } from './functions/greeter';
 import { dateTime } from './functions/dateTime';
 
-// Utils
-import { searchConfig } from '../../utility';
-
 interface ComponentProps {
   getApps: Function;
   getCategories: Function;
@@ -38,6 +35,7 @@ interface ComponentProps {
   apps: App[];
   categoriesLoading: boolean;
   categories: Category[];
+  config: Config;
 }
 
 const Home = (props: ComponentProps): JSX.Element => {
@@ -77,7 +75,7 @@ const Home = (props: ComponentProps): JSX.Element => {
     let interval: any;
 
     // Start interval only when hideHeader is false
-    if (searchConfig('hideHeader', 0) !== 1) {
+    if (!props.config.hideHeader) {
       interval = setInterval(() => {
         setHeader({
           dateTime: dateTime(),
@@ -103,13 +101,13 @@ const Home = (props: ComponentProps): JSX.Element => {
 
   return (
     <Container>
-      {searchConfig('hideSearch', 0) !== 1 ? (
+      {!props.config.hideSearch ? (
         <SearchBar setLocalSearch={setLocalSearch} />
       ) : (
         <div></div>
       )}
 
-      {searchConfig('hideHeader', 0) !== 1 ? (
+      {!props.config.hideHeader ? (
         <header className={classes.Header}>
           <p>{header.dateTime}</p>
           <Link to="/settings" className={classes.SettingsLink}>
@@ -124,7 +122,7 @@ const Home = (props: ComponentProps): JSX.Element => {
         <div></div>
       )}
 
-      {searchConfig('hideApps', 0) !== 1 ? (
+      {!props.config.hideApps ? (
         <Fragment>
           <SectionHeadline title="Applications" link="/applications" />
           {appsLoading ? (
@@ -148,7 +146,7 @@ const Home = (props: ComponentProps): JSX.Element => {
         <div></div>
       )}
 
-      {searchConfig('hideCategories', 0) !== 1 ? (
+      {!props.config.hideCategories ? (
         <Fragment>
           <SectionHeadline title="Bookmarks" link="/bookmarks" />
           {categoriesLoading ? (
@@ -182,6 +180,7 @@ const mapStateToProps = (state: GlobalState) => {
     apps: state.app.apps,
     categoriesLoading: state.bookmark.loading,
     categories: state.bookmark.categories,
+    config: state.config.config,
   };
 };
 

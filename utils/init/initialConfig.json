@@ -1,84 +1,22 @@
 {
-  "config": [
-    {
-      "key": "WEATHER_API_KEY",
-      "value": ""
-    },
-    {
-      "key": "lat",
-      "value": 0
-    },
-    {
-      "key": "long",
-      "value": 0
-    },
-    {
-      "key": "isCelsius",
-      "value": true
-    },
-    {
-      "key": "customTitle",
-      "value": "Flame"
-    },
-    {
-      "key": "pinAppsByDefault",
-      "value": true
-    },
-    {
-      "key": "pinCategoriesByDefault",
-      "value": true
-    },
-    {
-      "key": "hideHeader",
-      "value": false
-    },
-    {
-      "key": "useOrdering",
-      "value": "createdAt"
-    },
-    {
-      "key": "appsSameTab",
-      "value": false
-    },
-    {
-      "key": "bookmarksSameTab",
-      "value": false
-    },
-    {
-      "key": "searchSameTab",
-      "value": false
-    },
-    {
-      "key": "hideApps",
-      "value": false
-    },
-    {
-      "key": "hideCategories",
-      "value": false
-    },
-    {
-      "key": "hideSearch",
-      "value": false
-    },
-    {
-      "key": "defaultSearchProvider",
-      "value": "l"
-    },
-    {
-      "key": "dockerApps",
-      "value": false
-    },
-    {
-      "key": "dockerHost",
-      "value": "localhost"
-    },
-    {
-      "key": "kubernetesApps",
-      "value": false
-    },
-    {
-      "key": "unpinStoppedApps",
-      "value": false
-    }
-  ]
+  "WEATHER_API_KEY": "",
+  "lat": 0,
+  "long": 0,
+  "isCelsius": true,
+  "customTitle": "Flame",
+  "pinAppsByDefault": true,
+  "pinCategoriesByDefault": true,
+  "hideHeader": false,
+  "useOrdering": "createdAt",
+  "appsSameTab": false,
+  "bookmarksSameTab": false,
+  "searchSameTab": false,
+  "hideApps": false,
+  "hideCategories": false,
+  "hideSearch": false,
+  "defaultSearchProvider": "l",
+  "dockerApps": false,
+  "dockerHost": "localhost",
+  "kubernetesApps": false,
+  "unpinStoppedApps": false
 }

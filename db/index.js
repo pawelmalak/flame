@@ -1,6 +1,5 @@
 const { Sequelize } = require('sequelize');
 const { join } = require('path');
-const fs = require('fs');
 const Umzug = require('umzug');
 const backupDB = require('./utils/backupDb');
 

@@ -7,20 +7,22 @@ export interface State {
 
 const initialState: State = {
   theme: {
-    name: 'blues',
+    name: 'tron',
     colors: {
-      background: '#2B2C56',
-      primary: '#EFF1FC',
-      accent: '#6677EB'
-    }
-  }
-}
+      background: '#242B33',
+      primary: '#EFFBFF',
+      accent: '#6EE2FF',
+    },
+  },
+};
 
 const themeReducer = (state = initialState, action: Action) => {
   switch (action.type) {
-    case ActionTypes.setTheme: return { theme: action.payload };
-    default: return state;
+    case ActionTypes.setTheme:
+      return { theme: action.payload };
+    default:
+      return state;
   }
-}
+};
 
 export default themeReducer;

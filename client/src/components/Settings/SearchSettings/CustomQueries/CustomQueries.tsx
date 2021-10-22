@@ -5,16 +5,21 @@ import classes from './CustomQueries.module.css';
 
 import Modal from '../../../UI/Modal/Modal';
 import Icon from '../../../UI/Icons/Icon/Icon';
-import { GlobalState, NewNotification, Query } from '../../../../interfaces';
+import {
+  Config,
+  GlobalState,
+  NewNotification,
+  Query,
+} from '../../../../interfaces';
 import QueriesForm from './QueriesForm';
 import { deleteQuery, createNotification } from '../../../../store/actions';
 import Button from '../../../UI/Buttons/Button/Button';
-import { searchConfig } from '../../../../utility';
 
 interface Props {
   customQueries: Query[];
   deleteQuery: (prefix: string) => {};
   createNotification: (notification: NewNotification) => void;
+  config: Config;
 }
 
 const CustomQueries = (props: Props): JSX.Element => {
@@ -29,7 +34,7 @@ const CustomQueries = (props: Props): JSX.Element => {
   };
 
   const deleteHandler = (query: Query) => {
-    const currentProvider = searchConfig('defaultSearchProvider', 'l');
+    const currentProvider = props.config.defaultSearchProvider;
     const isCurrent = currentProvider === query.prefix;
 
     if (isCurrent) {
@@ -104,6 +109,7 @@ const CustomQueries = (props: Props): JSX.Element => {
 const mapStateToProps = (state: GlobalState) => {
   return {
     customQueries: state.config.customQueries,
+    config: state.config.config,
   };
 };
 

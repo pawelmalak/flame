@@ -2,30 +2,28 @@ export interface WeatherForm {
   WEATHER_API_KEY: string;
   lat: number;
   long: number;
-  isCelsius: number;
+  isCelsius: boolean;
 }
 
 export interface SearchForm {
-  hideSearch: number;
+  hideSearch: boolean;
   defaultSearchProvider: string;
-  searchSameTab: number;
+  searchSameTab: boolean;
 }
 
-export interface SettingsForm {
+export interface OtherSettingsForm {
   customTitle: string;
-  pinAppsByDefault: number;
-  pinCategoriesByDefault: number;
-  hideHeader: number;
-  hideApps: number;
-  hideCategories: number;
-  // hideSearch: number;
-  // defaultSearchProvider: string;
+  pinAppsByDefault: boolean;
+  pinCategoriesByDefault: boolean;
+  hideHeader: boolean;
+  hideApps: boolean;
+  hideCategories: boolean;
   useOrdering: string;
-  appsSameTab: number;
-  bookmarksSameTab: number;
-  // searchSameTab: number;
-  dockerApps: number;
+  appsSameTab: boolean;
+  bookmarksSameTab: boolean;
+  dockerApps: boolean;
   dockerHost: string;
-  kubernetesApps: number;
-  unpinStoppedApps: number;
+  kubernetesApps: boolean;
+  unpinStoppedApps: boolean;
+  useAmericanDate: boolean;
 }

@@ -2,12 +2,13 @@ import classes from './AppCard.module.css';
 import Icon from '../../UI/Icons/Icon/Icon';
 import { iconParser, urlParser } from '../../../utility';
 
-import { App } from '../../../interfaces';
-import { searchConfig } from '../../../utility';
+import { App, Config, GlobalState } from '../../../interfaces';
+import { connect } from 'react-redux';
 
 interface ComponentProps {
   app: App;
   pinHandler?: Function;
+  config: Config;
 }
 
 const AppCard = (props: ComponentProps): JSX.Element => {
@@ -29,7 +30,7 @@ const AppCard = (props: ComponentProps): JSX.Element => {
       <div className={classes.CustomIcon}>
         <svg
           data-src={`/uploads/${icon}`}
-          fill='var(--color-primary)'
+          fill="var(--color-primary)"
           className={classes.CustomIcon}
         ></svg>
       </div>
@@ -41,8 +42,8 @@ const AppCard = (props: ComponentProps): JSX.Element => {
   return (
     <a
       href={redirectUrl}
-      target={searchConfig('appsSameTab', false) ? '' : '_blank'}
-      rel='noreferrer'
+      target={props.config.appsSameTab ? '' : '_blank'}
+      rel="noreferrer"
       className={classes.AppCard}
     >
       <div className={classes.AppCardIcon}>{iconEl}</div>
@@ -54,4 +55,10 @@ const AppCard = (props: ComponentProps): JSX.Element => {
   );
 };
 
-export default AppCard;
+const mapStateToProps = (state: GlobalState) => {
+  return {
+    config: state.config.config,
+  };
+};
+
+export default connect(mapStateToProps)(AppCard);
