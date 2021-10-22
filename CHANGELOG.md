@@ -1,4 +1,4 @@
-### v1.7.1 (TBA)
+### v1.7.1 (2021-10-22)
 - Fixed search action not being triggered by Numpad Enter
 - Added option to change date formatting ([#92](https://github.com/pawelmalak/flame/issues/92))
 - Added shortcuts (Esc and double click) to clear search bar ([#100](https://github.com/pawelmalak/flame/issues/100))

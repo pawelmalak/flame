@@ -1,5 +1,3 @@
-const { DataTypes } = require('sequelize');
-const { INTEGER, DATE, STRING, TINYINT, FLOAT, TEXT } = DataTypes;
 const { readFile, writeFile, copyFile } = require('fs/promises');
 const Config = require('../../models/Config');
 
@@ -28,12 +26,10 @@ const up = async (query) => {
   const newConfig = JSON.stringify(parsedNewConfig);
   await writeFile('data/config.json', newConfig);
 
-  // await query.dropTable('config');
+  await query.dropTable('config');
 };
 
-const down = async (query) => {
-  // await query.dropTable('config');
-};
+const down = async (query) => {};
 
 module.exports = {
   up,
