@@ -4,20 +4,17 @@ const upload = require('../middleware/multer');
 
 const {
   createBookmark,
-  getBookmarks,
-  getBookmark,
+  getAllBookmarks,
+  getSingleBookmark,
   updateBookmark,
-  deleteBookmark
-} = require('../controllers/bookmark');
+  deleteBookmark,
+} = require('../controllers/bookmarks');
 
-router
-  .route('/')
-  .post(upload, createBookmark)
-  .get(getBookmarks);
+router.route('/').post(upload, createBookmark).get(getAllBookmarks);
 
 router
   .route('/:id')
-  .get(getBookmark)
+  .get(getSingleBookmark)
   .put(upload, updateBookmark)
   .delete(deleteBookmark);
 

@@ -4,15 +4,13 @@ const Category = require('../models/Category');
 const Bookmark = require('../models/Bookmark');
 const Config = require('../models/Config');
 const { Sequelize } = require('sequelize');
+const loadConfig = require('../utils/loadConfig');
 
 // @desc      Create new category
 // @route     POST /api/categories
 // @access    Public
 exports.createCategory = asyncWrapper(async (req, res, next) => {
-  // Get config from database
-  const pinCategories = await Config.findOne({
-    where: { key: 'pinCategoriesByDefault' },
-  });
+  const { pinCategoriesByDefault: pinCategories } = await loadConfig();
 
   let category;
 
@@ -37,12 +35,8 @@ exports.createCategory = asyncWrapper(async (req, res, next) => {
 // @route     GET /api/categories
 // @access    Public
 exports.getCategories = asyncWrapper(async (req, res, next) => {
-  // Get config from database
-  const useOrdering = await Config.findOne({
-    where: { key: 'useOrdering' },
-  });
+  const { useOrdering: orderType } = await loadConfig();
 
-  const orderType = useOrdering ? useOrdering.value : 'createdAt';
   let categories;
 
   if (orderType == 'name') {

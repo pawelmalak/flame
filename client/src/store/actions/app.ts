@@ -5,14 +5,17 @@ import { App, ApiResponse, NewApp, Config } from '../../interfaces';
 import { CreateNotificationAction } from './notification';
 
 export interface GetAppsAction<T> {
-  type: ActionTypes.getApps | ActionTypes.getAppsSuccess | ActionTypes.getAppsError;
+  type:
+    | ActionTypes.getApps
+    | ActionTypes.getAppsSuccess
+    | ActionTypes.getAppsError;
   payload: T;
 }
 
 export const getApps = () => async (dispatch: Dispatch) => {
   dispatch<GetAppsAction<undefined>>({
     type: ActionTypes.getApps,
-    payload: undefined
+    payload: undefined,
   });
 
   try {
@@ -20,12 +23,12 @@ export const getApps = () => async (dispatch: Dispatch) => {
 
     dispatch<GetAppsAction<App[]>>({
       type: ActionTypes.getAppsSuccess,
-      payload: res.data.data
-    })
+      payload: res.data.data,
+    });
   } catch (err) {
     console.log(err);
   }
-}
+};
 
 export interface PinAppAction {
   type: ActionTypes.pinApp;
@@ -35,59 +38,64 @@ export interface PinAppAction {
 export const pinApp = (app: App) => async (dispatch: Dispatch) => {
   try {
     const { id, isPinned, name } = app;
-    const res = await axios.put<ApiResponse<App>>(`/api/apps/${id}`, { isPinned: !isPinned });
+    const res = await axios.put<ApiResponse<App>>(`/api/apps/${id}`, {
+      isPinned: !isPinned,
+    });
 
-    const status = isPinned ? 'unpinned from Homescreen' : 'pinned to Homescreen';
+    const status = isPinned
+      ? 'unpinned from Homescreen'
+      : 'pinned to Homescreen';
 
     dispatch<CreateNotificationAction>({
       type: ActionTypes.createNotification,
       payload: {
         title: 'Success',
-        message: `App ${name} ${status}`
-      }
-    })
+        message: `App ${name} ${status}`,
+      },
+    });
 
     dispatch<PinAppAction>({
       type: ActionTypes.pinApp,
-      payload: res.data.data
-    })
+      payload: res.data.data,
+    });
   } catch (err) {
     console.log(err);
   }
-}
+};
 
 export interface AddAppAction {
   type: ActionTypes.addAppSuccess;
   payload: App;
 }
 
-export const addApp = (formData: NewApp | FormData) => async (dispatch: Dispatch) => {
-  try {
-    const res = await axios.post<ApiResponse<App>>('/api/apps', formData);
+export const addApp =
+  (formData: NewApp | FormData) => async (dispatch: Dispatch) => {
+    try {
+      const res = await axios.post<ApiResponse<App>>('/api/apps', formData);
 
-    dispatch<CreateNotificationAction>({
-      type: ActionTypes.createNotification,
-      payload: {
-        title: 'Success',
-        message: `App added`
-      }
-    })
+      dispatch<CreateNotificationAction>({
+        type: ActionTypes.createNotification,
+        payload: {
+          title: 'Success',
+          message: `App added`,
+        },
+      });
 
-    await dispatch<AddAppAction>({
-      type: ActionTypes.addAppSuccess,
-      payload: res.data.data
-    })
+      await dispatch<AddAppAction>({
+        type: ActionTypes.addAppSuccess,
+        payload: res.data.data,
+      });
 
-    // Sort apps
-    dispatch<any>(sortApps())
-  } catch (err) {
-    console.log(err);
-  }
-}
+      // Sort apps
+      dispatch<any>(sortApps());
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
 export interface DeleteAppAction {
-  type: ActionTypes.deleteApp,
-  payload: number
+  type: ActionTypes.deleteApp;
+  payload: number;
 }
 
 export const deleteApp = (id: number) => async (dispatch: Dispatch) => {
@@ -98,79 +106,85 @@ export const deleteApp = (id: number) => async (dispatch: Dispatch) => {
       type: ActionTypes.createNotification,
       payload: {
         title: 'Success',
-        message: 'App deleted'
-      }
-    })
+        message: 'App deleted',
+      },
+    });
 
     dispatch<DeleteAppAction>({
       type: ActionTypes.deleteApp,
-      payload: id
-    })
+      payload: id,
+    });
   } catch (err) {
     console.log(err);
   }
-}
+};
 
 export interface UpdateAppAction {
   type: ActionTypes.updateApp;
   payload: App;
 }
 
-export const updateApp = (id: number, formData: NewApp | FormData) => async (dispatch: Dispatch) => {
-  try {
-    const res = await axios.put<ApiResponse<App>>(`/api/apps/${id}`, formData);
+export const updateApp =
+  (id: number, formData: NewApp | FormData) => async (dispatch: Dispatch) => {
+    try {
+      const res = await axios.put<ApiResponse<App>>(
+        `/api/apps/${id}`,
+        formData
+      );
 
-    dispatch<CreateNotificationAction>({
-      type: ActionTypes.createNotification,
-      payload: {
-        title: 'Success',
-        message: `App updated`
-      }
-    })
+      dispatch<CreateNotificationAction>({
+        type: ActionTypes.createNotification,
+        payload: {
+          title: 'Success',
+          message: `App updated`,
+        },
+      });
 
-    await dispatch<UpdateAppAction>({
-      type: ActionTypes.updateApp,
-      payload: res.data.data
-    })
+      await dispatch<UpdateAppAction>({
+        type: ActionTypes.updateApp,
+        payload: res.data.data,
+      });
 
-    // Sort apps
-    dispatch<any>(sortApps())
-  } catch (err) {
-    console.log(err);
-  }
-}
+      // Sort apps
+      dispatch<any>(sortApps());
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
 export interface ReorderAppsAction {
   type: ActionTypes.reorderApps;
-  payload: App[]
+  payload: App[];
 }
 
 interface ReorderQuery {
   apps: {
     id: number;
     orderId: number;
-  }[]
+  }[];
 }
 
 export const reorderApps = (apps: App[]) => async (dispatch: Dispatch) => {
   try {
-    const updateQuery: ReorderQuery = { apps: [] }
+    const updateQuery: ReorderQuery = { apps: [] };
 
-    apps.forEach((app, index) => updateQuery.apps.push({
-      id: app.id,
-      orderId: index + 1
-    }))
+    apps.forEach((app, index) =>
+      updateQuery.apps.push({
+        id: app.id,
+        orderId: index + 1,
+      })
+    );
 
     await axios.put<ApiResponse<{}>>('/api/apps/0/reorder', updateQuery);
 
     dispatch<ReorderAppsAction>({
       type: ActionTypes.reorderApps,
-      payload: apps
-    })
+      payload: apps,
+    });
   } catch (err) {
     console.log(err);
   }
-}
+};
 
 export interface SortAppsAction {
   type: ActionTypes.sortApps;
@@ -179,13 +193,13 @@ export interface SortAppsAction {
 
 export const sortApps = () => async (dispatch: Dispatch) => {
   try {
-    const res = await axios.get<ApiResponse<Config>>('/api/config/useOrdering');
+    const res = await axios.get<ApiResponse<Config>>('/api/config');
 
     dispatch<SortAppsAction>({
       type: ActionTypes.sortApps,
-      payload: res.data.data.value
-    })
+      payload: res.data.data.useOrdering,
+    });
   } catch (err) {
     console.log(err);
   }
-}
+};

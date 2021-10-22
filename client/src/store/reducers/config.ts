@@ -1,15 +1,16 @@
 import { ActionTypes, Action } from '../actions';
 import { Config, Query } from '../../interfaces';
+import { configTemplate } from '../../utility';
 
 export interface State {
   loading: boolean;
-  config: Config[];
+  config: Config;
   customQueries: Query[];
 }
 
 const initialState: State = {
   loading: true,
-  config: [],
+  config: configTemplate,
   customQueries: [],
 };
 

@@ -1,8 +1,8 @@
-const App = require('../../models/App');
+const App = require('../../../models/App');
 const axios = require('axios');
-const Logger = require('../../utils/Logger');
+const Logger = require('../../../utils/Logger');
 const logger = new Logger();
-const loadConfig = require('../../utils/loadConfig');
+const loadConfig = require('../../../utils/loadConfig');
 
 const useDocker = async (apps) => {
   const {
@@ -50,7 +50,7 @@ const useDocker = async (apps) => {
     for (const container of containers) {
       let labels = container.Labels;
 
-      // todo
+      // Traefik labels for URL configuration
       if (!('flame.url' in labels)) {
         for (const label of Object.keys(labels)) {
           if (/^traefik.*.frontend.rule/.test(label)) {
