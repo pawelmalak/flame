@@ -92,6 +92,18 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           onChange={(e) => inputChangeHandler(e)}
         />
       </InputGroup>
+      <InputGroup>
+        <label htmlFor="useAmericanDate">Date formatting</label>
+        <select
+          id="useAmericanDate"
+          name="useAmericanDate"
+          value={formData.useAmericanDate ? 1 : 0}
+          onChange={(e) => inputChangeHandler(e, { isBool: true })}
+        >
+          <option value={1}>Friday, October 22 2021</option>
+          <option value={0}>Friday, 22 October 2021</option>
+        </select>
+      </InputGroup>
 
       {/* BEAHVIOR OPTIONS */}
       <SettingsHeadline text="App Behavior" />

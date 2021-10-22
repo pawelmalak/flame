@@ -72,6 +72,7 @@ const SearchBar = (props: ComponentProps): JSX.Element => {
         type="text"
         className={classes.SearchBar}
         onKeyUp={(e) => searchHandler(e)}
+        onDoubleClick={clearSearch}
       />
     </div>
   );

@@ -25,4 +25,5 @@ export interface OtherSettingsForm {
   dockerHost: string;
   kubernetesApps: boolean;
   unpinStoppedApps: boolean;
+  useAmericanDate: boolean;
 }

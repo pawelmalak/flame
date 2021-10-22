@@ -1,5 +1,8 @@
 ### v1.7.1 (TBA)
 - Fixed search action not being triggered by Numpad Enter
+- Added option to change date formatting ([#92](https://github.com/pawelmalak/flame/issues/92))
+- Added shortcuts (Esc and double click) to clear search bar ([#100](https://github.com/pawelmalak/flame/issues/100))
+- Added Traefik integration ([#102](https://github.com/pawelmalak/flame/issues/102))
 - Fixed search bar not redirecting to valid URL if it starts with capital letter ([#118](https://github.com/pawelmalak/flame/issues/118))
 - Performance improvements
 

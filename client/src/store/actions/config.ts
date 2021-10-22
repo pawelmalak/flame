@@ -20,6 +20,9 @@ export const getConfig = () => async (dispatch: Dispatch) => {
 
     // Set custom page title if set
     document.title = res.data.data.customTitle;
+
+    // Store settings for priority UI elements
+    localStorage.setItem('useAmericanDate', `${res.data.data.useAmericanDate}`);
   } catch (err) {
     console.log(err);
   }
@@ -46,6 +49,9 @@ export const updateConfig = (formData: any) => async (dispatch: Dispatch) => {
       type: ActionTypes.updateConfig,
       payload: res.data.data,
     });
+
+    // Store settings for priority UI elements
+    localStorage.setItem('useAmericanDate', `${res.data.data.useAmericanDate}`);
   } catch (err) {
     console.log(err);
   }

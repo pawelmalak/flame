@@ -14,6 +14,7 @@ export const otherSettingsTemplate: OtherSettingsForm = {
   dockerHost: 'localhost',
   kubernetesApps: true,
   unpinStoppedApps: true,
+  useAmericanDate: false,
 };
 
 export const weatherSettingsTemplate: WeatherForm = {

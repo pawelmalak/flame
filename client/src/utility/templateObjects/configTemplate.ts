@@ -21,4 +21,5 @@ export const configTemplate: Config = {
   dockerHost: 'localhost',
   kubernetesApps: false,
   unpinStoppedApps: false,
+  useAmericanDate: false,
 };

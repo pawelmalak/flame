@@ -15,14 +15,12 @@ exports.createCategory = asyncWrapper(async (req, res, next) => {
   let category;
 
   if (pinCategories) {
-    if (parseInt(pinCategories.value)) {
-      category = await Category.create({
-        ...req.body,
-        isPinned: true,
-      });
-    } else {
-      category = await Category.create(req.body);
-    }
+    category = await Category.create({
+      ...req.body,
+      isPinned: true,
+    });
+  } else {
+    category = await Category.create(req.body);
   }
 
   res.status(201).json({

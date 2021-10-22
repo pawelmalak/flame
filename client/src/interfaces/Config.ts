@@ -19,4 +19,5 @@ export interface Config {
   dockerHost: string;
   kubernetesApps: boolean;
   unpinStoppedApps: boolean;
+  useAmericanDate: boolean;
 }
