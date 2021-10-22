@@ -23,10 +23,6 @@ const SearchBar = (props: ComponentProps): JSX.Element => {
 
   const inputRef = useRef<HTMLInputElement>(document.createElement('input'));
 
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
-
   const searchHandler = (e: KeyboardEvent<HTMLInputElement>) => {
     const { isLocal, search, query, isURL, sameTab } = searchParser(
       inputRef.current.value
