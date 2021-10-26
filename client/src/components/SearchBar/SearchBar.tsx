@@ -25,11 +25,27 @@ const SearchBar = (props: ComponentProps): JSX.Element => {
 
   const inputRef = useRef<HTMLInputElement>(document.createElement('input'));
 
+  // Search bar autofocus
   useEffect(() => {
     if (!loading && !config.disableAutofocus) {
       inputRef.current.focus();
     }
   }, [config]);
+
+  // Listen for keyboard events outside of search bar
+  useEffect(() => {
+    const keyOutsideFocus = (e: any) => {
+      const { key } = e as KeyboardEvent;
+
+      if (key === 'Escape') {
+        clearSearch();
+      }
+    };
+
+    window.addEventListener('keydown', keyOutsideFocus);
+
+    return () => window.removeEventListener('keydown', keyOutsideFocus);
+  }, []);
 
   const clearSearch = () => {
     inputRef.current.value = '';
