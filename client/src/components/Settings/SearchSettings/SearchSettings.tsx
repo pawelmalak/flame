@@ -121,6 +121,18 @@ const SearchSettings = (props: Props): JSX.Element => {
             <option value={0}>False</option>
           </select>
         </InputGroup>
+        <InputGroup>
+          <label htmlFor="disableAutofocus">Disable search bar autofocus</label>
+          <select
+            id="disableAutofocus"
+            name="disableAutofocus"
+            value={formData.disableAutofocus ? 1 : 0}
+            onChange={(e) => inputChangeHandler(e, { isBool: true })}
+          >
+            <option value={1}>True</option>
+            <option value={0}>False</option>
+          </select>
+        </InputGroup>
         <Button>Save changes</Button>
       </form>
 

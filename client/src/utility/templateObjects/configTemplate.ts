@@ -22,4 +22,5 @@ export const configTemplate: Config = {
   kubernetesApps: false,
   unpinStoppedApps: false,
   useAmericanDate: false,
+  disableAutofocus: false,
 };

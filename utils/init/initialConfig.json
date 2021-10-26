@@ -18,5 +18,7 @@
   "dockerApps": false,
   "dockerHost": "localhost",
   "kubernetesApps": false,
-  "unpinStoppedApps": false
+  "unpinStoppedApps": false,
+  "useAmericanDate": false,
+  "disableAutofocus": false
 }

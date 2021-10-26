@@ -28,4 +28,5 @@ export const searchSettingsTemplate: SearchForm = {
   hideSearch: false,
   searchSameTab: false,
   defaultSearchProvider: 'l',
+  disableAutofocus: false,
 };

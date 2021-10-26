@@ -20,4 +20,5 @@ export interface Config {
   kubernetesApps: boolean;
   unpinStoppedApps: boolean;
   useAmericanDate: boolean;
+  disableAutofocus: boolean;
 }

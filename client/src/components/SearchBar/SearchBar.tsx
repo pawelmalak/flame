@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { createNotification } from '../../store/actions';
 
 // Typescript
-import { NewNotification } from '../../interfaces';
+import { Config, GlobalState, NewNotification } from '../../interfaces';
 
 // CSS
 import classes from './SearchBar.module.css';
@@ -16,16 +16,20 @@ import { searchParser, urlParser, redirectUrl } from '../../utility';
 interface ComponentProps {
   createNotification: (notification: NewNotification) => void;
   setLocalSearch: (query: string) => void;
+  config: Config;
+  loading: boolean;
 }
 
 const SearchBar = (props: ComponentProps): JSX.Element => {
-  const { setLocalSearch, createNotification } = props;
+  const { setLocalSearch, createNotification, config, loading } = props;
 
   const inputRef = useRef<HTMLInputElement>(document.createElement('input'));
 
   useEffect(() => {
-    inputRef.current.focus();
-  }, []);
+    if (!loading && !config.disableAutofocus) {
+      inputRef.current.focus();
+    }
+  }, [config]);
 
   const clearSearch = () => {
     inputRef.current.value = '';
@@ -78,4 +82,11 @@ const SearchBar = (props: ComponentProps): JSX.Element => {
   );
 };
 
-export default connect(null, { createNotification })(SearchBar);
+const mapStateToProps = (state: GlobalState) => {
+  return {
+    config: state.config.config,
+    loading: state.config.loading,
+  };
+};
+
+export default connect(mapStateToProps, { createNotification })(SearchBar);
