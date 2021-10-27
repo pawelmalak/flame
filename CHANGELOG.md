@@ -1,4 +1,5 @@
 ### v1.7.2 (TBA)
+- Pressing Enter while search bar is focused will now redirect to first result of local search ([#121](https://github.com/pawelmalak/flame/issues/121))
 - Use search bar shortcuts when it's not focused ([#124](https://github.com/pawelmalak/flame/issues/124))
 - Fixed bug with Weather API still logging with module being disabled ([#125](https://github.com/pawelmalak/flame/issues/125))
 - Added option to disable search bar autofocus ([#127](https://github.com/pawelmalak/flame/issues/127))

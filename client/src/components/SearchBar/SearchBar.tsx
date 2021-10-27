@@ -5,7 +5,13 @@ import { connect } from 'react-redux';
 import { createNotification } from '../../store/actions';
 
 // Typescript
-import { Config, GlobalState, NewNotification } from '../../interfaces';
+import {
+  App,
+  Category,
+  Config,
+  GlobalState,
+  NewNotification,
+} from '../../interfaces';
 
 // CSS
 import classes from './SearchBar.module.css';
@@ -16,12 +22,21 @@ import { searchParser, urlParser, redirectUrl } from '../../utility';
 interface ComponentProps {
   createNotification: (notification: NewNotification) => void;
   setLocalSearch: (query: string) => void;
+  appSearchResult: App[] | null;
+  bookmarkSearchResult: Category[] | null;
   config: Config;
   loading: boolean;
 }
 
 const SearchBar = (props: ComponentProps): JSX.Element => {
-  const { setLocalSearch, createNotification, config, loading } = props;
+  const {
+    setLocalSearch,
+    createNotification,
+    config,
+    loading,
+    appSearchResult,
+    bookmarkSearchResult,
+  } = props;
 
   const inputRef = useRef<HTMLInputElement>(document.createElement('input'));
 
@@ -73,8 +88,12 @@ const SearchBar = (props: ComponentProps): JSX.Element => {
         const url = urlParser(inputRef.current.value)[1];
         redirectUrl(url, sameTab);
       } else if (isLocal) {
-        // Local query -> filter apps and bookmarks
-        setLocalSearch(search);
+        // Local query -> redirect if at least 1 result found
+        if (appSearchResult?.length) {
+          redirectUrl(appSearchResult[0].url, sameTab);
+        } else if (bookmarkSearchResult?.length) {
+          redirectUrl(bookmarkSearchResult[0].bookmarks[0].url, sameTab);
+        }
       } else {
         // Valid query -> redirect to search results
         const url = `${query.template}${search}`;
