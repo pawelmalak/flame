@@ -55,17 +55,21 @@ const Home = (props: ComponentProps): JSX.Element => {
 
   // Local search query
   const [localSearch, setLocalSearch] = useState<null | string>(null);
+  const [appSearchResult, setAppSearchResult] = useState<null | App[]>(null);
+  const [bookmarkSearchResult, setBookmarkSearchResult] = useState<
+    null | Category[]
+  >(null);
 
   // Load applications
   useEffect(() => {
-    if (apps.length === 0) {
+    if (!apps.length) {
       getApps();
     }
   }, [getApps]);
 
   // Load bookmark categories
   useEffect(() => {
-    if (categories.length === 0) {
+    if (!categories.length) {
       getCategories();
     }
   }, [getCategories]);
@@ -87,22 +91,37 @@ const Home = (props: ComponentProps): JSX.Element => {
     return () => clearInterval(interval);
   }, []);
 
-  // Search bookmarks
-  const searchBookmarks = (query: string): Category[] => {
-    const category = { ...categories[0] };
-    category.name = 'Search Results';
-    category.bookmarks = categories
-      .map(({ bookmarks }) => bookmarks)
-      .flat()
-      .filter(({ name }) => new RegExp(query, 'i').test(name));
+  useEffect(() => {
+    if (localSearch) {
+      // Search through apps
+      setAppSearchResult([
+        ...apps.filter(({ name }) => new RegExp(localSearch, 'i').test(name)),
+      ]);
 
-    return [category];
-  };
+      // Search through bookmarks
+      const category = { ...categories[0] };
+
+      category.name = 'Search Results';
+      category.bookmarks = categories
+        .map(({ bookmarks }) => bookmarks)
+        .flat()
+        .filter(({ name }) => new RegExp(localSearch, 'i').test(name));
+
+      setBookmarkSearchResult([category]);
+    } else {
+      setAppSearchResult(null);
+      setBookmarkSearchResult(null);
+    }
+  }, [localSearch]);
 
   return (
     <Container>
       {!props.config.hideSearch ? (
-        <SearchBar setLocalSearch={setLocalSearch} />
+        <SearchBar
+          setLocalSearch={setLocalSearch}
+          appSearchResult={appSearchResult}
+          bookmarkSearchResult={bookmarkSearchResult}
+        />
       ) : (
         <div></div>
       )}
@@ -130,11 +149,9 @@ const Home = (props: ComponentProps): JSX.Element => {
           ) : (
             <AppGrid
               apps={
-                !localSearch
+                !appSearchResult
                   ? apps.filter(({ isPinned }) => isPinned)
-                  : apps.filter(({ name }) =>
-                      new RegExp(localSearch, 'i').test(name)
-                    )
+                  : appSearchResult
               }
               totalApps={apps.length}
               searching={!!localSearch}
@@ -154,9 +171,9 @@ const Home = (props: ComponentProps): JSX.Element => {
           ) : (
             <BookmarkGrid
               categories={
-                !localSearch
+                !bookmarkSearchResult
                   ? categories.filter(({ isPinned }) => isPinned)
-                  : searchBookmarks(localSearch)
+                  : bookmarkSearchResult
               }
               totalCategories={categories.length}
               searching={!!localSearch}

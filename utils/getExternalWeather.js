@@ -5,14 +5,6 @@ const loadConfig = require('./loadConfig');
 const getExternalWeather = async () => {
   const { WEATHER_API_KEY: secret, lat, long } = await loadConfig();
 
-  if (!secret) {
-    throw new Error('API key was not found. Weather updated failed');
-  }
-
-  if (!lat || !long) {
-    throw new Error('Location was not found. Weather updated failed');
-  }
-
   // Fetch data from external API
   try {
     const res = await axios.get(
