@@ -1,6 +1,7 @@
 const asyncWrapper = require('../../middleware/asyncWrapper');
 const File = require('../../utils/File');
 const { join } = require('path');
+const fs = require('fs');
 
 // @desc      Update custom CSS file
 // @route     PUT /api/config/0/css

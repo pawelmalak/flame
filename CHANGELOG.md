@@ -1,3 +1,6 @@
+### v1.7.3 (2021-10-28)
+- Fixed bug with custom CSS not updating
+
 ### v1.7.2 (2021-10-28)
 - Pressing Enter while search bar is focused will now redirect to first result of local search ([#121](https://github.com/pawelmalak/flame/issues/121))
 - Use search bar shortcuts when it's not focused ([#124](https://github.com/pawelmalak/flame/issues/124))
