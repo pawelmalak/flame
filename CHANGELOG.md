@@ -1,3 +1,6 @@
+### v1.7.4 (TBA)
+- Added iOS "Add to homescreen" icon ([#131](https://github.com/pawelmalak/flame/issues/131))
+
 ### v1.7.3 (2021-10-28)
 - Fixed bug with custom CSS not updating
 
