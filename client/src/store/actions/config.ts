@@ -23,6 +23,7 @@ export const getConfig = () => async (dispatch: Dispatch) => {
 
     // Store settings for priority UI elements
     localStorage.setItem('useAmericanDate', `${res.data.data.useAmericanDate}`);
+    localStorage.setItem('greetingsSchema', `${res.data.data.greetingsSchema}`);
   } catch (err) {
     console.log(err);
   }
@@ -52,6 +53,7 @@ export const updateConfig = (formData: any) => async (dispatch: Dispatch) => {
 
     // Store settings for priority UI elements
     localStorage.setItem('useAmericanDate', `${res.data.data.useAmericanDate}`);
+    localStorage.setItem('greetingsSchema', `${res.data.data.greetingsSchema}`);
   } catch (err) {
     console.log(err);
   }

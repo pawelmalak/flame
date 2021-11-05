@@ -1,4 +1,4 @@
-export const dateTime = (): string => {
+export const getDateTime = (): string => {
   const days = [
     'Sunday',
     'Monday',

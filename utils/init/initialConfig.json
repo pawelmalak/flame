@@ -20,5 +20,6 @@
   "kubernetesApps": false,
   "unpinStoppedApps": false,
   "useAmericanDate": false,
-  "disableAutofocus": false
+  "disableAutofocus": false,
+  "greetingsSchema": "Good evening!;Good afternoon!;Good morning!;Good night!"
 }

@@ -1,0 +1,31 @@
+.Header h1 {
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 4em;
+  display: inline-block;
+}
+
+.Header p {
+  color: var(--color-primary);
+  font-weight: 300;
+  text-transform: uppercase;
+  height: 30px;
+}
+
+.HeaderMain {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+}
+
+.SettingsLink {
+  visibility: visible;
+  color: var(--color-accent);
+}
+
+@media (min-width: 769px) {
+  .SettingsLink {
+    visibility: hidden;
+  }
+}

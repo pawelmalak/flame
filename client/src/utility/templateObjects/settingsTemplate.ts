@@ -15,6 +15,7 @@ export const otherSettingsTemplate: OtherSettingsForm = {
   kubernetesApps: true,
   unpinStoppedApps: true,
   useAmericanDate: false,
+  greetingsSchema: 'Good evening!;Good afternoon!;Good morning!;Good night!',
 };
 
 export const weatherSettingsTemplate: WeatherForm = {

@@ -21,12 +21,8 @@ import classes from './Home.module.css';
 // Components
 import AppGrid from '../Apps/AppGrid/AppGrid';
 import BookmarkGrid from '../Bookmarks/BookmarkGrid/BookmarkGrid';
-import WeatherWidget from '../Widgets/WeatherWidget/WeatherWidget';
 import SearchBar from '../SearchBar/SearchBar';
-
-// Functions
-import { greeter } from './functions/greeter';
-import { dateTime } from './functions/dateTime';
+import Header from './Header/Header';
 
 interface ComponentProps {
   getApps: Function;
@@ -48,11 +44,6 @@ const Home = (props: ComponentProps): JSX.Element => {
     categoriesLoading,
   } = props;
 
-  const [header, setHeader] = useState({
-    dateTime: dateTime(),
-    greeting: greeter(),
-  });
-
   // Local search query
   const [localSearch, setLocalSearch] = useState<null | string>(null);
   const [appSearchResult, setAppSearchResult] = useState<null | App[]>(null);
@@ -73,23 +64,6 @@ const Home = (props: ComponentProps): JSX.Element => {
       getCategories();
     }
   }, [getCategories]);
-
-  // Refresh greeter and time
-  useEffect(() => {
-    let interval: any;
-
-    // Start interval only when hideHeader is false
-    if (!props.config.hideHeader) {
-      interval = setInterval(() => {
-        setHeader({
-          dateTime: dateTime(),
-          greeting: greeter(),
-        });
-      }, 1000);
-    }
-
-    return () => clearInterval(interval);
-  }, []);
 
   useEffect(() => {
     if (localSearch) {
@@ -126,20 +100,7 @@ const Home = (props: ComponentProps): JSX.Element => {
         <div></div>
       )}
 
-      {!props.config.hideHeader ? (
-        <header className={classes.Header}>
-          <p>{header.dateTime}</p>
-          <Link to="/settings" className={classes.SettingsLink}>
-            Go to Settings
-          </Link>
-          <span className={classes.HeaderMain}>
-            <h1>{header.greeting}</h1>
-            <WeatherWidget />
-          </span>
-        </header>
-      ) : (
-        <div></div>
-      )}
+      {!props.config.hideHeader ? <Header /> : <div></div>}
 
       {!props.config.hideApps ? (
         <Fragment>

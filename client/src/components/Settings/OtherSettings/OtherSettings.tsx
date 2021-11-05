@@ -188,6 +188,21 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
         </select>
       </InputGroup>
       <InputGroup>
+        <label htmlFor="greetingsSchema">Custom greetings</label>
+        <input
+          type="text"
+          id="greetingsSchema"
+          name="greetingsSchema"
+          placeholder="Good day;Hi;Bye!"
+          value={formData.greetingsSchema}
+          onChange={(e) => inputChangeHandler(e)}
+        />
+        <span>
+          Greetings must be separated with semicolon. Only 4 messages can be
+          used
+        </span>
+      </InputGroup>
+      <InputGroup>
         <label htmlFor="hideApps">Hide applications</label>
         <select
           id="hideApps"

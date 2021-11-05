@@ -23,4 +23,5 @@ export const configTemplate: Config = {
   unpinStoppedApps: false,
   useAmericanDate: false,
   disableAutofocus: false,
+  greetingsSchema: 'Good evening!;Good afternoon!;Good morning!;Good night!',
 };

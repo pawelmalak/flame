@@ -21,4 +21,5 @@ export interface Config {
   unpinStoppedApps: boolean;
   useAmericanDate: boolean;
   disableAutofocus: boolean;
+  greetingsSchema: string;
 }
