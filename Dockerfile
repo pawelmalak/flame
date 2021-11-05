@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM node:14-alpine as builder
 
 RUN apk update && apk add --no-cache nano curl
 
@@ -17,6 +17,12 @@ RUN mkdir -p ./public ./data \
     && cd .. \
     && mv ./client/build/* ./public \
     && rm -rf ./client
+
+FROM node:14-alpine
+
+COPY --from=builder /app /app
+
+WORKDIR /app
 
 EXPOSE 5005
 
