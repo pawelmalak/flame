@@ -95,6 +95,30 @@
         "primary": "#4C432E",
         "accent": "#AA9A73"
       }
+    },
+    {
+      "name": "neon",
+      "colors": {
+        "background": "#091833",
+        "primary": "#EFFBFF",
+        "accent": "#ea00d9"
+      }
+    },
+    {
+      "name": "pumpkin",
+      "colors": {
+        "background": "#2d3436",
+        "primary": "#EFFBFF",
+        "accent": "#ffa500"
+      }
+    },
+    {
+      "name": "onedark",
+      "colors": {
+        "background": "#282c34",
+        "primary": "#dfd9d6",
+        "accent": "#98c379"
+      }
     }
   ]
 }
