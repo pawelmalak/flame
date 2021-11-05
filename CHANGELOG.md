@@ -1,5 +1,5 @@
 ### v1.7.4 (TBA)
-- [WIP] Added option to set custom greetings and date ([#103](https://github.com/pawelmalak/flame/issues/103))
+- Added option to set custom greetings and date ([#103](https://github.com/pawelmalak/flame/issues/103))
 - Added iOS "Add to homescreen" icon ([#131](https://github.com/pawelmalak/flame/issues/131))
 - Added 3 new themes
 

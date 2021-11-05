@@ -6,3 +6,4 @@ export * from './searchParser';
 export * from './redirectUrl';
 export * from './templateObjects';
 export * from './inputHandler';
+export * from './storeUIConfig';

@@ -10,7 +10,7 @@ export interface State {
 
 const initialState: State = {
   loading: true,
-  config: configTemplate,
+  config: { ...configTemplate },
   customQueries: [],
 };
 

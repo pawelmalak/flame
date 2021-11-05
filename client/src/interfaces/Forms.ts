@@ -28,4 +28,6 @@ export interface OtherSettingsForm {
   unpinStoppedApps: boolean;
   useAmericanDate: boolean;
   greetingsSchema: string;
+  daySchema: string;
+  monthSchema: string;
 }

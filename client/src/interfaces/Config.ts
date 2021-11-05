@@ -22,4 +22,6 @@ export interface Config {
   useAmericanDate: boolean;
   disableAutofocus: boolean;
   greetingsSchema: string;
+  daySchema: string;
+  monthSchema: string;
 }

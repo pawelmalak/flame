@@ -3,6 +3,7 @@ import { Dispatch } from 'redux';
 import { ActionTypes } from './actionTypes';
 import { Config, ApiResponse, Query } from '../../interfaces';
 import { CreateNotificationAction } from './notification';
+import { storeUIConfig } from '../../utility';
 
 export interface GetConfigAction {
   type: ActionTypes.getConfig;
@@ -22,8 +23,15 @@ export const getConfig = () => async (dispatch: Dispatch) => {
     document.title = res.data.data.customTitle;
 
     // Store settings for priority UI elements
-    localStorage.setItem('useAmericanDate', `${res.data.data.useAmericanDate}`);
-    localStorage.setItem('greetingsSchema', `${res.data.data.greetingsSchema}`);
+    const keys: (keyof Config)[] = [
+      'useAmericanDate',
+      'greetingsSchema',
+      'daySchema',
+      'monthSchema',
+    ];
+    for (let key of keys) {
+      storeUIConfig(key, res.data.data);
+    }
   } catch (err) {
     console.log(err);
   }
@@ -52,8 +60,15 @@ export const updateConfig = (formData: any) => async (dispatch: Dispatch) => {
     });
 
     // Store settings for priority UI elements
-    localStorage.setItem('useAmericanDate', `${res.data.data.useAmericanDate}`);
-    localStorage.setItem('greetingsSchema', `${res.data.data.greetingsSchema}`);
+    const keys: (keyof Config)[] = [
+      'useAmericanDate',
+      'greetingsSchema',
+      'daySchema',
+      'monthSchema',
+    ];
+    for (let key of keys) {
+      storeUIConfig(key, res.data.data);
+    }
   } catch (err) {
     console.log(err);
   }
