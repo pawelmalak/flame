@@ -164,4 +164,3 @@ def AddFlameBookmark(website_name, url, cat_id, icon_name):
 
 if __name__ == "__main__":
 	FlameBookmarkParser(bookmarks_path)
-

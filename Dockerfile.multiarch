@@ -1,15 +1,12 @@
-FROM node:14-alpine as builder
-
-RUN apk update && apk add --no-cache nano curl
+FROM node:14 as builder
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN apk --no-cache --virtual build-dependencies add python make g++ \
-    && npm install --production
+RUN npm install --production
 
-COPY . .
+COPY . .    
 
 RUN mkdir -p ./public ./data \
     && cd ./client \
@@ -17,8 +14,7 @@ RUN mkdir -p ./public ./data \
     && npm run build \
     && cd .. \
     && mv ./client/build/* ./public \
-    && rm -rf ./client \
-    && apk del build-dependencies
+    && rm -rf ./client
 
 FROM node:14-alpine
 

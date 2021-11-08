@@ -121,21 +121,6 @@ Follow instructions from wiki: [Installation without Docker](https://github.com/
 
 ## Usage
 
-### Import HTML Bookmarks (Experimental)
-- Requirements
-  - Python3
-  - pip packages: Pillow, beautifulsoup4
-- Backup your db.sqlite before running script!
-- Known Issues:
-  - generated icons are sometimes incorrect
-```shell
-
-pip3 install Pillow, beautifulsoup4
-
-cd flame/.dev
-python3 bookmarks_importer.py --bookmarks <path to bookmarks.html> --data <path to flame data folder>
-```
-
 ### Search bar
 
 #### Searching
@@ -215,6 +200,22 @@ metadata:
 ```
 
 > "Use Kubernetes Ingress API" option must be enabled for this to work. You can find it in Settings > Other > Kubernetes section
+
+### Import HTML Bookmarks (Experimental)
+
+- Requirements
+  - python3
+  - pip packages: Pillow, beautifulsoup4
+- Backup your `db.sqlite` before running script!
+- Known Issues:
+  - generated icons are sometimes incorrect
+  
+```bash
+pip3 install Pillow, beautifulsoup4
+
+cd flame/.dev
+python3 bookmarks_importer.py --bookmarks <path to bookmarks.html> --data <path to flame data folder>
+```
 
 ### Custom CSS and themes
 

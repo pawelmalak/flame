@@ -1,6 +1,4 @@
-FROM node:14-alpine as builder
-
-RUN apk update && apk add --no-cache nano curl
+FROM node:14 as builder
 
 WORKDIR /app
 
