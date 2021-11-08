@@ -91,8 +91,18 @@ const SearchBar = (props: ComponentProps): JSX.Element => {
         // Local query -> redirect if at least 1 result found
         if (appSearchResult?.length) {
           redirectUrl(appSearchResult[0].url, sameTab);
-        } else if (bookmarkSearchResult?.length) {
+        } else if (bookmarkSearchResult?.[0]?.bookmarks?.length) {
           redirectUrl(bookmarkSearchResult[0].bookmarks[0].url, sameTab);
+        } else {
+          // no local results -> search the internet with the default search provider
+          let template = query.template;
+
+          if (query.prefix === 'l') {
+            template = 'https://duckduckgo.com/?q=';
+          }
+
+          const url = `${template}${search}`;
+          redirectUrl(url, sameTab);
         }
       } else {
         // Valid query -> redirect to search results
