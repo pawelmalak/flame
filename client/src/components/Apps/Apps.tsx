@@ -23,6 +23,9 @@ import AppGrid from './AppGrid/AppGrid';
 import AppForm from './AppForm/AppForm';
 import AppTable from './AppTable/AppTable';
 
+// Utils
+import { appTemplate } from '../../utility';
+
 interface ComponentProps {
   getApps: Function;
   apps: App[];
@@ -36,16 +39,7 @@ const Apps = (props: ComponentProps): JSX.Element => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isInEdit, setIsInEdit] = useState(false);
   const [isInUpdate, setIsInUpdate] = useState(false);
-  const [appInUpdate, setAppInUpdate] = useState<App>({
-    name: 'string',
-    url: 'string',
-    icon: 'string',
-    isPinned: false,
-    orderId: 0,
-    id: 0,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  });
+  const [appInUpdate, setAppInUpdate] = useState<App>(appTemplate);
 
   useEffect(() => {
     if (apps.length === 0) {

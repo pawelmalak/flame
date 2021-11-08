@@ -114,7 +114,7 @@ const AppTable = (props: ComponentProps): JSX.Element => {
         <Droppable droppableId="apps">
           {(provided) => (
             <Table
-              headers={['Name', 'URL', 'Icon', 'Actions']}
+              headers={['Name', 'URL', 'Icon', 'Visibility', 'Actions']}
               innerRef={provided.innerRef}
             >
               {localApps.map((app: App, index): JSX.Element => {
@@ -143,6 +143,9 @@ const AppTable = (props: ComponentProps): JSX.Element => {
                           <td style={{ width: '200px' }}>{app.name}</td>
                           <td style={{ width: '200px' }}>{app.url}</td>
                           <td style={{ width: '200px' }}>{app.icon}</td>
+                          <td style={{ width: '200px' }}>
+                            {app.isPublic ? 'Visible' : 'Hidden'}
+                          </td>
                           {!snapshot.isDragging && (
                             <td className={classes.TableActions}>
                               <div

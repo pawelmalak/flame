@@ -8,6 +8,7 @@ import classes from './AppForm.module.css';
 import ModalForm from '../../UI/Forms/ModalForm/ModalForm';
 import InputGroup from '../../UI/Forms/InputGroup/InputGroup';
 import Button from '../../UI/Buttons/Button/Button';
+import { inputHandler, newAppTemplate } from '../../../utility';
 
 interface ComponentProps {
   modalHandler: () => void;
@@ -19,32 +20,27 @@ interface ComponentProps {
 const AppForm = (props: ComponentProps): JSX.Element => {
   const [useCustomIcon, toggleUseCustomIcon] = useState<boolean>(false);
   const [customIcon, setCustomIcon] = useState<File | null>(null);
-  const [formData, setFormData] = useState<NewApp>({
-    name: '',
-    url: '',
-    icon: '',
-  });
+  const [formData, setFormData] = useState<NewApp>(newAppTemplate);
 
   useEffect(() => {
     if (props.app) {
       setFormData({
-        name: props.app.name,
-        url: props.app.url,
-        icon: props.app.icon,
+        ...props.app,
       });
     } else {
-      setFormData({
-        name: '',
-        url: '',
-        icon: '',
-      });
+      setFormData(newAppTemplate);
     }
   }, [props.app]);
 
-  const inputChangeHandler = (e: ChangeEvent<HTMLInputElement>): void => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
+  const inputChangeHandler = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    options?: { isNumber?: boolean; isBool?: boolean }
+  ) => {
+    inputHandler<NewApp>({
+      e,
+      options,
+      setStateHandler: setFormData,
+      state: formData,
     });
   };
 
@@ -86,11 +82,7 @@ const AppForm = (props: ComponentProps): JSX.Element => {
       }
     }
 
-    setFormData({
-      name: '',
-      url: '',
-      icon: '',
-    });
+    setFormData(newAppTemplate);
   };
 
   return (
@@ -98,6 +90,7 @@ const AppForm = (props: ComponentProps): JSX.Element => {
       modalHandler={props.modalHandler}
       formHandler={formSubmitHandler}
     >
+      {/* NAME */}
       <InputGroup>
         <label htmlFor="name">App Name</label>
         <input
@@ -110,6 +103,8 @@ const AppForm = (props: ComponentProps): JSX.Element => {
           onChange={(e) => inputChangeHandler(e)}
         />
       </InputGroup>
+
+      {/* URL */}
       <InputGroup>
         <label htmlFor="url">App URL</label>
         <input
@@ -121,17 +116,9 @@ const AppForm = (props: ComponentProps): JSX.Element => {
           value={formData.url}
           onChange={(e) => inputChangeHandler(e)}
         />
-        <span>
-          <a
-            href="https://github.com/pawelmalak/flame#supported-url-formats-for-applications-and-bookmarks"
-            target="_blank"
-            rel="noreferrer"
-          >
-            {' '}
-            Check supported URL formats
-          </a>
-        </span>
       </InputGroup>
+
+      {/* ICON */}
       {!useCustomIcon ? (
         // use mdi icon
         <InputGroup>
@@ -182,6 +169,21 @@ const AppForm = (props: ComponentProps): JSX.Element => {
           </span>
         </InputGroup>
       )}
+
+      {/* VISIBILITY */}
+      <InputGroup>
+        <label htmlFor="isPublic">App visibility</label>
+        <select
+          id="isPublic"
+          name="isPublic"
+          value={formData.isPublic ? 1 : 0}
+          onChange={(e) => inputChangeHandler(e, { isBool: true })}
+        >
+          <option value={1}>Visible (anyone can access it)</option>
+          <option value={0}>Hidden (authentication required)</option>
+        </select>
+      </InputGroup>
+
       {!props.app ? (
         <Button>Add new application</Button>
       ) : (
