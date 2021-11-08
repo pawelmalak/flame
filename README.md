@@ -106,6 +106,7 @@ Follow instructions from wiki: [Installation without Docker](https://github.com/
 - Bookmarks
   - Create, update, delete and organize bookmarks and categories using GUI
   - Pin your favourite categories to the homescreen
+  - Import html bookmarks (experimental)
 
 ![Homescreen screenshot](./.github/_bookmarks.png)
 
@@ -119,6 +120,21 @@ Follow instructions from wiki: [Installation without Docker](https://github.com/
 ![Homescreen screenshot](./.github/_themes.png)
 
 ## Usage
+
+### Import HTML Bookmarks (Experimental)
+- Requirements
+  - Python3
+  - pip packages: Pillow, beautifulsoup4
+- Backup your db.sqlite before running script!
+- Known Issues:
+  - generated icons are sometimes incorrect
+```shell
+
+pip3 install Pillow, beautifulsoup4
+
+cd flame/.dev
+python3 bookmarks_importer.py --bookmarks <path to bookmarks.html> --data <path to flame data folder>
+```
 
 ### Search bar
 
