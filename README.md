@@ -1,10 +1,15 @@
 # Flame
 
+[![JS Badge](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://shields.io/)
+[![TS Badge](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://shields.io/)
+[![Node Badge](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)](https://shields.io/)
+[![React Badge](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://shields.io/)
+
 ![Homescreen screenshot](./.github/_home.png)
 
 ## Description
 
-Flame is self-hosted startpage for your server. Its design is inspired (heavily) by [SUI](https://github.com/jeroenpardon/sui). Flame is very easy to setup and use. With built-in editors it allows you to setup your very own application hub in no time - no file editing necessary.
+Flame is self-hosted startpage for your server. Its design is inspired (heavily) by [SUI](https://github.com/jeroenpardon/sui). Flame is very easy to setup and use. With built-in editors it allows you to setup your very own appliaction hub in no time - no file editing necessary.
 
 ## Technology
 
@@ -37,15 +42,7 @@ npm run dev
 
 ### With Docker (recommended)
 
-[Docker Hub link](https://hub.docker.com/r/pawelmalak/flame)
-
-```sh
-docker pull pawelmalak/flame:latest
-
-# for ARM architecture (e.g. RaspberryPi)
-docker pull pawelmalak/flame:multiarch
-```
-
+[Docker Hub](https://hub.docker.com/r/pawelmalak/flame)
 
 #### Building images
 
@@ -99,13 +96,14 @@ Follow instructions from wiki: [Installation without Docker](https://github.com/
 
 - Applications
   - Create, update, delete and organize applications using GUI
-  - Pin your favourite apps to the homescreen
+  - Pin your favourite apps to homescreen
 
 ![Homescreen screenshot](./.github/_apps.png)
 
 - Bookmarks
   - Create, update, delete and organize bookmarks and categories using GUI
-  - Pin your favourite categories to the homescreen
+  - Pin your favourite categories to homescreen
+  - Import HTML bookmarks (experimental)
 
 ![Homescreen screenshot](./.github/_bookmarks.png)
 
@@ -114,11 +112,23 @@ Follow instructions from wiki: [Installation without Docker](https://github.com/
   - Get current temperature, cloud coverage and weather status with animated icons
 
 - Themes
-  - Customize your page by choosing from 15 color themes
+  - Customize your page by choosing from 12 color themes
 
 ![Homescreen screenshot](./.github/_themes.png)
 
 ## Usage
+
+### Import HTML Bookmarks (Experimental)
+```shell
+
+pip3 install Pillow, beautifulsoup4
+
+cd flame/client/utils/dev
+python3 bookmarks_importer.py --bookmarks <path to bookmarks.html> --data <path to flame data folder>
+```
+
+
+
 
 ### Search bar
 
@@ -128,7 +138,23 @@ To use search bar you need to type your search query with selected prefix. For e
 
 > You can change where to open search results (same/new tab) in the settings
 
-For list of supported search engines, shortcuts and more about searching functionality visit [project wiki](https://github.com/pawelmalak/flame/wiki/Search-bar).
+#### Supported search engines
+
+| Name       | Prefix | Search URL                          |
+| ---------- | ------ | ----------------------------------- |
+| Disroot    | /ds    | http://search.disroot.org/search?q= |
+| DuckDuckGo | /d     | https://duckduckgo.com/?q=          |
+| Google     | /g     | https://www.google.com/search?q=    |
+
+#### Supported services
+
+| Name               | Prefix | Search URL                                    |
+| ------------------ | ------ | --------------------------------------------- |
+| IMDb               | /im    | https://www.imdb.com/find?q=                  |
+| Reddit             | /r     | https://www.reddit.com/search?q=              |
+| Spotify            | /sp    | https://open.spotify.com/search/              |
+| The Movie Database | /mv    | https://www.themoviedb.org/search?query=      |
+| Youtube            | /yt    | https://www.youtube.com/results?search_query= |
 
 ### Setting up weather module
 
@@ -146,13 +172,13 @@ labels:
   - flame.type=application # "app" works too
   - flame.name=My container
   - flame.url=https://example.com
-  - flame.icon=icon-name # optional, default is "docker"
+  - flame.icon=icon-name # Optional, default is "docker"
 # - flame.icon=custom to make changes in app. ie: custom icon upload
 ```
 
-> "Use Docker API" option must be enabled for this to work. You can find it in Settings > Other > Docker section
+And you must have activated the Docker sync option in the settings panel.
 
-You can also set up different apps in the same label adding `;` between each one.
+You can set up different apps in the same label adding `;` between each one.
 
 ```yml
 labels:
@@ -195,11 +221,13 @@ metadata:
   - flame.pawelmalak/type=application # "app" works too
   - flame.pawelmalak/name=My container
   - flame.pawelmalak/url=https://example.com
-  - flame.pawelmalak/icon=icon-name # optional, default is "kubernetes"
+  - flame.pawelmalak/icon=icon-name # Optional, default is "kubernetes"
 ```
 
-> "Use Kubernetes Ingress API" option must be enabled for this to work. You can find it in Settings > Other > Kubernetes section
+And you must have activated the Kubernetes sync option in the settings panel.
 
-### Custom CSS and themes
+### Custom CSS
 
-See project wiki for [Custom CSS](https://github.com/pawelmalak/flame/wiki/Custom-CSS) and [Custom theme with CSS](https://github.com/pawelmalak/flame/wiki/Custom-theme-with-CSS).
+> This is an experimental feature. Its behaviour might change in the future.
+>
+> Follow instructions from wiki: [Custom CSS](https://github.com/pawelmalak/flame/wiki/Custom-CSS)
