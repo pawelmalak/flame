@@ -1,3 +1,10 @@
+### v1.7.4 (2021-11-08)
+- Added option to set custom greetings and date ([#103](https://github.com/pawelmalak/flame/issues/103))
+- Fallback to web search if local search has zero results ([#129](https://github.com/pawelmalak/flame/issues/129))
+- Added iOS "Add to homescreen" icon ([#131](https://github.com/pawelmalak/flame/issues/131))
+- Added experimental script to import bookmarks ([#141](https://github.com/pawelmalak/flame/issues/141))
+- Added 3 new themes
+
 ### v1.7.3 (2021-10-28)
 - Fixed bug with custom CSS not updating
 

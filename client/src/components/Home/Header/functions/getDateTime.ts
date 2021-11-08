@@ -1,5 +1,5 @@
-export const dateTime = (): string => {
-  const days = [
+export const getDateTime = (): string => {
+  const days = localStorage.getItem('daySchema')?.split(';') || [
     'Sunday',
     'Monday',
     'Tuesday',
@@ -8,7 +8,8 @@ export const dateTime = (): string => {
     'Friday',
     'Saturday',
   ];
-  const months = [
+
+  const months = localStorage.getItem('monthSchema')?.split(';') || [
     'January',
     'February',
     'March',

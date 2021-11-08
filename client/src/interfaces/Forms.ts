@@ -27,4 +27,7 @@ export interface OtherSettingsForm {
   kubernetesApps: boolean;
   unpinStoppedApps: boolean;
   useAmericanDate: boolean;
+  greetingsSchema: string;
+  daySchema: string;
+  monthSchema: string;
 }

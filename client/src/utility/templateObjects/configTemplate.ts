@@ -23,4 +23,8 @@ export const configTemplate: Config = {
   unpinStoppedApps: false,
   useAmericanDate: false,
   disableAutofocus: false,
+  greetingsSchema: 'Good evening!;Good afternoon!;Good morning!;Good night!',
+  daySchema: 'Sunday;Monday;Tuesday;Wednesday;Thursday;Friday;Saturday',
+  monthSchema:
+    'January;February;March;April;May;June;July;August;September;October;November;December',
 };

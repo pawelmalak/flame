@@ -3,26 +3,21 @@ const router = express.Router();
 
 const {
   createCategory,
-  getCategories,
-  getCategory,
+  getAllCategories,
+  getSingleCategory,
   updateCategory,
   deleteCategory,
-  reorderCategories
-} = require('../controllers/category');
+  reorderCategories,
+} = require('../controllers/categories');
 
-router
-  .route('/')
-  .post(createCategory)
-  .get(getCategories);
+router.route('/').post(createCategory).get(getAllCategories);
 
 router
   .route('/:id')
-  .get(getCategory)
+  .get(getSingleCategory)
   .put(updateCategory)
   .delete(deleteCategory);
 
-router
-  .route('/0/reorder')
-  .put(reorderCategories);
+router.route('/0/reorder').put(reorderCategories);
 
 module.exports = router;

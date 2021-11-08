@@ -81,6 +81,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
     <form onSubmit={(e) => formSubmitHandler(e)}>
       {/* OTHER OPTIONS */}
       <SettingsHeadline text="Miscellaneous" />
+      {/* PAGE TITLE */}
       <InputGroup>
         <label htmlFor="customTitle">Custom page title</label>
         <input
@@ -92,6 +93,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           onChange={(e) => inputChangeHandler(e)}
         />
       </InputGroup>
+
+      {/* DATE FORMAT */}
       <InputGroup>
         <label htmlFor="useAmericanDate">Date formatting</label>
         <select
@@ -107,6 +110,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
 
       {/* BEAHVIOR OPTIONS */}
       <SettingsHeadline text="App Behavior" />
+      {/* PIN APPS */}
       <InputGroup>
         <label htmlFor="pinAppsByDefault">
           Pin new applications by default
@@ -121,6 +125,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           <option value={0}>False</option>
         </select>
       </InputGroup>
+
+      {/* PIN CATEGORIES */}
       <InputGroup>
         <label htmlFor="pinCategoriesByDefault">
           Pin new categories by default
@@ -135,6 +141,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           <option value={0}>False</option>
         </select>
       </InputGroup>
+
+      {/* SORT TYPE */}
       <InputGroup>
         <label htmlFor="useOrdering">Sorting type</label>
         <select
@@ -148,6 +156,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           <option value="orderId">Custom order</option>
         </select>
       </InputGroup>
+
+      {/* APPS OPPENING */}
       <InputGroup>
         <label htmlFor="appsSameTab">Open applications in the same tab</label>
         <select
@@ -160,6 +170,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           <option value={0}>False</option>
         </select>
       </InputGroup>
+
+      {/* BOOKMARKS OPPENING */}
       <InputGroup>
         <label htmlFor="bookmarksSameTab">Open bookmarks in the same tab</label>
         <select
@@ -175,6 +187,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
 
       {/* MODULES OPTIONS */}
       <SettingsHeadline text="Modules" />
+      {/* HIDE HEADER */}
       <InputGroup>
         <label htmlFor="hideHeader">Hide greeting and date</label>
         <select
@@ -187,6 +200,53 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           <option value={0}>False</option>
         </select>
       </InputGroup>
+
+      {/* CUSTOM GREETINGS */}
+      <InputGroup>
+        <label htmlFor="greetingsSchema">Custom greetings</label>
+        <input
+          type="text"
+          id="greetingsSchema"
+          name="greetingsSchema"
+          placeholder="Good day;Hi;Bye!"
+          value={formData.greetingsSchema}
+          onChange={(e) => inputChangeHandler(e)}
+        />
+        <span>
+          Greetings must be separated with semicolon. Only 4 messages can be
+          used
+        </span>
+      </InputGroup>
+
+      {/* CUSTOM DAYS */}
+      <InputGroup>
+        <label htmlFor="daySchema">Custom weekday names</label>
+        <input
+          type="text"
+          id="daySchema"
+          name="daySchema"
+          placeholder="Sunday;Monday;Tuesday"
+          value={formData.daySchema}
+          onChange={(e) => inputChangeHandler(e)}
+        />
+        <span>Names must be separated with semicolon</span>
+      </InputGroup>
+
+      {/* CUSTOM MONTHS */}
+      <InputGroup>
+        <label htmlFor="monthSchema">Custom month names</label>
+        <input
+          type="text"
+          id="monthSchema"
+          name="monthSchema"
+          placeholder="January;February;March"
+          value={formData.monthSchema}
+          onChange={(e) => inputChangeHandler(e)}
+        />
+        <span>Names must be separated with semicolon</span>
+      </InputGroup>
+
+      {/* HIDE APPS */}
       <InputGroup>
         <label htmlFor="hideApps">Hide applications</label>
         <select
@@ -199,6 +259,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           <option value={0}>False</option>
         </select>
       </InputGroup>
+
+      {/* HIDE CATEGORIES */}
       <InputGroup>
         <label htmlFor="hideCategories">Hide categories</label>
         <select
@@ -214,6 +276,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
 
       {/* DOCKER SETTINGS */}
       <SettingsHeadline text="Docker" />
+      {/* CUSTOM DOCKER SOCKET HOST */}
       <InputGroup>
         <label htmlFor="dockerHost">Docker Host</label>
         <input
@@ -225,6 +288,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           onChange={(e) => inputChangeHandler(e)}
         />
       </InputGroup>
+
+      {/* USE DOCKER API */}
       <InputGroup>
         <label htmlFor="dockerApps">Use Docker API</label>
         <select
@@ -237,6 +302,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
           <option value={0}>False</option>
         </select>
       </InputGroup>
+
+      {/* UNPIN DOCKER APPS */}
       <InputGroup>
         <label htmlFor="unpinStoppedApps">
           Unpin stopped containers / other apps
@@ -254,6 +321,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
 
       {/* KUBERNETES SETTINGS */}
       <SettingsHeadline text="Kubernetes" />
+      {/* USE KUBERNETES */}
       <InputGroup>
         <label htmlFor="kubernetesApps">Use Kubernetes Ingress API</label>
         <select
