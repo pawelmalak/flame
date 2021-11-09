@@ -1,6 +1,27 @@
-export * from './theme';
-export * from './app';
-export * from './actionTypes';
-export * from './bookmark';
-export * from './notification';
-export * from './config';
+import { SetThemeAction } from './theme';
+import {
+  AddQueryAction,
+  DeleteQueryAction,
+  FetchQueriesAction,
+  GetConfigAction,
+  UpdateConfigAction,
+  UpdateQueryAction,
+} from './config';
+import {
+  ClearNotificationAction,
+  CreateNotificationAction,
+} from './notification';
+
+export type Action =
+  // Theme
+  | SetThemeAction
+  // Config
+  | GetConfigAction
+  | UpdateConfigAction
+  | AddQueryAction
+  | DeleteQueryAction
+  | FetchQueriesAction
+  | UpdateQueryAction
+  // Notifications
+  | CreateNotificationAction
+  | ClearNotificationAction;
