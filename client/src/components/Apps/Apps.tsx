@@ -2,39 +2,37 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 // Redux
-import { connect } from 'react-redux';
-import { getApps } from '../../store/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Typescript
-import { App, GlobalState } from '../../interfaces';
+import { App } from '../../interfaces';
 
 // CSS
 import classes from './Apps.module.css';
 
 // UI
-import { Container } from '../UI/Layout/Layout';
-import Headline from '../UI/Headlines/Headline/Headline';
-import Spinner from '../UI/Spinner/Spinner';
-import ActionButton from '../UI/Buttons/ActionButton/ActionButton';
-import Modal from '../UI/Modal/Modal';
+import { Headline, Spinner, ActionButton, Modal, Container } from '../UI';
 
 // Subcomponents
-import AppGrid from './AppGrid/AppGrid';
-import AppForm from './AppForm/AppForm';
-import AppTable from './AppTable/AppTable';
+import { AppGrid } from './AppGrid/AppGrid';
+import { AppForm } from './AppForm/AppForm';
+import { AppTable } from './AppTable/AppTable';
 
 // Utils
 import { appTemplate } from '../../utility';
+import { State } from '../../store/reducers';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../store';
 
-interface ComponentProps {
-  getApps: Function;
-  apps: App[];
-  loading: boolean;
+interface Props {
   searching: boolean;
 }
 
-const Apps = (props: ComponentProps): JSX.Element => {
-  const { getApps, apps, loading, searching = false } = props;
+export const Apps = (props: Props): JSX.Element => {
+  const { apps, loading } = useSelector((state: State) => state.apps);
+
+  const dispatch = useDispatch();
+  const { getApps } = bindActionCreators(actionCreators, dispatch);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isInEdit, setIsInEdit] = useState(false);
@@ -95,12 +93,3 @@ const Apps = (props: ComponentProps): JSX.Element => {
     </Container>
   );
 };
-
-const mapStateToProps = (state: GlobalState) => {
-  return {
-    apps: state.app.apps,
-    loading: state.app.loading,
-  };
-};
-
-export default connect(mapStateToProps, { getApps })(Apps);

@@ -2,15 +2,15 @@ import classes from './AppGrid.module.css';
 import { Link } from 'react-router-dom';
 import { App } from '../../../interfaces/App';
 
-import AppCard from '../AppCard/AppCard';
+import { AppCard } from '../AppCard/AppCard';
 
-interface ComponentProps {
+interface Props {
   apps: App[];
   totalApps?: number;
   searching: boolean;
 }
 
-const AppGrid = (props: ComponentProps): JSX.Element => {
+export const AppGrid = (props: Props): JSX.Element => {
   let apps: JSX.Element;
 
   if (props.apps.length > 0) {
@@ -49,5 +49,3 @@ const AppGrid = (props: ComponentProps): JSX.Element => {
 
   return apps;
 };
-
-export default AppGrid;

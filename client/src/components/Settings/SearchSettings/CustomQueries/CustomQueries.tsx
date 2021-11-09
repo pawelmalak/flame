@@ -1,29 +1,31 @@
 import { Fragment, useState } from 'react';
-import { connect } from 'react-redux';
 
+// Redux
+import { useDispatch, useSelector } from 'react-redux';
+import { State } from '../../../../store/reducers';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../../../store';
+
+// Typescript
+import { Query } from '../../../../interfaces';
+
+// CSS
 import classes from './CustomQueries.module.css';
 
-import Modal from '../../../UI/Modal/Modal';
-import Icon from '../../../UI/Icons/Icon/Icon';
-import {
-  Config,
-  GlobalState,
-  NewNotification,
-  Query,
-} from '../../../../interfaces';
-import QueriesForm from './QueriesForm';
-import { deleteQuery, createNotification } from '../../../../store/actions';
-import Button from '../../../UI/Buttons/Button/Button';
+// UI
+import { Modal, Icon, Button } from '../../../UI';
 
-interface Props {
-  customQueries: Query[];
-  deleteQuery: (prefix: string) => {};
-  createNotification: (notification: NewNotification) => void;
-  config: Config;
-}
+// Components
+import { QueriesForm } from './QueriesForm';
 
-const CustomQueries = (props: Props): JSX.Element => {
-  const { customQueries, deleteQuery, createNotification } = props;
+export const CustomQueries = (): JSX.Element => {
+  const { customQueries, config } = useSelector((state: State) => state.config);
+
+  const dispatch = useDispatch();
+  const { deleteQuery, createNotification } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [editableQuery, setEditableQuery] = useState<Query | null>(null);
@@ -34,7 +36,7 @@ const CustomQueries = (props: Props): JSX.Element => {
   };
 
   const deleteHandler = (query: Query) => {
-    const currentProvider = props.config.defaultSearchProvider;
+    const currentProvider = config.defaultSearchProvider;
     const isCurrent = currentProvider === query.prefix;
 
     if (isCurrent) {
@@ -105,14 +107,3 @@ const CustomQueries = (props: Props): JSX.Element => {
     </Fragment>
   );
 };
-
-const mapStateToProps = (state: GlobalState) => {
-  return {
-    customQueries: state.config.customQueries,
-    config: state.config.config,
-  };
-};
-
-export default connect(mapStateToProps, { deleteQuery, createNotification })(
-  CustomQueries
-);

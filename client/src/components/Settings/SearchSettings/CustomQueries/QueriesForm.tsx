@@ -1,20 +1,26 @@
 import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
+
+import { useDispatch } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../../../store';
+
 import { Query } from '../../../../interfaces';
-import Button from '../../../UI/Buttons/Button/Button';
-import InputGroup from '../../../UI/Forms/InputGroup/InputGroup';
-import ModalForm from '../../../UI/Forms/ModalForm/ModalForm';
-import { connect } from 'react-redux';
-import { addQuery, updateQuery } from '../../../../store/actions';
+
+import { Button, InputGroup, ModalForm } from '../../../UI';
 
 interface Props {
   modalHandler: () => void;
-  addQuery: (query: Query) => {};
-  updateQuery: (query: Query, Oldprefix: string) => {};
   query?: Query;
 }
 
-const QueriesForm = (props: Props): JSX.Element => {
-  const { modalHandler, addQuery, updateQuery, query } = props;
+export const QueriesForm = (props: Props): JSX.Element => {
+  const dispatch = useDispatch();
+  const { addQuery, updateQuery } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
+
+  const { modalHandler, query } = props;
 
   const [formData, setFormData] = useState<Query>({
     name: '',
@@ -77,6 +83,7 @@ const QueriesForm = (props: Props): JSX.Element => {
           onChange={(e) => inputChangeHandler(e)}
         />
       </InputGroup>
+
       <InputGroup>
         <label htmlFor="name">Prefix</label>
         <input
@@ -89,6 +96,7 @@ const QueriesForm = (props: Props): JSX.Element => {
           onChange={(e) => inputChangeHandler(e)}
         />
       </InputGroup>
+
       <InputGroup>
         <label htmlFor="name">Query Template</label>
         <input
@@ -101,9 +109,8 @@ const QueriesForm = (props: Props): JSX.Element => {
           onChange={(e) => inputChangeHandler(e)}
         />
       </InputGroup>
+
       {query ? <Button>Update provider</Button> : <Button>Add provider</Button>}
     </ModalForm>
   );
 };
-
-export default connect(null, { addQuery, updateQuery })(QueriesForm);

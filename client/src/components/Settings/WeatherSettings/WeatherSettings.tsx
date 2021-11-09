@@ -2,34 +2,29 @@ import { useState, ChangeEvent, useEffect, FormEvent } from 'react';
 import axios from 'axios';
 
 // Redux
-import { connect } from 'react-redux';
-import { createNotification, updateConfig } from '../../../store/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../../store';
 
 // Typescript
-import {
-  ApiResponse,
-  Config,
-  GlobalState,
-  NewNotification,
-  Weather,
-  WeatherForm,
-} from '../../../interfaces';
+import { ApiResponse, Weather, WeatherForm } from '../../../interfaces';
 
 // UI
-import InputGroup from '../../UI/Forms/InputGroup/InputGroup';
-import Button from '../../UI/Buttons/Button/Button';
+import { InputGroup, Button } from '../../UI';
 
 // Utils
 import { inputHandler, weatherSettingsTemplate } from '../../../utility';
+import { State } from '../../../store/reducers';
 
-interface ComponentProps {
-  createNotification: (notification: NewNotification) => void;
-  updateConfig: (formData: WeatherForm) => void;
-  loading: boolean;
-  config: Config;
-}
+export const WeatherSettings = (): JSX.Element => {
+  const { loading, config } = useSelector((state: State) => state.config);
 
-const WeatherSettings = (props: ComponentProps): JSX.Element => {
+  const dispatch = useDispatch();
+  const { createNotification, updateConfig } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
+
   // Initial state
   const [formData, setFormData] = useState<WeatherForm>(
     weatherSettingsTemplate
@@ -38,9 +33,9 @@ const WeatherSettings = (props: ComponentProps): JSX.Element => {
   // Get config
   useEffect(() => {
     setFormData({
-      ...props.config,
+      ...config,
     });
-  }, [props.loading]);
+  }, [loading]);
 
   // Form handler
   const formSubmitHandler = async (e: FormEvent) => {
@@ -48,26 +43,26 @@ const WeatherSettings = (props: ComponentProps): JSX.Element => {
 
     // Check for api key input
     if ((formData.lat || formData.long) && !formData.WEATHER_API_KEY) {
-      props.createNotification({
+      createNotification({
         title: 'Warning',
         message: 'API key is missing. Weather Module will NOT work',
       });
     }
 
     // Save settings
-    await props.updateConfig(formData);
+    await updateConfig(formData);
 
     // Update weather
     axios
       .get<ApiResponse<Weather>>('/api/weather/update')
       .then(() => {
-        props.createNotification({
+        createNotification({
           title: 'Success',
           message: 'Weather updated',
         });
       })
       .catch((err) => {
-        props.createNotification({
+        createNotification({
           title: 'Error',
           message: err.response.data.error,
         });
@@ -108,6 +103,7 @@ const WeatherSettings = (props: ComponentProps): JSX.Element => {
           . Key is required for weather module to work.
         </span>
       </InputGroup>
+
       <InputGroup>
         <label htmlFor="lat">Location latitude</label>
         <input
@@ -131,6 +127,7 @@ const WeatherSettings = (props: ComponentProps): JSX.Element => {
           </a>
         </span>
       </InputGroup>
+
       <InputGroup>
         <label htmlFor="long">Location longitude</label>
         <input
@@ -144,6 +141,7 @@ const WeatherSettings = (props: ComponentProps): JSX.Element => {
           lang="en-150"
         />
       </InputGroup>
+
       <InputGroup>
         <label htmlFor="isCelsius">Temperature unit</label>
         <select
@@ -156,18 +154,8 @@ const WeatherSettings = (props: ComponentProps): JSX.Element => {
           <option value={0}>Fahrenheit</option>
         </select>
       </InputGroup>
+
       <Button>Save changes</Button>
     </form>
   );
 };
-
-const mapStateToProps = (state: GlobalState) => {
-  return {
-    loading: state.config.loading,
-    config: state.config.config,
-  };
-};
-
-export default connect(mapStateToProps, { createNotification, updateConfig })(
-  WeatherSettings
-);

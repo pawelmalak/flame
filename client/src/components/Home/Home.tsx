@@ -2,47 +2,38 @@ import { useState, useEffect, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 // Redux
-import { connect } from 'react-redux';
-import { getApps, getCategories } from '../../store/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { State } from '../../store/reducers';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../store';
 
 // Typescript
-import { GlobalState } from '../../interfaces/GlobalState';
-import { App, Category, Config } from '../../interfaces';
+import { App, Category } from '../../interfaces';
 
 // UI
-import Icon from '../UI/Icons/Icon/Icon';
-import { Container } from '../UI/Layout/Layout';
-import SectionHeadline from '../UI/Headlines/SectionHeadline/SectionHeadline';
-import Spinner from '../UI/Spinner/Spinner';
+import { Icon, Container, SectionHeadline, Spinner } from '../UI';
 
 // CSS
 import classes from './Home.module.css';
 
 // Components
-import AppGrid from '../Apps/AppGrid/AppGrid';
-import BookmarkGrid from '../Bookmarks/BookmarkGrid/BookmarkGrid';
-import SearchBar from '../SearchBar/SearchBar';
-import Header from './Header/Header';
+import { AppGrid } from '../Apps/AppGrid/AppGrid';
+import { BookmarkGrid } from '../Bookmarks/BookmarkGrid/BookmarkGrid';
+import { SearchBar } from '../SearchBar/SearchBar';
+import { Header } from './Header/Header';
 
-interface ComponentProps {
-  getApps: Function;
-  getCategories: Function;
-  appsLoading: boolean;
-  apps: App[];
-  categoriesLoading: boolean;
-  categories: Category[];
-  config: Config;
-}
-
-const Home = (props: ComponentProps): JSX.Element => {
+export const Home = (): JSX.Element => {
   const {
-    getApps,
-    apps,
-    appsLoading,
-    getCategories,
-    categories,
-    categoriesLoading,
-  } = props;
+    apps: { apps, loading: appsLoading },
+    bookmarks: { categories, loading: bookmarksLoading },
+    config: { config },
+  } = useSelector((state: State) => state);
+
+  const dispatch = useDispatch();
+  const { getApps, getCategories } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
 
   // Local search query
   const [localSearch, setLocalSearch] = useState<null | string>(null);
@@ -90,7 +81,7 @@ const Home = (props: ComponentProps): JSX.Element => {
 
   return (
     <Container>
-      {!props.config.hideSearch ? (
+      {!config.hideSearch ? (
         <SearchBar
           setLocalSearch={setLocalSearch}
           appSearchResult={appSearchResult}
@@ -100,9 +91,9 @@ const Home = (props: ComponentProps): JSX.Element => {
         <div></div>
       )}
 
-      {!props.config.hideHeader ? <Header /> : <div></div>}
+      {!config.hideHeader ? <Header /> : <div></div>}
 
-      {!props.config.hideApps ? (
+      {!config.hideApps ? (
         <Fragment>
           <SectionHeadline title="Applications" link="/applications" />
           {appsLoading ? (
@@ -124,10 +115,10 @@ const Home = (props: ComponentProps): JSX.Element => {
         <div></div>
       )}
 
-      {!props.config.hideCategories ? (
+      {!config.hideCategories ? (
         <Fragment>
           <SectionHeadline title="Bookmarks" link="/bookmarks" />
-          {categoriesLoading ? (
+          {bookmarksLoading ? (
             <Spinner />
           ) : (
             <BookmarkGrid
@@ -151,15 +142,3 @@ const Home = (props: ComponentProps): JSX.Element => {
     </Container>
   );
 };
-
-const mapStateToProps = (state: GlobalState) => {
-  return {
-    appsLoading: state.app.loading,
-    apps: state.app.apps,
-    categoriesLoading: state.bookmark.loading,
-    categories: state.bookmark.categories,
-    config: state.config.config,
-  };
-};
-
-export default connect(mapStateToProps, { getApps, getCategories })(Home);

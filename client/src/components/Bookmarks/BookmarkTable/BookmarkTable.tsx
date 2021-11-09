@@ -8,45 +8,39 @@ import {
 import { Link } from 'react-router-dom';
 
 // Redux
-import { connect } from 'react-redux';
-import {
-  pinCategory,
-  deleteCategory,
-  deleteBookmark,
-  createNotification,
-  reorderCategories,
-} from '../../../store/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { State } from '../../../store/reducers';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../../store';
 
 // Typescript
-import {
-  Bookmark,
-  Category,
-  Config,
-  GlobalState,
-  NewNotification,
-} from '../../../interfaces';
+import { Bookmark, Category } from '../../../interfaces';
 import { ContentType } from '../Bookmarks';
 
 // CSS
 import classes from './BookmarkTable.module.css';
 
 // UI
-import Table from '../../UI/Table/Table';
-import Icon from '../../UI/Icons/Icon/Icon';
+import { Table, Icon } from '../../UI';
 
-interface ComponentProps {
+interface Props {
   contentType: ContentType;
   categories: Category[];
-  config: Config;
-  pinCategory: (category: Category) => void;
-  deleteCategory: (id: number) => void;
   updateHandler: (data: Category | Bookmark) => void;
-  deleteBookmark: (bookmarkId: number, categoryId: number) => void;
-  createNotification: (notification: NewNotification) => void;
-  reorderCategories: (categories: Category[]) => void;
 }
 
-const BookmarkTable = (props: ComponentProps): JSX.Element => {
+export const BookmarkTable = (props: Props): JSX.Element => {
+  const { config } = useSelector((state: State) => state.config);
+
+  const dispatch = useDispatch();
+  const {
+    pinCategory,
+    deleteCategory,
+    deleteBookmark,
+    createNotification,
+    reorderCategories,
+  } = bindActionCreators(actionCreators, dispatch);
+
   const [localCategories, setLocalCategories] = useState<Category[]>([]);
   const [isCustomOrder, setIsCustomOrder] = useState<boolean>(false);
 
@@ -57,7 +51,7 @@ const BookmarkTable = (props: ComponentProps): JSX.Element => {
 
   // Check ordering
   useEffect(() => {
-    const order = props.config.useOrdering;
+    const order = config.useOrdering;
 
     if (order === 'orderId') {
       setIsCustomOrder(true);
@@ -70,7 +64,7 @@ const BookmarkTable = (props: ComponentProps): JSX.Element => {
     );
 
     if (proceed) {
-      props.deleteCategory(category.id);
+      deleteCategory(category.id);
     }
   };
 
@@ -80,7 +74,7 @@ const BookmarkTable = (props: ComponentProps): JSX.Element => {
     );
 
     if (proceed) {
-      props.deleteBookmark(bookmark.id, bookmark.categoryId);
+      deleteBookmark(bookmark.id, bookmark.categoryId);
     }
   };
 
@@ -96,7 +90,7 @@ const BookmarkTable = (props: ComponentProps): JSX.Element => {
 
   const dragEndHanlder = (result: DropResult): void => {
     if (!isCustomOrder) {
-      props.createNotification({
+      createNotification({
         title: 'Error',
         message: 'Custom order is disabled',
       });
@@ -112,7 +106,7 @@ const BookmarkTable = (props: ComponentProps): JSX.Element => {
     tmpCategories.splice(result.destination.index, 0, movedApp);
 
     setLocalCategories(tmpCategories);
-    props.reorderCategories(tmpCategories);
+    reorderCategories(tmpCategories);
   };
 
   if (props.contentType === ContentType.category) {
@@ -186,12 +180,12 @@ const BookmarkTable = (props: ComponentProps): JSX.Element => {
                                   </div>
                                   <div
                                     className={classes.TableAction}
-                                    onClick={() => props.pinCategory(category)}
+                                    onClick={() => pinCategory(category)}
                                     onKeyDown={(e) =>
                                       keyboardActionHandler(
                                         e,
                                         category,
-                                        props.pinCategory
+                                        pinCategory
                                       )
                                     }
                                     tabIndex={0}
@@ -265,19 +259,3 @@ const BookmarkTable = (props: ComponentProps): JSX.Element => {
     );
   }
 };
-
-const mapStateToProps = (state: GlobalState) => {
-  return {
-    config: state.config.config,
-  };
-};
-
-const actions = {
-  pinCategory,
-  deleteCategory,
-  deleteBookmark,
-  createNotification,
-  reorderCategories,
-};
-
-export default connect(mapStateToProps, actions)(BookmarkTable);

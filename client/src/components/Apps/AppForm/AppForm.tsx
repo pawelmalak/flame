@@ -1,23 +1,23 @@
 import { useState, useEffect, ChangeEvent, SyntheticEvent } from 'react';
-import { connect } from 'react-redux';
-import { addApp, updateApp } from '../../../store/actions';
+import { useDispatch } from 'react-redux';
 import { App, NewApp } from '../../../interfaces';
 
 import classes from './AppForm.module.css';
 
-import ModalForm from '../../UI/Forms/ModalForm/ModalForm';
-import InputGroup from '../../UI/Forms/InputGroup/InputGroup';
-import Button from '../../UI/Buttons/Button/Button';
+import { ModalForm, InputGroup, Button } from '../../UI';
 import { inputHandler, newAppTemplate } from '../../../utility';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../../store';
 
-interface ComponentProps {
+interface Props {
   modalHandler: () => void;
-  addApp: (formData: NewApp | FormData) => any;
-  updateApp: (id: number, formData: NewApp | FormData) => any;
   app?: App;
 }
 
-const AppForm = (props: ComponentProps): JSX.Element => {
+export const AppForm = (props: Props): JSX.Element => {
+  const dispatch = useDispatch();
+  const { addApp, updateApp } = bindActionCreators(actionCreators, dispatch);
+
   const [useCustomIcon, toggleUseCustomIcon] = useState<boolean>(false);
   const [customIcon, setCustomIcon] = useState<File | null>(null);
   const [formData, setFormData] = useState<NewApp>(newAppTemplate);
@@ -68,16 +68,16 @@ const AppForm = (props: ComponentProps): JSX.Element => {
     if (!props.app) {
       if (customIcon) {
         const data = createFormData();
-        props.addApp(data);
+        addApp(data);
       } else {
-        props.addApp(formData);
+        addApp(formData);
       }
     } else {
       if (customIcon) {
         const data = createFormData();
-        props.updateApp(props.app.id, data);
+        updateApp(props.app.id, data);
       } else {
-        props.updateApp(props.app.id, formData);
+        updateApp(props.app.id, formData);
         props.modalHandler();
       }
     }
@@ -192,5 +192,3 @@ const AppForm = (props: ComponentProps): JSX.Element => {
     </ModalForm>
   );
 };
-
-export default connect(null, { addApp, updateApp })(AppForm);

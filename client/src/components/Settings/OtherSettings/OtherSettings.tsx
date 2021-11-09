@@ -1,41 +1,28 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 
 // Redux
-import { connect } from 'react-redux';
-import {
-  createNotification,
-  updateConfig,
-  sortApps,
-  sortCategories,
-} from '../../../store/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Typescript
-import {
-  Config,
-  GlobalState,
-  NewNotification,
-  OtherSettingsForm,
-} from '../../../interfaces';
+import { OtherSettingsForm } from '../../../interfaces';
 
 // UI
-import InputGroup from '../../UI/Forms/InputGroup/InputGroup';
-import Button from '../../UI/Buttons/Button/Button';
-import SettingsHeadline from '../../UI/Headlines/SettingsHeadline/SettingsHeadline';
+import { InputGroup, Button, SettingsHeadline } from '../../UI';
 
 // Utils
 import { otherSettingsTemplate, inputHandler } from '../../../utility';
+import { State } from '../../../store/reducers';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../../store';
 
-interface ComponentProps {
-  createNotification: (notification: NewNotification) => void;
-  updateConfig: (formData: OtherSettingsForm) => void;
-  sortApps: () => void;
-  sortCategories: () => void;
-  loading: boolean;
-  config: Config;
-}
+export const OtherSettings = (): JSX.Element => {
+  const { loading, config } = useSelector((state: State) => state.config);
 
-const OtherSettings = (props: ComponentProps): JSX.Element => {
-  const { config } = props;
+  const dispatch = useDispatch();
+  const { updateConfig, sortApps, sortCategories } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
 
   // Initial state
   const [formData, setFormData] = useState<OtherSettingsForm>(
@@ -47,21 +34,21 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
     setFormData({
       ...config,
     });
-  }, [props.loading]);
+  }, [loading]);
 
   // Form handler
   const formSubmitHandler = async (e: FormEvent) => {
     e.preventDefault();
 
     // Save settings
-    await props.updateConfig(formData);
+    await updateConfig(formData);
 
     // Update local page title
     document.title = formData.customTitle;
 
     // Sort apps and categories with new settings
-    props.sortApps();
-    props.sortCategories();
+    sortApps();
+    sortCategories();
   };
 
   // Input handler
@@ -338,19 +325,3 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
     </form>
   );
 };
-
-const mapStateToProps = (state: GlobalState) => {
-  return {
-    loading: state.config.loading,
-    config: state.config.config,
-  };
-};
-
-const actions = {
-  createNotification,
-  updateConfig,
-  sortApps,
-  sortCategories,
-};
-
-export default connect(mapStateToProps, actions)(OtherSettings);

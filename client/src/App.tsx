@@ -1,38 +1,41 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { fetchQueries, getConfig, setTheme } from './store/actions';
+import { actionCreators } from './store';
 import 'external-svg-loader';
-
-// Redux
-import { store } from './store/store';
-import { Provider } from 'react-redux';
 
 // Utils
 import { checkVersion } from './utility';
 
 // Routes
-import Home from './components/Home/Home';
-import Apps from './components/Apps/Apps';
-import Settings from './components/Settings/Settings';
-import Bookmarks from './components/Bookmarks/Bookmarks';
-import NotificationCenter from './components/NotificationCenter/NotificationCenter';
-
-// Load config
-store.dispatch<any>(getConfig());
-
-// Set theme
-if (localStorage.theme) {
-  store.dispatch<any>(setTheme(localStorage.theme));
-}
-
-// Check for updates
-checkVersion();
-
-// fetch queries
-store.dispatch<any>(fetchQueries());
+import { Home } from './components/Home/Home';
+import { Apps } from './components/Apps/Apps';
+import { Settings } from './components/Settings/Settings';
+import { Bookmarks } from './components/Bookmarks/Bookmarks';
+import { NotificationCenter } from './components/NotificationCenter/NotificationCenter';
+import { useDispatch } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { useEffect } from 'react';
 
 const App = (): JSX.Element => {
+  const dispath = useDispatch();
+  const { fetchQueries, getConfig, setTheme } = bindActionCreators(
+    actionCreators,
+    dispath
+  );
+
+  useEffect(() => {
+    getConfig();
+
+    if (localStorage.theme) {
+      setTheme(localStorage.theme);
+    }
+
+    checkVersion();
+
+    fetchQueries();
+  }, []);
+
   return (
-    <Provider store={store}>
+    <>
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={Home} />
@@ -42,7 +45,7 @@ const App = (): JSX.Element => {
         </Switch>
       </BrowserRouter>
       <NotificationCenter />
-    </Provider>
+    </>
   );
 };
 

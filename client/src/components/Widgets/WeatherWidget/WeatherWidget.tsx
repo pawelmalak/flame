@@ -2,23 +2,21 @@ import { useState, useEffect, Fragment } from 'react';
 import axios from 'axios';
 
 // Redux
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 // Typescript
-import { Weather, ApiResponse, GlobalState, Config } from '../../../interfaces';
+import { Weather, ApiResponse, Config } from '../../../interfaces';
 
 // CSS
 import classes from './WeatherWidget.module.css';
 
 // UI
-import WeatherIcon from '../../UI/Icons/WeatherIcon/WeatherIcon';
+import { WeatherIcon } from '../../UI';
+import { State } from '../../../store/reducers';
 
-interface ComponentProps {
-  configLoading: boolean;
-  config: Config;
-}
+export const WeatherWidget = (): JSX.Element => {
+  const { loading, config } = useSelector((state: State) => state.config);
 
-const WeatherWidget = (props: ComponentProps): JSX.Element => {
   const [weather, setWeather] = useState<Weather>({
     externalLastUpdate: '',
     tempC: 0,
@@ -68,8 +66,8 @@ const WeatherWidget = (props: ComponentProps): JSX.Element => {
   return (
     <div className={classes.WeatherWidget}>
       {isLoading ||
-        props.configLoading ||
-        (props.config.WEATHER_API_KEY && weather.id > 0 && (
+        loading ||
+        (config.WEATHER_API_KEY && weather.id > 0 && (
           <Fragment>
             <div className={classes.WeatherIcon}>
               <WeatherIcon
@@ -78,7 +76,7 @@ const WeatherWidget = (props: ComponentProps): JSX.Element => {
               />
             </div>
             <div className={classes.WeatherDetails}>
-              {props.config.isCelsius ? (
+              {config.isCelsius ? (
                 <span>{weather.tempC}°C</span>
               ) : (
                 <span>{weather.tempF}°F</span>
@@ -90,12 +88,3 @@ const WeatherWidget = (props: ComponentProps): JSX.Element => {
     </div>
   );
 };
-
-const mapStateToProps = (state: GlobalState) => {
-  return {
-    configLoading: state.config.loading,
-    config: state.config.config,
-  };
-};
-
-export default connect(mapStateToProps)(WeatherWidget);

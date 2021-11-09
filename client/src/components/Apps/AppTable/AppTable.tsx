@@ -8,48 +8,45 @@ import {
 import { Link } from 'react-router-dom';
 
 // Redux
-import { connect } from 'react-redux';
-import {
-  pinApp,
-  deleteApp,
-  reorderApps,
-  updateConfig,
-  createNotification,
-} from '../../../store/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Typescript
-import { App, Config, GlobalState, NewNotification } from '../../../interfaces';
+import { App } from '../../../interfaces';
 
 // CSS
 import classes from './AppTable.module.css';
 
 // UI
-import Icon from '../../UI/Icons/Icon/Icon';
-import Table from '../../UI/Table/Table';
+import { Icon, Table } from '../../UI';
+import { State } from '../../../store/reducers';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../../store';
 
-interface ComponentProps {
-  apps: App[];
-  config: Config;
-  pinApp: (app: App) => void;
-  deleteApp: (id: number) => void;
+interface Props {
   updateAppHandler: (app: App) => void;
-  reorderApps: (apps: App[]) => void;
-  updateConfig: (formData: any) => void;
-  createNotification: (notification: NewNotification) => void;
 }
 
-const AppTable = (props: ComponentProps): JSX.Element => {
+export const AppTable = (props: Props): JSX.Element => {
+  const {
+    apps: { apps },
+    config: { config },
+  } = useSelector((state: State) => state);
+
+  const dispatch = useDispatch();
+  const { pinApp, deleteApp, reorderApps, updateConfig, createNotification } =
+    bindActionCreators(actionCreators, dispatch);
+
   const [localApps, setLocalApps] = useState<App[]>([]);
   const [isCustomOrder, setIsCustomOrder] = useState<boolean>(false);
 
   // Copy apps array
   useEffect(() => {
-    setLocalApps([...props.apps]);
-  }, [props.apps]);
+    setLocalApps([...apps]);
+  }, [apps]);
 
   // Check ordering
   useEffect(() => {
-    const order = props.config.useOrdering;
+    const order = config.useOrdering;
 
     if (order === 'orderId') {
       setIsCustomOrder(true);
@@ -62,7 +59,7 @@ const AppTable = (props: ComponentProps): JSX.Element => {
     );
 
     if (proceed) {
-      props.deleteApp(app.id);
+      deleteApp(app.id);
     }
   };
 
@@ -79,7 +76,7 @@ const AppTable = (props: ComponentProps): JSX.Element => {
 
   const dragEndHanlder = (result: DropResult): void => {
     if (!isCustomOrder) {
-      props.createNotification({
+      createNotification({
         title: 'Error',
         message: 'Custom order is disabled',
       });
@@ -95,7 +92,7 @@ const AppTable = (props: ComponentProps): JSX.Element => {
     tmpApps.splice(result.destination.index, 0, movedApp);
 
     setLocalApps(tmpApps);
-    props.reorderApps(tmpApps);
+    reorderApps(tmpApps);
   };
 
   return (
@@ -178,9 +175,9 @@ const AppTable = (props: ComponentProps): JSX.Element => {
                               </div>
                               <div
                                 className={classes.TableAction}
-                                onClick={() => props.pinApp(app)}
+                                onClick={() => pinApp(app)}
                                 onKeyDown={(e) =>
-                                  keyboardActionHandler(e, app, props.pinApp)
+                                  keyboardActionHandler(e, app, pinApp)
                                 }
                                 tabIndex={0}
                               >
@@ -208,20 +205,3 @@ const AppTable = (props: ComponentProps): JSX.Element => {
     </Fragment>
   );
 };
-
-const mapStateToProps = (state: GlobalState) => {
-  return {
-    apps: state.app.apps,
-    config: state.config.config,
-  };
-};
-
-const actions = {
-  pinApp,
-  deleteApp,
-  reorderApps,
-  updateConfig,
-  createNotification,
-};
-
-export default connect(mapStateToProps, actions)(AppTable);

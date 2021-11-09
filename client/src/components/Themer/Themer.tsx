@@ -1,37 +1,29 @@
 import { Fragment } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../store';
 
 import classes from './Themer.module.css';
 
 import { themes } from './themes.json';
 import { Theme } from '../../interfaces/Theme';
-import ThemePreview from './ThemePreview';
+import { ThemePreview } from './ThemePreview';
 
-import { setTheme } from '../../store/actions';
-
-interface ComponentProps {
-  setTheme: Function;
-}
-
-const Themer = (props: ComponentProps): JSX.Element => {
+export const Themer = (): JSX.Element => {
+  const dispatch = useDispatch();
+  const { setTheme } = bindActionCreators(actionCreators, dispatch);
 
   return (
     <Fragment>
       <div>
         <div className={classes.ThemerGrid}>
-          {themes.map((theme: Theme, idx: number): JSX.Element => (
-            <ThemePreview
-              key={idx}
-              theme={theme}
-              applyTheme={props.setTheme}
-            />
-          ))}
+          {themes.map(
+            (theme: Theme, idx: number): JSX.Element => (
+              <ThemePreview key={idx} theme={theme} applyTheme={setTheme} />
+            )
+          )}
         </div>
       </div>
     </Fragment>
-
-  )
-}
-
-
-export default connect(null, { setTheme })(Themer);
+  );
+};

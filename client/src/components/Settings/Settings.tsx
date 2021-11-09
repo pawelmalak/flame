@@ -1,4 +1,3 @@
-//
 import { NavLink, Link, Switch, Route } from 'react-router-dom';
 
 // Typescript
@@ -8,21 +7,20 @@ import { Route as SettingsRoute } from '../../interfaces';
 import classes from './Settings.module.css';
 
 // Components
-import Themer from '../Themer/Themer';
-import WeatherSettings from './WeatherSettings/WeatherSettings';
-import OtherSettings from './OtherSettings/OtherSettings';
-import AppDetails from './AppDetails/AppDetails';
-import StyleSettings from './StyleSettings/StyleSettings';
-import SearchSettings from './SearchSettings/SearchSettings';
+import { Themer } from '../Themer/Themer';
+import { WeatherSettings } from './WeatherSettings/WeatherSettings';
+import { OtherSettings } from './OtherSettings/OtherSettings';
+import { AppDetails } from './AppDetails/AppDetails';
+import { StyleSettings } from './StyleSettings/StyleSettings';
+import { SearchSettings } from './SearchSettings/SearchSettings';
 
 // UI
-import { Container } from '../UI/Layout/Layout';
-import Headline from '../UI/Headlines/Headline/Headline';
+import { Container, Headline } from '../UI';
 
 // Data
 import { routes } from './settings.json';
 
-const Settings = (): JSX.Element => {
+export const Settings = (): JSX.Element => {
   return (
     <Container>
       <Headline title="Settings" subtitle={<Link to="/">Go back</Link>} />
@@ -57,5 +55,3 @@ const Settings = (): JSX.Element => {
     </Container>
   );
 };
-
-export default Settings;

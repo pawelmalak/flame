@@ -1,17 +1,19 @@
 import classes from './AppCard.module.css';
-import Icon from '../../UI/Icons/Icon/Icon';
+import { Icon } from '../../UI';
 import { iconParser, urlParser } from '../../../utility';
 
-import { App, Config, GlobalState } from '../../../interfaces';
-import { connect } from 'react-redux';
+import { App } from '../../../interfaces';
+import { useSelector } from 'react-redux';
+import { State } from '../../../store/reducers';
 
-interface ComponentProps {
+interface Props {
   app: App;
   pinHandler?: Function;
-  config: Config;
 }
 
-const AppCard = (props: ComponentProps): JSX.Element => {
+export const AppCard = (props: Props): JSX.Element => {
+  const { config } = useSelector((state: State) => state.config);
+
   const [displayUrl, redirectUrl] = urlParser(props.app.url);
 
   let iconEl: JSX.Element;
@@ -42,7 +44,7 @@ const AppCard = (props: ComponentProps): JSX.Element => {
   return (
     <a
       href={redirectUrl}
-      target={props.config.appsSameTab ? '' : '_blank'}
+      target={config.appsSameTab ? '' : '_blank'}
       rel="noreferrer"
       className={classes.AppCard}
     >
@@ -54,11 +56,3 @@ const AppCard = (props: ComponentProps): JSX.Element => {
     </a>
   );
 };
-
-const mapStateToProps = (state: GlobalState) => {
-  return {
-    config: state.config.config,
-  };
-};
-
-export default connect(mapStateToProps)(AppCard);

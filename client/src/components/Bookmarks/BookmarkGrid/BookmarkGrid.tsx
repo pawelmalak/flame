@@ -4,15 +4,15 @@ import classes from './BookmarkGrid.module.css';
 
 import { Category } from '../../../interfaces';
 
-import BookmarkCard from '../BookmarkCard/BookmarkCard';
+import { BookmarkCard } from '../BookmarkCard/BookmarkCard';
 
-interface ComponentProps {
+interface Props {
   categories: Category[];
   totalCategories?: number;
   searching: boolean;
 }
 
-const BookmarkGrid = (props: ComponentProps): JSX.Element => {
+export const BookmarkGrid = (props: Props): JSX.Element => {
   let bookmarks: JSX.Element;
 
   if (props.categories.length > 0) {
@@ -53,5 +53,3 @@ const BookmarkGrid = (props: ComponentProps): JSX.Element => {
 
   return bookmarks;
 };
-
-export default BookmarkGrid;

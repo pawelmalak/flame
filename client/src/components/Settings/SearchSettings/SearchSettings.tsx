@@ -1,58 +1,49 @@
 // React
 import { useState, useEffect, FormEvent, ChangeEvent, Fragment } from 'react';
-import { connect } from 'react-redux';
-
-// State
-import { createNotification, updateConfig } from '../../../store/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Typescript
-import {
-  Config,
-  GlobalState,
-  NewNotification,
-  Query,
-  SearchForm,
-} from '../../../interfaces';
+import { Query, SearchForm } from '../../../interfaces';
 
 // Components
-import CustomQueries from './CustomQueries/CustomQueries';
+import { CustomQueries } from './CustomQueries/CustomQueries';
 
 // UI
-import Button from '../../UI/Buttons/Button/Button';
-import SettingsHeadline from '../../UI/Headlines/SettingsHeadline/SettingsHeadline';
-import InputGroup from '../../UI/Forms/InputGroup/InputGroup';
+import { Button, SettingsHeadline, InputGroup } from '../../UI';
 
 // Utils
 import { inputHandler, searchSettingsTemplate } from '../../../utility';
 
 // Data
 import { queries } from '../../../utility/searchQueries.json';
+import { State } from '../../../store/reducers';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../../store';
 
-interface Props {
-  createNotification: (notification: NewNotification) => void;
-  updateConfig: (formData: SearchForm) => void;
-  loading: boolean;
-  customQueries: Query[];
-  config: Config;
-}
+export const SearchSettings = (): JSX.Element => {
+  const { loading, customQueries, config } = useSelector(
+    (state: State) => state.config
+  );
 
-const SearchSettings = (props: Props): JSX.Element => {
+  const dispatch = useDispatch();
+  const { updateConfig } = bindActionCreators(actionCreators, dispatch);
+
   // Initial state
   const [formData, setFormData] = useState<SearchForm>(searchSettingsTemplate);
 
   // Get config
   useEffect(() => {
     setFormData({
-      ...props.config,
+      ...config,
     });
-  }, [props.loading]);
+  }, [loading]);
 
   // Form handler
   const formSubmitHandler = async (e: FormEvent) => {
     e.preventDefault();
 
     // Save settings
-    await props.updateConfig(formData);
+    await updateConfig(formData);
   };
 
   // Input handler
@@ -84,7 +75,7 @@ const SearchSettings = (props: Props): JSX.Element => {
             value={formData.defaultSearchProvider}
             onChange={(e) => inputChangeHandler(e)}
           >
-            {[...queries, ...props.customQueries].map((query: Query, idx) => {
+            {[...queries, ...customQueries].map((query: Query, idx) => {
               const isCustom = idx >= queries.length;
 
               return (
@@ -95,6 +86,7 @@ const SearchSettings = (props: Props): JSX.Element => {
             })}
           </select>
         </InputGroup>
+
         <InputGroup>
           <label htmlFor="searchSameTab">
             Open search results in the same tab
@@ -109,6 +101,7 @@ const SearchSettings = (props: Props): JSX.Element => {
             <option value={0}>False</option>
           </select>
         </InputGroup>
+
         <InputGroup>
           <label htmlFor="hideSearch">Hide search bar</label>
           <select
@@ -121,6 +114,7 @@ const SearchSettings = (props: Props): JSX.Element => {
             <option value={0}>False</option>
           </select>
         </InputGroup>
+
         <InputGroup>
           <label htmlFor="disableAutofocus">Disable search bar autofocus</label>
           <select
@@ -133,6 +127,7 @@ const SearchSettings = (props: Props): JSX.Element => {
             <option value={0}>False</option>
           </select>
         </InputGroup>
+
         <Button>Save changes</Button>
       </form>
 
@@ -142,18 +137,3 @@ const SearchSettings = (props: Props): JSX.Element => {
     </Fragment>
   );
 };
-
-const mapStateToProps = (state: GlobalState) => {
-  return {
-    loading: state.config.loading,
-    customQueries: state.config.customQueries,
-    config: state.config.config,
-  };
-};
-
-const actions = {
-  createNotification,
-  updateConfig,
-};
-
-export default connect(mapStateToProps, actions)(SearchSettings);
