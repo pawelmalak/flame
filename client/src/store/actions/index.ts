@@ -1,4 +1,5 @@
 import { SetThemeAction } from './theme';
+
 import {
   AddQueryAction,
   DeleteQueryAction,
@@ -7,10 +8,36 @@ import {
   UpdateConfigAction,
   UpdateQueryAction,
 } from './config';
+
 import {
   ClearNotificationAction,
   CreateNotificationAction,
 } from './notification';
+
+import {
+  GetAppsAction,
+  PinAppAction,
+  AddAppAction,
+  DeleteAppAction,
+  UpdateAppAction,
+  ReorderAppsAction,
+  SortAppsAction,
+} from './app';
+
+import { App } from '../../interfaces';
+
+import {
+  GetCategoriesAction,
+  AddCategoryAction,
+  PinCategoryAction,
+  DeleteCategoryAction,
+  UpdateCategoryAction,
+  SortCategoriesAction,
+  ReorderCategoriesAction,
+  AddBookmarkAction,
+  DeleteBookmarkAction,
+  UpdateBookmarkAction,
+} from './bookmark';
 
 export type Action =
   // Theme
@@ -24,4 +51,24 @@ export type Action =
   | UpdateQueryAction
   // Notifications
   | CreateNotificationAction
-  | ClearNotificationAction;
+  | ClearNotificationAction
+  // Apps
+  | GetAppsAction<undefined | App[]>
+  | PinAppAction
+  | AddAppAction
+  | DeleteAppAction
+  | UpdateAppAction
+  | ReorderAppsAction
+  | SortAppsAction
+  // Categories
+  | GetCategoriesAction<any>
+  | AddCategoryAction
+  | PinCategoryAction
+  | DeleteCategoryAction
+  | UpdateCategoryAction
+  | SortCategoriesAction
+  | ReorderCategoriesAction
+  // Bookmarks
+  | AddBookmarkAction
+  | DeleteBookmarkAction
+  | UpdateBookmarkAction;
