@@ -11,7 +11,6 @@ import {
   UpdateAppAction,
 } from '../actions/app';
 import axios from 'axios';
-import { createNotification } from '.';
 
 export const getApps =
   () => async (dispatch: Dispatch<GetAppsAction<undefined | App[]>>) => {
@@ -44,9 +43,12 @@ export const pinApp =
         ? 'unpinned from Homescreen'
         : 'pinned to Homescreen';
 
-      createNotification({
-        title: 'Success',
-        message: `App ${name} ${status}`,
+      dispatch<any>({
+        type: ActionType.createNotification,
+        payload: {
+          title: 'Success',
+          message: `App ${name} ${status}`,
+        },
       });
 
       dispatch({
@@ -63,9 +65,12 @@ export const addApp =
     try {
       const res = await axios.post<ApiResponse<App>>('/api/apps', formData);
 
-      createNotification({
-        title: 'Success',
-        message: `App added`,
+      dispatch<any>({
+        type: ActionType.createNotification,
+        payload: {
+          title: 'Success',
+          message: `App added`,
+        },
       });
 
       await dispatch({
@@ -74,8 +79,7 @@ export const addApp =
       });
 
       // Sort apps
-      // dispatch<any>(sortApps());
-      sortApps();
+      dispatch<any>(sortApps());
     } catch (err) {
       console.log(err);
     }
@@ -86,9 +90,12 @@ export const deleteApp =
     try {
       await axios.delete<ApiResponse<{}>>(`/api/apps/${id}`);
 
-      createNotification({
-        title: 'Success',
-        message: 'App deleted',
+      dispatch<any>({
+        type: ActionType.createNotification,
+        payload: {
+          title: 'Success',
+          message: 'App deleted',
+        },
       });
 
       dispatch({
@@ -109,9 +116,12 @@ export const updateApp =
         formData
       );
 
-      createNotification({
-        title: 'Success',
-        message: `App updated`,
+      dispatch<any>({
+        type: ActionType.createNotification,
+        payload: {
+          title: 'Success',
+          message: `App updated`,
+        },
       });
 
       await dispatch({

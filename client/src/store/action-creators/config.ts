@@ -18,7 +18,6 @@ import {
 } from '../../interfaces';
 import { ActionType } from '../action-types';
 import { storeUIConfig } from '../../utility';
-import { createNotification } from '.';
 
 export const getConfig = () => async (dispatch: Dispatch<GetConfigAction>) => {
   try {
@@ -53,9 +52,12 @@ export const updateConfig =
     try {
       const res = await axios.put<ApiResponse<Config>>('/api/config', formData);
 
-      createNotification({
-        title: 'Success',
-        message: 'Settings updated',
+      dispatch<any>({
+        type: ActionType.createNotification,
+        payload: {
+          title: 'Success',
+          message: 'Settings updated',
+        },
       });
 
       dispatch({

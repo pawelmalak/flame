@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
-import { createNotification } from '.';
 import {
   ApiResponse,
   Bookmark,
@@ -51,9 +50,12 @@ export const addCategory =
         formData
       );
 
-      createNotification({
-        title: 'Success',
-        message: `Category ${formData.name} created`,
+      dispatch<any>({
+        type: ActionType.createNotification,
+        payload: {
+          title: 'Success',
+          message: `Category ${formData.name} created`,
+        },
       });
 
       dispatch({
@@ -61,8 +63,7 @@ export const addCategory =
         payload: res.data.data,
       });
 
-      // dispatch<any>(sortCategories());
-      sortCategories();
+      dispatch<any>(sortCategories());
     } catch (err) {
       console.log(err);
     }
@@ -77,9 +78,12 @@ export const addBookmark =
         formData
       );
 
-      createNotification({
-        title: 'Success',
-        message: `Bookmark created`,
+      dispatch<any>({
+        type: ActionType.createNotification,
+        payload: {
+          title: 'Success',
+          message: `Bookmark created`,
+        },
       });
 
       dispatch({
@@ -104,9 +108,12 @@ export const pinCategory =
         ? 'unpinned from Homescreen'
         : 'pinned to Homescreen';
 
-      createNotification({
-        title: 'Success',
-        message: `Category ${name} ${status}`,
+      dispatch<any>({
+        type: ActionType.createNotification,
+        payload: {
+          title: 'Success',
+          message: `Category ${name} ${status}`,
+        },
       });
 
       dispatch({
@@ -123,9 +130,12 @@ export const deleteCategory =
     try {
       await axios.delete<ApiResponse<{}>>(`/api/categories/${id}`);
 
-      createNotification({
-        title: 'Success',
-        message: `Category deleted`,
+      dispatch<any>({
+        type: ActionType.createNotification,
+        payload: {
+          title: 'Success',
+          message: `Category deleted`,
+        },
       });
 
       dispatch({
@@ -145,9 +155,13 @@ export const updateCategory =
         `/api/categories/${id}`,
         formData
       );
-      createNotification({
-        title: 'Success',
-        message: `Category ${formData.name} updated`,
+
+      dispatch<any>({
+        type: ActionType.createNotification,
+        payload: {
+          title: 'Success',
+          message: `Category ${formData.name} updated`,
+        },
       });
 
       dispatch({
@@ -155,8 +169,7 @@ export const updateCategory =
         payload: res.data.data,
       });
 
-      // dispatch<any>(sortCategories());
-      sortCategories();
+      dispatch<any>(sortCategories());
     } catch (err) {
       console.log(err);
     }
@@ -168,9 +181,12 @@ export const deleteBookmark =
     try {
       await axios.delete<ApiResponse<{}>>(`/api/bookmarks/${bookmarkId}`);
 
-      createNotification({
-        title: 'Success',
-        message: 'Bookmark deleted',
+      dispatch<any>({
+        type: ActionType.createNotification,
+        payload: {
+          title: 'Success',
+          message: 'Bookmark deleted',
+        },
       });
 
       dispatch({
@@ -205,9 +221,12 @@ export const updateBookmark =
         formData
       );
 
-      createNotification({
-        title: 'Success',
-        message: `Bookmark updated`,
+      dispatch<any>({
+        type: ActionType.createNotification,
+        payload: {
+          title: 'Success',
+          message: `Bookmark updated`,
+        },
       });
 
       // Check if category was changed
