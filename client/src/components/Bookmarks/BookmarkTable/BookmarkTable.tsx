@@ -125,7 +125,10 @@ export const BookmarkTable = (props: Props): JSX.Element => {
         <DragDropContext onDragEnd={dragEndHanlder}>
           <Droppable droppableId="categories">
             {(provided) => (
-              <Table headers={['Name', 'Actions']} innerRef={provided.innerRef}>
+              <Table
+                headers={['Name', 'Visibility', 'Actions']}
+                innerRef={provided.innerRef}
+              >
                 {localCategories.map(
                   (category: Category, index): JSX.Element => {
                     return (
@@ -150,7 +153,12 @@ export const BookmarkTable = (props: Props): JSX.Element => {
                               ref={provided.innerRef}
                               style={style}
                             >
-                              <td>{category.name}</td>
+                              <td style={{ width: '300px' }}>
+                                {category.name}
+                              </td>
+                              <td style={{ width: '300px' }}>
+                                {category.isPublic ? 'Visible' : 'Hidden'}
+                              </td>
                               {!snapshot.isDragging && (
                                 <td className={classes.TableActions}>
                                   <div
@@ -226,7 +234,9 @@ export const BookmarkTable = (props: Props): JSX.Element => {
     });
 
     return (
-      <Table headers={['Name', 'URL', 'Icon', 'Category', 'Actions']}>
+      <Table
+        headers={['Name', 'URL', 'Icon', 'Visibility', 'Category', 'Actions']}
+      >
         {bookmarks.map(
           (bookmark: { bookmark: Bookmark; categoryName: string }) => {
             return (
@@ -234,6 +244,7 @@ export const BookmarkTable = (props: Props): JSX.Element => {
                 <td>{bookmark.bookmark.name}</td>
                 <td>{bookmark.bookmark.url}</td>
                 <td>{bookmark.bookmark.icon}</td>
+                <td>{bookmark.bookmark.isPublic ? 'Visible' : 'Hidden'}</td>
                 <td>{bookmark.categoryName}</td>
                 <td className={classes.TableActions}>
                   <div

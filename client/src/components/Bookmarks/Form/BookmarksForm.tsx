@@ -1,42 +1,57 @@
-import { useState, useEffect, ChangeEvent, SyntheticEvent } from 'react';
-import { useDispatch } from 'react-redux';
-import { App, NewApp } from '../../../interfaces';
+import { useState, ChangeEvent, useEffect, FormEvent } from 'react';
 
-import classes from './AppForm.module.css';
-
-import { ModalForm, InputGroup, Button } from '../../UI';
-import { inputHandler, newAppTemplate } from '../../../utility';
+// Redux
+import { useDispatch, useSelector } from 'react-redux';
+import { State } from '../../../store/reducers';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../store';
 
+// Typescript
+import { Bookmark, Category, NewBookmark } from '../../../interfaces';
+
+// UI
+import { ModalForm, InputGroup, Button } from '../../UI';
+
+// CSS
+import classes from './Form.module.css';
+
+// Utils
+import { inputHandler, newBookmarkTemplate } from '../../../utility';
+
 interface Props {
   modalHandler: () => void;
-  app?: App;
+  bookmark?: Bookmark;
 }
 
-export const AppForm = ({ app, modalHandler }: Props): JSX.Element => {
+export const BookmarksForm = ({
+  bookmark,
+  modalHandler,
+}: Props): JSX.Element => {
+  const { categories } = useSelector((state: State) => state.bookmarks);
+
   const dispatch = useDispatch();
-  const { addApp, updateApp } = bindActionCreators(actionCreators, dispatch);
+  const { addBookmark, updateBookmark, createNotification } =
+    bindActionCreators(actionCreators, dispatch);
 
   const [useCustomIcon, toggleUseCustomIcon] = useState<boolean>(false);
   const [customIcon, setCustomIcon] = useState<File | null>(null);
-  const [formData, setFormData] = useState<NewApp>(newAppTemplate);
 
+  const [formData, setFormData] = useState<NewBookmark>(newBookmarkTemplate);
+
+  // Load bookmark data if provided for editing
   useEffect(() => {
-    if (app) {
-      setFormData({
-        ...app,
-      });
+    if (bookmark) {
+      setFormData({ ...bookmark });
     } else {
-      setFormData(newAppTemplate);
+      setFormData(newBookmarkTemplate);
     }
-  }, [app]);
+  }, [bookmark]);
 
   const inputChangeHandler = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     options?: { isNumber?: boolean; isBool?: boolean }
   ) => {
-    inputHandler<NewApp>({
+    inputHandler<NewBookmark>({
       e,
       options,
       setStateHandler: setFormData,
@@ -50,83 +65,142 @@ export const AppForm = ({ app, modalHandler }: Props): JSX.Element => {
     }
   };
 
-  const formSubmitHandler = (e: SyntheticEvent<HTMLFormElement>): void => {
+  // Bookmarks form handler
+  const formSubmitHandler = (e: FormEvent): void => {
     e.preventDefault();
 
     const createFormData = (): FormData => {
       const data = new FormData();
-
       if (customIcon) {
         data.append('icon', customIcon);
       }
       data.append('name', formData.name);
       data.append('url', formData.url);
+      data.append('categoryId', `${formData.categoryId}`);
       data.append('isPublic', `${formData.isPublic}`);
 
       return data;
     };
 
-    if (!app) {
-      if (customIcon) {
-        const data = createFormData();
-        addApp(data);
-      } else {
-        addApp(formData);
-      }
-    } else {
-      if (customIcon) {
-        const data = createFormData();
-        updateApp(app.id, data);
-      } else {
-        updateApp(app.id, formData);
-        modalHandler();
-      }
-    }
+    const checkCategory = (): boolean => {
+      if (formData.categoryId < 0) {
+        createNotification({
+          title: 'Error',
+          message: 'Please select category',
+        });
 
-    setFormData(newAppTemplate);
+        return false;
+      }
+
+      return true;
+    };
+
+    if (!bookmark) {
+      // add new bookmark
+      if (!checkCategory()) return;
+
+      if (formData.categoryId < 0) {
+        createNotification({
+          title: 'Error',
+          message: 'Please select category',
+        });
+        return;
+      }
+
+      if (customIcon) {
+        const data = createFormData();
+        addBookmark(data);
+      } else {
+        addBookmark(formData);
+      }
+
+      setFormData({
+        ...newBookmarkTemplate,
+        categoryId: formData.categoryId,
+        isPublic: formData.isPublic,
+      });
+    } else {
+      // update
+      if (!checkCategory()) return;
+
+      if (customIcon) {
+        const data = createFormData();
+        updateBookmark(bookmark.id, data, {
+          prev: bookmark.categoryId,
+          curr: formData.categoryId,
+        });
+      } else {
+        updateBookmark(bookmark.id, formData, {
+          prev: bookmark.categoryId,
+          curr: formData.categoryId,
+        });
+      }
+
+      modalHandler();
+
+      setFormData(newBookmarkTemplate);
+
+      setCustomIcon(null);
+    }
   };
 
   return (
     <ModalForm modalHandler={modalHandler} formHandler={formSubmitHandler}>
-      {/* NAME */}
       <InputGroup>
-        <label htmlFor="name">App Name</label>
+        <label htmlFor="name">Bookmark Name</label>
         <input
           type="text"
           name="name"
           id="name"
-          placeholder="Bookstack"
+          placeholder="Reddit"
           required
           value={formData.name}
           onChange={(e) => inputChangeHandler(e)}
         />
       </InputGroup>
 
-      {/* URL */}
       <InputGroup>
-        <label htmlFor="url">App URL</label>
+        <label htmlFor="url">Bookmark URL</label>
         <input
           type="text"
           name="url"
           id="url"
-          placeholder="bookstack.example.com"
+          placeholder="reddit.com"
           required
           value={formData.url}
           onChange={(e) => inputChangeHandler(e)}
         />
       </InputGroup>
 
-      {/* ICON */}
+      <InputGroup>
+        <label htmlFor="categoryId">Bookmark Category</label>
+        <select
+          name="categoryId"
+          id="categoryId"
+          required
+          onChange={(e) => inputChangeHandler(e, { isNumber: true })}
+          value={formData.categoryId}
+        >
+          <option value={-1}>Select category</option>
+          {categories.map((category: Category): JSX.Element => {
+            return (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            );
+          })}
+        </select>
+      </InputGroup>
+
       {!useCustomIcon ? (
-        // use mdi icon
+        // mdi
         <InputGroup>
-          <label htmlFor="icon">App Icon</label>
+          <label htmlFor="icon">Bookmark Icon (optional)</label>
           <input
             type="text"
             name="icon"
             id="icon"
             placeholder="book-open-outline"
-            required
             value={formData.icon}
             onChange={(e) => inputChangeHandler(e)}
           />
@@ -145,14 +219,13 @@ export const AppForm = ({ app, modalHandler }: Props): JSX.Element => {
           </span>
         </InputGroup>
       ) : (
-        // upload custom icon
+        // custom
         <InputGroup>
-          <label htmlFor="icon">App Icon</label>
+          <label htmlFor="icon">Bookmark Icon (optional)</label>
           <input
             type="file"
             name="icon"
             id="icon"
-            required
             onChange={(e) => fileChangeHandler(e)}
             accept=".jpg,.jpeg,.png,.svg"
           />
@@ -168,9 +241,8 @@ export const AppForm = ({ app, modalHandler }: Props): JSX.Element => {
         </InputGroup>
       )}
 
-      {/* VISIBILITY */}
       <InputGroup>
-        <label htmlFor="isPublic">App visibility</label>
+        <label htmlFor="isPublic">Bookmark visibility</label>
         <select
           id="isPublic"
           name="isPublic"
@@ -182,11 +254,7 @@ export const AppForm = ({ app, modalHandler }: Props): JSX.Element => {
         </select>
       </InputGroup>
 
-      {!app ? (
-        <Button>Add new application</Button>
-      ) : (
-        <Button>Update application</Button>
-      )}
+      <Button>{bookmark ? 'Update bookmark' : 'Add new bookmark'}</Button>
     </ModalForm>
   );
 };

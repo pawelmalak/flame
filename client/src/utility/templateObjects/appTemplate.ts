@@ -11,7 +11,7 @@ export const appTemplate: App = {
   ...newAppTemplate,
   isPinned: false,
   orderId: 0,
-  id: 0,
+  id: -1,
   createdAt: new Date(),
   updatedAt: new Date(),
 };

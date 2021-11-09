@@ -1,7 +1,8 @@
+import { ReactNode } from 'react';
 import classes from './Button.module.css';
 
 interface Props {
-  children: string;
+  children: ReactNode;
   click?: any;
 }
 

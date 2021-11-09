@@ -18,8 +18,8 @@ import { Container, Headline, ActionButton, Spinner, Modal } from '../UI';
 
 // Components
 import { BookmarkGrid } from './BookmarkGrid/BookmarkGrid';
-import { BookmarkForm } from './BookmarkForm/BookmarkForm';
 import { BookmarkTable } from './BookmarkTable/BookmarkTable';
+import { Form } from './Form/Form';
 
 // Utils
 import { bookmarkTemplate, categoryTemplate } from '../../utility';
@@ -98,24 +98,13 @@ export const Bookmarks = (props: Props): JSX.Element => {
   return (
     <Container>
       <Modal isOpen={modalIsOpen} setIsOpen={toggleModal}>
-        {!isInUpdate ? (
-          <BookmarkForm
-            modalHandler={toggleModal}
-            contentType={formContentType}
-          />
-        ) : formContentType === ContentType.category ? (
-          <BookmarkForm
-            modalHandler={toggleModal}
-            contentType={formContentType}
-            category={categoryInUpdate}
-          />
-        ) : (
-          <BookmarkForm
-            modalHandler={toggleModal}
-            contentType={formContentType}
-            bookmark={bookmarkInUpdate}
-          />
-        )}
+        <Form
+          modalHandler={toggleModal}
+          contentType={formContentType}
+          inUpdate={isInUpdate}
+          category={categoryInUpdate}
+          bookmark={bookmarkInUpdate}
+        />
       </Modal>
 
       <Headline title="All Bookmarks" subtitle={<Link to="/">Go back</Link>} />
