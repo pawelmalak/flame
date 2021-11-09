@@ -1,18 +1,21 @@
 import { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { clearNotification } from '../../../store/actions';
+import { useDispatch } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../../store';
 
 import classes from './Notification.module.css';
 
-interface ComponentProps {
+interface Props {
   title: string;
   message: string;
   id: number;
   url: string | null;
-  clearNotification: (id: number) => void;
 }
 
-const Notification = (props: ComponentProps): JSX.Element => {
+export const Notification = (props: Props): JSX.Element => {
+  const dispatch = useDispatch();
+  const { clearNotification } = bindActionCreators(actionCreators, dispatch);
+
   const [isOpen, setIsOpen] = useState(true);
   const elementClasses = [
     classes.Notification,
@@ -24,13 +27,13 @@ const Notification = (props: ComponentProps): JSX.Element => {
       setIsOpen(false);
     }, 3500);
 
-    const clearNotification = setTimeout(() => {
-      props.clearNotification(props.id);
+    const clearNotificationTimeout = setTimeout(() => {
+      clearNotification(props.id);
     }, 3600);
 
     return () => {
       window.clearTimeout(closeNotification);
-      window.clearTimeout(clearNotification);
+      window.clearTimeout(clearNotificationTimeout);
     };
   }, []);
 
@@ -48,5 +51,3 @@ const Notification = (props: ComponentProps): JSX.Element => {
     </div>
   );
 };
-
-export default connect(null, { clearNotification })(Notification);

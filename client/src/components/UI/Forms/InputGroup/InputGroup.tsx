@@ -1,15 +1,10 @@
+import { ReactNode } from 'react';
 import classes from './InputGroup.module.css';
 
-interface ComponentProps {
-  children: JSX.Element | JSX.Element[];
+interface Props {
+  children: ReactNode;
 }
 
-const InputGroup = (props: ComponentProps): JSX.Element => {
-  return (
-    <div className={classes.InputGroup}>
-      {props.children}
-    </div>
-  )
-}
-
-export default InputGroup;
+export const InputGroup = (props: Props): JSX.Element => {
+  return <div className={classes.InputGroup}>{props.children}</div>;
+};
