@@ -69,7 +69,10 @@ export const bookmarksReducer = (
         ...state,
         categories: [
           ...state.categories.slice(0, pinnedCategoryIdx),
-          action.payload,
+          {
+            ...action.payload,
+            bookmarks: [...state.categories[pinnedCategoryIdx].bookmarks],
+          },
           ...state.categories.slice(pinnedCategoryIdx + 1),
         ],
       };
@@ -96,7 +99,10 @@ export const bookmarksReducer = (
         ...state,
         categories: [
           ...state.categories.slice(0, updatedCategoryIdx),
-          action.payload,
+          {
+            ...action.payload,
+            bookmarks: [...state.categories[updatedCategoryIdx].bookmarks],
+          },
           ...state.categories.slice(updatedCategoryIdx + 1),
         ],
       };

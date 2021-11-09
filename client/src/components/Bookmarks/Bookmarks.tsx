@@ -41,8 +41,6 @@ export const Bookmarks = (props: Props): JSX.Element => {
   const dispatch = useDispatch();
   const { getCategories } = bindActionCreators(actionCreators, dispatch);
 
-  const { searching = false } = props;
-
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [formContentType, setFormContentType] = useState(ContentType.category);
   const [isInEdit, setIsInEdit] = useState(false);
@@ -56,10 +54,10 @@ export const Bookmarks = (props: Props): JSX.Element => {
     useState<Bookmark>(bookmarkTemplate);
 
   useEffect(() => {
-    if (categories.length === 0) {
+    if (!categories.length) {
       getCategories();
     }
-  }, [getCategories]);
+  }, []);
 
   const toggleModal = (): void => {
     setModalIsOpen(!modalIsOpen);
@@ -148,7 +146,7 @@ export const Bookmarks = (props: Props): JSX.Element => {
       {loading ? (
         <Spinner />
       ) : !isInEdit ? (
-        <BookmarkGrid categories={categories} searching />
+        <BookmarkGrid categories={categories} searching={props.searching} />
       ) : (
         <BookmarkTable
           contentType={tableContentType}

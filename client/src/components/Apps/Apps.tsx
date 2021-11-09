@@ -40,10 +40,10 @@ export const Apps = (props: Props): JSX.Element => {
   const [appInUpdate, setAppInUpdate] = useState<App>(appTemplate);
 
   useEffect(() => {
-    if (apps.length === 0) {
+    if (!apps.length) {
       getApps();
     }
-  }, [getApps]);
+  }, []);
 
   const toggleModal = (): void => {
     setModalIsOpen(!modalIsOpen);
@@ -85,7 +85,7 @@ export const Apps = (props: Props): JSX.Element => {
         {loading ? (
           <Spinner />
         ) : !isInEdit ? (
-          <AppGrid apps={apps} searching />
+          <AppGrid apps={apps} searching={props.searching} />
         ) : (
           <AppTable updateAppHandler={toggleUpdate} />
         )}

@@ -15,8 +15,8 @@ interface Props {
 export const BookmarkGrid = (props: Props): JSX.Element => {
   let bookmarks: JSX.Element;
 
-  if (props.categories.length > 0) {
-    if (props.searching && props.categories[0].bookmarks.length === 0) {
+  if (props.categories.length) {
+    if (props.searching && !props.categories[0].bookmarks.length) {
       bookmarks = (
         <p className={classes.BookmarksMessage}>
           No bookmarks match your search criteria

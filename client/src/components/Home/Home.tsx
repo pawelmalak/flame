@@ -47,14 +47,14 @@ export const Home = (): JSX.Element => {
     if (!apps.length) {
       getApps();
     }
-  }, [getApps]);
+  }, []);
 
   // Load bookmark categories
   useEffect(() => {
     if (!categories.length) {
       getCategories();
     }
-  }, [getCategories]);
+  }, []);
 
   useEffect(() => {
     if (localSearch) {
