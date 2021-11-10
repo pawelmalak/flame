@@ -205,7 +205,7 @@ export const BookmarksForm = ({
             onChange={(e) => inputChangeHandler(e)}
           />
           <span>
-            Use icon name from MDI.
+            Use icon name from MDI or pass a valid URL.
             <a href="https://materialdesignicons.com/" target="blank">
               {' '}
               Click here for reference

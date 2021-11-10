@@ -37,4 +37,7 @@ export enum ActionType {
   addBookmark = 'ADD_BOOKMARK',
   deleteBookmark = 'DELETE_BOOKMARK',
   updateBookmark = 'UPDATE_BOOKMARK',
+  // AUTH
+  login = 'LOGIN',
+  logout = 'LOGOUT',
 }

@@ -1,3 +1,5 @@
+import { App } from '../../interfaces';
+
 import { SetThemeAction } from './theme';
 
 import {
@@ -24,8 +26,6 @@ import {
   SortAppsAction,
 } from './app';
 
-import { App } from '../../interfaces';
-
 import {
   GetCategoriesAction,
   AddCategoryAction,
@@ -38,6 +38,8 @@ import {
   DeleteBookmarkAction,
   UpdateBookmarkAction,
 } from './bookmark';
+
+import { LoginAction, LogoutAction } from './auth';
 
 export type Action =
   // Theme
@@ -71,4 +73,7 @@ export type Action =
   // Bookmarks
   | AddBookmarkAction
   | DeleteBookmarkAction
-  | UpdateBookmarkAction;
+  | UpdateBookmarkAction
+  // Auth
+  | LoginAction
+  | LogoutAction;

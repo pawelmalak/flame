@@ -1,8 +1,14 @@
-.AppVersion {
+.text {
   color: var(--color-primary);
   margin-bottom: 15px;
 }
 
-.AppVersion a {
+.text a,
+.text span {
   color: var(--color-accent);
+}
+
+.separator {
+  margin: 30px 0;
+  border: 1px solid var(--color-primary);
 }
