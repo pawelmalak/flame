@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../store';
+import { State } from '../../../store/reducers';
 
 // Typescript
 import { ApiResponse, Weather, WeatherForm } from '../../../interfaces';
@@ -14,7 +15,6 @@ import { InputGroup, Button } from '../../UI';
 
 // Utils
 import { inputHandler, weatherSettingsTemplate } from '../../../utility';
-import { State } from '../../../store/reducers';
 
 export const WeatherSettings = (): JSX.Element => {
   const { loading, config } = useSelector((state: State) => state.config);

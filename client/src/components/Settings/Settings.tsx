@@ -9,10 +9,11 @@ import classes from './Settings.module.css';
 // Components
 import { Themer } from '../Themer/Themer';
 import { WeatherSettings } from './WeatherSettings/WeatherSettings';
-import { OtherSettings } from './OtherSettings/OtherSettings';
+import { UISettings } from './UISettings/UISettings';
 import { AppDetails } from './AppDetails/AppDetails';
 import { StyleSettings } from './StyleSettings/StyleSettings';
 import { SearchSettings } from './SearchSettings/SearchSettings';
+import { DockerSettings } from './DockerSettings/DockerSettings';
 
 // UI
 import { Container, Headline } from '../UI';
@@ -46,7 +47,8 @@ export const Settings = (): JSX.Element => {
             <Route exact path="/settings" component={Themer} />
             <Route path="/settings/weather" component={WeatherSettings} />
             <Route path="/settings/search" component={SearchSettings} />
-            <Route path="/settings/other" component={OtherSettings} />
+            <Route path="/settings/interface" component={UISettings} />
+            <Route path="/settings/docker" component={DockerSettings} />
             <Route path="/settings/css" component={StyleSettings} />
             <Route path="/settings/app" component={AppDetails} />
           </Switch>

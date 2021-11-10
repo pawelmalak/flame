@@ -4,7 +4,7 @@
 
 ## Description
 
-Flame is self-hosted startpage for your server. Its design is inspired (heavily) by [SUI](https://github.com/jeroenpardon/sui). Flame is very easy to setup and use. With built-in editors it allows you to setup your very own application hub in no time - no file editing necessary.
+Flame is self-hosted startpage for your server. Its design is inspired (heavily) by [SUI](https://github.com/jeroenpardon/sui). Flame is very easy to setup and use. With built-in editors, it allows you to setup your very own application hub in no time - no file editing necessary.
 
 ## Technology
 
@@ -151,7 +151,7 @@ labels:
 # - flame.icon=custom to make changes in app. ie: custom icon upload
 ```
 
-> "Use Docker API" option must be enabled for this to work. You can find it in Settings > Other > Docker section
+> "Use Docker API" option must be enabled for this to work. You can find it in Settings > Docker
 
 You can also set up different apps in the same label adding `;` between each one.
 
@@ -199,7 +199,7 @@ metadata:
   - flame.pawelmalak/icon=icon-name # optional, default is "kubernetes"
 ```
 
-> "Use Kubernetes Ingress API" option must be enabled for this to work. You can find it in Settings > Other > Kubernetes section
+> "Use Kubernetes Ingress API" option must be enabled for this to work. You can find it in Settings > Docker
 
 ### Import HTML Bookmarks (Experimental)
 

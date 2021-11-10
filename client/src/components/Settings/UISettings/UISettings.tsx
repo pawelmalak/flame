@@ -2,6 +2,9 @@ import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
+import { State } from '../../../store/reducers';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../../store';
 
 // Typescript
 import { OtherSettingsForm } from '../../../interfaces';
@@ -11,11 +14,8 @@ import { InputGroup, Button, SettingsHeadline } from '../../UI';
 
 // Utils
 import { otherSettingsTemplate, inputHandler } from '../../../utility';
-import { State } from '../../../store/reducers';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../../store';
 
-export const OtherSettings = (): JSX.Element => {
+export const UISettings = (): JSX.Element => {
   const { loading, config } = useSelector((state: State) => state.config);
 
   const dispatch = useDispatch();
@@ -277,66 +277,6 @@ export const OtherSettings = (): JSX.Element => {
         </select>
       </InputGroup>
 
-      {/* DOCKER SETTINGS */}
-      <SettingsHeadline text="Docker" />
-      {/* CUSTOM DOCKER SOCKET HOST */}
-      <InputGroup>
-        <label htmlFor="dockerHost">Docker Host</label>
-        <input
-          type="text"
-          id="dockerHost"
-          name="dockerHost"
-          placeholder="dockerHost:port"
-          value={formData.dockerHost}
-          onChange={(e) => inputChangeHandler(e)}
-        />
-      </InputGroup>
-
-      {/* USE DOCKER API */}
-      <InputGroup>
-        <label htmlFor="dockerApps">Use Docker API</label>
-        <select
-          id="dockerApps"
-          name="dockerApps"
-          value={formData.dockerApps ? 1 : 0}
-          onChange={(e) => inputChangeHandler(e, { isBool: true })}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
-      </InputGroup>
-
-      {/* UNPIN DOCKER APPS */}
-      <InputGroup>
-        <label htmlFor="unpinStoppedApps">
-          Unpin stopped containers / other apps
-        </label>
-        <select
-          id="unpinStoppedApps"
-          name="unpinStoppedApps"
-          value={formData.unpinStoppedApps ? 1 : 0}
-          onChange={(e) => inputChangeHandler(e, { isBool: true })}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
-      </InputGroup>
-
-      {/* KUBERNETES SETTINGS */}
-      <SettingsHeadline text="Kubernetes" />
-      {/* USE KUBERNETES */}
-      <InputGroup>
-        <label htmlFor="kubernetesApps">Use Kubernetes Ingress API</label>
-        <select
-          id="kubernetesApps"
-          name="kubernetesApps"
-          value={formData.kubernetesApps ? 1 : 0}
-          onChange={(e) => inputChangeHandler(e, { isBool: true })}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
-      </InputGroup>
       <Button>Save changes</Button>
     </form>
   );

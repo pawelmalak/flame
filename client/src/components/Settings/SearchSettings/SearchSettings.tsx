@@ -16,6 +16,8 @@ import { inputHandler, searchSettingsTemplate } from '../../../utility';
 
 // Data
 import { queries } from '../../../utility/searchQueries.json';
+
+// Redux
 import { State } from '../../../store/reducers';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../store';

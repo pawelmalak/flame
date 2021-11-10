@@ -11,6 +11,7 @@ import axios from 'axios';
 import {
   ApiResponse,
   Config,
+  DockerSettingsForm,
   OtherSettingsForm,
   Query,
   SearchForm,
@@ -49,7 +50,9 @@ export const getConfig = () => async (dispatch: Dispatch<GetConfigAction>) => {
 };
 
 export const updateConfig =
-  (formData: WeatherForm | OtherSettingsForm | SearchForm) =>
+  (
+    formData: WeatherForm | OtherSettingsForm | SearchForm | DockerSettingsForm
+  ) =>
   async (dispatch: Dispatch<UpdateConfigAction>) => {
     try {
       const res = await axios.put<ApiResponse<Config>>('/api/config', formData);

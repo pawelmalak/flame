@@ -22,13 +22,16 @@ export interface OtherSettingsForm {
   useOrdering: string;
   appsSameTab: boolean;
   bookmarksSameTab: boolean;
-  dockerApps: boolean;
-  dockerHost: string;
-  kubernetesApps: boolean;
-  unpinStoppedApps: boolean;
   useAmericanDate: boolean;
   greetingsSchema: string;
   daySchema: string;
   monthSchema: string;
   showTime: boolean;
+}
+
+export interface DockerSettingsForm {
+  dockerApps: boolean;
+  dockerHost: string;
+  kubernetesApps: boolean;
+  unpinStoppedApps: boolean;
 }

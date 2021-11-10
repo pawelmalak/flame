@@ -13,8 +13,12 @@
       "dest": "/settings/search"
     },
     {
-      "name": "Other",
-      "dest": "/settings/other"
+      "name": "Interface",
+      "dest": "/settings/interface"
+    },
+    {
+      "name": "Docker",
+      "dest": "/settings/docker"
     },
     {
       "name": "CSS",
