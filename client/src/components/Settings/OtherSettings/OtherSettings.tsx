@@ -172,8 +172,8 @@ export const OtherSettings = (): JSX.Element => {
         </select>
       </InputGroup>
 
-      {/* MODULES OPTIONS */}
-      <SettingsHeadline text="Modules" />
+      {/* HEADER OPTIONS */}
+      <SettingsHeadline text="Header" />
       {/* HIDE HEADER */}
       <InputGroup>
         <label htmlFor="hideHeader">Hide greeting and date</label>
@@ -233,6 +233,22 @@ export const OtherSettings = (): JSX.Element => {
         <span>Names must be separated with semicolon</span>
       </InputGroup>
 
+      {/* SHOW TIME */}
+      <InputGroup>
+        <label htmlFor="showTime">Show time</label>
+        <select
+          id="showTime"
+          name="showTime"
+          value={formData.showTime ? 1 : 0}
+          onChange={(e) => inputChangeHandler(e, { isBool: true })}
+        >
+          <option value={1}>True</option>
+          <option value={0}>False</option>
+        </select>
+      </InputGroup>
+
+      {/* MODULES OPTIONS */}
+      <SettingsHeadline text="Modules" />
       {/* HIDE APPS */}
       <InputGroup>
         <label htmlFor="hideApps">Hide applications</label>

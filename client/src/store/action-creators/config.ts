@@ -19,6 +19,14 @@ import {
 import { ActionType } from '../action-types';
 import { storeUIConfig } from '../../utility';
 
+const keys: (keyof Config)[] = [
+  'useAmericanDate',
+  'greetingsSchema',
+  'daySchema',
+  'monthSchema',
+  'showTime',
+];
+
 export const getConfig = () => async (dispatch: Dispatch<GetConfigAction>) => {
   try {
     const res = await axios.get<ApiResponse<Config>>('/api/config');
@@ -32,12 +40,6 @@ export const getConfig = () => async (dispatch: Dispatch<GetConfigAction>) => {
     document.title = res.data.data.customTitle;
 
     // Store settings for priority UI elements
-    const keys: (keyof Config)[] = [
-      'useAmericanDate',
-      'greetingsSchema',
-      'daySchema',
-      'monthSchema',
-    ];
     for (let key of keys) {
       storeUIConfig(key, res.data.data);
     }
@@ -66,12 +68,6 @@ export const updateConfig =
       });
 
       // Store settings for priority UI elements
-      const keys: (keyof Config)[] = [
-        'useAmericanDate',
-        'greetingsSchema',
-        'daySchema',
-        'monthSchema',
-      ];
       for (let key of keys) {
         storeUIConfig(key, res.data.data);
       }

@@ -8,3 +8,4 @@ export * from './templateObjects';
 export * from './inputHandler';
 export * from './storeUIConfig';
 export * from './validators';
+export * from './parseTime';

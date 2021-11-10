@@ -30,4 +30,5 @@ export interface OtherSettingsForm {
   greetingsSchema: string;
   daySchema: string;
   monthSchema: string;
+  showTime: boolean;
 }

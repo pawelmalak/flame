@@ -24,4 +24,5 @@ export interface Config {
   greetingsSchema: string;
   daySchema: string;
   monthSchema: string;
+  showTime: boolean;
 }
