@@ -1,6 +1,6 @@
 import classes from './AppCard.module.css';
 import { Icon } from '../../UI';
-import { iconParser, urlParser } from '../../../utility';
+import { iconParser, isImage, isSvg, isUrl, urlParser } from '../../../utility';
 
 import { App } from '../../../interfaces';
 import { useSelector } from 'react-redux';
@@ -19,19 +19,23 @@ export const AppCard = (props: Props): JSX.Element => {
   let iconEl: JSX.Element;
   const { icon } = props.app;
 
-  if (/.(jpeg|jpg|png)$/i.test(icon)) {
+  if (isImage(icon)) {
+    const source = isUrl(icon) ? icon : `/uploads/${icon}`;
+
     iconEl = (
       <img
-        src={`/uploads/${icon}`}
+        src={source}
         alt={`${props.app.name} icon`}
         className={classes.CustomIcon}
       />
     );
-  } else if (/.(svg)$/i.test(icon)) {
+  } else if (isSvg(icon)) {
+    const source = isUrl(icon) ? icon : `/uploads/${icon}`;
+
     iconEl = (
       <div className={classes.CustomIcon}>
         <svg
-          data-src={`/uploads/${icon}`}
+          data-src={source}
           fill="var(--color-primary)"
           className={classes.CustomIcon}
         ></svg>

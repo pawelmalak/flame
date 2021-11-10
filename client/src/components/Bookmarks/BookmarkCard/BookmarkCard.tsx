@@ -9,7 +9,7 @@ import classes from './BookmarkCard.module.css';
 
 import { Icon } from '../../UI';
 
-import { iconParser, urlParser } from '../../../utility';
+import { iconParser, isImage, isSvg, isUrl, urlParser } from '../../../utility';
 
 interface Props {
   category: Category;
@@ -30,21 +30,25 @@ export const BookmarkCard = (props: Props): JSX.Element => {
           if (bookmark.icon) {
             const { icon, name } = bookmark;
 
-            if (/.(jpeg|jpg|png)$/i.test(icon)) {
+            if (isImage(icon)) {
+              const source = isUrl(icon) ? icon : `/uploads/${icon}`;
+
               iconEl = (
                 <div className={classes.BookmarkIcon}>
                   <img
-                    src={`/uploads/${icon}`}
+                    src={source}
                     alt={`${name} icon`}
                     className={classes.CustomIcon}
                   />
                 </div>
               );
-            } else if (/.(svg)$/i.test(icon)) {
+            } else if (isSvg(icon)) {
+              const source = isUrl(icon) ? icon : `/uploads/${icon}`;
+
               iconEl = (
                 <div className={classes.BookmarkIcon}>
                   <svg
-                    data-src={`/uploads/${icon}`}
+                    data-src={source}
                     fill="var(--color-primary)"
                     className={classes.BookmarkIconSvg}
                   ></svg>
