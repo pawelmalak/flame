@@ -1,6 +1,6 @@
 const { join } = require('path');
 const express = require('express');
-const errorHandler = require('./middleware/errorHandler');
+const { errorHandler } = require('./middleware');
 
 const api = express();
 
