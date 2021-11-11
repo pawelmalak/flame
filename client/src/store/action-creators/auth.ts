@@ -1,15 +1,21 @@
 import { Dispatch } from 'redux';
 import { ApiResponse } from '../../interfaces';
 import { ActionType } from '../action-types';
-import { LoginAction, LogoutAction } from '../actions/auth';
+import {
+  AuthErrorAction,
+  AutoLoginAction,
+  LoginAction,
+  LogoutAction,
+} from '../actions/auth';
 import axios, { AxiosError } from 'axios';
 
 export const login =
-  (password: string) => async (dispatch: Dispatch<LoginAction>) => {
+  (formData: { password: string; duration: string }) =>
+  async (dispatch: Dispatch<LoginAction>) => {
     try {
       const res = await axios.post<ApiResponse<{ token: string }>>(
         '/api/auth',
-        { password }
+        formData
       );
 
       localStorage.setItem('token', res.data.data.token);
@@ -19,15 +25,7 @@ export const login =
         payload: res.data.data.token,
       });
     } catch (err) {
-      const apiError = err as AxiosError;
-
-      dispatch<any>({
-        type: ActionType.createNotification,
-        payload: {
-          title: 'Error',
-          message: apiError.response?.data.error,
-        },
-      });
+      dispatch<any>(authError(err, true));
     }
   };
 
@@ -38,3 +36,37 @@ export const logout = () => (dispatch: Dispatch<LogoutAction>) => {
     type: ActionType.logout,
   });
 };
+
+export const autoLogin = () => async (dispatch: Dispatch<AutoLoginAction>) => {
+  const token: string = localStorage.token;
+
+  try {
+    await axios.post<ApiResponse<{ token: { isValid: boolean } }>>(
+      '/api/auth/validate',
+      { token }
+    );
+
+    dispatch({
+      type: ActionType.autoLogin,
+      payload: token,
+    });
+  } catch (err) {
+    dispatch<any>(authError(err, false));
+  }
+};
+
+export const authError =
+  (error: unknown, showNotification: boolean) =>
+  (dispatch: Dispatch<AuthErrorAction>) => {
+    const apiError = error as AxiosError;
+
+    if (showNotification) {
+      dispatch<any>({
+        type: ActionType.createNotification,
+        payload: {
+          title: 'Error',
+          message: apiError.response?.data.error,
+        },
+      });
+    }
+  };

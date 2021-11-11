@@ -40,4 +40,6 @@ export enum ActionType {
   // AUTH
   login = 'LOGIN',
   logout = 'LOGOUT',
+  autoLogin = 'AUTO_LOGIN',
+  authError = 'AUTH_ERROR',
 }

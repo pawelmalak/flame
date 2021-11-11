@@ -1,5 +1,9 @@
 import { NavLink, Link, Switch, Route } from 'react-router-dom';
 
+// Redux
+import { useSelector } from 'react-redux';
+import { State } from '../../store/reducers';
+
 // Typescript
 import { Route as SettingsRoute } from '../../interfaces';
 
@@ -14,6 +18,7 @@ import { AppDetails } from './AppDetails/AppDetails';
 import { StyleSettings } from './StyleSettings/StyleSettings';
 import { SearchSettings } from './SearchSettings/SearchSettings';
 import { DockerSettings } from './DockerSettings/DockerSettings';
+import { ProtectedRoute } from '../Routing/ProtectedRoute';
 
 // UI
 import { Container, Headline } from '../UI';
@@ -22,13 +27,17 @@ import { Container, Headline } from '../UI';
 import { routes } from './settings.json';
 
 export const Settings = (): JSX.Element => {
+  const { isAuthenticated } = useSelector((state: State) => state.auth);
+
+  const tabs = isAuthenticated ? routes : routes.filter((r) => !r.authRequired);
+
   return (
     <Container>
       <Headline title="Settings" subtitle={<Link to="/">Go back</Link>} />
       <div className={classes.Settings}>
         {/* NAVIGATION MENU */}
         <nav className={classes.SettingsNav}>
-          {routes.map(({ name, dest }: SettingsRoute, idx) => (
+          {tabs.map(({ name, dest }: SettingsRoute, idx) => (
             <NavLink
               className={classes.SettingsNavLink}
               activeClassName={classes.SettingsNavLinkActive}
@@ -45,11 +54,20 @@ export const Settings = (): JSX.Element => {
         <section className={classes.SettingsContent}>
           <Switch>
             <Route exact path="/settings" component={Themer} />
-            <Route path="/settings/weather" component={WeatherSettings} />
-            <Route path="/settings/search" component={SearchSettings} />
-            <Route path="/settings/interface" component={UISettings} />
-            <Route path="/settings/docker" component={DockerSettings} />
-            <Route path="/settings/css" component={StyleSettings} />
+            <ProtectedRoute
+              path="/settings/weather"
+              component={WeatherSettings}
+            />
+            <ProtectedRoute
+              path="/settings/search"
+              component={SearchSettings}
+            />
+            <ProtectedRoute path="/settings/interface" component={UISettings} />
+            <ProtectedRoute
+              path="/settings/docker"
+              component={DockerSettings}
+            />
+            <ProtectedRoute path="/settings/css" component={StyleSettings} />
             <Route path="/settings/app" component={AppDetails} />
           </Switch>
         </section>

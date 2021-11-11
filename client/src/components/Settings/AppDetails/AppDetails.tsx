@@ -1,71 +1,14 @@
-import { FormEvent, Fragment, useState } from 'react';
-
-// Redux
-import { useDispatch, useSelector } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../../store';
-import { State } from '../../../store/reducers';
-
-// UI
-import { Button, InputGroup, SettingsHeadline } from '../../UI';
-
-// CSS
+import { Fragment } from 'react';
+import { Button, SettingsHeadline } from '../../UI';
 import classes from './AppDetails.module.css';
-
-// Utils
 import { checkVersion } from '../../../utility';
+import { AuthForm } from './AuthForm/AuthForm';
 
 export const AppDetails = (): JSX.Element => {
-  const { isAuthenticated } = useSelector((state: State) => state.auth);
-
-  const dispatch = useDispatch();
-  const { login, logout } = bindActionCreators(actionCreators, dispatch);
-
-  const [password, setPassword] = useState('');
-
-  const formHandler = (e: FormEvent) => {
-    e.preventDefault();
-    login(password);
-    setPassword('');
-  };
-
   return (
     <Fragment>
       <SettingsHeadline text="Authentication" />
-      {!isAuthenticated ? (
-        <form onSubmit={formHandler}>
-          <InputGroup>
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <span>
-              See
-              <a
-                href="https://github.com/pawelmalak/flame/wiki/Authentication"
-                target="blank"
-              >
-                {` project wiki `}
-              </a>
-              to read more about authentication
-            </span>
-          </InputGroup>
-
-          <Button>Login</Button>
-        </form>
-      ) : (
-        <div>
-          <p className={classes.text}>
-            You are logged in. Your session will expire <span>@@@@</span>
-          </p>
-          <Button click={logout}>Logout</Button>
-        </div>
-      )}
+      <AuthForm />
 
       <hr className={classes.separator} />
 

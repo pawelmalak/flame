@@ -8,3 +8,12 @@ export interface LoginAction {
 export interface LogoutAction {
   type: ActionType.logout;
 }
+
+export interface AutoLoginAction {
+  type: ActionType.autoLogin;
+  payload: string;
+}
+
+export interface AuthErrorAction {
+  type: ActionType.authError;
+}

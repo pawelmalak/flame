@@ -28,6 +28,18 @@ export const authReducer = (
         token: null,
         isAuthenticated: false,
       };
+    case ActionType.autoLogin:
+      return {
+        ...state,
+        token: action.payload,
+        isAuthenticated: true,
+      };
+    case ActionType.authError:
+      return {
+        ...state,
+        token: null,
+        isAuthenticated: false,
+      };
     default:
       return state;
   }

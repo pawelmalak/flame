@@ -39,7 +39,12 @@ import {
   UpdateBookmarkAction,
 } from './bookmark';
 
-import { LoginAction, LogoutAction } from './auth';
+import {
+  AuthErrorAction,
+  AutoLoginAction,
+  LoginAction,
+  LogoutAction,
+} from './auth';
 
 export type Action =
   // Theme
@@ -76,4 +81,6 @@ export type Action =
   | UpdateBookmarkAction
   // Auth
   | LoginAction
-  | LogoutAction;
+  | LogoutAction
+  | AutoLoginAction
+  | AuthErrorAction;
