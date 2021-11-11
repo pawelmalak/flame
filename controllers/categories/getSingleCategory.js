@@ -7,12 +7,15 @@ const Bookmark = require('../../models/Bookmark');
 // @route     GET /api/categories/:id
 // @access    Public
 const getSingleCategory = asyncWrapper(async (req, res, next) => {
+  const visibility = req.isAuthenticated ? {} : { isPublic: true };
+
   const category = await Category.findOne({
-    where: { id: req.params.id },
+    where: { id: req.params.id, ...visibility },
     include: [
       {
         model: Bookmark,
         as: 'bookmarks',
+        where: visibility,
       },
     ],
   });

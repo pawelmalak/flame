@@ -12,15 +12,20 @@ const getAllCategories = asyncWrapper(async (req, res, next) => {
 
   let categories;
 
+  // categories visibility
+  const where = req.isAuthenticated ? {} : { isPublic: true };
+
   if (orderType == 'name') {
     categories = await Category.findAll({
       include: [
         {
           model: Bookmark,
           as: 'bookmarks',
+          where,
         },
       ],
       order: [[Sequelize.fn('lower', Sequelize.col('Category.name')), 'ASC']],
+      where,
     });
   } else {
     categories = await Category.findAll({
@@ -28,9 +33,11 @@ const getAllCategories = asyncWrapper(async (req, res, next) => {
         {
           model: Bookmark,
           as: 'bookmarks',
+          where,
         },
       ],
       order: [[orderType, 'ASC']],
+      where,
     });
   }
 
