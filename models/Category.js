@@ -20,7 +20,7 @@ const Category = sequelize.define(
     isPublic: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      defaultValue: 0,
+      defaultValue: 1,
     },
   },
   {

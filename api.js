@@ -21,6 +21,7 @@ api.use('/api/weather', require('./routes/weather'));
 api.use('/api/categories', require('./routes/category'));
 api.use('/api/bookmarks', require('./routes/bookmark'));
 api.use('/api/queries', require('./routes/queries'));
+api.use('/api/auth', require('./routes/auth'));
 
 // Custom error handler
 api.use(errorHandler);

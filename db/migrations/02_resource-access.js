@@ -7,7 +7,7 @@ const up = async (query) => {
   const template = {
     type: INTEGER,
     allowNull: true,
-    defaultValue: 0,
+    defaultValue: 1,
   };
 
   for await (let table of tables) {

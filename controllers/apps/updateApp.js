@@ -1,10 +1,15 @@
 const asyncWrapper = require('../../middleware/asyncWrapper');
 const App = require('../../models/App');
+const ErrorResponse = require('../../utils/ErrorResponse');
 
 // @desc      Update app
 // @route     PUT /api/apps/:id
 // @access    Public
 const updateApp = asyncWrapper(async (req, res, next) => {
+  if (!req.isAuthenticated) {
+    return next(new ErrorResponse('Unauthorized', 401));
+  }
+
   let app = await App.findOne({
     where: { id: req.params.id },
   });
