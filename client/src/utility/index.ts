@@ -11,3 +11,4 @@ export * from './validators';
 export * from './parseTime';
 export * from './decodeToken';
 export * from './applyAuth';
+export * from './escapeRegex';

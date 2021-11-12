@@ -22,6 +22,9 @@ import { BookmarkGrid } from '../Bookmarks/BookmarkGrid/BookmarkGrid';
 import { SearchBar } from '../SearchBar/SearchBar';
 import { Header } from './Header/Header';
 
+// Utils
+import { escapeRegex } from '../../utility';
+
 export const Home = (): JSX.Element => {
   const {
     apps: { apps, loading: appsLoading },
@@ -60,7 +63,9 @@ export const Home = (): JSX.Element => {
     if (localSearch) {
       // Search through apps
       setAppSearchResult([
-        ...apps.filter(({ name }) => new RegExp(localSearch, 'i').test(name)),
+        ...apps.filter(({ name }) =>
+          new RegExp(escapeRegex(localSearch), 'i').test(name)
+        ),
       ]);
 
       // Search through bookmarks
@@ -70,7 +75,9 @@ export const Home = (): JSX.Element => {
       category.bookmarks = categories
         .map(({ bookmarks }) => bookmarks)
         .flat()
-        .filter(({ name }) => new RegExp(localSearch, 'i').test(name));
+        .filter(({ name }) =>
+          new RegExp(escapeRegex(localSearch), 'i').test(name)
+        );
 
       setBookmarkSearchResult([category]);
     } else {
