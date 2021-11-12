@@ -8,6 +8,7 @@ import {
   LogoutAction,
 } from '../actions/auth';
 import axios, { AxiosError } from 'axios';
+import { getApps, getCategories } from '.';
 
 export const login =
   (formData: { password: string; duration: string }) =>
@@ -24,6 +25,9 @@ export const login =
         type: ActionType.login,
         payload: res.data.data.token,
       });
+
+      dispatch<any>(getApps());
+      dispatch<any>(getCategories());
     } catch (err) {
       dispatch<any>(authError(err, true));
     }
@@ -35,6 +39,9 @@ export const logout = () => (dispatch: Dispatch<LogoutAction>) => {
   dispatch({
     type: ActionType.logout,
   });
+
+  dispatch<any>(getApps());
+  dispatch<any>(getCategories());
 };
 
 export const autoLogin = () => async (dispatch: Dispatch<AutoLoginAction>) => {
@@ -50,6 +57,9 @@ export const autoLogin = () => async (dispatch: Dispatch<AutoLoginAction>) => {
       type: ActionType.autoLogin,
       payload: token,
     });
+
+    dispatch<any>(getApps());
+    dispatch<any>(getCategories());
   } catch (err) {
     dispatch<any>(authError(err, false));
   }
@@ -69,4 +79,7 @@ export const authError =
         },
       });
     }
+
+    dispatch<any>(getApps());
+    dispatch<any>(getCategories());
   };

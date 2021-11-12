@@ -51,6 +51,7 @@ export const AuthForm = (): JSX.Element => {
               id="password"
               name="password"
               placeholder="••••••"
+              autoComplete="current-password"
               value={formData.password}
               onChange={(e) =>
                 setFormData({ ...formData, password: e.target.value })

@@ -9,8 +9,9 @@ import { actionCreators } from '../../../store';
 // Typescript
 import { ApiResponse } from '../../../interfaces';
 
-// UI
+// Other
 import { InputGroup, Button } from '../../UI';
+import { applyAuth } from '../../../utility';
 
 export const StyleSettings = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -34,7 +35,11 @@ export const StyleSettings = (): JSX.Element => {
     e.preventDefault();
 
     axios
-      .put<ApiResponse<{}>>('/api/config/0/css', { styles: customStyles })
+      .put<ApiResponse<{}>>(
+        '/api/config/0/css',
+        { styles: customStyles },
+        { headers: applyAuth() }
+      )
       .then(() => {
         createNotification({
           title: 'Success',

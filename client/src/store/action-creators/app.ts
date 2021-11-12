@@ -11,6 +11,7 @@ import {
   UpdateAppAction,
 } from '../actions/app';
 import axios from 'axios';
+import { applyAuth } from '../../utility';
 
 export const getApps =
   () => async (dispatch: Dispatch<GetAppsAction<undefined | App[]>>) => {
@@ -20,7 +21,9 @@ export const getApps =
     });
 
     try {
-      const res = await axios.get<ApiResponse<App[]>>('/api/apps');
+      const res = await axios.get<ApiResponse<App[]>>('/api/apps', {
+        headers: applyAuth(),
+      });
 
       dispatch({
         type: ActionType.getAppsSuccess,
@@ -35,9 +38,15 @@ export const pinApp =
   (app: App) => async (dispatch: Dispatch<PinAppAction>) => {
     try {
       const { id, isPinned, name } = app;
-      const res = await axios.put<ApiResponse<App>>(`/api/apps/${id}`, {
-        isPinned: !isPinned,
-      });
+      const res = await axios.put<ApiResponse<App>>(
+        `/api/apps/${id}`,
+        {
+          isPinned: !isPinned,
+        },
+        {
+          headers: applyAuth(),
+        }
+      );
 
       const status = isPinned
         ? 'unpinned from Homescreen'
@@ -63,7 +72,9 @@ export const pinApp =
 export const addApp =
   (formData: NewApp | FormData) => async (dispatch: Dispatch<AddAppAction>) => {
     try {
-      const res = await axios.post<ApiResponse<App>>('/api/apps', formData);
+      const res = await axios.post<ApiResponse<App>>('/api/apps', formData, {
+        headers: applyAuth(),
+      });
 
       dispatch<any>({
         type: ActionType.createNotification,
@@ -88,7 +99,9 @@ export const addApp =
 export const deleteApp =
   (id: number) => async (dispatch: Dispatch<DeleteAppAction>) => {
     try {
-      await axios.delete<ApiResponse<{}>>(`/api/apps/${id}`);
+      await axios.delete<ApiResponse<{}>>(`/api/apps/${id}`, {
+        headers: applyAuth(),
+      });
 
       dispatch<any>({
         type: ActionType.createNotification,
@@ -113,7 +126,10 @@ export const updateApp =
     try {
       const res = await axios.put<ApiResponse<App>>(
         `/api/apps/${id}`,
-        formData
+        formData,
+        {
+          headers: applyAuth(),
+        }
       );
 
       dispatch<any>({
@@ -155,7 +171,9 @@ export const reorderApps =
         })
       );
 
-      await axios.put<ApiResponse<{}>>('/api/apps/0/reorder', updateQuery);
+      await axios.put<ApiResponse<{}>>('/api/apps/0/reorder', updateQuery, {
+        headers: applyAuth(),
+      });
 
       dispatch({
         type: ActionType.reorderApps,

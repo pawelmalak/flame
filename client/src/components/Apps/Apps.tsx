@@ -29,7 +29,10 @@ interface Props {
 }
 
 export const Apps = (props: Props): JSX.Element => {
-  const { apps, loading } = useSelector((state: State) => state.apps);
+  const {
+    apps: { apps, loading },
+    auth: { isAuthenticated },
+  } = useSelector((state: State) => state);
 
   const dispatch = useDispatch();
   const { getApps } = bindActionCreators(actionCreators, dispatch);
@@ -76,10 +79,12 @@ export const Apps = (props: Props): JSX.Element => {
         subtitle={<Link to="/">Go back</Link>}
       />
 
-      <div className={classes.ActionsContainer}>
-        <ActionButton name="Add" icon="mdiPlusBox" handler={toggleModal} />
-        <ActionButton name="Edit" icon="mdiPencil" handler={toggleEdit} />
-      </div>
+      {isAuthenticated && (
+        <div className={classes.ActionsContainer}>
+          <ActionButton name="Add" icon="mdiPlusBox" handler={toggleModal} />
+          <ActionButton name="Edit" icon="mdiPencil" handler={toggleEdit} />
+        </div>
+      )}
 
       <div className={classes.Apps}>
         {loading ? (

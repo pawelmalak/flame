@@ -18,7 +18,7 @@ import {
   WeatherForm,
 } from '../../interfaces';
 import { ActionType } from '../action-types';
-import { storeUIConfig } from '../../utility';
+import { storeUIConfig, applyAuth } from '../../utility';
 
 const keys: (keyof Config)[] = [
   'useAmericanDate',
@@ -55,7 +55,13 @@ export const updateConfig =
   ) =>
   async (dispatch: Dispatch<UpdateConfigAction>) => {
     try {
-      const res = await axios.put<ApiResponse<Config>>('/api/config', formData);
+      const res = await axios.put<ApiResponse<Config>>(
+        '/api/config',
+        formData,
+        {
+          headers: applyAuth(),
+        }
+      );
 
       dispatch<any>({
         type: ActionType.createNotification,
@@ -96,7 +102,9 @@ export const fetchQueries =
 export const addQuery =
   (query: Query) => async (dispatch: Dispatch<AddQueryAction>) => {
     try {
-      const res = await axios.post<ApiResponse<Query>>('/api/queries', query);
+      const res = await axios.post<ApiResponse<Query>>('/api/queries', query, {
+        headers: applyAuth(),
+      });
 
       dispatch({
         type: ActionType.addQuery,
@@ -111,7 +119,10 @@ export const deleteQuery =
   (prefix: string) => async (dispatch: Dispatch<DeleteQueryAction>) => {
     try {
       const res = await axios.delete<ApiResponse<Query[]>>(
-        `/api/queries/${prefix}`
+        `/api/queries/${prefix}`,
+        {
+          headers: applyAuth(),
+        }
       );
 
       dispatch({
@@ -129,7 +140,10 @@ export const updateQuery =
     try {
       const res = await axios.put<ApiResponse<Query[]>>(
         `/api/queries/${oldPrefix}`,
-        query
+        query,
+        {
+          headers: applyAuth(),
+        }
       );
 
       dispatch({

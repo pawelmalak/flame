@@ -34,9 +34,10 @@ export enum ContentType {
 }
 
 export const Bookmarks = (props: Props): JSX.Element => {
-  const { loading, categories } = useSelector(
-    (state: State) => state.bookmarks
-  );
+  const {
+    bookmarks: { loading, categories },
+    auth: { isAuthenticated },
+  } = useSelector((state: State) => state);
 
   const dispatch = useDispatch();
   const { getCategories } = bindActionCreators(actionCreators, dispatch);
@@ -109,28 +110,30 @@ export const Bookmarks = (props: Props): JSX.Element => {
 
       <Headline title="All Bookmarks" subtitle={<Link to="/">Go back</Link>} />
 
-      <div className={classes.ActionsContainer}>
-        <ActionButton
-          name="Add Category"
-          icon="mdiPlusBox"
-          handler={() => addActionHandler(ContentType.category)}
-        />
-        <ActionButton
-          name="Add Bookmark"
-          icon="mdiPlusBox"
-          handler={() => addActionHandler(ContentType.bookmark)}
-        />
-        <ActionButton
-          name="Edit Categories"
-          icon="mdiPencil"
-          handler={() => editActionHandler(ContentType.category)}
-        />
-        <ActionButton
-          name="Edit Bookmarks"
-          icon="mdiPencil"
-          handler={() => editActionHandler(ContentType.bookmark)}
-        />
-      </div>
+      {isAuthenticated && (
+        <div className={classes.ActionsContainer}>
+          <ActionButton
+            name="Add Category"
+            icon="mdiPlusBox"
+            handler={() => addActionHandler(ContentType.category)}
+          />
+          <ActionButton
+            name="Add Bookmark"
+            icon="mdiPlusBox"
+            handler={() => addActionHandler(ContentType.bookmark)}
+          />
+          <ActionButton
+            name="Edit Categories"
+            icon="mdiPencil"
+            handler={() => editActionHandler(ContentType.category)}
+          />
+          <ActionButton
+            name="Edit Bookmarks"
+            icon="mdiPencil"
+            handler={() => editActionHandler(ContentType.bookmark)}
+          />
+        </div>
+      )}
 
       {loading ? (
         <Spinner />

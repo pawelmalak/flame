@@ -8,6 +8,7 @@ import {
   NewBookmark,
   NewCategory,
 } from '../../interfaces';
+import { applyAuth } from '../../utility';
 import { ActionType } from '../action-types';
 import {
   AddBookmarkAction,
@@ -31,7 +32,9 @@ export const getCategories =
     });
 
     try {
-      const res = await axios.get<ApiResponse<Category[]>>('/api/categories');
+      const res = await axios.get<ApiResponse<Category[]>>('/api/categories', {
+        headers: applyAuth(),
+      });
 
       dispatch({
         type: ActionType.getCategoriesSuccess,
@@ -47,7 +50,8 @@ export const addCategory =
     try {
       const res = await axios.post<ApiResponse<Category>>(
         '/api/categories',
-        formData
+        formData,
+        { headers: applyAuth() }
       );
 
       dispatch<any>({
@@ -75,7 +79,8 @@ export const addBookmark =
     try {
       const res = await axios.post<ApiResponse<Bookmark>>(
         '/api/bookmarks',
-        formData
+        formData,
+        { headers: applyAuth() }
       );
 
       dispatch<any>({
@@ -101,7 +106,8 @@ export const pinCategory =
       const { id, isPinned, name } = category;
       const res = await axios.put<ApiResponse<Category>>(
         `/api/categories/${id}`,
-        { isPinned: !isPinned }
+        { isPinned: !isPinned },
+        { headers: applyAuth() }
       );
 
       const status = isPinned
@@ -128,7 +134,9 @@ export const pinCategory =
 export const deleteCategory =
   (id: number) => async (dispatch: Dispatch<DeleteCategoryAction>) => {
     try {
-      await axios.delete<ApiResponse<{}>>(`/api/categories/${id}`);
+      await axios.delete<ApiResponse<{}>>(`/api/categories/${id}`, {
+        headers: applyAuth(),
+      });
 
       dispatch<any>({
         type: ActionType.createNotification,
@@ -153,7 +161,8 @@ export const updateCategory =
     try {
       const res = await axios.put<ApiResponse<Category>>(
         `/api/categories/${id}`,
-        formData
+        formData,
+        { headers: applyAuth() }
       );
 
       dispatch<any>({
@@ -179,7 +188,9 @@ export const deleteBookmark =
   (bookmarkId: number, categoryId: number) =>
   async (dispatch: Dispatch<DeleteBookmarkAction>) => {
     try {
-      await axios.delete<ApiResponse<{}>>(`/api/bookmarks/${bookmarkId}`);
+      await axios.delete<ApiResponse<{}>>(`/api/bookmarks/${bookmarkId}`, {
+        headers: applyAuth(),
+      });
 
       dispatch<any>({
         type: ActionType.createNotification,
@@ -218,7 +229,8 @@ export const updateBookmark =
     try {
       const res = await axios.put<ApiResponse<Bookmark>>(
         `/api/bookmarks/${bookmarkId}`,
-        formData
+        formData,
+        { headers: applyAuth() }
       );
 
       dispatch<any>({
@@ -295,7 +307,8 @@ export const reorderCategories =
 
       await axios.put<ApiResponse<{}>>(
         '/api/categories/0/reorder',
-        updateQuery
+        updateQuery,
+        { headers: applyAuth() }
       );
 
       dispatch({

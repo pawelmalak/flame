@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 // Typescript
-import { Weather, ApiResponse, Config } from '../../../interfaces';
+import { Weather, ApiResponse } from '../../../interfaces';
 
 // CSS
 import classes from './WeatherWidget.module.css';
