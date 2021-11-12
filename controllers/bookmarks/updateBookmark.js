@@ -24,6 +24,10 @@ const updateBookmark = asyncWrapper(async (req, res, next) => {
     categoryId: parseInt(req.body.categoryId),
   };
 
+  if (_body.icon) {
+    _body.icon = _body.icon.trim();
+  }
+
   if (req.file) {
     _body.icon = req.file.filename;
   }
