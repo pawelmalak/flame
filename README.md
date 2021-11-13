@@ -1,37 +1,25 @@
 # Flame
 
-![Homescreen screenshot](./.github/_home.png)
+![Homescreen screenshot](.github/home.png)
 
 ## Description
 
 Flame is self-hosted startpage for your server. Its design is inspired (heavily) by [SUI](https://github.com/jeroenpardon/sui). Flame is very easy to setup and use. With built-in editors, it allows you to setup your very own application hub in no time - no file editing necessary.
 
-## Technology
+## Functionality
+📝 Create, update, delete your applications and bookmarks directly from the app using built-in GUI editors
 
-- Backend
-  - Node.js + Express
-  - Sequelize ORM + SQLite
-- Frontend
-  - React
-  - Redux
-  - TypeScript
-- Deployment
-  - Docker
-  - Kubernetes
+📌 Pin your favorite items to the homescreen for quick and easy access
 
-## Development
+🔍 Integrated search bar with local filtering, 11 web search providers and ability to add your own
 
-```sh
-# clone repository
-git clone https://github.com/pawelmalak/flame
-cd flame
+🔑 Authentication system to protect your settings, apps and bookmarks
 
-# run only once
-npm run dev-init
+🔨 Dozens of option to customize Flame interface to your needs, including support for custom CSS and 15 built-in color themes
+  
+☀️ Weather widget with current temperature, cloud coverage and animated weather status
 
-# start backend and frontend development servers
-npm run dev
-```
+🐳 Docker integration to automatically pick and add apps based on their labels
 
 ## Installation
 
@@ -40,24 +28,26 @@ npm run dev
 [Docker Hub link](https://hub.docker.com/r/pawelmalak/flame)
 
 ```sh
-docker pull pawelmalak/flame:latest
+docker pull pawelmalak/flame
 
 # for ARM architecture (e.g. RaspberryPi)
 docker pull pawelmalak/flame:multiarch
-```
 
+# installing specific version
+docker pull pawelmalak/flame:2.0.0
+```
 
 #### Building images
 
 ```sh
 # build image for amd64 only
-docker build -t flame .
+docker build -t flame -f .docker/Dockerfile .
 
 # build multiarch image for amd64, armv7 and arm64
 # building failed multiple times with 2GB memory usage limit so you might want to increase it
 docker buildx build \
   --platform linux/arm/v7,linux/arm64,linux/amd64 \
-  -f Dockerfile.multiarch \
+  -f .docker/Dockerfile.multiarch \
   -t flame:multiarch .
 ```
 
@@ -81,6 +71,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock # optional but required for Docker integration feature
     ports:
       - 5005:5005
+    environment:
+      - PASSWORD=flame_password
     restart: unless-stopped
 ```
 
@@ -95,31 +87,50 @@ skaffold dev
 
 Follow instructions from wiki: [Installation without Docker](https://github.com/pawelmalak/flame/wiki/Installation-without-docker)
 
-## Functionality
+## Development
 
-- Applications
-  - Create, update, delete and organize applications using GUI
-  - Pin your favourite apps to the homescreen
+### Technology
 
-![Homescreen screenshot](./.github/_apps.png)
+- Backend
+  - Node.js + Express
+  - Sequelize ORM + SQLite
+- Frontend
+  - React
+  - Redux
+  - TypeScript
+- Deployment
+  - Docker
+  - Kubernetes
 
-- Bookmarks
-  - Create, update, delete and organize bookmarks and categories using GUI
-  - Pin your favourite categories to the homescreen
-  - Import html bookmarks (experimental)
+### Creating dev environment
 
-![Homescreen screenshot](./.github/_bookmarks.png)
+```sh
+# clone repository
+git clone https://github.com/pawelmalak/flame
+cd flame
 
-- Weather
+# run only once
+npm run dev-init
 
-  - Get current temperature, cloud coverage and weather status with animated icons
+# start backend and frontend development servers
+npm run dev
+```
 
-- Themes
-  - Customize your page by choosing from 15 color themes
+## Screenshots
 
-![Homescreen screenshot](./.github/_themes.png)
+![Apps screenshot](.github/apps.png)
+
+![Bookmarks screenshot](.github/bookmarks.png)
+
+![Settings screenshot](.github/settings.png)
+
+![Themes screenshot](.github/_themes.png)
 
 ## Usage
+
+### Authentication
+
+Visit [project wiki](https://github.com/pawelmalak/flame/wiki/Authentication) to read more about authentication
 
 ### Search bar
 
