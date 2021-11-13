@@ -7,19 +7,13 @@
 Flame is self-hosted startpage for your server. Its design is inspired (heavily) by [SUI](https://github.com/jeroenpardon/sui). Flame is very easy to setup and use. With built-in editors, it allows you to setup your very own application hub in no time - no file editing necessary.
 
 ## Functionality
-📝 Create, update, delete your applications and bookmarks directly from the app using built-in GUI editors
-
-📌 Pin your favorite items to the homescreen for quick and easy access
-
-🔍 Integrated search bar with local filtering, 11 web search providers and ability to add your own
-
-🔑 Authentication system to protect your settings, apps and bookmarks
-
-🔨 Dozens of option to customize Flame interface to your needs, including support for custom CSS and 15 built-in color themes
-  
-☀️ Weather widget with current temperature, cloud coverage and animated weather status
-
-🐳 Docker integration to automatically pick and add apps based on their labels
+- 📝 Create, update, delete your applications and bookmarks directly from the app using built-in GUI editors
+- 📌 Pin your favorite items to the homescreen for quick and easy access
+- 🔍 Integrated search bar with local filtering, 11 web search providers and ability to add your own
+- 🔑 Authentication system to protect your settings, apps and bookmarks
+- 🔨 Dozens of option to customize Flame interface to your needs, including support for custom CSS and 15 built-in color themes
+- ☀️ Weather widget with current temperature, cloud coverage and animated weather status
+- 🐳 Docker integration to automatically pick and add apps based on their labels
 
 ## Installation
 
@@ -55,7 +49,7 @@ docker buildx build \
 
 ```sh
 # run container
-docker run -p 5005:5005 -v /path/to/data:/app/data flame
+docker run -p 5005:5005 -v /path/to/data:/app/data -e PASSWORD=flame_password flame
 ```
 
 #### Docker-Compose
@@ -124,7 +118,7 @@ npm run dev
 
 ![Settings screenshot](.github/settings.png)
 
-![Themes screenshot](.github/_themes.png)
+![Themes screenshot](.github/themes.png)
 
 ## Usage
 
