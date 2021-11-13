@@ -54,6 +54,11 @@
       "name": "YouTube",
       "prefix": "yt",
       "template": "https://www.youtube.com/results?search_query="
+    },
+    {
+      "name": "Wikipedia",
+      "prefix": "w",
+      "template": "https://en.wikipedia.org/w/index.php?search="
     }
   ]
 }
