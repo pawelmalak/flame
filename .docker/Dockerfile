@@ -25,5 +25,6 @@ WORKDIR /app
 EXPOSE 5005
 
 ENV NODE_ENV=production
+ENV PASSWORD=flame_password
 
 CMD ["node", "server.js"]
