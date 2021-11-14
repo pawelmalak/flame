@@ -60,10 +60,10 @@ export const CategoryForm = ({
       addCategory(formData);
     } else {
       updateCategory(category.id, formData);
-
-      setFormData(newCategoryTemplate);
-      modalHandler();
     }
+
+    setFormData(newCategoryTemplate);
+    modalHandler();
   };
 
   return (

@@ -60,6 +60,14 @@ export const Bookmarks = (props: Props): JSX.Element => {
     }
   }, []);
 
+  // observe if user is authenticated -> set default view if not
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setIsInEdit(false);
+      setModalIsOpen(false);
+    }
+  }, [isAuthenticated]);
+
   const toggleModal = (): void => {
     setModalIsOpen(!modalIsOpen);
   };

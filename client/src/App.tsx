@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { actionCreators } from './store';
+import { autoLogin, getConfig } from './store/action-creators';
+import { actionCreators, store } from './store';
 import 'external-svg-loader';
 
 // Utils
@@ -15,23 +16,20 @@ import { useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { useEffect } from 'react';
 
+// Get config
+store.dispatch<any>(getConfig());
+
+// Validate token
+if (localStorage.token) {
+  store.dispatch<any>(autoLogin());
+}
+
 export const App = (): JSX.Element => {
   const dispath = useDispatch();
-  const {
-    fetchQueries,
-    getConfig,
-    setTheme,
-    logout,
-    createNotification,
-    autoLogin,
-  } = bindActionCreators(actionCreators, dispath);
+  const { fetchQueries, setTheme, logout, createNotification } =
+    bindActionCreators(actionCreators, dispath);
 
   useEffect(() => {
-    // login if token exists
-    if (localStorage.token) {
-      autoLogin();
-    }
-
     // check if token is valid
     const tokenIsValid = setInterval(() => {
       if (localStorage.token) {
@@ -47,9 +45,6 @@ export const App = (): JSX.Element => {
         }
       }
     }, 1000);
-
-    // load app config
-    getConfig();
 
     // set theme
     if (localStorage.theme) {

@@ -45,12 +45,17 @@ export const SearchBar = (props: Props): JSX.Element => {
 
       if (key === 'Escape') {
         clearSearch();
+      } else if (document.activeElement !== inputRef.current) {
+        if (key === '`') {
+          inputRef.current.focus();
+          clearSearch();
+        }
       }
     };
 
-    window.addEventListener('keydown', keyOutsideFocus);
+    window.addEventListener('keyup', keyOutsideFocus);
 
-    return () => window.removeEventListener('keydown', keyOutsideFocus);
+    return () => window.removeEventListener('keyup', keyOutsideFocus);
   }, []);
 
   const clearSearch = () => {

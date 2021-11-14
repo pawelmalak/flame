@@ -31,6 +31,13 @@ docker pull pawelmalak/flame:multiarch
 docker pull pawelmalak/flame:2.0.0
 ```
 
+#### Deployment
+
+```sh
+# run container
+docker run -p 5005:5005 -v /path/to/data:/app/data -e PASSWORD=flame_password flame
+```
+
 #### Building images
 
 ```sh
@@ -43,13 +50,6 @@ docker buildx build \
   --platform linux/arm/v7,linux/arm64,linux/amd64 \
   -f .docker/Dockerfile.multiarch \
   -t flame:multiarch .
-```
-
-#### Deployment
-
-```sh
-# run container
-docker run -p 5005:5005 -v /path/to/data:/app/data -e PASSWORD=flame_password flame
 ```
 
 #### Docker-Compose
@@ -130,9 +130,7 @@ Visit [project wiki](https://github.com/pawelmalak/flame/wiki/Authentication) to
 
 #### Searching
 
-To use search bar you need to type your search query with selected prefix. For example, to search for "what is docker" using google search you would type: `/g what is docker`.
-
-> You can change where to open search results (same/new tab) in the settings
+The default search setting is to search through all your apps and bookmarks. If you want to search using specific search engine, you need to type your search query with selected prefix. For example, to search for "what is docker" using google search you would type: `/g what is docker`.
 
 For list of supported search engines, shortcuts and more about searching functionality visit [project wiki](https://github.com/pawelmalak/flame/wiki/Search-bar).
 
