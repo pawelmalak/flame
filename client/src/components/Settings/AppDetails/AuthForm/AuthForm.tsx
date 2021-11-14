@@ -79,8 +79,6 @@ export const AuthForm = (): JSX.Element => {
                 setFormData({ ...formData, duration: e.target.value })
               }
             >
-              <option value="5s">dev: 5 seconds</option>
-              <option value="10s">dev: 10 seconds</option>
               <option value="1h">1 hour</option>
               <option value="1d">1 day</option>
               <option value="14d">2 weeks</option>

@@ -1,12 +1,7 @@
 const { Op } = require('sequelize');
 const Weather = require('../models/Weather');
-const Logger = require('./Logger');
-const logger = new Logger();
-const loadConfig = require('./loadConfig');
 
 const clearWeatherData = async () => {
-  const { WEATHER_API_KEY: secret } = await loadConfig();
-
   const weather = await Weather.findOne({
     order: [['createdAt', 'DESC']],
   });
@@ -19,10 +14,6 @@ const clearWeatherData = async () => {
         },
       },
     });
-  }
-
-  if (secret) {
-    logger.log('Old weather data was deleted');
   }
 };
 

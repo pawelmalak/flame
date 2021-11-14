@@ -15,7 +15,7 @@ const weatherJob = schedule.scheduleJob(
 
     try {
       const weatherData = await getExternalWeather();
-      logger.log('Weather updated');
+
       Sockets.getSocket('weather').socket.send(JSON.stringify(weatherData));
     } catch (err) {
       if (secret) {
