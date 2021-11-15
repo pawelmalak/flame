@@ -25,13 +25,18 @@ const getAllApps = asyncWrapper(async (req, res, next) => {
     await useKubernetes(apps);
   }
 
+  // apps visibility
+  const where = req.isAuthenticated ? {} : { isPublic: true };
+
   if (orderType == 'name') {
     apps = await App.findAll({
       order: [[Sequelize.fn('lower', Sequelize.col('name')), 'ASC']],
+      where,
     });
   } else {
     apps = await App.findAll({
       order: [[orderType, 'ASC']],
+      where,
     });
   }
 

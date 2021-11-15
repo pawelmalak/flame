@@ -1,21 +1,17 @@
+import { ReactNode } from 'react';
 import classes from './Button.module.css';
 
-interface ComponentProps {
-  children: string;
+interface Props {
+  children: ReactNode;
   click?: any;
 }
 
-const Button = (props: ComponentProps): JSX.Element => {
-  const {
-    children,
-    click
-  } = props;
+export const Button = (props: Props): JSX.Element => {
+  const { children, click } = props;
 
   return (
-    <button className={classes.Button} onClick={click ? click : () => {}} >
+    <button className={classes.Button} onClick={click ? click : () => {}}>
       {children}
     </button>
-  )
-}
-
-export default Button;
+  );
+};

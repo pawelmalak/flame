@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
+// middleware
+const { auth, requireAuth } = require('../middleware');
+
 const {
   getCSS,
   updateCSS,
@@ -8,8 +11,8 @@ const {
   updateConfig,
 } = require('../controllers/config');
 
-router.route('/').get(getConfig).put(updateConfig);
+router.route('/').get(getConfig).put(auth, requireAuth, updateConfig);
 
-router.route('/0/css').get(getCSS).put(updateCSS);
+router.route('/0/css').get(getCSS).put(auth, requireAuth, updateCSS);
 
 module.exports = router;

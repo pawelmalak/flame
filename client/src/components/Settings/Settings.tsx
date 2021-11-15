@@ -1,5 +1,8 @@
-//
 import { NavLink, Link, Switch, Route } from 'react-router-dom';
+
+// Redux
+import { useSelector } from 'react-redux';
+import { State } from '../../store/reducers';
 
 // Typescript
 import { Route as SettingsRoute } from '../../interfaces';
@@ -8,28 +11,33 @@ import { Route as SettingsRoute } from '../../interfaces';
 import classes from './Settings.module.css';
 
 // Components
-import Themer from '../Themer/Themer';
-import WeatherSettings from './WeatherSettings/WeatherSettings';
-import OtherSettings from './OtherSettings/OtherSettings';
-import AppDetails from './AppDetails/AppDetails';
-import StyleSettings from './StyleSettings/StyleSettings';
-import SearchSettings from './SearchSettings/SearchSettings';
+import { Themer } from '../Themer/Themer';
+import { WeatherSettings } from './WeatherSettings/WeatherSettings';
+import { UISettings } from './UISettings/UISettings';
+import { AppDetails } from './AppDetails/AppDetails';
+import { StyleSettings } from './StyleSettings/StyleSettings';
+import { SearchSettings } from './SearchSettings/SearchSettings';
+import { DockerSettings } from './DockerSettings/DockerSettings';
+import { ProtectedRoute } from '../Routing/ProtectedRoute';
 
 // UI
-import { Container } from '../UI/Layout/Layout';
-import Headline from '../UI/Headlines/Headline/Headline';
+import { Container, Headline } from '../UI';
 
 // Data
 import { routes } from './settings.json';
 
-const Settings = (): JSX.Element => {
+export const Settings = (): JSX.Element => {
+  const { isAuthenticated } = useSelector((state: State) => state.auth);
+
+  const tabs = isAuthenticated ? routes : routes.filter((r) => !r.authRequired);
+
   return (
     <Container>
       <Headline title="Settings" subtitle={<Link to="/">Go back</Link>} />
       <div className={classes.Settings}>
         {/* NAVIGATION MENU */}
         <nav className={classes.SettingsNav}>
-          {routes.map(({ name, dest }: SettingsRoute, idx) => (
+          {tabs.map(({ name, dest }: SettingsRoute, idx) => (
             <NavLink
               className={classes.SettingsNavLink}
               activeClassName={classes.SettingsNavLinkActive}
@@ -46,10 +54,20 @@ const Settings = (): JSX.Element => {
         <section className={classes.SettingsContent}>
           <Switch>
             <Route exact path="/settings" component={Themer} />
-            <Route path="/settings/weather" component={WeatherSettings} />
-            <Route path="/settings/search" component={SearchSettings} />
-            <Route path="/settings/other" component={OtherSettings} />
-            <Route path="/settings/css" component={StyleSettings} />
+            <ProtectedRoute
+              path="/settings/weather"
+              component={WeatherSettings}
+            />
+            <ProtectedRoute
+              path="/settings/search"
+              component={SearchSettings}
+            />
+            <ProtectedRoute path="/settings/interface" component={UISettings} />
+            <ProtectedRoute
+              path="/settings/docker"
+              component={DockerSettings}
+            />
+            <ProtectedRoute path="/settings/css" component={StyleSettings} />
             <Route path="/settings/app" component={AppDetails} />
           </Switch>
         </section>
@@ -57,5 +75,3 @@ const Settings = (): JSX.Element => {
     </Container>
   );
 };
-
-export default Settings;

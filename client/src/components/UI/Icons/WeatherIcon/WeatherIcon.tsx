@@ -1,39 +1,32 @@
 import { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Skycons } from 'skycons-ts';
-import { GlobalState, Theme } from '../../../../interfaces';
+import { State } from '../../../../store/reducers';
 import { IconMapping, TimeOfDay } from './IconMapping';
 
-interface ComponentProps {
-  theme: Theme;
+interface Props {
   weatherStatusCode: number;
   isDay: number;
 }
 
-const WeatherIcon = (props: ComponentProps): JSX.Element => {
+export const WeatherIcon = (props: Props): JSX.Element => {
+  const { theme } = useSelector((state: State) => state.theme);
+
   const icon = props.isDay
     ? new IconMapping().mapIcon(props.weatherStatusCode, TimeOfDay.day)
     : new IconMapping().mapIcon(props.weatherStatusCode, TimeOfDay.night);
 
   useEffect(() => {
     const delay = setTimeout(() => {
-      const skycons = new Skycons({'color': props.theme.colors.accent});
+      const skycons = new Skycons({ color: theme.colors.accent });
       skycons.add(`weather-icon`, icon);
       skycons.play();
     }, 1);
 
     return () => {
       clearTimeout(delay);
-    }
-  }, [props.weatherStatusCode, icon, props.theme.colors.accent]);
+    };
+  }, [props.weatherStatusCode, icon, theme.colors.accent]);
 
-  return <canvas id={`weather-icon`} width='50' height='50'></canvas>
-}
-
-const mapStateToProps = (state: GlobalState) => {
-  return {
-    theme: state.theme.theme
-  }
-}
-
-export default connect(mapStateToProps)(WeatherIcon);
+  return <canvas id={`weather-icon`} width="50" height="50"></canvas>;
+};

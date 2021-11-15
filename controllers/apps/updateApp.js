@@ -20,6 +20,10 @@ const updateApp = asyncWrapper(async (req, res, next) => {
 
   let _body = { ...req.body };
 
+  if (_body.icon) {
+    _body.icon = _body.icon.trim();
+  }
+
   if (req.file) {
     _body.icon = req.file.filename;
   }

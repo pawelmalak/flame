@@ -6,8 +6,12 @@ const { Sequelize } = require('sequelize');
 // @route     GET /api/bookmarks
 // @access    Public
 const getAllBookmarks = asyncWrapper(async (req, res, next) => {
+  // bookmarks visibility
+  const where = req.isAuthenticated ? {} : { isPublic: true };
+
   const bookmarks = await Bookmark.findAll({
     order: [[Sequelize.fn('lower', Sequelize.col('name')), 'ASC']],
+    where,
   });
 
   res.status(200).json({

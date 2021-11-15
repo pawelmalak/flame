@@ -2,56 +2,59 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 // Redux
-import { connect } from 'react-redux';
-import { getApps } from '../../store/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Typescript
-import { App, GlobalState } from '../../interfaces';
+import { App } from '../../interfaces';
 
 // CSS
 import classes from './Apps.module.css';
 
 // UI
-import { Container } from '../UI/Layout/Layout';
-import Headline from '../UI/Headlines/Headline/Headline';
-import Spinner from '../UI/Spinner/Spinner';
-import ActionButton from '../UI/Buttons/ActionButton/ActionButton';
-import Modal from '../UI/Modal/Modal';
+import { Headline, Spinner, ActionButton, Modal, Container } from '../UI';
 
 // Subcomponents
-import AppGrid from './AppGrid/AppGrid';
-import AppForm from './AppForm/AppForm';
-import AppTable from './AppTable/AppTable';
+import { AppGrid } from './AppGrid/AppGrid';
+import { AppForm } from './AppForm/AppForm';
+import { AppTable } from './AppTable/AppTable';
 
-interface ComponentProps {
-  getApps: Function;
-  apps: App[];
-  loading: boolean;
+// Utils
+import { appTemplate } from '../../utility';
+import { State } from '../../store/reducers';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../store';
+
+interface Props {
   searching: boolean;
 }
 
-const Apps = (props: ComponentProps): JSX.Element => {
-  const { getApps, apps, loading, searching = false } = props;
+export const Apps = (props: Props): JSX.Element => {
+  const {
+    apps: { apps, loading },
+    auth: { isAuthenticated },
+  } = useSelector((state: State) => state);
+
+  const dispatch = useDispatch();
+  const { getApps } = bindActionCreators(actionCreators, dispatch);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isInEdit, setIsInEdit] = useState(false);
   const [isInUpdate, setIsInUpdate] = useState(false);
-  const [appInUpdate, setAppInUpdate] = useState<App>({
-    name: 'string',
-    url: 'string',
-    icon: 'string',
-    isPinned: false,
-    orderId: 0,
-    id: 0,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  });
+  const [appInUpdate, setAppInUpdate] = useState<App>(appTemplate);
 
   useEffect(() => {
-    if (apps.length === 0) {
+    if (!apps.length) {
       getApps();
     }
-  }, [getApps]);
+  }, []);
+
+  // observe if user is authenticated -> set default view if not
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setIsInEdit(false);
+      setModalIsOpen(false);
+    }
+  }, [isAuthenticated]);
 
   const toggleModal = (): void => {
     setModalIsOpen(!modalIsOpen);
@@ -84,16 +87,18 @@ const Apps = (props: ComponentProps): JSX.Element => {
         subtitle={<Link to="/">Go back</Link>}
       />
 
-      <div className={classes.ActionsContainer}>
-        <ActionButton name="Add" icon="mdiPlusBox" handler={toggleModal} />
-        <ActionButton name="Edit" icon="mdiPencil" handler={toggleEdit} />
-      </div>
+      {isAuthenticated && (
+        <div className={classes.ActionsContainer}>
+          <ActionButton name="Add" icon="mdiPlusBox" handler={toggleModal} />
+          <ActionButton name="Edit" icon="mdiPencil" handler={toggleEdit} />
+        </div>
+      )}
 
       <div className={classes.Apps}>
         {loading ? (
           <Spinner />
         ) : !isInEdit ? (
-          <AppGrid apps={apps} searching />
+          <AppGrid apps={apps} searching={props.searching} />
         ) : (
           <AppTable updateAppHandler={toggleUpdate} />
         )}
@@ -101,12 +106,3 @@ const Apps = (props: ComponentProps): JSX.Element => {
     </Container>
   );
 };
-
-const mapStateToProps = (state: GlobalState) => {
-  return {
-    apps: state.app.apps,
-    loading: state.app.loading,
-  };
-};
-
-export default connect(mapStateToProps, { getApps })(Apps);

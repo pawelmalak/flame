@@ -1,31 +1,27 @@
-import { SyntheticEvent } from 'react';
+import { ReactNode, SyntheticEvent } from 'react';
 
 import classes from './ModalForm.module.css';
-import Icon from '../../Icons/Icon/Icon';
+import { Icon } from '../..';
 
 interface ComponentProps {
-  children: JSX.Element | JSX.Element[];
+  children: ReactNode;
   modalHandler?: () => void;
   formHandler: (e: SyntheticEvent<HTMLFormElement>) => void;
 }
 
-const ModalForm = (props: ComponentProps): JSX.Element => {
+export const ModalForm = (props: ComponentProps): JSX.Element => {
   const _modalHandler = (): void => {
     if (props.modalHandler) {
       props.modalHandler();
     }
-  }
+  };
 
   return (
     <div className={classes.ModalForm}>
       <div className={classes.ModalFormIcon} onClick={_modalHandler}>
-        <Icon icon='mdiClose' />
+        <Icon icon="mdiClose" />
       </div>
-      <form onSubmit={(e) => props.formHandler(e)}>
-        {props.children}
-      </form>
+      <form onSubmit={(e) => props.formHandler(e)}>{props.children}</form>
     </div>
-  )
-}
-
-export default ModalForm;
+  );
+};

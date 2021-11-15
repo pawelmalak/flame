@@ -1,25 +1,30 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { getCategories } from '../../store/actions';
 
+// Redux
+import { useDispatch, useSelector } from 'react-redux';
+import { State } from '../../store/reducers';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../store';
+
+// Typescript
+import { Category, Bookmark } from '../../interfaces';
+
+// CSS
 import classes from './Bookmarks.module.css';
 
-import { Container } from '../UI/Layout/Layout';
-import Headline from '../UI/Headlines/Headline/Headline';
-import ActionButton from '../UI/Buttons/ActionButton/ActionButton';
+// UI
+import { Container, Headline, ActionButton, Spinner, Modal } from '../UI';
 
-import BookmarkGrid from './BookmarkGrid/BookmarkGrid';
-import { Category, GlobalState, Bookmark } from '../../interfaces';
-import Spinner from '../UI/Spinner/Spinner';
-import Modal from '../UI/Modal/Modal';
-import BookmarkForm from './BookmarkForm/BookmarkForm';
-import BookmarkTable from './BookmarkTable/BookmarkTable';
+// Components
+import { BookmarkGrid } from './BookmarkGrid/BookmarkGrid';
+import { BookmarkTable } from './BookmarkTable/BookmarkTable';
+import { Form } from './Form/Form';
 
-interface ComponentProps {
-  loading: boolean;
-  categories: Category[];
-  getCategories: () => void;
+// Utils
+import { bookmarkTemplate, categoryTemplate } from '../../utility';
+
+interface Props {
   searching: boolean;
 }
 
@@ -28,8 +33,14 @@ export enum ContentType {
   bookmark,
 }
 
-const Bookmarks = (props: ComponentProps): JSX.Element => {
-  const { getCategories, categories, loading, searching = false } = props;
+export const Bookmarks = (props: Props): JSX.Element => {
+  const {
+    bookmarks: { loading, categories },
+    auth: { isAuthenticated },
+  } = useSelector((state: State) => state);
+
+  const dispatch = useDispatch();
+  const { getCategories } = bindActionCreators(actionCreators, dispatch);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [formContentType, setFormContentType] = useState(ContentType.category);
@@ -38,30 +49,24 @@ const Bookmarks = (props: ComponentProps): JSX.Element => {
     ContentType.category
   );
   const [isInUpdate, setIsInUpdate] = useState(false);
-  const [categoryInUpdate, setCategoryInUpdate] = useState<Category>({
-    name: '',
-    id: -1,
-    isPinned: false,
-    orderId: 0,
-    bookmarks: [],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  });
-  const [bookmarkInUpdate, setBookmarkInUpdate] = useState<Bookmark>({
-    name: '',
-    url: '',
-    categoryId: -1,
-    icon: '',
-    id: -1,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  });
+  const [categoryInUpdate, setCategoryInUpdate] =
+    useState<Category>(categoryTemplate);
+  const [bookmarkInUpdate, setBookmarkInUpdate] =
+    useState<Bookmark>(bookmarkTemplate);
 
   useEffect(() => {
-    if (categories.length === 0) {
+    if (!categories.length) {
       getCategories();
     }
-  }, [getCategories]);
+  }, []);
+
+  // observe if user is authenticated -> set default view if not
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setIsInEdit(false);
+      setModalIsOpen(false);
+    }
+  }, [isAuthenticated]);
 
   const toggleModal = (): void => {
     setModalIsOpen(!modalIsOpen);
@@ -102,55 +107,46 @@ const Bookmarks = (props: ComponentProps): JSX.Element => {
   return (
     <Container>
       <Modal isOpen={modalIsOpen} setIsOpen={toggleModal}>
-        {!isInUpdate ? (
-          <BookmarkForm
-            modalHandler={toggleModal}
-            contentType={formContentType}
-          />
-        ) : formContentType === ContentType.category ? (
-          <BookmarkForm
-            modalHandler={toggleModal}
-            contentType={formContentType}
-            category={categoryInUpdate}
-          />
-        ) : (
-          <BookmarkForm
-            modalHandler={toggleModal}
-            contentType={formContentType}
-            bookmark={bookmarkInUpdate}
-          />
-        )}
+        <Form
+          modalHandler={toggleModal}
+          contentType={formContentType}
+          inUpdate={isInUpdate}
+          category={categoryInUpdate}
+          bookmark={bookmarkInUpdate}
+        />
       </Modal>
 
       <Headline title="All Bookmarks" subtitle={<Link to="/">Go back</Link>} />
 
-      <div className={classes.ActionsContainer}>
-        <ActionButton
-          name="Add Category"
-          icon="mdiPlusBox"
-          handler={() => addActionHandler(ContentType.category)}
-        />
-        <ActionButton
-          name="Add Bookmark"
-          icon="mdiPlusBox"
-          handler={() => addActionHandler(ContentType.bookmark)}
-        />
-        <ActionButton
-          name="Edit Categories"
-          icon="mdiPencil"
-          handler={() => editActionHandler(ContentType.category)}
-        />
-        <ActionButton
-          name="Edit Bookmarks"
-          icon="mdiPencil"
-          handler={() => editActionHandler(ContentType.bookmark)}
-        />
-      </div>
+      {isAuthenticated && (
+        <div className={classes.ActionsContainer}>
+          <ActionButton
+            name="Add Category"
+            icon="mdiPlusBox"
+            handler={() => addActionHandler(ContentType.category)}
+          />
+          <ActionButton
+            name="Add Bookmark"
+            icon="mdiPlusBox"
+            handler={() => addActionHandler(ContentType.bookmark)}
+          />
+          <ActionButton
+            name="Edit Categories"
+            icon="mdiPencil"
+            handler={() => editActionHandler(ContentType.category)}
+          />
+          <ActionButton
+            name="Edit Bookmarks"
+            icon="mdiPencil"
+            handler={() => editActionHandler(ContentType.bookmark)}
+          />
+        </div>
+      )}
 
       {loading ? (
         <Spinner />
       ) : !isInEdit ? (
-        <BookmarkGrid categories={categories} searching />
+        <BookmarkGrid categories={categories} searching={props.searching} />
       ) : (
         <BookmarkTable
           contentType={tableContentType}
@@ -161,12 +157,3 @@ const Bookmarks = (props: ComponentProps): JSX.Element => {
     </Container>
   );
 };
-
-const mapStateToProps = (state: GlobalState) => {
-  return {
-    loading: state.bookmark.loading,
-    categories: state.bookmark.categories,
-  };
-};
-
-export default connect(mapStateToProps, { getCategories })(Bookmarks);

@@ -1,13 +1,10 @@
+import { ReactNode } from 'react';
 import classes from './Layout.module.css';
 
 interface ComponentProps {
-  children: JSX.Element | JSX.Element[];
+  children: ReactNode;
 }
 
 export const Container = (props: ComponentProps): JSX.Element => {
-  return (
-    <div className={classes.Container}>
-      {props.children}
-    </div>
-  )
-}
+  return <div className={classes.Container}>{props.children}</div>;
+};

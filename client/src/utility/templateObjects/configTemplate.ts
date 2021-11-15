@@ -27,4 +27,5 @@ export const configTemplate: Config = {
   daySchema: 'Sunday;Monday;Tuesday;Wednesday;Thursday;Friday;Saturday',
   monthSchema:
     'January;February;March;April;May;June;July;August;September;October;November;December',
+  showTime: false,
 };

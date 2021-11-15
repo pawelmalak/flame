@@ -1,42 +1,33 @@
 import { useRef, useEffect, KeyboardEvent } from 'react';
 
 // Redux
-import { connect } from 'react-redux';
-import { createNotification } from '../../store/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Typescript
-import {
-  App,
-  Category,
-  Config,
-  GlobalState,
-  NewNotification,
-} from '../../interfaces';
+import { App, Category } from '../../interfaces';
 
 // CSS
 import classes from './SearchBar.module.css';
 
 // Utils
 import { searchParser, urlParser, redirectUrl } from '../../utility';
+import { State } from '../../store/reducers';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../store';
 
-interface ComponentProps {
-  createNotification: (notification: NewNotification) => void;
+interface Props {
   setLocalSearch: (query: string) => void;
   appSearchResult: App[] | null;
   bookmarkSearchResult: Category[] | null;
-  config: Config;
-  loading: boolean;
 }
 
-const SearchBar = (props: ComponentProps): JSX.Element => {
-  const {
-    setLocalSearch,
-    createNotification,
-    config,
-    loading,
-    appSearchResult,
-    bookmarkSearchResult,
-  } = props;
+export const SearchBar = (props: Props): JSX.Element => {
+  const { config, loading } = useSelector((state: State) => state.config);
+
+  const dispatch = useDispatch();
+  const { createNotification } = bindActionCreators(actionCreators, dispatch);
+
+  const { setLocalSearch, appSearchResult, bookmarkSearchResult } = props;
 
   const inputRef = useRef<HTMLInputElement>(document.createElement('input'));
 
@@ -54,12 +45,17 @@ const SearchBar = (props: ComponentProps): JSX.Element => {
 
       if (key === 'Escape') {
         clearSearch();
+      } else if (document.activeElement !== inputRef.current) {
+        if (key === '`') {
+          inputRef.current.focus();
+          clearSearch();
+        }
       }
     };
 
-    window.addEventListener('keydown', keyOutsideFocus);
+    window.addEventListener('keyup', keyOutsideFocus);
 
-    return () => window.removeEventListener('keydown', keyOutsideFocus);
+    return () => window.removeEventListener('keyup', keyOutsideFocus);
   }, []);
 
   const clearSearch = () => {
@@ -126,12 +122,3 @@ const SearchBar = (props: ComponentProps): JSX.Element => {
     </div>
   );
 };
-
-const mapStateToProps = (state: GlobalState) => {
-  return {
-    config: state.config.config,
-    loading: state.config.loading,
-  };
-};
-
-export default connect(mapStateToProps, { createNotification })(SearchBar);

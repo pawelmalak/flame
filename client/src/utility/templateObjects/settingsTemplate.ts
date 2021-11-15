@@ -1,4 +1,9 @@
-import { OtherSettingsForm, SearchForm, WeatherForm } from '../../interfaces';
+import {
+  DockerSettingsForm,
+  OtherSettingsForm,
+  SearchForm,
+  WeatherForm,
+} from '../../interfaces';
 
 export const otherSettingsTemplate: OtherSettingsForm = {
   customTitle: document.title,
@@ -10,15 +15,12 @@ export const otherSettingsTemplate: OtherSettingsForm = {
   useOrdering: 'createdAt',
   appsSameTab: false,
   bookmarksSameTab: false,
-  dockerApps: true,
-  dockerHost: 'localhost',
-  kubernetesApps: true,
-  unpinStoppedApps: true,
   useAmericanDate: false,
   greetingsSchema: 'Good evening!;Good afternoon!;Good morning!;Good night!',
   daySchema: 'Sunday;Monday;Tuesday;Wednesday;Thursday;Friday;Saturday',
   monthSchema:
     'January;February;March;April;May;June;July;August;September;October;November;December',
+  showTime: false,
 };
 
 export const weatherSettingsTemplate: WeatherForm = {
@@ -33,4 +35,11 @@ export const searchSettingsTemplate: SearchForm = {
   searchSameTab: false,
   defaultSearchProvider: 'l',
   disableAutofocus: false,
+};
+
+export const dockerSettingsTemplate: DockerSettingsForm = {
+  dockerApps: true,
+  dockerHost: 'localhost',
+  kubernetesApps: true,
+  unpinStoppedApps: true,
 };

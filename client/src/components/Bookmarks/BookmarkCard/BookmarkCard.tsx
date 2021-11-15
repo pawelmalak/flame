@@ -1,17 +1,23 @@
-import { Bookmark, Category, Config, GlobalState } from '../../../interfaces';
+import { Fragment } from 'react';
+
+import { useSelector } from 'react-redux';
+import { State } from '../../../store/reducers';
+
+import { Bookmark, Category } from '../../../interfaces';
+
 import classes from './BookmarkCard.module.css';
 
-import Icon from '../../UI/Icons/Icon/Icon';
-import { iconParser, urlParser } from '../../../utility';
-import { Fragment } from 'react';
-import { connect } from 'react-redux';
+import { Icon } from '../../UI';
 
-interface ComponentProps {
+import { iconParser, isImage, isSvg, isUrl, urlParser } from '../../../utility';
+
+interface Props {
   category: Category;
-  config: Config;
 }
 
-const BookmarkCard = (props: ComponentProps): JSX.Element => {
+export const BookmarkCard = (props: Props): JSX.Element => {
+  const { config } = useSelector((state: State) => state.config);
+
   return (
     <div className={classes.BookmarkCard}>
       <h3>{props.category.name}</h3>
@@ -24,21 +30,25 @@ const BookmarkCard = (props: ComponentProps): JSX.Element => {
           if (bookmark.icon) {
             const { icon, name } = bookmark;
 
-            if (/.(jpeg|jpg|png)$/i.test(icon)) {
+            if (isImage(icon)) {
+              const source = isUrl(icon) ? icon : `/uploads/${icon}`;
+
               iconEl = (
                 <div className={classes.BookmarkIcon}>
                   <img
-                    src={`/uploads/${icon}`}
+                    src={source}
                     alt={`${name} icon`}
                     className={classes.CustomIcon}
                   />
                 </div>
               );
-            } else if (/.(svg)$/i.test(icon)) {
+            } else if (isSvg(icon)) {
+              const source = isUrl(icon) ? icon : `/uploads/${icon}`;
+
               iconEl = (
                 <div className={classes.BookmarkIcon}>
                   <svg
-                    data-src={`/uploads/${icon}`}
+                    data-src={source}
                     fill="var(--color-primary)"
                     className={classes.BookmarkIconSvg}
                   ></svg>
@@ -56,7 +66,7 @@ const BookmarkCard = (props: ComponentProps): JSX.Element => {
           return (
             <a
               href={redirectUrl}
-              target={props.config.bookmarksSameTab ? '' : '_blank'}
+              target={config.bookmarksSameTab ? '' : '_blank'}
               rel="noreferrer"
               key={`bookmark-${bookmark.id}`}
             >
@@ -69,11 +79,3 @@ const BookmarkCard = (props: ComponentProps): JSX.Element => {
     </div>
   );
 };
-
-const mapStateToProps = (state: GlobalState) => {
-  return {
-    config: state.config.config,
-  };
-};
-
-export default connect(mapStateToProps)(BookmarkCard);

@@ -7,4 +7,6 @@ services:
       - /path/to/data:/app/data
     ports:
       - 5005:5005
+    environment:
+      - PASSWORD=flame_password
     restart: unless-stopped

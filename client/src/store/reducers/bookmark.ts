@@ -1,178 +1,172 @@
-import { ActionTypes, Action } from '../actions';
-import { Category, Bookmark } from '../../interfaces';
+import { Category } from '../../interfaces';
 import { sortData } from '../../utility';
+import { ActionType } from '../action-types';
+import { Action } from '../actions';
 
-export interface State {
+interface BookmarksState {
   loading: boolean;
   errors: string | undefined;
   categories: Category[];
 }
 
-const initialState: State = {
+const initialState: BookmarksState = {
   loading: true,
   errors: undefined,
-  categories: []
-}
+  categories: [],
+};
 
-const getCategories = (state: State, action: Action): State => {
-  return {
-    ...state,
-    loading: true,
-    errors: undefined
-  }
-}
-
-const getCategoriesSuccess = (state: State, action: Action): State => {
-  return {
-    ...state,
-    loading: false,
-    categories: action.payload
-  }
-}
-
-const addCategory = (state: State, action: Action): State => {
-  return {
-    ...state,
-    categories: [
-      ...state.categories,
-      {
-        ...action.payload,
-        bookmarks: []
-      }
-    ]
-  }
-}
-
-const addBookmark = (state: State, action: Action): State => {
-  const categoryIndex = state.categories.findIndex((category: Category) => category.id === action.payload.categoryId);
-
-  return {
-    ...state,
-    categories: [
-      ...state.categories.slice(0, categoryIndex),
-      {
-        ...state.categories[categoryIndex],
-        bookmarks: [
-          ...state.categories[categoryIndex].bookmarks,
-          {
-            ...action.payload
-          }
-        ]
-      },
-      ...state.categories.slice(categoryIndex + 1)
-    ]
-  }
-}
-
-const pinCategory = (state: State, action: Action): State => {
-  const tmpCategories = [...state.categories];
-  const changedCategory = tmpCategories.find((category: Category) => category.id === action.payload.id);
-
-  if (changedCategory) {
-    changedCategory.isPinned = action.payload.isPinned;
-  }
-
-  return {
-    ...state,
-    categories: tmpCategories
-  }
-}
-
-const deleteCategory = (state: State, action: Action): State => {
-  const categoryIndex = state.categories.findIndex((category: Category) => category.id === action.payload);
-
-  return {
-    ...state,
-    categories: [
-      ...state.categories.slice(0, categoryIndex),
-      ...state.categories.slice(categoryIndex + 1)
-    ]
-  }
-}
-
-const updateCategory = (state: State, action: Action): State => {
-  const tmpCategories = [...state.categories];
-  const categoryInUpdate = tmpCategories.find((category: Category) => category.id === action.payload.id);
-
-  if (categoryInUpdate) {
-    categoryInUpdate.name = action.payload.name;
-  }
-
-  return {
-    ...state,
-    categories: tmpCategories
-  }
-}
-
-const deleteBookmark = (state: State, action: Action): State => {
-  const tmpCategories = [...state.categories];
-  const categoryInUpdate = tmpCategories.find((category: Category) => category.id === action.payload.categoryId);
-
-  if (categoryInUpdate) {
-    categoryInUpdate.bookmarks = categoryInUpdate.bookmarks.filter((bookmark: Bookmark) => bookmark.id !== action.payload.bookmarkId);
-  }
-
-  
-  return {
-    ...state,
-    categories: tmpCategories
-  }
-}
-
-const updateBookmark = (state: State, action: Action): State => {
-  let categoryIndex = state.categories.findIndex((category: Category) => category.id === action.payload.categoryId);
-  let bookmarkIndex = state.categories[categoryIndex].bookmarks.findIndex((bookmark: Bookmark) => bookmark.id === action.payload.id);
-
-  return {
-    ...state,
-    categories: [
-      ...state.categories.slice(0, categoryIndex),
-      {
-        ...state.categories[categoryIndex],
-        bookmarks: [
-          ...state.categories[categoryIndex].bookmarks.slice(0, bookmarkIndex),
-          {
-            ...action.payload
-          },
-          ...state.categories[categoryIndex].bookmarks.slice(bookmarkIndex + 1)
-        ]
-      },
-      ...state.categories.slice(categoryIndex + 1)
-    ]
-  }
-}
-
-const sortCategories = (state: State, action: Action): State => {
-  const sortedCategories = sortData<Category>(state.categories, action.payload);
-
-  return {
-    ...state,
-    categories: sortedCategories
-  }
-}
-
-const reorderCategories = (state: State, action: Action): State => {
-  return {
-    ...state,
-    categories: action.payload
-  }
-}
-
-const bookmarkReducer = (state = initialState, action: Action) => {
+export const bookmarksReducer = (
+  state: BookmarksState = initialState,
+  action: Action
+): BookmarksState => {
   switch (action.type) {
-    case ActionTypes.getCategories: return getCategories(state, action);
-    case ActionTypes.getCategoriesSuccess: return getCategoriesSuccess(state, action);
-    case ActionTypes.addCategory: return addCategory(state, action);
-    case ActionTypes.addBookmark: return addBookmark(state, action);
-    case ActionTypes.pinCategory: return pinCategory(state, action);
-    case ActionTypes.deleteCategory: return deleteCategory(state, action);
-    case ActionTypes.updateCategory: return updateCategory(state, action);
-    case ActionTypes.deleteBookmark: return deleteBookmark(state, action);
-    case ActionTypes.updateBookmark: return updateBookmark(state, action);
-    case ActionTypes.sortCategories: return sortCategories(state, action);
-    case ActionTypes.reorderCategories: return reorderCategories(state, action);
-    default: return state;
-  }
-}
+    case ActionType.getCategories:
+      return {
+        ...state,
+        loading: true,
+        errors: undefined,
+      };
 
-export default bookmarkReducer;
+    case ActionType.getCategoriesSuccess:
+      return {
+        ...state,
+        loading: false,
+        categories: action.payload,
+      };
+
+    case ActionType.addCategory:
+      return {
+        ...state,
+        categories: [...state.categories, { ...action.payload, bookmarks: [] }],
+      };
+
+    case ActionType.addBookmark:
+      const categoryIdx = state.categories.findIndex(
+        (category) => category.id === action.payload.categoryId
+      );
+
+      return {
+        ...state,
+        categories: [
+          ...state.categories.slice(0, categoryIdx),
+          {
+            ...state.categories[categoryIdx],
+            bookmarks: [
+              ...state.categories[categoryIdx].bookmarks,
+              action.payload,
+            ],
+          },
+          ...state.categories.slice(categoryIdx + 1),
+        ],
+      };
+
+    case ActionType.pinCategory:
+      const pinnedCategoryIdx = state.categories.findIndex(
+        (category) => category.id === action.payload.id
+      );
+
+      return {
+        ...state,
+        categories: [
+          ...state.categories.slice(0, pinnedCategoryIdx),
+          {
+            ...action.payload,
+            bookmarks: [...state.categories[pinnedCategoryIdx].bookmarks],
+          },
+          ...state.categories.slice(pinnedCategoryIdx + 1),
+        ],
+      };
+
+    case ActionType.deleteCategory:
+      const deletedCategoryIdx = state.categories.findIndex(
+        (category) => category.id === action.payload
+      );
+
+      return {
+        ...state,
+        categories: [
+          ...state.categories.slice(0, deletedCategoryIdx),
+          ...state.categories.slice(deletedCategoryIdx + 1),
+        ],
+      };
+
+    case ActionType.updateCategory:
+      const updatedCategoryIdx = state.categories.findIndex(
+        (category) => category.id === action.payload.id
+      );
+
+      return {
+        ...state,
+        categories: [
+          ...state.categories.slice(0, updatedCategoryIdx),
+          {
+            ...action.payload,
+            bookmarks: [...state.categories[updatedCategoryIdx].bookmarks],
+          },
+          ...state.categories.slice(updatedCategoryIdx + 1),
+        ],
+      };
+
+    case ActionType.deleteBookmark:
+      const categoryInUpdateIdx = state.categories.findIndex(
+        (category) => category.id === action.payload.categoryId
+      );
+
+      return {
+        ...state,
+        categories: [
+          ...state.categories.slice(0, categoryInUpdateIdx),
+          {
+            ...state.categories[categoryInUpdateIdx],
+            bookmarks: state.categories[categoryInUpdateIdx].bookmarks.filter(
+              (bookmark) => bookmark.id !== action.payload.bookmarkId
+            ),
+          },
+          ...state.categories.slice(categoryInUpdateIdx + 1),
+        ],
+      };
+
+    case ActionType.updateBookmark:
+      const parentCategoryIdx = state.categories.findIndex(
+        (category) => category.id === action.payload.categoryId
+      );
+      const updatedBookmarkIdx = state.categories[
+        parentCategoryIdx
+      ].bookmarks.findIndex((bookmark) => bookmark.id === action.payload.id);
+
+      return {
+        ...state,
+        categories: [
+          ...state.categories.slice(0, parentCategoryIdx),
+          {
+            ...state.categories[parentCategoryIdx],
+            bookmarks: [
+              ...state.categories[parentCategoryIdx].bookmarks.slice(
+                0,
+                updatedBookmarkIdx
+              ),
+              action.payload,
+              ...state.categories[parentCategoryIdx].bookmarks.slice(
+                updatedBookmarkIdx + 1
+              ),
+            ],
+          },
+          ...state.categories.slice(parentCategoryIdx + 1),
+        ],
+      };
+
+    case ActionType.sortCategories:
+      return {
+        ...state,
+        categories: sortData<Category>(state.categories, action.payload),
+      };
+
+    case ActionType.reorderCategories:
+      return {
+        ...state,
+        categories: action.payload,
+      };
+    default:
+      return state;
+  }
+};

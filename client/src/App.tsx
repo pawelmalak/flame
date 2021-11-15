@@ -1,38 +1,67 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { fetchQueries, getConfig, setTheme } from './store/actions';
+import { autoLogin, getConfig } from './store/action-creators';
+import { actionCreators, store } from './store';
 import 'external-svg-loader';
 
-// Redux
-import { store } from './store/store';
-import { Provider } from 'react-redux';
-
 // Utils
-import { checkVersion } from './utility';
+import { checkVersion, decodeToken } from './utility';
 
 // Routes
-import Home from './components/Home/Home';
-import Apps from './components/Apps/Apps';
-import Settings from './components/Settings/Settings';
-import Bookmarks from './components/Bookmarks/Bookmarks';
-import NotificationCenter from './components/NotificationCenter/NotificationCenter';
+import { Home } from './components/Home/Home';
+import { Apps } from './components/Apps/Apps';
+import { Settings } from './components/Settings/Settings';
+import { Bookmarks } from './components/Bookmarks/Bookmarks';
+import { NotificationCenter } from './components/NotificationCenter/NotificationCenter';
+import { useDispatch } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { useEffect } from 'react';
 
-// Load config
+// Get config
 store.dispatch<any>(getConfig());
 
-// Set theme
-if (localStorage.theme) {
-  store.dispatch<any>(setTheme(localStorage.theme));
+// Validate token
+if (localStorage.token) {
+  store.dispatch<any>(autoLogin());
 }
 
-// Check for updates
-checkVersion();
+export const App = (): JSX.Element => {
+  const dispath = useDispatch();
+  const { fetchQueries, setTheme, logout, createNotification } =
+    bindActionCreators(actionCreators, dispath);
 
-// fetch queries
-store.dispatch<any>(fetchQueries());
+  useEffect(() => {
+    // check if token is valid
+    const tokenIsValid = setInterval(() => {
+      if (localStorage.token) {
+        const expiresIn = decodeToken(localStorage.token).exp * 1000;
+        const now = new Date().getTime();
 
-const App = (): JSX.Element => {
+        if (now > expiresIn) {
+          logout();
+          createNotification({
+            title: 'Info',
+            message: 'Session expired. You have been logged out',
+          });
+        }
+      }
+    }, 1000);
+
+    // set theme
+    if (localStorage.theme) {
+      setTheme(localStorage.theme);
+    }
+
+    // check for updated
+    checkVersion();
+
+    // load custom search queries
+    fetchQueries();
+
+    return () => window.clearInterval(tokenIsValid);
+  }, []);
+
   return (
-    <Provider store={store}>
+    <>
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={Home} />
@@ -42,8 +71,6 @@ const App = (): JSX.Element => {
         </Switch>
       </BrowserRouter>
       <NotificationCenter />
-    </Provider>
+    </>
   );
 };
-
-export default App;

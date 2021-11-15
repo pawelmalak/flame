@@ -1,41 +1,28 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 
 // Redux
-import { connect } from 'react-redux';
-import {
-  createNotification,
-  updateConfig,
-  sortApps,
-  sortCategories,
-} from '../../../store/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { State } from '../../../store/reducers';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../../store';
 
 // Typescript
-import {
-  Config,
-  GlobalState,
-  NewNotification,
-  OtherSettingsForm,
-} from '../../../interfaces';
+import { OtherSettingsForm } from '../../../interfaces';
 
 // UI
-import InputGroup from '../../UI/Forms/InputGroup/InputGroup';
-import Button from '../../UI/Buttons/Button/Button';
-import SettingsHeadline from '../../UI/Headlines/SettingsHeadline/SettingsHeadline';
+import { InputGroup, Button, SettingsHeadline } from '../../UI';
 
 // Utils
 import { otherSettingsTemplate, inputHandler } from '../../../utility';
 
-interface ComponentProps {
-  createNotification: (notification: NewNotification) => void;
-  updateConfig: (formData: OtherSettingsForm) => void;
-  sortApps: () => void;
-  sortCategories: () => void;
-  loading: boolean;
-  config: Config;
-}
+export const UISettings = (): JSX.Element => {
+  const { loading, config } = useSelector((state: State) => state.config);
 
-const OtherSettings = (props: ComponentProps): JSX.Element => {
-  const { config } = props;
+  const dispatch = useDispatch();
+  const { updateConfig, sortApps, sortCategories } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
 
   // Initial state
   const [formData, setFormData] = useState<OtherSettingsForm>(
@@ -47,21 +34,21 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
     setFormData({
       ...config,
     });
-  }, [props.loading]);
+  }, [loading]);
 
   // Form handler
   const formSubmitHandler = async (e: FormEvent) => {
     e.preventDefault();
 
     // Save settings
-    await props.updateConfig(formData);
+    await updateConfig(formData);
 
     // Update local page title
     document.title = formData.customTitle;
 
     // Sort apps and categories with new settings
-    props.sortApps();
-    props.sortCategories();
+    sortApps();
+    sortCategories();
   };
 
   // Input handler
@@ -185,8 +172,8 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
         </select>
       </InputGroup>
 
-      {/* MODULES OPTIONS */}
-      <SettingsHeadline text="Modules" />
+      {/* HEADER OPTIONS */}
+      <SettingsHeadline text="Header" />
       {/* HIDE HEADER */}
       <InputGroup>
         <label htmlFor="hideHeader">Hide greeting and date</label>
@@ -246,6 +233,22 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
         <span>Names must be separated with semicolon</span>
       </InputGroup>
 
+      {/* SHOW TIME */}
+      <InputGroup>
+        <label htmlFor="showTime">Show time</label>
+        <select
+          id="showTime"
+          name="showTime"
+          value={formData.showTime ? 1 : 0}
+          onChange={(e) => inputChangeHandler(e, { isBool: true })}
+        >
+          <option value={1}>True</option>
+          <option value={0}>False</option>
+        </select>
+      </InputGroup>
+
+      {/* MODULES OPTIONS */}
+      <SettingsHeadline text="Modules" />
       {/* HIDE APPS */}
       <InputGroup>
         <label htmlFor="hideApps">Hide applications</label>
@@ -274,83 +277,7 @@ const OtherSettings = (props: ComponentProps): JSX.Element => {
         </select>
       </InputGroup>
 
-      {/* DOCKER SETTINGS */}
-      <SettingsHeadline text="Docker" />
-      {/* CUSTOM DOCKER SOCKET HOST */}
-      <InputGroup>
-        <label htmlFor="dockerHost">Docker Host</label>
-        <input
-          type="text"
-          id="dockerHost"
-          name="dockerHost"
-          placeholder="dockerHost:port"
-          value={formData.dockerHost}
-          onChange={(e) => inputChangeHandler(e)}
-        />
-      </InputGroup>
-
-      {/* USE DOCKER API */}
-      <InputGroup>
-        <label htmlFor="dockerApps">Use Docker API</label>
-        <select
-          id="dockerApps"
-          name="dockerApps"
-          value={formData.dockerApps ? 1 : 0}
-          onChange={(e) => inputChangeHandler(e, { isBool: true })}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
-      </InputGroup>
-
-      {/* UNPIN DOCKER APPS */}
-      <InputGroup>
-        <label htmlFor="unpinStoppedApps">
-          Unpin stopped containers / other apps
-        </label>
-        <select
-          id="unpinStoppedApps"
-          name="unpinStoppedApps"
-          value={formData.unpinStoppedApps ? 1 : 0}
-          onChange={(e) => inputChangeHandler(e, { isBool: true })}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
-      </InputGroup>
-
-      {/* KUBERNETES SETTINGS */}
-      <SettingsHeadline text="Kubernetes" />
-      {/* USE KUBERNETES */}
-      <InputGroup>
-        <label htmlFor="kubernetesApps">Use Kubernetes Ingress API</label>
-        <select
-          id="kubernetesApps"
-          name="kubernetesApps"
-          value={formData.kubernetesApps ? 1 : 0}
-          onChange={(e) => inputChangeHandler(e, { isBool: true })}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
-      </InputGroup>
       <Button>Save changes</Button>
     </form>
   );
 };
-
-const mapStateToProps = (state: GlobalState) => {
-  return {
-    loading: state.config.loading,
-    config: state.config.config,
-  };
-};
-
-const actions = {
-  createNotification,
-  updateConfig,
-  sortApps,
-  sortCategories,
-};
-
-export default connect(mapStateToProps, actions)(OtherSettings);

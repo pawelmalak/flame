@@ -51,6 +51,11 @@
       "template": "https://listen.tidal.com/search?q="
     },
     {
+      "name": "Wikipedia",
+      "prefix": "w",
+      "template": "https://en.wikipedia.org/w/index.php?search="
+    },
+    {
       "name": "YouTube",
       "prefix": "yt",
       "template": "https://www.youtube.com/results?search_query="

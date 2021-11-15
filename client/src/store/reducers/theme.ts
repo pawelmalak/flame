@@ -1,11 +1,12 @@
-import { ActionTypes, Action } from '../actions';
+import { Action } from '../actions';
+import { ActionType } from '../action-types';
 import { Theme } from '../../interfaces/Theme';
 
-export interface State {
+interface ThemeState {
   theme: Theme;
 }
 
-const initialState: State = {
+const initialState: ThemeState = {
   theme: {
     name: 'tron',
     colors: {
@@ -16,13 +17,14 @@ const initialState: State = {
   },
 };
 
-const themeReducer = (state = initialState, action: Action) => {
+export const themeReducer = (
+  state: ThemeState = initialState,
+  action: Action
+): ThemeState => {
   switch (action.type) {
-    case ActionTypes.setTheme:
+    case ActionType.setTheme:
       return { theme: action.payload };
     default:
       return state;
   }
 };
-
-export default themeReducer;

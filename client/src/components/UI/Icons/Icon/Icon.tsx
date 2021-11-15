@@ -2,12 +2,12 @@ import classes from './Icon.module.css';
 
 import { Icon as MDIcon } from '@mdi/react';
 
-interface ComponentProps {
+interface Props {
   icon: string;
   color?: string;
 }
 
-const Icon = (props: ComponentProps): JSX.Element => {
+export const Icon = (props: Props): JSX.Element => {
   const MDIcons = require('@mdi/js');
   let iconPath = MDIcons[props.icon];
 
@@ -22,7 +22,5 @@ const Icon = (props: ComponentProps): JSX.Element => {
       path={iconPath}
       color={props.color ? props.color : 'var(--color-primary)'}
     />
-  )
-}
-
-export default Icon;
+  );
+};

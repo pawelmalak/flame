@@ -1,14 +1,17 @@
 import { Theme } from '../../interfaces/Theme';
 import classes from './ThemePreview.module.css';
 
-interface ComponentProps {
+interface Props {
   theme: Theme;
   applyTheme: Function;
 }
 
-const ThemePreview = (props: ComponentProps): JSX.Element => {
+export const ThemePreview = (props: Props): JSX.Element => {
   return (
-    <div className={classes.ThemePreview} onClick={() => props.applyTheme(props.theme.name)}>
+    <div
+      className={classes.ThemePreview}
+      onClick={() => props.applyTheme(props.theme.name)}
+    >
       <div className={classes.ColorsPreview}>
         <div
           className={classes.ColorPreview}
@@ -25,7 +28,5 @@ const ThemePreview = (props: ComponentProps): JSX.Element => {
       </div>
       <p>{props.theme.name}</p>
     </div>
-  )
-}
-
-export default ThemePreview;
+  );
+};

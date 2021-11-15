@@ -20,9 +20,9 @@ const logger = new Logger();
   const PORT = process.env.PORT || 5005;
 
   // Init app
+  await initApp();
   await connectDB();
   await associateModels();
-  await initApp();
 
   // Create server for Express API and WebSockets
   const server = http.createServer();

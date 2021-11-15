@@ -1,6 +1,5 @@
 node_modules
-github
+.github
 public
-build.sh
 k8s
 skaffold.yaml

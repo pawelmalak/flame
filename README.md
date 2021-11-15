@@ -1,37 +1,19 @@
 # Flame
 
-![Homescreen screenshot](./.github/_home.png)
+![Homescreen screenshot](.github/home.png)
 
 ## Description
 
-Flame is self-hosted startpage for your server. Its design is inspired (heavily) by [SUI](https://github.com/jeroenpardon/sui). Flame is very easy to setup and use. With built-in editors it allows you to setup your very own application hub in no time - no file editing necessary.
+Flame is self-hosted startpage for your server. Its design is inspired (heavily) by [SUI](https://github.com/jeroenpardon/sui). Flame is very easy to setup and use. With built-in editors, it allows you to setup your very own application hub in no time - no file editing necessary.
 
-## Technology
-
-- Backend
-  - Node.js + Express
-  - Sequelize ORM + SQLite
-- Frontend
-  - React
-  - Redux
-  - TypeScript
-- Deployment
-  - Docker
-  - Kubernetes
-
-## Development
-
-```sh
-# clone repository
-git clone https://github.com/pawelmalak/flame
-cd flame
-
-# run only once
-npm run dev-init
-
-# start backend and frontend development servers
-npm run dev
-```
+## Functionality
+- 📝 Create, update, delete your applications and bookmarks directly from the app using built-in GUI editors
+- 📌 Pin your favourite items to the homescreen for quick and easy access
+- 🔍 Integrated search bar with local filtering, 11 web search providers and ability to add your own
+- 🔑 Authentication system to protect your settings, apps and bookmarks
+- 🔨 Dozens of option to customize Flame interface to your needs, including support for custom CSS and 15 built-in color themes
+- ☀️ Weather widget with current temperature, cloud coverage and animated weather status
+- 🐳 Docker integration to automatically pick and add apps based on their labels
 
 ## Installation
 
@@ -40,32 +22,34 @@ npm run dev
 [Docker Hub link](https://hub.docker.com/r/pawelmalak/flame)
 
 ```sh
-docker pull pawelmalak/flame:latest
+docker pull pawelmalak/flame
 
 # for ARM architecture (e.g. RaspberryPi)
 docker pull pawelmalak/flame:multiarch
-```
 
-
-#### Building images
-
-```sh
-# build image for amd64 only
-docker build -t flame .
-
-# build multiarch image for amd64, armv7 and arm64
-# building failed multiple times with 2GB memory usage limit so you might want to increase it
-docker buildx build \
-  --platform linux/arm/v7,linux/arm64,linux/amd64 \
-  -f Dockerfile.multiarch \
-  -t flame:multiarch .
+# installing specific version
+docker pull pawelmalak/flame:2.0.0
 ```
 
 #### Deployment
 
 ```sh
 # run container
-docker run -p 5005:5005 -v /path/to/data:/app/data flame
+docker run -p 5005:5005 -v /path/to/data:/app/data -e PASSWORD=flame_password flame
+```
+
+#### Building images
+
+```sh
+# build image for amd64 only
+docker build -t flame -f .docker/Dockerfile .
+
+# build multiarch image for amd64, armv7 and arm64
+# building failed multiple times with 2GB memory usage limit so you might want to increase it
+docker buildx build \
+  --platform linux/arm/v7,linux/arm64,linux/amd64 \
+  -f .docker/Dockerfile.multiarch \
+  -t flame:multiarch .
 ```
 
 #### Docker-Compose
@@ -81,6 +65,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock # optional but required for Docker integration feature
     ports:
       - 5005:5005
+    environment:
+      - PASSWORD=flame_password
     restart: unless-stopped
 ```
 
@@ -95,39 +81,56 @@ skaffold dev
 
 Follow instructions from wiki: [Installation without Docker](https://github.com/pawelmalak/flame/wiki/Installation-without-docker)
 
-## Functionality
+## Development
 
-- Applications
-  - Create, update, delete and organize applications using GUI
-  - Pin your favourite apps to the homescreen
+### Technology
 
-![Homescreen screenshot](./.github/_apps.png)
+- Backend
+  - Node.js + Express
+  - Sequelize ORM + SQLite
+- Frontend
+  - React
+  - Redux
+  - TypeScript
+- Deployment
+  - Docker
+  - Kubernetes
 
-- Bookmarks
-  - Create, update, delete and organize bookmarks and categories using GUI
-  - Pin your favourite categories to the homescreen
-  - Import html bookmarks (experimental)
+### Creating dev environment
 
-![Homescreen screenshot](./.github/_bookmarks.png)
+```sh
+# clone repository
+git clone https://github.com/pawelmalak/flame
+cd flame
 
-- Weather
+# run only once
+npm run dev-init
 
-  - Get current temperature, cloud coverage and weather status with animated icons
+# start backend and frontend development servers
+npm run dev
+```
 
-- Themes
-  - Customize your page by choosing from 15 color themes
+## Screenshots
 
-![Homescreen screenshot](./.github/_themes.png)
+![Apps screenshot](.github/apps.png)
+
+![Bookmarks screenshot](.github/bookmarks.png)
+
+![Settings screenshot](.github/settings.png)
+
+![Themes screenshot](.github/themes.png)
 
 ## Usage
+
+### Authentication
+
+Visit [project wiki](https://github.com/pawelmalak/flame/wiki/Authentication) to read more about authentication
 
 ### Search bar
 
 #### Searching
 
-To use search bar you need to type your search query with selected prefix. For example, to search for "what is docker" using google search you would type: `/g what is docker`.
-
-> You can change where to open search results (same/new tab) in the settings
+The default search setting is to search through all your apps and bookmarks. If you want to search using specific search engine, you need to type your search query with selected prefix. For example, to search for "what is docker" using google search you would type: `/g what is docker`.
 
 For list of supported search engines, shortcuts and more about searching functionality visit [project wiki](https://github.com/pawelmalak/flame/wiki/Search-bar).
 
@@ -151,7 +154,7 @@ labels:
 # - flame.icon=custom to make changes in app. ie: custom icon upload
 ```
 
-> "Use Docker API" option must be enabled for this to work. You can find it in Settings > Other > Docker section
+> "Use Docker API" option must be enabled for this to work. You can find it in Settings > Docker
 
 You can also set up different apps in the same label adding `;` between each one.
 
@@ -199,7 +202,7 @@ metadata:
   - flame.pawelmalak/icon=icon-name # optional, default is "kubernetes"
 ```
 
-> "Use Kubernetes Ingress API" option must be enabled for this to work. You can find it in Settings > Other > Kubernetes section
+> "Use Kubernetes Ingress API" option must be enabled for this to work. You can find it in Settings > Docker
 
 ### Import HTML Bookmarks (Experimental)
 

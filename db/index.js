@@ -1,8 +1,9 @@
 const { Sequelize } = require('sequelize');
 const { join } = require('path');
 const Umzug = require('umzug');
-const backupDB = require('./utils/backupDb');
 
+// Utils
+const backupDB = require('./utils/backupDb');
 const Logger = require('../utils/Logger');
 const logger = new Logger();
 
@@ -28,15 +29,16 @@ const connectDB = async () => {
     backupDB();
 
     await sequelize.authenticate();
-    logger.log('Connected to database');
 
-    // migrations
+    // execute all pending migrations
     const pendingMigrations = await umzug.pending();
 
     if (pendingMigrations.length > 0) {
       logger.log('Executing pending migrations');
       await umzug.up();
     }
+
+    logger.log('Connected to database');
   } catch (error) {
     logger.log(`Unable to connect to the database: ${error.message}`, 'ERROR');
     process.exit(1);
