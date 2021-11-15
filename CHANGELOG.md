@@ -1,4 +1,4 @@
-### v2.0.0 (TBA)
+### v2.0.0 (2021-11-15)
 - Added authentication system:
   - Only logged in user can access settings ([#33](https://github.com/pawelmalak/flame/issues/33))
   - User can set which apps, categories and bookmarks should be available for guest users ([#45](https://github.com/pawelmalak/flame/issues/45))
@@ -8,7 +8,9 @@
 - Added current time to the header ([#157](https://github.com/pawelmalak/flame/issues/157))
 - Fixed bug where typing certain characters in the search bar would result in a blank page ([#158](https://github.com/pawelmalak/flame/issues/158))
 - Fixed bug with MDI icon name not being properly parsed if there was leading or trailing whitespace ([#164](https://github.com/pawelmalak/flame/issues/164))
+- Added new shortcut to clear search bar and focus on it ([#170](https://github.com/pawelmalak/flame/issues/170))
 - Added Wikipedia to search queries
+- Updated project wiki
 - Lots of changes and refactors under the hood to make future development easier
 
 ### v1.7.4 (2021-11-08)

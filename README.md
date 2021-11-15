@@ -8,7 +8,7 @@ Flame is self-hosted startpage for your server. Its design is inspired (heavily)
 
 ## Functionality
 - 📝 Create, update, delete your applications and bookmarks directly from the app using built-in GUI editors
-- 📌 Pin your favorite items to the homescreen for quick and easy access
+- 📌 Pin your favourite items to the homescreen for quick and easy access
 - 🔍 Integrated search bar with local filtering, 11 web search providers and ability to add your own
 - 🔑 Authentication system to protect your settings, apps and bookmarks
 - 🔨 Dozens of option to customize Flame interface to your needs, including support for custom CSS and 15 built-in color themes
