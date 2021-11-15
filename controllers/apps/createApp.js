@@ -9,7 +9,11 @@ const createApp = asyncWrapper(async (req, res, next) => {
   const { pinAppsByDefault } = await loadConfig();
 
   let app;
-  let _body = { ...req.body, icon: req.body.icon.trim() };
+  let _body = { ...req.body };
+
+  if (_body.icon) {
+    _body.icon = _body.icon.trim();
+  }
 
   if (req.file) {
     _body.icon = req.file.filename;
