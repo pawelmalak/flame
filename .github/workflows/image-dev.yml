@@ -25,4 +25,5 @@ jobs:
         run: |
           docker buildx build --push \
             --tag mhzawadi/flame:dev \
-            --platform linux/amd64,linux/arm64 .
+            --platform linux/amd64,linux/arm/v7,linux/arm64 \
+            -f .docker/Dockerfile.multiarch .
