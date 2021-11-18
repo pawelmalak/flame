@@ -2,6 +2,7 @@ import {
   DockerSettingsForm,
   OtherSettingsForm,
   SearchForm,
+  ThemeSettingsForm,
   WeatherForm,
 } from '../../interfaces';
 
@@ -42,4 +43,8 @@ export const dockerSettingsTemplate: DockerSettingsForm = {
   dockerHost: 'localhost',
   kubernetesApps: true,
   unpinStoppedApps: true,
+};
+
+export const themeSettingsTemplate: ThemeSettingsForm = {
+  defaultTheme: 'tron',
 };

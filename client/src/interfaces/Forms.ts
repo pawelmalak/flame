@@ -35,3 +35,7 @@ export interface DockerSettingsForm {
   kubernetesApps: boolean;
   unpinStoppedApps: boolean;
 }
+
+export interface ThemeSettingsForm {
+  defaultTheme: string;
+}

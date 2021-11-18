@@ -25,4 +25,5 @@ export interface Config {
   daySchema: string;
   monthSchema: string;
   showTime: boolean;
+  defaultTheme: string;
 }

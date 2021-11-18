@@ -2,7 +2,7 @@ import { Dispatch } from 'redux';
 import { SetThemeAction } from '../actions/theme';
 import { ActionType } from '../action-types';
 import { Theme } from '../../interfaces/Theme';
-import { themes } from '../../components/Themer/themes.json';
+import { themes } from '../../components/Settings/Themer/themes.json';
 
 export const setTheme =
   (name: string) => (dispatch: Dispatch<SetThemeAction>) => {

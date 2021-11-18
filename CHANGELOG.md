@@ -1,4 +1,5 @@
 ### v2.0.1 (TBA)
+- Added option to set default theme for all new users ([#165](https://github.com/pawelmalak/flame/issues/165))
 - Fixed bug with custom icons not working with apps when "pin by default" was disabled
 
 ### v2.0.0 (2021-11-15)

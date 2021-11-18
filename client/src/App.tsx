@@ -1,7 +1,13 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import 'external-svg-loader';
+
+// Redux
+import { useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { autoLogin, getConfig } from './store/action-creators';
 import { actionCreators, store } from './store';
-import 'external-svg-loader';
+import { State } from './store/reducers';
 
 // Utils
 import { checkVersion, decodeToken } from './utility';
@@ -12,9 +18,6 @@ import { Apps } from './components/Apps/Apps';
 import { Settings } from './components/Settings/Settings';
 import { Bookmarks } from './components/Bookmarks/Bookmarks';
 import { NotificationCenter } from './components/NotificationCenter/NotificationCenter';
-import { useDispatch } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { useEffect } from 'react';
 
 // Get config
 store.dispatch<any>(getConfig());
@@ -25,6 +28,8 @@ if (localStorage.token) {
 }
 
 export const App = (): JSX.Element => {
+  const { config, loading } = useSelector((state: State) => state.config);
+
   const dispath = useDispatch();
   const { fetchQueries, setTheme, logout, createNotification } =
     bindActionCreators(actionCreators, dispath);
@@ -46,7 +51,7 @@ export const App = (): JSX.Element => {
       }
     }, 1000);
 
-    // set theme
+    // set user theme if present
     if (localStorage.theme) {
       setTheme(localStorage.theme);
     }
@@ -59,6 +64,13 @@ export const App = (): JSX.Element => {
 
     return () => window.clearInterval(tokenIsValid);
   }, []);
+
+  // If there is no user theme, set the default one
+  useEffect(() => {
+    if (!loading && !localStorage.theme) {
+      setTheme(config.defaultTheme);
+    }
+  }, [loading]);
 
   return (
     <>

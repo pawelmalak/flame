@@ -8,17 +8,10 @@ import {
   UpdateQueryAction,
 } from '../actions/config';
 import axios from 'axios';
-import {
-  ApiResponse,
-  Config,
-  DockerSettingsForm,
-  OtherSettingsForm,
-  Query,
-  SearchForm,
-  WeatherForm,
-} from '../../interfaces';
+import { ApiResponse, Config, Query } from '../../interfaces';
 import { ActionType } from '../action-types';
 import { storeUIConfig, applyAuth } from '../../utility';
+import { ConfigFormData } from '../../types';
 
 const keys: (keyof Config)[] = [
   'useAmericanDate',
@@ -50,9 +43,7 @@ export const getConfig = () => async (dispatch: Dispatch<GetConfigAction>) => {
 };
 
 export const updateConfig =
-  (
-    formData: WeatherForm | OtherSettingsForm | SearchForm | DockerSettingsForm
-  ) =>
+  (formData: ConfigFormData) =>
   async (dispatch: Dispatch<UpdateConfigAction>) => {
     try {
       const res = await axios.put<ApiResponse<Config>>(
