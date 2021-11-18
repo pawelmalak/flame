@@ -7,20 +7,20 @@ const Bookmark = require('../../models/Bookmark');
 const createBookmark = asyncWrapper(async (req, res, next) => {
   let bookmark;
 
-  let _body = {
+  let body = {
     ...req.body,
     categoryId: parseInt(req.body.categoryId),
   };
 
-  if (_body.icon) {
-    _body.icon = _body.icon.trim();
+  if (body.icon) {
+    body.icon = body.icon.trim();
   }
 
   if (req.file) {
-    _body.icon = req.file.filename;
+    body.icon = req.file.filename;
   }
 
-  bookmark = await Bookmark.create(_body);
+  bookmark = await Bookmark.create(body);
 
   res.status(201).json({
     success: true,

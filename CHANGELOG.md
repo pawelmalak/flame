@@ -1,3 +1,6 @@
+### v2.0.1 (TBA)
+- Fixed bug with custom icons not working with apps when "pin by default" was disabled
+
 ### v2.0.0 (2021-11-15)
 - Added authentication system:
   - Only logged in user can access settings ([#33](https://github.com/pawelmalak/flame/issues/33))

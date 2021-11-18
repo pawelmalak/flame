@@ -8,16 +8,10 @@ const loadConfig = require('../../utils/loadConfig');
 const createCategory = asyncWrapper(async (req, res, next) => {
   const { pinCategoriesByDefault: pinCategories } = await loadConfig();
 
-  let category;
-
-  if (pinCategories) {
-    category = await Category.create({
-      ...req.body,
-      isPinned: true,
-    });
-  } else {
-    category = await Category.create(req.body);
-  }
+  const category = await Category.create({
+    ...req.body,
+    isPinned: pinCategories,
+  });
 
   res.status(201).json({
     success: true,
