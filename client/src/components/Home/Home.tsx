@@ -98,7 +98,7 @@ export const Home = (): JSX.Element => {
         <div></div>
       )}
 
-      {!config.hideHeader ? <Header /> : <div></div>}
+      <Header />
 
       {!config.hideApps ? (
         <Fragment>

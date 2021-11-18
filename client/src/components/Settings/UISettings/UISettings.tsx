@@ -66,7 +66,7 @@ export const UISettings = (): JSX.Element => {
 
   return (
     <form onSubmit={(e) => formSubmitHandler(e)}>
-      {/* OTHER OPTIONS */}
+      {/* === OTHER OPTIONS === */}
       <SettingsHeadline text="Miscellaneous" />
       {/* PAGE TITLE */}
       <InputGroup>
@@ -79,6 +79,50 @@ export const UISettings = (): JSX.Element => {
           value={formData.customTitle}
           onChange={(e) => inputChangeHandler(e)}
         />
+      </InputGroup>
+
+      {/* === HEADER OPTIONS === */}
+      <SettingsHeadline text="Header" />
+      {/* HIDE HEADER */}
+      <InputGroup>
+        <label htmlFor="hideHeader">Hide greetings</label>
+        <select
+          id="hideHeader"
+          name="hideHeader"
+          value={formData.hideHeader ? 1 : 0}
+          onChange={(e) => inputChangeHandler(e, { isBool: true })}
+        >
+          <option value={1}>True</option>
+          <option value={0}>False</option>
+        </select>
+      </InputGroup>
+
+      {/* HIDE DATE */}
+      <InputGroup>
+        <label htmlFor="hideDate">Hide date</label>
+        <select
+          id="hideDate"
+          name="hideDate"
+          value={formData.hideDate ? 1 : 0}
+          onChange={(e) => inputChangeHandler(e, { isBool: true })}
+        >
+          <option value={1}>True</option>
+          <option value={0}>False</option>
+        </select>
+      </InputGroup>
+
+      {/* HIDE TIME */}
+      <InputGroup>
+        <label htmlFor="showTime">Hide time</label>
+        <select
+          id="showTime"
+          name="showTime"
+          value={formData.showTime ? 1 : 0}
+          onChange={(e) => inputChangeHandler(e, { isBool: true })}
+        >
+          <option value={0}>True</option>
+          <option value={1}>False</option>
+        </select>
       </InputGroup>
 
       {/* DATE FORMAT */}
@@ -95,7 +139,52 @@ export const UISettings = (): JSX.Element => {
         </select>
       </InputGroup>
 
-      {/* BEAHVIOR OPTIONS */}
+      {/* CUSTOM GREETINGS */}
+      <InputGroup>
+        <label htmlFor="greetingsSchema">Custom greetings</label>
+        <input
+          type="text"
+          id="greetingsSchema"
+          name="greetingsSchema"
+          placeholder="Good day;Hi;Bye!"
+          value={formData.greetingsSchema}
+          onChange={(e) => inputChangeHandler(e)}
+        />
+        <span>
+          Greetings must be separated with semicolon. Only 4 messages can be
+          used
+        </span>
+      </InputGroup>
+
+      {/* CUSTOM DAYS */}
+      <InputGroup>
+        <label htmlFor="daySchema">Custom weekday names</label>
+        <input
+          type="text"
+          id="daySchema"
+          name="daySchema"
+          placeholder="Sunday;Monday;Tuesday"
+          value={formData.daySchema}
+          onChange={(e) => inputChangeHandler(e)}
+        />
+        <span>Names must be separated with semicolon</span>
+      </InputGroup>
+
+      {/* CUSTOM MONTHS */}
+      <InputGroup>
+        <label htmlFor="monthSchema">Custom month names</label>
+        <input
+          type="text"
+          id="monthSchema"
+          name="monthSchema"
+          placeholder="January;February;March"
+          value={formData.monthSchema}
+          onChange={(e) => inputChangeHandler(e)}
+        />
+        <span>Names must be separated with semicolon</span>
+      </InputGroup>
+
+      {/* === BEAHVIOR OPTIONS === */}
       <SettingsHeadline text="App Behavior" />
       {/* PIN APPS */}
       <InputGroup>
@@ -172,82 +261,7 @@ export const UISettings = (): JSX.Element => {
         </select>
       </InputGroup>
 
-      {/* HEADER OPTIONS */}
-      <SettingsHeadline text="Header" />
-      {/* HIDE HEADER */}
-      <InputGroup>
-        <label htmlFor="hideHeader">Hide greeting and date</label>
-        <select
-          id="hideHeader"
-          name="hideHeader"
-          value={formData.hideHeader ? 1 : 0}
-          onChange={(e) => inputChangeHandler(e, { isBool: true })}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
-      </InputGroup>
-
-      {/* CUSTOM GREETINGS */}
-      <InputGroup>
-        <label htmlFor="greetingsSchema">Custom greetings</label>
-        <input
-          type="text"
-          id="greetingsSchema"
-          name="greetingsSchema"
-          placeholder="Good day;Hi;Bye!"
-          value={formData.greetingsSchema}
-          onChange={(e) => inputChangeHandler(e)}
-        />
-        <span>
-          Greetings must be separated with semicolon. Only 4 messages can be
-          used
-        </span>
-      </InputGroup>
-
-      {/* CUSTOM DAYS */}
-      <InputGroup>
-        <label htmlFor="daySchema">Custom weekday names</label>
-        <input
-          type="text"
-          id="daySchema"
-          name="daySchema"
-          placeholder="Sunday;Monday;Tuesday"
-          value={formData.daySchema}
-          onChange={(e) => inputChangeHandler(e)}
-        />
-        <span>Names must be separated with semicolon</span>
-      </InputGroup>
-
-      {/* CUSTOM MONTHS */}
-      <InputGroup>
-        <label htmlFor="monthSchema">Custom month names</label>
-        <input
-          type="text"
-          id="monthSchema"
-          name="monthSchema"
-          placeholder="January;February;March"
-          value={formData.monthSchema}
-          onChange={(e) => inputChangeHandler(e)}
-        />
-        <span>Names must be separated with semicolon</span>
-      </InputGroup>
-
-      {/* SHOW TIME */}
-      <InputGroup>
-        <label htmlFor="showTime">Show time</label>
-        <select
-          id="showTime"
-          name="showTime"
-          value={formData.showTime ? 1 : 0}
-          onChange={(e) => inputChangeHandler(e, { isBool: true })}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
-      </InputGroup>
-
-      {/* MODULES OPTIONS */}
+      {/* === MODULES OPTIONS === */}
       <SettingsHeadline text="Modules" />
       {/* HIDE APPS */}
       <InputGroup>

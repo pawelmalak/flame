@@ -19,6 +19,7 @@ const keys: (keyof Config)[] = [
   'daySchema',
   'monthSchema',
   'showTime',
+  'hideDate',
 ];
 
 export const getConfig = () => async (dispatch: Dispatch<GetConfigAction>) => {

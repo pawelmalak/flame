@@ -22,6 +22,7 @@ export const otherSettingsTemplate: OtherSettingsForm = {
   monthSchema:
     'January;February;March;April;May;June;July;August;September;October;November;December',
   showTime: false,
+  hideDate: false,
 };
 
 export const weatherSettingsTemplate: WeatherForm = {

@@ -31,4 +31,5 @@ export const configTemplate: Config = {
   defaultTheme: 'tron',
   isKilometer: true,
   weatherData: 'cloud',
+  hideDate: false,
 };

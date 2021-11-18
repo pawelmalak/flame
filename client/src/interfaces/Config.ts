@@ -30,4 +30,5 @@ export interface Config {
   defaultTheme: string;
   isKilometer: boolean;
   weatherData: WeatherData;
+  hideDate: boolean;
 }

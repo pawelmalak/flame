@@ -30,22 +30,42 @@ export const getDateTime = (): string => {
 
   const useAmericanDate = localStorage.useAmericanDate === 'true';
   const showTime = localStorage.showTime === 'true';
+  const hideDate = localStorage.hideDate === 'true';
 
-  const p = parseTime;
+  // Date
+  let dateEl = '';
 
-  const time = `${p(now.getHours())}:${p(now.getMinutes())}:${p(
-    now.getSeconds()
-  )}`;
-
-  const timeEl = showTime ? ` - ${time}` : '';
-
-  if (!useAmericanDate) {
-    return `${days[now.getDay()]}, ${now.getDate()} ${
-      months[now.getMonth()]
-    } ${now.getFullYear()}${timeEl}`;
-  } else {
-    return `${days[now.getDay()]}, ${
-      months[now.getMonth()]
-    } ${now.getDate()} ${now.getFullYear()}${timeEl}`;
+  if (!hideDate) {
+    if (!useAmericanDate) {
+      dateEl = `${days[now.getDay()]}, ${now.getDate()} ${
+        months[now.getMonth()]
+      } ${now.getFullYear()}`;
+    } else {
+      dateEl = `${days[now.getDay()]}, ${
+        months[now.getMonth()]
+      } ${now.getDate()} ${now.getFullYear()}`;
+    }
   }
+
+  // Time
+  const p = parseTime;
+  let timeEl = '';
+
+  if (showTime) {
+    const time = `${p(now.getHours())}:${p(now.getMinutes())}:${p(
+      now.getSeconds()
+    )}`;
+
+    timeEl = time;
+  }
+
+  // Separator
+  let separator = '';
+
+  if (!hideDate && showTime) {
+    separator = ' - ';
+  }
+
+  // Output
+  return `${dateEl}${separator}${timeEl}`;
 };

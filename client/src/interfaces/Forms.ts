@@ -30,6 +30,7 @@ export interface OtherSettingsForm {
   daySchema: string;
   monthSchema: string;
   showTime: boolean;
+  hideDate: boolean;
 }
 
 export interface DockerSettingsForm {

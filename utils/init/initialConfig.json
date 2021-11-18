@@ -27,5 +27,6 @@
   "showTime": false,
   "defaultTheme": "tron",
   "isKilometer": true,
-  "weatherData": "cloud"
+  "weatherData": "cloud",
+  "hideDate": false
 }
