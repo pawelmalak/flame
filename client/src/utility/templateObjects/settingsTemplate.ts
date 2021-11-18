@@ -29,6 +29,7 @@ export const weatherSettingsTemplate: WeatherForm = {
   lat: 0,
   long: 0,
   isCelsius: true,
+  weatherData: 'cloud',
 };
 
 export const searchSettingsTemplate: SearchForm = {

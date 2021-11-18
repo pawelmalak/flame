@@ -11,7 +11,7 @@ import { State } from '../../../store/reducers';
 import { ApiResponse, Weather, WeatherForm } from '../../../interfaces';
 
 // UI
-import { InputGroup, Button } from '../../UI';
+import { InputGroup, Button, SettingsHeadline } from '../../UI';
 
 // Utils
 import { inputHandler, weatherSettingsTemplate } from '../../../utility';
@@ -84,6 +84,8 @@ export const WeatherSettings = (): JSX.Element => {
 
   return (
     <form onSubmit={(e) => formSubmitHandler(e)}>
+      <SettingsHeadline text="API" />
+      {/* API KEY */}
       <InputGroup>
         <label htmlFor="WEATHER_API_KEY">API key</label>
         <input
@@ -104,8 +106,10 @@ export const WeatherSettings = (): JSX.Element => {
         </span>
       </InputGroup>
 
+      <SettingsHeadline text="Location" />
+      {/* LAT */}
       <InputGroup>
-        <label htmlFor="lat">Location latitude</label>
+        <label htmlFor="lat">Latitude</label>
         <input
           type="number"
           id="lat"
@@ -128,8 +132,9 @@ export const WeatherSettings = (): JSX.Element => {
         </span>
       </InputGroup>
 
+      {/* LONG */}
       <InputGroup>
-        <label htmlFor="long">Location longitude</label>
+        <label htmlFor="long">Longitude</label>
         <input
           type="number"
           id="long"
@@ -142,6 +147,8 @@ export const WeatherSettings = (): JSX.Element => {
         />
       </InputGroup>
 
+      <SettingsHeadline text="Other" />
+      {/* TEMPERATURE */}
       <InputGroup>
         <label htmlFor="isCelsius">Temperature unit</label>
         <select
@@ -152,6 +159,20 @@ export const WeatherSettings = (): JSX.Element => {
         >
           <option value={1}>Celsius</option>
           <option value={0}>Fahrenheit</option>
+        </select>
+      </InputGroup>
+
+      {/* WEATHER DATA */}
+      <InputGroup>
+        <label htmlFor="weatherData">Additional weather data</label>
+        <select
+          id="weatherData"
+          name="weatherData"
+          value={formData.weatherData}
+          onChange={(e) => inputChangeHandler(e)}
+        >
+          <option value="cloud">Cloud coverage</option>
+          <option value="humidity">Humidity</option>
         </select>
       </InputGroup>
 

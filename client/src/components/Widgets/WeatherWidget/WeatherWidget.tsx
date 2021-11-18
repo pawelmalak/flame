@@ -13,22 +13,14 @@ import classes from './WeatherWidget.module.css';
 // UI
 import { WeatherIcon } from '../../UI';
 import { State } from '../../../store/reducers';
+import { weatherTemplate } from '../../../utility/templateObjects/weatherTemplate';
 
 export const WeatherWidget = (): JSX.Element => {
-  const { loading, config } = useSelector((state: State) => state.config);
+  const { loading: configLoading, config } = useSelector(
+    (state: State) => state.config
+  );
 
-  const [weather, setWeather] = useState<Weather>({
-    externalLastUpdate: '',
-    tempC: 0,
-    tempF: 0,
-    isDay: 1,
-    cloud: 0,
-    conditionText: '',
-    conditionCode: 1000,
-    id: -1,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  });
+  const [weather, setWeather] = useState<Weather>(weatherTemplate);
   const [isLoading, setIsLoading] = useState(true);
 
   // Initial request to get data
@@ -65,8 +57,7 @@ export const WeatherWidget = (): JSX.Element => {
 
   return (
     <div className={classes.WeatherWidget}>
-      {isLoading ||
-        loading ||
+      {configLoading ||
         (config.WEATHER_API_KEY && weather.id > 0 && (
           <Fragment>
             <div className={classes.WeatherIcon}>
@@ -76,12 +67,15 @@ export const WeatherWidget = (): JSX.Element => {
               />
             </div>
             <div className={classes.WeatherDetails}>
+              {/* TEMPERATURE */}
               {config.isCelsius ? (
                 <span>{weather.tempC}°C</span>
               ) : (
                 <span>{weather.tempF}°F</span>
               )}
-              <span>{weather.cloud}%</span>
+
+              {/* ADDITIONAL DATA */}
+              <span>{weather[config.weatherData]}%</span>
             </div>
           </Fragment>
         ))}

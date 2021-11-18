@@ -29,4 +29,6 @@ export const configTemplate: Config = {
     'January;February;March;April;May;June;July;August;September;October;November;December',
   showTime: false,
   defaultTheme: 'tron',
+  isKilometer: true,
+  weatherData: 'cloud',
 };
