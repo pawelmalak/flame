@@ -61,7 +61,7 @@ export const AppForm = ({ app, modalHandler }: Props): JSX.Element => {
       }
       data.append('name', formData.name);
       data.append('url', formData.url);
-      data.append('isPublic', `${formData.isPublic}`);
+      data.append('isPublic', `${formData.isPublic ? 1 : 0}`);
 
       return data;
     };

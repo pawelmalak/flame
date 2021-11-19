@@ -77,7 +77,7 @@ export const BookmarksForm = ({
       data.append('name', formData.name);
       data.append('url', formData.url);
       data.append('categoryId', `${formData.categoryId}`);
-      data.append('isPublic', `${formData.isPublic}`);
+      data.append('isPublic', `${formData.isPublic ? 1 : 0}`);
 
       return data;
     };

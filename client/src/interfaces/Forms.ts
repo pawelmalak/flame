@@ -1,8 +1,11 @@
+import { WeatherData } from '../types';
+
 export interface WeatherForm {
   WEATHER_API_KEY: string;
   lat: number;
   long: number;
   isCelsius: boolean;
+  weatherData: WeatherData;
 }
 
 export interface SearchForm {
@@ -27,6 +30,7 @@ export interface OtherSettingsForm {
   daySchema: string;
   monthSchema: string;
   showTime: boolean;
+  hideDate: boolean;
 }
 
 export interface DockerSettingsForm {
@@ -34,4 +38,8 @@ export interface DockerSettingsForm {
   dockerHost: string;
   kubernetesApps: boolean;
   unpinStoppedApps: boolean;
+}
+
+export interface ThemeSettingsForm {
+  defaultTheme: string;
 }

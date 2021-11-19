@@ -11,7 +11,7 @@ import { Route as SettingsRoute } from '../../interfaces';
 import classes from './Settings.module.css';
 
 // Components
-import { Themer } from '../Themer/Themer';
+import { Themer } from './Themer/Themer';
 import { WeatherSettings } from './WeatherSettings/WeatherSettings';
 import { UISettings } from './UISettings/UISettings';
 import { AppDetails } from './AppDetails/AppDetails';

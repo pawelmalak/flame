@@ -19,20 +19,20 @@ const updateBookmark = asyncWrapper(async (req, res, next) => {
     );
   }
 
-  let _body = {
+  let body = {
     ...req.body,
     categoryId: parseInt(req.body.categoryId),
   };
 
-  if (_body.icon) {
-    _body.icon = _body.icon.trim();
+  if (body.icon) {
+    body.icon = body.icon.trim();
   }
 
   if (req.file) {
-    _body.icon = req.file.filename;
+    body.icon = req.file.filename;
   }
 
-  bookmark = await bookmark.update(_body);
+  bookmark = await bookmark.update(body);
 
   res.status(200).json({
     success: true,

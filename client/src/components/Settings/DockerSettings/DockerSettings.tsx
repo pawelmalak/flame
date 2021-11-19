@@ -59,7 +59,7 @@ export const DockerSettings = (): JSX.Element => {
       <SettingsHeadline text="Docker" />
       {/* CUSTOM DOCKER SOCKET HOST */}
       <InputGroup>
-        <label htmlFor="dockerHost">Docker Host</label>
+        <label htmlFor="dockerHost">Docker host</label>
         <input
           type="text"
           id="dockerHost"

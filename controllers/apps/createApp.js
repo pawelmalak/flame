@@ -8,25 +8,20 @@ const loadConfig = require('../../utils/loadConfig');
 const createApp = asyncWrapper(async (req, res, next) => {
   const { pinAppsByDefault } = await loadConfig();
 
-  let app;
-  let _body = { ...req.body };
+  let body = { ...req.body };
 
-  if (_body.icon) {
-    _body.icon = _body.icon.trim();
+  if (body.icon) {
+    body.icon = body.icon.trim();
   }
 
   if (req.file) {
-    _body.icon = req.file.filename;
+    body.icon = req.file.filename;
   }
 
-  if (pinAppsByDefault) {
-    app = await App.create({
-      ..._body,
-      isPinned: true,
-    });
-  } else {
-    app = await App.create(req.body);
-  }
+  const app = await App.create({
+    ...body,
+    isPinned: pinAppsByDefault,
+  });
 
   res.status(201).json({
     success: true,
