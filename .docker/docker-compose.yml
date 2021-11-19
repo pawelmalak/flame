@@ -1,4 +1,9 @@
-version: '3'
+version: "3"
+
+secrets:
+  password:
+    file: ./secrets/password
+
 services:
   flame:
     image: pawelmalak/flame
@@ -7,6 +12,8 @@ services:
       - /path/to/data:/app/data
     ports:
       - 5005:5005
+    secrets:
+      - password
     environment:
-      - PASSWORD=flame_password
+      - PASSWORD_FILE=/run/secrets/password
     restart: unless-stopped

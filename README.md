@@ -70,6 +70,10 @@ services:
     restart: unless-stopped
 ```
 
+##### Docker Secrets
+
+All environment variables set can be overwritten by appending `_FILE` to the variable value.For example, you can use `PASSWORD_FILE` to pass through a docker secret instead of `PASSWORD`. If both `PASSWORD` and `PASSWORD_FILE` are set, the docker secret will take precedent. An example using docker secrets is available in [here](.docker/docker-compose.yml).
+
 #### Skaffold
 
 ```sh
@@ -212,7 +216,7 @@ metadata:
 - Backup your `db.sqlite` before running script!
 - Known Issues:
   - generated icons are sometimes incorrect
-  
+
 ```bash
 pip3 install Pillow, beautifulsoup4
 
