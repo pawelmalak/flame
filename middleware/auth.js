@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const auth = (req, res, next) => {
-  const authHeader = req.header('Authorization');
+  const authHeader = req.header('Authorization_Flame');
   let token;
   let tokenIsValid = false;
 
