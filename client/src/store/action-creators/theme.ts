@@ -5,11 +5,15 @@ import { Theme } from '../../interfaces/Theme';
 import { themes } from '../../components/Settings/Themer/themes.json';
 
 export const setTheme =
-  (name: string) => (dispatch: Dispatch<SetThemeAction>) => {
+  (name: string, remeberTheme: boolean = true) =>
+  (dispatch: Dispatch<SetThemeAction>) => {
     const theme = themes.find((theme) => theme.name === name);
 
     if (theme) {
-      localStorage.setItem('theme', name);
+      if (remeberTheme) {
+        localStorage.setItem('theme', name);
+      }
+
       loadTheme(theme);
 
       dispatch({

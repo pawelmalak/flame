@@ -68,7 +68,7 @@ export const App = (): JSX.Element => {
   // If there is no user theme, set the default one
   useEffect(() => {
     if (!loading && !localStorage.theme) {
-      setTheme(config.defaultTheme);
+      setTheme(config.defaultTheme, false);
     }
   }, [loading]);
 
