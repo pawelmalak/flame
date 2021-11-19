@@ -3,6 +3,7 @@
 - Added option to set default theme for all new users ([#165](https://github.com/pawelmalak/flame/issues/165))
 - Added option to hide header greetings and date separately ([#200](https://github.com/pawelmalak/flame/issues/200))
 - Fixed bug with broken basic auth ([#202](https://github.com/pawelmalak/flame/issues/202))
+- Fixed bug with parsing visibility value for apps and bookmarks when custom icon was used ([#203](https://github.com/pawelmalak/flame/issues/203))
 - Fixed bug with custom icons not working with apps when "pin by default" was disabled
 
 ### v2.0.0 (2021-11-15)
