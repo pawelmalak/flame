@@ -1,4 +1,4 @@
-import { Fragment, KeyboardEvent, useState, useEffect } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import {
   DragDropContext,
   Droppable,
@@ -9,21 +9,20 @@ import { Link } from 'react-router-dom';
 
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
-
-// Typescript
-import { App } from '../../../interfaces';
-
-// CSS
-import classes from './AppTable.module.css';
-
-// UI
-import { Icon, Table } from '../../UI';
 import { State } from '../../../store/reducers';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../store';
 
+// Typescript
+import { App } from '../../../interfaces';
+
+// Other
+import classes from './AppTable.module.css';
+import { Table } from '../../UI';
+import { TableActions } from '../../Actions/TableActions';
+
 interface Props {
-  updateAppHandler: (app: App) => void;
+  openFormForUpdating: (app: App) => void;
 }
 
 export const AppTable = (props: Props): JSX.Element => {
@@ -33,49 +32,18 @@ export const AppTable = (props: Props): JSX.Element => {
   } = useSelector((state: State) => state);
 
   const dispatch = useDispatch();
-  const { pinApp, deleteApp, reorderApps, updateConfig, createNotification } =
+  const { pinApp, deleteApp, reorderApps, createNotification, updateApp } =
     bindActionCreators(actionCreators, dispatch);
 
   const [localApps, setLocalApps] = useState<App[]>([]);
-  const [isCustomOrder, setIsCustomOrder] = useState<boolean>(false);
 
   // Copy apps array
   useEffect(() => {
     setLocalApps([...apps]);
   }, [apps]);
 
-  // Check ordering
-  useEffect(() => {
-    const order = config.useOrdering;
-
-    if (order === 'orderId') {
-      setIsCustomOrder(true);
-    }
-  }, []);
-
-  const deleteAppHandler = (app: App): void => {
-    const proceed = window.confirm(
-      `Are you sure you want to delete ${app.name} at ${app.url} ?`
-    );
-
-    if (proceed) {
-      deleteApp(app.id);
-    }
-  };
-
-  // Support keyboard navigation for actions
-  const keyboardActionHandler = (
-    e: KeyboardEvent,
-    app: App,
-    handler: Function
-  ) => {
-    if (e.key === 'Enter') {
-      handler(app);
-    }
-  };
-
   const dragEndHanlder = (result: DropResult): void => {
-    if (!isCustomOrder) {
+    if (config.useOrdering !== 'orderId') {
       createNotification({
         title: 'Error',
         message: 'Custom order is disabled',
@@ -95,18 +63,43 @@ export const AppTable = (props: Props): JSX.Element => {
     reorderApps(tmpApps);
   };
 
+  // Action handlers
+  const deleteAppHandler = (id: number, name: string) => {
+    const proceed = window.confirm(`Are you sure you want to delete ${name}?`);
+
+    if (proceed) {
+      deleteApp(id);
+    }
+  };
+
+  const updateAppHandler = (id: number) => {
+    const app = apps.find((a) => a.id === id) as App;
+    props.openFormForUpdating(app);
+  };
+
+  const pinAppHandler = (id: number) => {
+    const app = apps.find((a) => a.id === id) as App;
+    pinApp(app);
+  };
+
+  const changeAppVisibiltyHandler = (id: number) => {
+    const app = apps.find((a) => a.id === id) as App;
+    updateApp(id, { ...app, isPublic: !app.isPublic });
+  };
+
   return (
     <Fragment>
       <div className={classes.Message}>
-        {isCustomOrder ? (
+        {config.useOrdering === 'orderId' ? (
           <p>You can drag and drop single rows to reorder application</p>
         ) : (
           <p>
-            Custom order is disabled. You can change it in{' '}
-            <Link to="/settings/other">settings</Link>
+            Custom order is disabled. You can change it in the{' '}
+            <Link to="/settings/interface">settings</Link>
           </p>
         )}
       </div>
+
       <DragDropContext onDragEnd={dragEndHanlder}>
         <Droppable droppableId="apps">
           {(provided) => (
@@ -143,54 +136,15 @@ export const AppTable = (props: Props): JSX.Element => {
                           <td style={{ width: '200px' }}>
                             {app.isPublic ? 'Visible' : 'Hidden'}
                           </td>
+
                           {!snapshot.isDragging && (
-                            <td className={classes.TableActions}>
-                              <div
-                                className={classes.TableAction}
-                                onClick={() => deleteAppHandler(app)}
-                                onKeyDown={(e) =>
-                                  keyboardActionHandler(
-                                    e,
-                                    app,
-                                    deleteAppHandler
-                                  )
-                                }
-                                tabIndex={0}
-                              >
-                                <Icon icon="mdiDelete" />
-                              </div>
-                              <div
-                                className={classes.TableAction}
-                                onClick={() => props.updateAppHandler(app)}
-                                onKeyDown={(e) =>
-                                  keyboardActionHandler(
-                                    e,
-                                    app,
-                                    props.updateAppHandler
-                                  )
-                                }
-                                tabIndex={0}
-                              >
-                                <Icon icon="mdiPencil" />
-                              </div>
-                              <div
-                                className={classes.TableAction}
-                                onClick={() => pinApp(app)}
-                                onKeyDown={(e) =>
-                                  keyboardActionHandler(e, app, pinApp)
-                                }
-                                tabIndex={0}
-                              >
-                                {app.isPinned ? (
-                                  <Icon
-                                    icon="mdiPinOff"
-                                    color="var(--color-accent)"
-                                  />
-                                ) : (
-                                  <Icon icon="mdiPin" />
-                                )}
-                              </div>
-                            </td>
+                            <TableActions
+                              entity={app}
+                              deleteHandler={deleteAppHandler}
+                              updateHandler={updateAppHandler}
+                              pinHanlder={pinAppHandler}
+                              changeVisibilty={changeAppVisibiltyHandler}
+                            />
                           )}
                         </tr>
                       );
