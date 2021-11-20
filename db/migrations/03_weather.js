@@ -1,7 +1,5 @@
 const { DataTypes } = require('sequelize');
 const { INTEGER, FLOAT } = DataTypes;
-const loadConfig = require('../../utils/loadConfig');
-const getExternalWeather = require('../../utils/getExternalWeather');
 
 const up = async (query) => {
   await query.addColumn('weather', 'humidity', {
@@ -15,12 +13,6 @@ const up = async (query) => {
   await query.addColumn('weather', 'windM', {
     type: FLOAT,
   });
-
-  const { WEATHER_API_KEY: secret } = await loadConfig();
-
-  if (secret) {
-    await getExternalWeather();
-  }
 };
 
 const down = async (query) => {
