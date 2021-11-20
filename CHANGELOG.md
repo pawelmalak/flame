@@ -1,3 +1,8 @@
+### v2.0.2 (TBA)
+- Added support for .ico files for custom icons ([#209](https://github.com/pawelmalak/flame/issues/209))
+- Added option to pin apps and categories directly from table view
+
+
 ### v2.0.1 (2021-11-19)
 - Added option to display humidity in the weather widget ([#136](https://github.com/pawelmalak/flame/issues/136))
 - Added option to set default theme for all new users ([#165](https://github.com/pawelmalak/flame/issues/165))

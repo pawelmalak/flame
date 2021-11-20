@@ -146,6 +146,7 @@ export const BookmarksForm = ({
 
   return (
     <ModalForm modalHandler={modalHandler} formHandler={formSubmitHandler}>
+      {/* NAME */}
       <InputGroup>
         <label htmlFor="name">Bookmark Name</label>
         <input
@@ -159,6 +160,7 @@ export const BookmarksForm = ({
         />
       </InputGroup>
 
+      {/* URL */}
       <InputGroup>
         <label htmlFor="url">Bookmark URL</label>
         <input
@@ -172,6 +174,7 @@ export const BookmarksForm = ({
         />
       </InputGroup>
 
+      {/* CATEGORY */}
       <InputGroup>
         <label htmlFor="categoryId">Bookmark Category</label>
         <select
@@ -192,6 +195,7 @@ export const BookmarksForm = ({
         </select>
       </InputGroup>
 
+      {/* ICON */}
       {!useCustomIcon ? (
         // mdi
         <InputGroup>
@@ -227,7 +231,7 @@ export const BookmarksForm = ({
             name="icon"
             id="icon"
             onChange={(e) => fileChangeHandler(e)}
-            accept=".jpg,.jpeg,.png,.svg"
+            accept=".jpg,.jpeg,.png,.svg,.ico"
           />
           <span
             onClick={() => {
@@ -241,6 +245,7 @@ export const BookmarksForm = ({
         </InputGroup>
       )}
 
+      {/* VISIBILTY */}
       <InputGroup>
         <label htmlFor="isPublic">Bookmark visibility</label>
         <select
