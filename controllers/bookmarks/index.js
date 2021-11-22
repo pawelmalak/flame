@@ -4,4 +4,5 @@ module.exports = {
   getSingleBookmark: require('./getSingleBookmark'),
   updateBookmark: require('./updateBookmark'),
   deleteBookmark: require('./deleteBookmark'),
+  reorderBookmarks: require('./reorderBookmarks'),
 };

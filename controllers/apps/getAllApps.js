@@ -28,17 +28,15 @@ const getAllApps = asyncWrapper(async (req, res, next) => {
   // apps visibility
   const where = req.isAuthenticated ? {} : { isPublic: true };
 
-  if (orderType == 'name') {
-    apps = await App.findAll({
-      order: [[Sequelize.fn('lower', Sequelize.col('name')), 'ASC']],
-      where,
-    });
-  } else {
-    apps = await App.findAll({
-      order: [[orderType, 'ASC']],
-      where,
-    });
-  }
+  const order =
+    orderType == 'name'
+      ? [[Sequelize.fn('lower', Sequelize.col('name')), 'ASC']]
+      : [[orderType, 'ASC']];
+
+  apps = await App.findAll({
+    order,
+    where,
+  });
 
   if (process.env.NODE_ENV === 'production') {
     // Set header to fetch containers info every time
