@@ -56,3 +56,13 @@ export interface ReorderCategoriesAction {
   type: ActionType.reorderCategories;
   payload: Category[];
 }
+
+export interface SetEditCategoryAction {
+  type: ActionType.setEditCategory;
+  payload: Category | null;
+}
+
+export interface SetEditBookmarkAction {
+  type: ActionType.setEditBookmark;
+  payload: Bookmark | null;
+}

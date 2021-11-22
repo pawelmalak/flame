@@ -1,14 +1,17 @@
 import { Fragment } from 'react';
 
-import { useSelector } from 'react-redux';
+// Redux
+import { useDispatch, useSelector } from 'react-redux';
 import { State } from '../../../store/reducers';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../../store';
 
+// Typescript
 import { Bookmark, Category } from '../../../interfaces';
 
+// Other
 import classes from './BookmarkCard.module.css';
-
 import { Icon } from '../../UI';
-
 import { iconParser, isImage, isSvg, isUrl, urlParser } from '../../../utility';
 
 interface Props {
@@ -18,9 +21,19 @@ interface Props {
 export const BookmarkCard = (props: Props): JSX.Element => {
   const { config } = useSelector((state: State) => state.config);
 
+  const dispatch = useDispatch();
+  const { setEditCategory } = bindActionCreators(actionCreators, dispatch);
+
   return (
     <div className={classes.BookmarkCard}>
-      <h3>{props.category.name}</h3>
+      <h3
+        onClick={() => {
+          setEditCategory(props.category);
+        }}
+      >
+        {props.category.name}
+      </h3>
+
       <div className={classes.Bookmarks}>
         {props.category.bookmarks.map((bookmark: Bookmark) => {
           const redirectUrl = urlParser(bookmark.url)[1];

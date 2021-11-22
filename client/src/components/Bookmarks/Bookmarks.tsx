@@ -19,9 +19,6 @@ import { Container, Headline, ActionButton, Spinner, Modal } from '../UI';
 // Components
 import { BookmarkGrid } from './BookmarkGrid/BookmarkGrid';
 import { Form } from './Form/Form';
-
-// Utils
-import { bookmarkTemplate, categoryTemplate } from '../../utility';
 import { Table } from './Table/Table';
 
 interface Props {
@@ -36,13 +33,14 @@ export enum ContentType {
 export const Bookmarks = (props: Props): JSX.Element => {
   // Get Redux state
   const {
-    bookmarks: { loading, categories },
+    bookmarks: { loading, categories, categoryInEdit },
     auth: { isAuthenticated },
   } = useSelector((state: State) => state);
 
   // Get Redux action creators
   const dispatch = useDispatch();
-  const { getCategories } = bindActionCreators(actionCreators, dispatch);
+  const { getCategories, setEditCategory, setEditBookmark } =
+    bindActionCreators(actionCreators, dispatch);
 
   // Load categories if array is empty
   useEffect(() => {
@@ -55,10 +53,6 @@ export const Bookmarks = (props: Props): JSX.Element => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [formContentType, setFormContentType] = useState(ContentType.category);
   const [isInUpdate, setIsInUpdate] = useState(false);
-  const [categoryInUpdate, setCategoryInUpdate] =
-    useState<Category>(categoryTemplate);
-  const [bookmarkInUpdate, setBookmarkInUpdate] =
-    useState<Bookmark>(bookmarkTemplate);
 
   // Table
   const [showTable, setShowTable] = useState(false);
@@ -73,6 +67,13 @@ export const Bookmarks = (props: Props): JSX.Element => {
       setModalIsOpen(false);
     }
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    if (categoryInEdit && !showTable) {
+      setTableContentType(ContentType.bookmark);
+      setShowTable(true);
+    }
+  }, [categoryInEdit]);
 
   // Form actions
   const toggleModal = (): void => {
@@ -94,10 +95,10 @@ export const Bookmarks = (props: Props): JSX.Element => {
 
     if (instanceOfCategory(data)) {
       setFormContentType(ContentType.category);
-      setCategoryInUpdate(data);
+      setEditCategory(data);
     } else {
       setFormContentType(ContentType.bookmark);
-      setBookmarkInUpdate(data);
+      setEditBookmark(data);
     }
 
     toggleModal();
@@ -121,8 +122,6 @@ export const Bookmarks = (props: Props): JSX.Element => {
           modalHandler={toggleModal}
           contentType={formContentType}
           inUpdate={isInUpdate}
-          category={categoryInUpdate}
-          bookmark={bookmarkInUpdate}
         />
       </Modal>
 
@@ -145,11 +144,11 @@ export const Bookmarks = (props: Props): JSX.Element => {
             icon="mdiPencil"
             handler={() => showTableForEditing(ContentType.category)}
           />
-          {/* <ActionButton
+          <ActionButton
             name="Edit Bookmarks"
             icon="mdiPencil"
             handler={() => showTableForEditing(ContentType.bookmark)}
-          /> */}
+          />
         </div>
       )}
 

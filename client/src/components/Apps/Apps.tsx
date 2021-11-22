@@ -19,7 +19,6 @@ import { AppForm } from './AppForm/AppForm';
 import { AppTable } from './AppTable/AppTable';
 
 // Utils
-import { appTemplate } from '../../utility';
 import { State } from '../../store/reducers';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../store';
@@ -37,7 +36,7 @@ export const Apps = (props: Props): JSX.Element => {
 
   // Get Redux action creators
   const dispatch = useDispatch();
-  const { getApps } = bindActionCreators(actionCreators, dispatch);
+  const { getApps, setEditApp } = bindActionCreators(actionCreators, dispatch);
 
   // Load apps if array is empty
   useEffect(() => {
@@ -49,8 +48,6 @@ export const Apps = (props: Props): JSX.Element => {
   // Form
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [showTable, setShowTable] = useState(false);
-  const [isInUpdate, setIsInUpdate] = useState(false);
-  const [appInUpdate, setAppInUpdate] = useState<App>(appTemplate);
 
   // Observe if user is authenticated -> set default view if not
   useEffect(() => {
@@ -63,28 +60,21 @@ export const Apps = (props: Props): JSX.Element => {
   // Form actions
   const toggleModal = (): void => {
     setModalIsOpen(!modalIsOpen);
-    setIsInUpdate(false);
   };
 
   const toggleEdit = (): void => {
     setShowTable(!showTable);
-    setIsInUpdate(false);
   };
 
   const openFormForUpdating = (app: App): void => {
-    setAppInUpdate(app);
-    setIsInUpdate(true);
+    setEditApp(app);
     setModalIsOpen(true);
   };
 
   return (
     <Container>
       <Modal isOpen={modalIsOpen} setIsOpen={setModalIsOpen}>
-        {!isInUpdate ? (
-          <AppForm modalHandler={toggleModal} />
-        ) : (
-          <AppForm modalHandler={toggleModal} app={appInUpdate} />
-        )}
+        <AppForm modalHandler={toggleModal} />
       </Modal>
 
       <Headline
@@ -94,7 +84,14 @@ export const Apps = (props: Props): JSX.Element => {
 
       {isAuthenticated && (
         <div className={classes.ActionsContainer}>
-          <ActionButton name="Add" icon="mdiPlusBox" handler={toggleModal} />
+          <ActionButton
+            name="Add"
+            icon="mdiPlusBox"
+            handler={() => {
+              setEditApp(null);
+              toggleModal();
+            }}
+          />
           <ActionButton name="Edit" icon="mdiPencil" handler={toggleEdit} />
         </div>
       )}

@@ -7,6 +7,7 @@ import {
   GetAppsAction,
   PinAppAction,
   ReorderAppsAction,
+  SetEditAppAction,
   SortAppsAction,
   UpdateAppAction,
 } from '../actions/app';
@@ -196,3 +197,11 @@ export const sortApps = () => async (dispatch: Dispatch<SortAppsAction>) => {
     console.log(err);
   }
 };
+
+export const setEditApp =
+  (app: App | null) => (dispatch: Dispatch<SetEditAppAction>) => {
+    dispatch({
+      type: ActionType.setEditApp,
+      payload: app,
+    });
+  };

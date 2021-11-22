@@ -4,7 +4,7 @@ import classes from './TableActions.module.css';
 interface Entity {
   id: number;
   name: string;
-  isPinned: boolean;
+  isPinned?: boolean;
   isPublic: boolean;
 }
 
@@ -12,7 +12,7 @@ interface Props {
   entity: Entity;
   deleteHandler: (id: number, name: string) => void;
   updateHandler: (id: number) => void;
-  pinHanlder: (id: number) => void;
+  pinHanlder?: (id: number) => void;
   changeVisibilty: (id: number) => void;
   showPin?: boolean;
 }
@@ -26,6 +26,8 @@ export const TableActions = (props: Props): JSX.Element => {
     changeVisibilty,
     showPin = true,
   } = props;
+
+  const _pinHandler = pinHanlder || function () {};
 
   return (
     <td className={classes.TableActions}>
@@ -51,7 +53,7 @@ export const TableActions = (props: Props): JSX.Element => {
       {showPin && (
         <div
           className={classes.TableAction}
-          onClick={() => pinHanlder(entity.id)}
+          onClick={() => _pinHandler(entity.id)}
           tabIndex={0}
         >
           {entity.isPinned ? (

@@ -7,12 +7,14 @@ interface AppsState {
   loading: boolean;
   apps: App[];
   errors: string | undefined;
+  appInUpdate: App | null;
 }
 
 const initialState: AppsState = {
   loading: true,
   apps: [],
   errors: undefined,
+  appInUpdate: null,
 };
 
 export const appsReducer = (
@@ -84,6 +86,12 @@ export const appsReducer = (
       return {
         ...state,
         apps: sortData<App>(state.apps, action.payload),
+      };
+
+    case ActionType.setEditApp:
+      return {
+        ...state,
+        appInUpdate: action.payload,
       };
 
     default:

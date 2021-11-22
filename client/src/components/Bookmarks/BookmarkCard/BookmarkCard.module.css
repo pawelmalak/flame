@@ -10,6 +10,10 @@
   text-transform: uppercase;
 }
 
+.BookmarkCard h3:hover {
+  cursor: pointer;
+}
+
 .Bookmarks {
   display: flex;
   flex-direction: column;

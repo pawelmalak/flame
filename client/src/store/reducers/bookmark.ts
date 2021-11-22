@@ -1,4 +1,4 @@
-import { Category } from '../../interfaces';
+import { Bookmark, Category } from '../../interfaces';
 import { sortData } from '../../utility';
 import { ActionType } from '../action-types';
 import { Action } from '../actions';
@@ -7,12 +7,16 @@ interface BookmarksState {
   loading: boolean;
   errors: string | undefined;
   categories: Category[];
+  categoryInEdit: Category | null;
+  bookmarkInEdit: Bookmark | null;
 }
 
 const initialState: BookmarksState = {
   loading: true,
   errors: undefined,
   categories: [],
+  categoryInEdit: null,
+  bookmarkInEdit: null,
 };
 
 export const bookmarksReducer = (
@@ -45,19 +49,19 @@ export const bookmarksReducer = (
         (category) => category.id === action.payload.categoryId
       );
 
+      const categoryWithNewBookmark = {
+        ...state.categories[categoryIdx],
+        bookmarks: [...state.categories[categoryIdx].bookmarks, action.payload],
+      };
+
       return {
         ...state,
         categories: [
           ...state.categories.slice(0, categoryIdx),
-          {
-            ...state.categories[categoryIdx],
-            bookmarks: [
-              ...state.categories[categoryIdx].bookmarks,
-              action.payload,
-            ],
-          },
+          categoryWithNewBookmark,
           ...state.categories.slice(categoryIdx + 1),
         ],
+        categoryInEdit: categoryWithNewBookmark,
       };
 
     case ActionType.pinCategory:
@@ -112,47 +116,54 @@ export const bookmarksReducer = (
         (category) => category.id === action.payload.categoryId
       );
 
+      const targetCategory = {
+        ...state.categories[categoryInUpdateIdx],
+        bookmarks: state.categories[categoryInUpdateIdx].bookmarks.filter(
+          (bookmark) => bookmark.id !== action.payload.bookmarkId
+        ),
+      };
+
       return {
         ...state,
         categories: [
           ...state.categories.slice(0, categoryInUpdateIdx),
-          {
-            ...state.categories[categoryInUpdateIdx],
-            bookmarks: state.categories[categoryInUpdateIdx].bookmarks.filter(
-              (bookmark) => bookmark.id !== action.payload.bookmarkId
-            ),
-          },
+          targetCategory,
           ...state.categories.slice(categoryInUpdateIdx + 1),
         ],
+        categoryInEdit: targetCategory,
       };
 
     case ActionType.updateBookmark:
       const parentCategoryIdx = state.categories.findIndex(
         (category) => category.id === action.payload.categoryId
       );
+
       const updatedBookmarkIdx = state.categories[
         parentCategoryIdx
       ].bookmarks.findIndex((bookmark) => bookmark.id === action.payload.id);
+
+      const categoryWithUpdatedBookmark = {
+        ...state.categories[parentCategoryIdx],
+        bookmarks: [
+          ...state.categories[parentCategoryIdx].bookmarks.slice(
+            0,
+            updatedBookmarkIdx
+          ),
+          action.payload,
+          ...state.categories[parentCategoryIdx].bookmarks.slice(
+            updatedBookmarkIdx + 1
+          ),
+        ],
+      };
 
       return {
         ...state,
         categories: [
           ...state.categories.slice(0, parentCategoryIdx),
-          {
-            ...state.categories[parentCategoryIdx],
-            bookmarks: [
-              ...state.categories[parentCategoryIdx].bookmarks.slice(
-                0,
-                updatedBookmarkIdx
-              ),
-              action.payload,
-              ...state.categories[parentCategoryIdx].bookmarks.slice(
-                updatedBookmarkIdx + 1
-              ),
-            ],
-          },
+          categoryWithUpdatedBookmark,
           ...state.categories.slice(parentCategoryIdx + 1),
         ],
+        categoryInEdit: categoryWithUpdatedBookmark,
       };
 
     case ActionType.sortCategories:
@@ -166,6 +177,19 @@ export const bookmarksReducer = (
         ...state,
         categories: action.payload,
       };
+
+    case ActionType.setEditCategory:
+      return {
+        ...state,
+        categoryInEdit: action.payload,
+      };
+
+    case ActionType.setEditBookmark:
+      return {
+        ...state,
+        bookmarkInEdit: action.payload,
+      };
+
     default:
       return state;
   }

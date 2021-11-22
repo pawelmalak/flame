@@ -18,6 +18,8 @@ import {
   GetCategoriesAction,
   PinCategoryAction,
   ReorderCategoriesAction,
+  SetEditBookmarkAction,
+  SetEditCategoryAction,
   SortCategoriesAction,
   UpdateBookmarkAction,
   UpdateCategoryAction,
@@ -318,4 +320,22 @@ export const reorderCategories =
     } catch (err) {
       console.log(err);
     }
+  };
+
+export const setEditCategory =
+  (category: Category | null) =>
+  (dispatch: Dispatch<SetEditCategoryAction>) => {
+    dispatch({
+      type: ActionType.setEditCategory,
+      payload: category,
+    });
+  };
+
+export const setEditBookmark =
+  (bookmark: Bookmark | null) =>
+  (dispatch: Dispatch<SetEditBookmarkAction>) => {
+    dispatch({
+      type: ActionType.setEditBookmark,
+      payload: bookmark,
+    });
   };

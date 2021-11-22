@@ -1,6 +1,6 @@
 import { useState, useEffect, ChangeEvent, SyntheticEvent } from 'react';
-import { useDispatch } from 'react-redux';
-import { App, NewApp } from '../../../interfaces';
+import { useDispatch, useSelector } from 'react-redux';
+import { NewApp } from '../../../interfaces';
 
 import classes from './AppForm.module.css';
 
@@ -8,29 +8,34 @@ import { ModalForm, InputGroup, Button } from '../../UI';
 import { inputHandler, newAppTemplate } from '../../../utility';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../store';
+import { State } from '../../../store/reducers';
 
 interface Props {
   modalHandler: () => void;
-  app?: App;
 }
 
-export const AppForm = ({ app, modalHandler }: Props): JSX.Element => {
+export const AppForm = ({ modalHandler }: Props): JSX.Element => {
+  const { appInUpdate } = useSelector((state: State) => state.apps);
+
   const dispatch = useDispatch();
-  const { addApp, updateApp } = bindActionCreators(actionCreators, dispatch);
+  const { addApp, updateApp, setEditApp } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
 
   const [useCustomIcon, toggleUseCustomIcon] = useState<boolean>(false);
   const [customIcon, setCustomIcon] = useState<File | null>(null);
   const [formData, setFormData] = useState<NewApp>(newAppTemplate);
 
   useEffect(() => {
-    if (app) {
+    if (appInUpdate) {
       setFormData({
-        ...app,
+        ...appInUpdate,
       });
     } else {
       setFormData(newAppTemplate);
     }
-  }, [app]);
+  }, [appInUpdate]);
 
   const inputChangeHandler = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -66,7 +71,7 @@ export const AppForm = ({ app, modalHandler }: Props): JSX.Element => {
       return data;
     };
 
-    if (!app) {
+    if (!appInUpdate) {
       if (customIcon) {
         const data = createFormData();
         addApp(data);
@@ -76,14 +81,15 @@ export const AppForm = ({ app, modalHandler }: Props): JSX.Element => {
     } else {
       if (customIcon) {
         const data = createFormData();
-        updateApp(app.id, data);
+        updateApp(appInUpdate.id, data);
       } else {
-        updateApp(app.id, formData);
+        updateApp(appInUpdate.id, formData);
         modalHandler();
       }
     }
 
     setFormData(newAppTemplate);
+    setEditApp(null);
   };
 
   return (
@@ -182,7 +188,7 @@ export const AppForm = ({ app, modalHandler }: Props): JSX.Element => {
         </select>
       </InputGroup>
 
-      {!app ? (
+      {!appInUpdate ? (
         <Button>Add new application</Button>
       ) : (
         <Button>Update application</Button>
