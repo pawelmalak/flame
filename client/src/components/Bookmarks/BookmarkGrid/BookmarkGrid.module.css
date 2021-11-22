@@ -20,12 +20,3 @@
     grid-template-columns: repeat(4, 1fr);
   }
 }
-
-.BookmarksMessage {
-  color: var(--color-primary);
-}
-
-.BookmarksMessage a {
-  color: var(--color-accent);
-  font-weight: 600;
-}

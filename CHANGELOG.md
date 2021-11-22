@@ -1,7 +1,9 @@
 ### v2.0.2 (TBA)
 - Added support for .ico files for custom icons ([#209](https://github.com/pawelmalak/flame/issues/209))
-- Added option to pin apps and categories directly from table view
-
+- Empty apps and categories sections will now be hidden from guests ([#210](https://github.com/pawelmalak/flame/issues/210))
+- Fixed bug with fahrenheit degrees being displayed as float ([#221](https://github.com/pawelmalak/flame/issues/221))
+- Added option to change visibilty of apps and categories directly from table view
+- Password input will now autofocus when visiting /settings/app
 
 ### v2.0.1 (2021-11-19)
 - Added option to display humidity in the weather widget ([#136](https://github.com/pawelmalak/flame/issues/136))
