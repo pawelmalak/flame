@@ -66,3 +66,11 @@ export interface SetEditBookmarkAction {
   type: ActionType.setEditBookmark;
   payload: Bookmark | null;
 }
+
+export interface ReorderBookmarksAction {
+  type: ActionType.reorderBookmarks;
+  payload: {
+    bookmarks: Bookmark[];
+    categoryId: number;
+  };
+}
