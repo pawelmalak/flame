@@ -70,7 +70,7 @@ export const SearchSettings = (): JSX.Element => {
       >
         <SettingsHeadline text="General" />
         <InputGroup>
-          <label htmlFor="defaultSearchProvider">Default Search Provider</label>
+          <label htmlFor="defaultSearchProvider">Default search provider</label>
           <select
             id="defaultSearchProvider"
             name="defaultSearchProvider"

@@ -1,3 +1,5 @@
+import { WeatherData } from '../types';
+
 export interface Config {
   WEATHER_API_KEY: string;
   lat: number;
@@ -25,4 +27,8 @@ export interface Config {
   daySchema: string;
   monthSchema: string;
   showTime: boolean;
+  defaultTheme: string;
+  isKilometer: boolean;
+  weatherData: WeatherData;
+  hideDate: boolean;
 }

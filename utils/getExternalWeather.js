@@ -21,6 +21,9 @@ const getExternalWeather = async () => {
       cloud: cursor.cloud,
       conditionText: cursor.condition.text,
       conditionCode: cursor.condition.code,
+      humidity: cursor.humidity,
+      windK: cursor.wind_kph,
+      windM: cursor.wind_mph,
     });
     return weatherData;
   } catch (err) {

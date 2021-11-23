@@ -2,6 +2,7 @@ import {
   DockerSettingsForm,
   OtherSettingsForm,
   SearchForm,
+  ThemeSettingsForm,
   WeatherForm,
 } from '../../interfaces';
 
@@ -21,6 +22,7 @@ export const otherSettingsTemplate: OtherSettingsForm = {
   monthSchema:
     'January;February;March;April;May;June;July;August;September;October;November;December',
   showTime: false,
+  hideDate: false,
 };
 
 export const weatherSettingsTemplate: WeatherForm = {
@@ -28,6 +30,7 @@ export const weatherSettingsTemplate: WeatherForm = {
   lat: 0,
   long: 0,
   isCelsius: true,
+  weatherData: 'cloud',
 };
 
 export const searchSettingsTemplate: SearchForm = {
@@ -42,4 +45,8 @@ export const dockerSettingsTemplate: DockerSettingsForm = {
   dockerHost: 'localhost',
   kubernetesApps: true,
   unpinStoppedApps: true,
+};
+
+export const themeSettingsTemplate: ThemeSettingsForm = {
+  defaultTheme: 'tron',
 };

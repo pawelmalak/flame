@@ -8,4 +8,7 @@ export interface Weather extends Model {
   cloud: number;
   conditionText: string;
   conditionCode: number;
+  humidity: number;
+  windK: number;
+  windM: number;
 }

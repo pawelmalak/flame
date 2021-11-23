@@ -18,17 +18,17 @@ const updateApp = asyncWrapper(async (req, res, next) => {
     );
   }
 
-  let _body = { ...req.body };
+  let body = { ...req.body };
 
-  if (_body.icon) {
-    _body.icon = _body.icon.trim();
+  if (body.icon) {
+    body.icon = body.icon.trim();
   }
 
   if (req.file) {
-    _body.icon = req.file.filename;
+    body.icon = req.file.filename;
   }
 
-  app = await app.update(_body);
+  app = await app.update(body);
 
   res.status(200).json({
     success: true,
