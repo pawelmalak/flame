@@ -16,9 +16,12 @@ import { iconParser, isImage, isSvg, isUrl, urlParser } from '../../../utility';
 
 interface Props {
   category: Category;
+  fromHomepage?: boolean;
 }
 
 export const BookmarkCard = (props: Props): JSX.Element => {
+  const { category, fromHomepage = false } = props;
+
   const { config } = useSelector((state: State) => state.config);
 
   const dispatch = useDispatch();
@@ -27,15 +30,18 @@ export const BookmarkCard = (props: Props): JSX.Element => {
   return (
     <div className={classes.BookmarkCard}>
       <h3
+        className={fromHomepage ? '' : classes.BookmarkHeader}
         onClick={() => {
-          setEditCategory(props.category);
+          if (!fromHomepage) {
+            setEditCategory(category);
+          }
         }}
       >
-        {props.category.name}
+        {category.name}
       </h3>
 
       <div className={classes.Bookmarks}>
-        {props.category.bookmarks.map((bookmark: Bookmark) => {
+        {category.bookmarks.map((bookmark: Bookmark) => {
           const redirectUrl = urlParser(bookmark.url)[1];
 
           let iconEl: JSX.Element = <Fragment></Fragment>;

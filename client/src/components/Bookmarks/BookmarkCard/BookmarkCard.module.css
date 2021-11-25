@@ -10,7 +10,7 @@
   text-transform: uppercase;
 }
 
-.BookmarkCard h3:hover {
+.BookmarkHeader:hover {
   cursor: pointer;
 }
 

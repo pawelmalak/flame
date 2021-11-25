@@ -151,6 +151,7 @@ export const Home = (): JSX.Element => {
               }
               totalCategories={categories.length}
               searching={!!localSearch}
+              fromHomepage={true}
             />
           )}
         </Fragment>

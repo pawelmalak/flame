@@ -69,11 +69,16 @@ export const Bookmarks = (props: Props): JSX.Element => {
   }, [isAuthenticated]);
 
   useEffect(() => {
-    if (categoryInEdit && !showTable) {
+    if (categoryInEdit) {
       setTableContentType(ContentType.bookmark);
       setShowTable(true);
     }
   }, [categoryInEdit]);
+
+  useEffect(() => {
+    setShowTable(false);
+    setEditCategory(null);
+  }, []);
 
   // Form actions
   const toggleModal = (): void => {
@@ -108,6 +113,7 @@ export const Bookmarks = (props: Props): JSX.Element => {
   const showTableForEditing = (contentType: ContentType) => {
     // We're in the edit mode and the same button was clicked - go back to list
     if (showTable && contentType === tableContentType) {
+      setEditCategory(null);
       setShowTable(false);
     } else {
       setShowTable(true);
