@@ -26,26 +26,31 @@ export const configReducer = (
         loading: false,
         config: action.payload,
       };
+
     case ActionType.updateConfig:
       return {
         ...state,
         config: action.payload,
       };
+
     case ActionType.fetchQueries:
       return {
         ...state,
         customQueries: action.payload,
       };
+
     case ActionType.addQuery:
       return {
         ...state,
         customQueries: [...state.customQueries, action.payload],
       };
+
     case ActionType.deleteQuery:
       return {
         ...state,
         customQueries: action.payload,
       };
+
     case ActionType.updateQuery:
       return {
         ...state,

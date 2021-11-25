@@ -29,6 +29,7 @@ export const notificationReducer = (
         ],
         idCounter: state.idCounter + 1,
       };
+
     case ActionType.clearNotification:
       return {
         ...state,
