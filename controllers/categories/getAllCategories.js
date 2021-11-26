@@ -18,8 +18,14 @@ const getAllCategories = asyncWrapper(async (req, res, next) => {
 
   const order =
     orderType == 'name'
-      ? [[Sequelize.fn('lower', Sequelize.col('bookmarks.name')), 'ASC']]
-      : [[{ model: Bookmark, as: 'bookmarks' }, orderType, 'ASC']];
+      ? [
+          [Sequelize.fn('lower', Sequelize.col('Category.name')), 'ASC'],
+          [Sequelize.fn('lower', Sequelize.col('bookmarks.name')), 'ASC'],
+        ]
+      : [
+          [orderType, 'ASC'],
+          [{ model: Bookmark, as: 'bookmarks' }, orderType, 'ASC'],
+        ];
 
   categories = categories = await Category.findAll({
     include: [

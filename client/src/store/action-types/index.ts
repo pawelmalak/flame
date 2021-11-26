@@ -41,6 +41,7 @@ export enum ActionType {
   updateBookmark = 'UPDATE_BOOKMARK',
   setEditBookmark = 'SET_EDIT_BOOKMARK',
   reorderBookmarks = 'REORDER_BOOKMARKS',
+  sortBookmarks = 'SORT_BOOKMARKS',
   // AUTH
   login = 'LOGIN',
   logout = 'LOGOUT',

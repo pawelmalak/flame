@@ -41,6 +41,7 @@ import {
   SetEditCategoryAction,
   SetEditBookmarkAction,
   ReorderBookmarksAction,
+  SortBookmarksAction,
 } from './bookmark';
 
 import {
@@ -87,6 +88,7 @@ export type Action =
   | UpdateBookmarkAction
   | SetEditBookmarkAction
   | ReorderBookmarksAction
+  | SortBookmarksAction
   // Auth
   | LoginAction
   | LogoutAction

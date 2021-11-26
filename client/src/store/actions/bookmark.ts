@@ -74,3 +74,11 @@ export interface ReorderBookmarksAction {
     categoryId: number;
   };
 }
+
+export interface SortBookmarksAction {
+  type: ActionType.sortBookmarks;
+  payload: {
+    orderType: string;
+    categoryId: number;
+  };
+}

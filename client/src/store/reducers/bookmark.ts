@@ -216,6 +216,29 @@ export const bookmarksReducer = (
       };
     }
 
+    case ActionType.sortBookmarks: {
+      const categoryIdx = state.categories.findIndex(
+        (category) => category.id === action.payload.categoryId
+      );
+
+      const sortedBookmarks = sortData<Bookmark>(
+        state.categories[categoryIdx].bookmarks,
+        action.payload.orderType
+      );
+
+      return {
+        ...state,
+        categories: [
+          ...state.categories.slice(0, categoryIdx),
+          {
+            ...state.categories[categoryIdx],
+            bookmarks: sortedBookmarks,
+          },
+          ...state.categories.slice(categoryIdx + 1),
+        ],
+      };
+    }
+
     default:
       return state;
   }

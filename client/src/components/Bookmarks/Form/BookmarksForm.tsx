@@ -137,11 +137,11 @@ export const BookmarksForm = ({
       }
 
       modalHandler();
-
-      setFormData(newBookmarkTemplate);
-
-      setCustomIcon(null);
     }
+
+    setFormData(newBookmarkTemplate);
+
+    setCustomIcon(null);
   };
 
   return (

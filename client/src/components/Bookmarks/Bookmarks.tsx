@@ -69,7 +69,7 @@ export const Bookmarks = (props: Props): JSX.Element => {
   }, [isAuthenticated]);
 
   useEffect(() => {
-    if (categoryInEdit) {
+    if (categoryInEdit && !modalIsOpen) {
       setTableContentType(ContentType.bookmark);
       setShowTable(true);
     }

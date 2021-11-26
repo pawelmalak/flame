@@ -23,6 +23,7 @@ import {
   ReorderCategoriesAction,
   SetEditBookmarkAction,
   SetEditCategoryAction,
+  SortBookmarksAction,
   SortCategoriesAction,
   UpdateBookmarkAction,
   UpdateCategoryAction,
@@ -100,6 +101,8 @@ export const addBookmark =
         type: ActionType.addBookmark,
         payload: res.data.data,
       });
+
+      dispatch<any>(sortBookmarks(res.data.data.categoryId));
     } catch (err) {
       console.log(err);
     }
@@ -271,6 +274,8 @@ export const updateBookmark =
           payload: res.data.data,
         });
       }
+
+      dispatch<any>(sortBookmarks(res.data.data.categoryId));
     } catch (err) {
       console.log(err);
     }
@@ -372,6 +377,23 @@ export const reorderBookmarks =
       dispatch({
         type: ActionType.reorderBookmarks,
         payload: { bookmarks, categoryId },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+export const sortBookmarks =
+  (categoryId: number) => async (dispatch: Dispatch<SortBookmarksAction>) => {
+    try {
+      const res = await axios.get<ApiResponse<Config>>('/api/config');
+
+      dispatch({
+        type: ActionType.sortBookmarks,
+        payload: {
+          orderType: res.data.data.useOrdering,
+          categoryId,
+        },
       });
     } catch (err) {
       console.log(err);
