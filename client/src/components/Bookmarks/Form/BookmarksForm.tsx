@@ -139,8 +139,7 @@ export const BookmarksForm = ({
       modalHandler();
     }
 
-    setFormData(newBookmarkTemplate);
-
+    setFormData({ ...newBookmarkTemplate, categoryId: formData.categoryId });
     setCustomIcon(null);
   };
 
