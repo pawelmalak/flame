@@ -20,21 +20,3 @@
     grid-template-columns: repeat(4, 1fr);
   }
 }
-
-.GridMessage {
-  color: var(--color-primary);
-}
-
-.GridMessage a {
-  color: var(--color-accent);
-  font-weight: 600;
-}
-
-.AppsMessage {
-  color: var(--color-primary);
-}
-
-.AppsMessage a {
-  color: var(--color-accent);
-  font-weight: 600;
-}

@@ -36,3 +36,8 @@ export interface SortAppsAction {
   type: ActionType.sortApps;
   payload: string;
 }
+
+export interface SetEditAppAction {
+  type: ActionType.setEditApp;
+  payload: App | null;
+}

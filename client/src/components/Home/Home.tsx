@@ -11,7 +11,7 @@ import { actionCreators } from '../../store';
 import { App, Category } from '../../interfaces';
 
 // UI
-import { Icon, Container, SectionHeadline, Spinner } from '../UI';
+import { Icon, Container, SectionHeadline, Spinner, Message } from '../UI';
 
 // CSS
 import classes from './Home.module.css';
@@ -30,6 +30,7 @@ export const Home = (): JSX.Element => {
     apps: { apps, loading: appsLoading },
     bookmarks: { categories, loading: bookmarksLoading },
     config: { config },
+    auth: { isAuthenticated },
   } = useSelector((state: State) => state);
 
   const dispatch = useDispatch();
@@ -100,7 +101,18 @@ export const Home = (): JSX.Element => {
 
       <Header />
 
-      {!config.hideApps ? (
+      {!isAuthenticated &&
+      !apps.some((a) => a.isPinned) &&
+      !categories.some((c) => c.isPinned) ? (
+        <Message>
+          Welcome to Flame! Go to <Link to="/settings/app">/settings</Link>,
+          login and start customizing your new homepage
+        </Message>
+      ) : (
+        <></>
+      )}
+
+      {!config.hideApps && (isAuthenticated || apps.some((a) => a.isPinned)) ? (
         <Fragment>
           <SectionHeadline title="Applications" link="/applications" />
           {appsLoading ? (
@@ -119,10 +131,11 @@ export const Home = (): JSX.Element => {
           <div className={classes.HomeSpace}></div>
         </Fragment>
       ) : (
-        <div></div>
+        <></>
       )}
 
-      {!config.hideCategories ? (
+      {!config.hideCategories &&
+      (isAuthenticated || categories.some((c) => c.isPinned)) ? (
         <Fragment>
           <SectionHeadline title="Bookmarks" link="/bookmarks" />
           {bookmarksLoading ? (
@@ -138,11 +151,12 @@ export const Home = (): JSX.Element => {
               }
               totalCategories={categories.length}
               searching={!!localSearch}
+              fromHomepage={true}
             />
           )}
         </Fragment>
       ) : (
-        <div></div>
+        <></>
       )}
 
       <Link to="/settings" className={classes.SettingsButton}>

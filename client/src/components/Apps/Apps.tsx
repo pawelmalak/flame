@@ -19,7 +19,6 @@ import { AppForm } from './AppForm/AppForm';
 import { AppTable } from './AppTable/AppTable';
 
 // Utils
-import { appTemplate } from '../../utility';
 import { State } from '../../store/reducers';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../store';
@@ -29,57 +28,53 @@ interface Props {
 }
 
 export const Apps = (props: Props): JSX.Element => {
+  // Get Redux state
   const {
     apps: { apps, loading },
     auth: { isAuthenticated },
   } = useSelector((state: State) => state);
 
+  // Get Redux action creators
   const dispatch = useDispatch();
-  const { getApps } = bindActionCreators(actionCreators, dispatch);
+  const { getApps, setEditApp } = bindActionCreators(actionCreators, dispatch);
 
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [isInEdit, setIsInEdit] = useState(false);
-  const [isInUpdate, setIsInUpdate] = useState(false);
-  const [appInUpdate, setAppInUpdate] = useState<App>(appTemplate);
-
+  // Load apps if array is empty
   useEffect(() => {
     if (!apps.length) {
       getApps();
     }
   }, []);
 
-  // observe if user is authenticated -> set default view if not
+  // Form
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [showTable, setShowTable] = useState(false);
+
+  // Observe if user is authenticated -> set default view if not
   useEffect(() => {
     if (!isAuthenticated) {
-      setIsInEdit(false);
+      setShowTable(false);
       setModalIsOpen(false);
     }
   }, [isAuthenticated]);
 
+  // Form actions
   const toggleModal = (): void => {
     setModalIsOpen(!modalIsOpen);
-    setIsInUpdate(false);
   };
 
   const toggleEdit = (): void => {
-    setIsInEdit(!isInEdit);
-    setIsInUpdate(false);
+    setShowTable(!showTable);
   };
 
-  const toggleUpdate = (app: App): void => {
-    setAppInUpdate(app);
-    setIsInUpdate(true);
+  const openFormForUpdating = (app: App): void => {
+    setEditApp(app);
     setModalIsOpen(true);
   };
 
   return (
     <Container>
       <Modal isOpen={modalIsOpen} setIsOpen={setModalIsOpen}>
-        {!isInUpdate ? (
-          <AppForm modalHandler={toggleModal} />
-        ) : (
-          <AppForm modalHandler={toggleModal} app={appInUpdate} />
-        )}
+        <AppForm modalHandler={toggleModal} />
       </Modal>
 
       <Headline
@@ -89,7 +84,14 @@ export const Apps = (props: Props): JSX.Element => {
 
       {isAuthenticated && (
         <div className={classes.ActionsContainer}>
-          <ActionButton name="Add" icon="mdiPlusBox" handler={toggleModal} />
+          <ActionButton
+            name="Add"
+            icon="mdiPlusBox"
+            handler={() => {
+              setEditApp(null);
+              toggleModal();
+            }}
+          />
           <ActionButton name="Edit" icon="mdiPencil" handler={toggleEdit} />
         </div>
       )}
@@ -97,10 +99,10 @@ export const Apps = (props: Props): JSX.Element => {
       <div className={classes.Apps}>
         {loading ? (
           <Spinner />
-        ) : !isInEdit ? (
+        ) : !showTable ? (
           <AppGrid apps={apps} searching={props.searching} />
         ) : (
-          <AppTable updateAppHandler={toggleUpdate} />
+          <AppTable openFormForUpdating={openFormForUpdating} />
         )}
       </div>
     </Container>

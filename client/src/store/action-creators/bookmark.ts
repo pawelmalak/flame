@@ -1,5 +1,8 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
+import { applyAuth } from '../../utility';
+import { ActionType } from '../action-types';
+
 import {
   ApiResponse,
   Bookmark,
@@ -8,8 +11,7 @@ import {
   NewBookmark,
   NewCategory,
 } from '../../interfaces';
-import { applyAuth } from '../../utility';
-import { ActionType } from '../action-types';
+
 import {
   AddBookmarkAction,
   AddCategoryAction,
@@ -17,7 +19,11 @@ import {
   DeleteCategoryAction,
   GetCategoriesAction,
   PinCategoryAction,
+  ReorderBookmarksAction,
   ReorderCategoriesAction,
+  SetEditBookmarkAction,
+  SetEditCategoryAction,
+  SortBookmarksAction,
   SortCategoriesAction,
   UpdateBookmarkAction,
   UpdateCategoryAction,
@@ -95,6 +101,8 @@ export const addBookmark =
         type: ActionType.addBookmark,
         payload: res.data.data,
       });
+
+      dispatch<any>(sortBookmarks(res.data.data.categoryId));
     } catch (err) {
       console.log(err);
     }
@@ -266,6 +274,8 @@ export const updateBookmark =
           payload: res.data.data,
         });
       }
+
+      dispatch<any>(sortBookmarks(res.data.data.categoryId));
     } catch (err) {
       console.log(err);
     }
@@ -314,6 +324,76 @@ export const reorderCategories =
       dispatch({
         type: ActionType.reorderCategories,
         payload: categories,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+export const setEditCategory =
+  (category: Category | null) =>
+  (dispatch: Dispatch<SetEditCategoryAction>) => {
+    dispatch({
+      type: ActionType.setEditCategory,
+      payload: category,
+    });
+  };
+
+export const setEditBookmark =
+  (bookmark: Bookmark | null) =>
+  (dispatch: Dispatch<SetEditBookmarkAction>) => {
+    dispatch({
+      type: ActionType.setEditBookmark,
+      payload: bookmark,
+    });
+  };
+
+export const reorderBookmarks =
+  (bookmarks: Bookmark[], categoryId: number) =>
+  async (dispatch: Dispatch<ReorderBookmarksAction>) => {
+    interface ReorderQuery {
+      bookmarks: {
+        id: number;
+        orderId: number;
+      }[];
+    }
+
+    try {
+      const updateQuery: ReorderQuery = { bookmarks: [] };
+
+      bookmarks.forEach((bookmark, index) =>
+        updateQuery.bookmarks.push({
+          id: bookmark.id,
+          orderId: index + 1,
+        })
+      );
+
+      await axios.put<ApiResponse<{}>>(
+        '/api/bookmarks/0/reorder',
+        updateQuery,
+        { headers: applyAuth() }
+      );
+
+      dispatch({
+        type: ActionType.reorderBookmarks,
+        payload: { bookmarks, categoryId },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+export const sortBookmarks =
+  (categoryId: number) => async (dispatch: Dispatch<SortBookmarksAction>) => {
+    try {
+      const res = await axios.get<ApiResponse<Config>>('/api/config');
+
+      dispatch({
+        type: ActionType.sortBookmarks,
+        payload: {
+          orderType: res.data.data.useOrdering,
+          categoryId,
+        },
       });
     } catch (err) {
       console.log(err);

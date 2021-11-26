@@ -1,3 +1,12 @@
+### v2.1.0 (2021-11-26)
+- Added option to set custom order for bookmarks ([#43](https://github.com/pawelmalak/flame/issues/43)) and ([#187](https://github.com/pawelmalak/flame/issues/187))
+- Added support for .ico files for custom icons ([#209](https://github.com/pawelmalak/flame/issues/209))
+- Empty apps and categories sections will now be hidden from guests ([#210](https://github.com/pawelmalak/flame/issues/210))
+- Fixed bug with fahrenheit degrees being displayed as float ([#221](https://github.com/pawelmalak/flame/issues/221))
+- Fixed bug with alphabetical order not working for bookmarks until the page was refreshed ([#224](https://github.com/pawelmalak/flame/issues/224))
+- Added option to change visibilty of apps, categories and bookmarks directly from table view
+- Password input will now autofocus when visiting /settings/app
+
 ### v2.0.1 (2021-11-19)
 - Added option to display humidity in the weather widget ([#136](https://github.com/pawelmalak/flame/issues/136))
 - Added option to set default theme for all new users ([#165](https://github.com/pawelmalak/flame/issues/165))

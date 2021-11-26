@@ -13,4 +13,5 @@ export const bookmarkTemplate: Bookmark = {
   id: -1,
   createdAt: new Date(),
   updatedAt: new Date(),
+  orderId: 0,
 };
