@@ -15,11 +15,8 @@ import { actionCreators } from '../../../store';
 // Typescript
 import { Bookmark, Category } from '../../../interfaces';
 
-// CSS
-import classes from './Table.module.css';
-
 // UI
-import { Table } from '../../UI';
+import { Message, Table } from '../../UI';
 import { TableActions } from '../../Actions/TableActions';
 import { bookmarkTemplate } from '../../../utility';
 
@@ -108,18 +105,14 @@ export const BookmarksTable = ({ openFormForUpdating }: Props): JSX.Element => {
   return (
     <Fragment>
       {!categoryInEdit ? (
-        <div className={classes.Message}>
-          <p>
-            Switch to grid view and click on the name of category you want to
-            edit
-          </p>
-        </div>
+        <Message isPrimary={false}>
+          Switch to grid view and click on the name of category you want to edit
+        </Message>
       ) : (
-        <div className={classes.Message}>
-          <p>
-            Editing bookmarks from <span>{categoryInEdit.name}</span> category
-          </p>
-        </div>
+        <Message isPrimary={false}>
+          Editing bookmarks from&nbsp;<span>{categoryInEdit.name}</span>
+          &nbsp;category
+        </Message>
       )}
 
       {categoryInEdit && (

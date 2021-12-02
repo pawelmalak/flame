@@ -14,7 +14,14 @@ import { Category, Bookmark } from '../../interfaces';
 import classes from './Bookmarks.module.css';
 
 // UI
-import { Container, Headline, ActionButton, Spinner, Modal } from '../UI';
+import {
+  Container,
+  Headline,
+  ActionButton,
+  Spinner,
+  Modal,
+  Message,
+} from '../UI';
 
 // Components
 import { BookmarkGrid } from './BookmarkGrid/BookmarkGrid';
@@ -121,6 +128,11 @@ export const Bookmarks = (props: Props): JSX.Element => {
     }
   };
 
+  const finishEditing = () => {
+    setShowTable(false);
+    setEditCategory(null);
+  };
+
   return (
     <Container>
       <Modal isOpen={modalIsOpen} setIsOpen={toggleModal}>
@@ -150,12 +162,22 @@ export const Bookmarks = (props: Props): JSX.Element => {
             icon="mdiPencil"
             handler={() => showTableForEditing(ContentType.category)}
           />
-          <ActionButton
-            name="Edit Bookmarks"
-            icon="mdiPencil"
-            handler={() => showTableForEditing(ContentType.bookmark)}
-          />
+          {showTable && tableContentType === ContentType.bookmark && (
+            <ActionButton
+              name="Finish Editing"
+              icon="mdiPencil"
+              handler={finishEditing}
+            />
+          )}
         </div>
+      )}
+
+      {categories.length && isAuthenticated && !showTable ? (
+        <Message isPrimary={false}>
+          Click on category name to edit its bookmarks
+        </Message>
+      ) : (
+        <></>
       )}
 
       {loading ? (

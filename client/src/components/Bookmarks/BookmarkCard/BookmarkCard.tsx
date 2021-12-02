@@ -22,7 +22,10 @@ interface Props {
 export const BookmarkCard = (props: Props): JSX.Element => {
   const { category, fromHomepage = false } = props;
 
-  const { config } = useSelector((state: State) => state.config);
+  const {
+    config: { config },
+    auth: { isAuthenticated },
+  } = useSelector((state: State) => state);
 
   const dispatch = useDispatch();
   const { setEditCategory } = bindActionCreators(actionCreators, dispatch);
@@ -30,9 +33,11 @@ export const BookmarkCard = (props: Props): JSX.Element => {
   return (
     <div className={classes.BookmarkCard}>
       <h3
-        className={fromHomepage ? '' : classes.BookmarkHeader}
+        className={
+          fromHomepage || !isAuthenticated ? '' : classes.BookmarkHeader
+        }
         onClick={() => {
-          if (!fromHomepage) {
+          if (!fromHomepage && isAuthenticated) {
             setEditCategory(category);
           }
         }}
