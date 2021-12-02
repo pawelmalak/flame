@@ -8,4 +8,6 @@ export interface NewBookmark {
   isPublic: boolean;
 }
 
-export interface Bookmark extends Model, NewBookmark {}
+export interface Bookmark extends Model, NewBookmark {
+  orderId: number;
+}

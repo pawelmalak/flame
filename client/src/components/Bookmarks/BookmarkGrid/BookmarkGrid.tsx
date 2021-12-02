@@ -5,48 +5,57 @@ import classes from './BookmarkGrid.module.css';
 import { Category } from '../../../interfaces';
 
 import { BookmarkCard } from '../BookmarkCard/BookmarkCard';
+import { Message } from '../../UI';
 
 interface Props {
   categories: Category[];
   totalCategories?: number;
   searching: boolean;
+  fromHomepage?: boolean;
 }
 
 export const BookmarkGrid = (props: Props): JSX.Element => {
+  const {
+    categories,
+    totalCategories,
+    searching,
+    fromHomepage = false,
+  } = props;
+
   let bookmarks: JSX.Element;
 
-  if (props.categories.length) {
-    if (props.searching && !props.categories[0].bookmarks.length) {
-      bookmarks = (
-        <p className={classes.BookmarksMessage}>
-          No bookmarks match your search criteria
-        </p>
-      );
+  if (categories.length) {
+    if (searching && !categories[0].bookmarks.length) {
+      bookmarks = <Message>No bookmarks match your search criteria</Message>;
     } else {
       bookmarks = (
         <div className={classes.BookmarkGrid}>
-          {props.categories.map(
+          {categories.map(
             (category: Category): JSX.Element => (
-              <BookmarkCard category={category} key={category.id} />
+              <BookmarkCard
+                category={category}
+                fromHomepage={fromHomepage}
+                key={category.id}
+              />
             )
           )}
         </div>
       );
     }
   } else {
-    if (props.totalCategories) {
+    if (totalCategories) {
       bookmarks = (
-        <p className={classes.BookmarksMessage}>
+        <Message>
           There are no pinned categories. You can pin them from the{' '}
           <Link to="/bookmarks">/bookmarks</Link> menu
-        </p>
+        </Message>
       );
     } else {
       bookmarks = (
-        <p className={classes.BookmarksMessage}>
+        <Message>
           You don't have any bookmarks. You can add a new one from{' '}
           <Link to="/bookmarks">/bookmarks</Link> menu
-        </p>
+        </Message>
       );
     }
   }

@@ -1,22 +1,26 @@
 // Typescript
-import { Bookmark, Category } from '../../../interfaces';
 import { ContentType } from '../Bookmarks';
 
 // Utils
 import { CategoryForm } from './CategoryForm';
 import { BookmarksForm } from './BookmarksForm';
 import { Fragment } from 'react';
+import { useSelector } from 'react-redux';
+import { State } from '../../../store/reducers';
+import { bookmarkTemplate, categoryTemplate } from '../../../utility';
 
 interface Props {
   modalHandler: () => void;
   contentType: ContentType;
   inUpdate?: boolean;
-  category?: Category;
-  bookmark?: Bookmark;
 }
 
 export const Form = (props: Props): JSX.Element => {
-  const { modalHandler, contentType, inUpdate, category, bookmark } = props;
+  const { categoryInEdit, bookmarkInEdit } = useSelector(
+    (state: State) => state.bookmarks
+  );
+
+  const { modalHandler, contentType, inUpdate } = props;
 
   return (
     <Fragment>
@@ -33,9 +37,15 @@ export const Form = (props: Props): JSX.Element => {
         // form: update
         <Fragment>
           {contentType === ContentType.category ? (
-            <CategoryForm modalHandler={modalHandler} category={category} />
+            <CategoryForm
+              modalHandler={modalHandler}
+              category={categoryInEdit || categoryTemplate}
+            />
           ) : (
-            <BookmarksForm modalHandler={modalHandler} bookmark={bookmark} />
+            <BookmarksForm
+              modalHandler={modalHandler}
+              bookmark={bookmarkInEdit || bookmarkTemplate}
+            />
           )}
         </Fragment>
       )}

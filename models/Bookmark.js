@@ -25,6 +25,11 @@ const Bookmark = sequelize.define(
       allowNull: true,
       defaultValue: 1,
     },
+    orderId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: null,
+    },
   },
   {
     tableName: 'bookmarks',

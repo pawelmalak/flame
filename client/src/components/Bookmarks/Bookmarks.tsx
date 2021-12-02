@@ -14,15 +14,19 @@ import { Category, Bookmark } from '../../interfaces';
 import classes from './Bookmarks.module.css';
 
 // UI
-import { Container, Headline, ActionButton, Spinner, Modal } from '../UI';
+import {
+  Container,
+  Headline,
+  ActionButton,
+  Spinner,
+  Modal,
+  Message,
+} from '../UI';
 
 // Components
 import { BookmarkGrid } from './BookmarkGrid/BookmarkGrid';
-import { BookmarkTable } from './BookmarkTable/BookmarkTable';
 import { Form } from './Form/Form';
-
-// Utils
-import { bookmarkTemplate, categoryTemplate } from '../../utility';
+import { Table } from './Table/Table';
 
 interface Props {
   searching: boolean;
@@ -34,74 +38,99 @@ export enum ContentType {
 }
 
 export const Bookmarks = (props: Props): JSX.Element => {
+  // Get Redux state
   const {
-    bookmarks: { loading, categories },
+    bookmarks: { loading, categories, categoryInEdit },
     auth: { isAuthenticated },
   } = useSelector((state: State) => state);
 
+  // Get Redux action creators
   const dispatch = useDispatch();
-  const { getCategories } = bindActionCreators(actionCreators, dispatch);
+  const { getCategories, setEditCategory, setEditBookmark } =
+    bindActionCreators(actionCreators, dispatch);
 
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [formContentType, setFormContentType] = useState(ContentType.category);
-  const [isInEdit, setIsInEdit] = useState(false);
-  const [tableContentType, setTableContentType] = useState(
-    ContentType.category
-  );
-  const [isInUpdate, setIsInUpdate] = useState(false);
-  const [categoryInUpdate, setCategoryInUpdate] =
-    useState<Category>(categoryTemplate);
-  const [bookmarkInUpdate, setBookmarkInUpdate] =
-    useState<Bookmark>(bookmarkTemplate);
-
+  // Load categories if array is empty
   useEffect(() => {
     if (!categories.length) {
       getCategories();
     }
   }, []);
 
-  // observe if user is authenticated -> set default view if not
+  // Form
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [formContentType, setFormContentType] = useState(ContentType.category);
+  const [isInUpdate, setIsInUpdate] = useState(false);
+
+  // Table
+  const [showTable, setShowTable] = useState(false);
+  const [tableContentType, setTableContentType] = useState(
+    ContentType.category
+  );
+
+  // Observe if user is authenticated -> set default view (grid) if not
   useEffect(() => {
     if (!isAuthenticated) {
-      setIsInEdit(false);
+      setShowTable(false);
       setModalIsOpen(false);
     }
   }, [isAuthenticated]);
 
+  useEffect(() => {
+    if (categoryInEdit && !modalIsOpen) {
+      setTableContentType(ContentType.bookmark);
+      setShowTable(true);
+    }
+  }, [categoryInEdit]);
+
+  useEffect(() => {
+    setShowTable(false);
+    setEditCategory(null);
+  }, []);
+
+  // Form actions
   const toggleModal = (): void => {
     setModalIsOpen(!modalIsOpen);
   };
 
-  const addActionHandler = (contentType: ContentType) => {
+  const openFormForAdding = (contentType: ContentType) => {
     setFormContentType(contentType);
     setIsInUpdate(false);
     toggleModal();
   };
 
-  const editActionHandler = (contentType: ContentType) => {
-    // We're in the edit mode and the same button was clicked - go back to list
-    if (isInEdit && contentType === tableContentType) {
-      setIsInEdit(false);
+  const openFormForUpdating = (data: Category | Bookmark): void => {
+    setIsInUpdate(true);
+
+    const instanceOfCategory = (object: any): object is Category => {
+      return 'bookmarks' in object;
+    };
+
+    if (instanceOfCategory(data)) {
+      setFormContentType(ContentType.category);
+      setEditCategory(data);
     } else {
-      setIsInEdit(true);
+      setFormContentType(ContentType.bookmark);
+      setEditBookmark(data);
+    }
+
+    toggleModal();
+  };
+
+  // Table actions
+  const showTableForEditing = (contentType: ContentType) => {
+    // We're in the edit mode and the same button was clicked - go back to list
+    if (showTable && contentType === tableContentType) {
+      setEditCategory(null);
+      setShowTable(false);
+    } else {
+      setShowTable(true);
       setTableContentType(contentType);
     }
   };
 
-  const instanceOfCategory = (object: any): object is Category => {
-    return 'bookmarks' in object;
-  };
-
-  const goToUpdateMode = (data: Category | Bookmark): void => {
-    setIsInUpdate(true);
-    if (instanceOfCategory(data)) {
-      setFormContentType(ContentType.category);
-      setCategoryInUpdate(data);
-    } else {
-      setFormContentType(ContentType.bookmark);
-      setBookmarkInUpdate(data);
-    }
-    toggleModal();
+  const finishEditing = () => {
+    setShowTable(false);
+    setEditCategory(null);
   };
 
   return (
@@ -111,8 +140,6 @@ export const Bookmarks = (props: Props): JSX.Element => {
           modalHandler={toggleModal}
           contentType={formContentType}
           inUpdate={isInUpdate}
-          category={categoryInUpdate}
-          bookmark={bookmarkInUpdate}
         />
       </Modal>
 
@@ -123,35 +150,44 @@ export const Bookmarks = (props: Props): JSX.Element => {
           <ActionButton
             name="Add Category"
             icon="mdiPlusBox"
-            handler={() => addActionHandler(ContentType.category)}
+            handler={() => openFormForAdding(ContentType.category)}
           />
           <ActionButton
             name="Add Bookmark"
             icon="mdiPlusBox"
-            handler={() => addActionHandler(ContentType.bookmark)}
+            handler={() => openFormForAdding(ContentType.bookmark)}
           />
           <ActionButton
             name="Edit Categories"
             icon="mdiPencil"
-            handler={() => editActionHandler(ContentType.category)}
+            handler={() => showTableForEditing(ContentType.category)}
           />
-          <ActionButton
-            name="Edit Bookmarks"
-            icon="mdiPencil"
-            handler={() => editActionHandler(ContentType.bookmark)}
-          />
+          {showTable && tableContentType === ContentType.bookmark && (
+            <ActionButton
+              name="Finish Editing"
+              icon="mdiPencil"
+              handler={finishEditing}
+            />
+          )}
         </div>
+      )}
+
+      {categories.length && isAuthenticated && !showTable ? (
+        <Message isPrimary={false}>
+          Click on category name to edit its bookmarks
+        </Message>
+      ) : (
+        <></>
       )}
 
       {loading ? (
         <Spinner />
-      ) : !isInEdit ? (
+      ) : !showTable ? (
         <BookmarkGrid categories={categories} searching={props.searching} />
       ) : (
-        <BookmarkTable
+        <Table
           contentType={tableContentType}
-          categories={categories}
-          updateHandler={goToUpdateMode}
+          openFormForUpdating={openFormForUpdating}
         />
       )}
     </Container>

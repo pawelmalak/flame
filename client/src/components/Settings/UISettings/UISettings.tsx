@@ -16,13 +16,14 @@ import { InputGroup, Button, SettingsHeadline } from '../../UI';
 import { otherSettingsTemplate, inputHandler } from '../../../utility';
 
 export const UISettings = (): JSX.Element => {
-  const { loading, config } = useSelector((state: State) => state.config);
+  const {
+    config: { loading, config },
+    bookmarks: { categories },
+  } = useSelector((state: State) => state);
 
   const dispatch = useDispatch();
-  const { updateConfig, sortApps, sortCategories } = bindActionCreators(
-    actionCreators,
-    dispatch
-  );
+  const { updateConfig, sortApps, sortCategories, sortBookmarks } =
+    bindActionCreators(actionCreators, dispatch);
 
   // Initial state
   const [formData, setFormData] = useState<OtherSettingsForm>(
@@ -46,9 +47,15 @@ export const UISettings = (): JSX.Element => {
     // Update local page title
     document.title = formData.customTitle;
 
-    // Sort apps and categories with new settings
-    sortApps();
-    sortCategories();
+    // Sort entities with new settings
+    if (formData.useOrdering !== config.useOrdering) {
+      sortApps();
+      sortCategories();
+
+      for (let { id } of categories) {
+        sortBookmarks(id);
+      }
+    }
   };
 
   // Input handler
@@ -85,7 +92,9 @@ export const UISettings = (): JSX.Element => {
       <SettingsHeadline text="Header" />
       {/* HIDE HEADER */}
       <InputGroup>
-        <label htmlFor="hideHeader">Hide greetings</label>
+        <label htmlFor="hideHeader">
+          Hide headline (greetings and weather)
+        </label>
         <select
           id="hideHeader"
           name="hideHeader"

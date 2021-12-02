@@ -1,4 +1,4 @@
-import { FormEvent, Fragment, useEffect, useState } from 'react';
+import { FormEvent, Fragment, useEffect, useState, useRef } from 'react';
 
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
@@ -22,6 +22,12 @@ export const AuthForm = (): JSX.Element => {
     password: '',
     duration: '14d',
   });
+
+  const passwordInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    passwordInputRef.current?.focus();
+  }, []);
 
   useEffect(() => {
     if (token) {
@@ -52,6 +58,7 @@ export const AuthForm = (): JSX.Element => {
               name="password"
               placeholder="••••••"
               autoComplete="current-password"
+              ref={passwordInputRef}
               value={formData.password}
               onChange={(e) =>
                 setFormData({ ...formData, password: e.target.value })

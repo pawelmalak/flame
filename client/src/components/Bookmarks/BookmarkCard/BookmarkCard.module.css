@@ -10,6 +10,10 @@
   text-transform: uppercase;
 }
 
+.BookmarkHeader:hover {
+  cursor: pointer;
+}
+
 .Bookmarks {
   display: flex;
   flex-direction: column;

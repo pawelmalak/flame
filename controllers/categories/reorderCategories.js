@@ -1,5 +1,6 @@
 const asyncWrapper = require('../../middleware/asyncWrapper');
 const Category = require('../../models/Category');
+
 // @desc      Reorder categories
 // @route     PUT /api/categories/0/reorder
 // @access    Public
