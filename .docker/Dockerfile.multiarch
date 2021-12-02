@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN apk --no-cache --virtual build-dependencies add python make g++ \
+RUN apk --no-cache --virtual build-dependencies add python python3 make g++ \
     && npm install --production
 
 COPY . .    

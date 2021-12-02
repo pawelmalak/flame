@@ -1,9 +1,9 @@
 const initConfig = require('./initConfig');
 const initFiles = require('./initFiles');
-const initSecrets = require('./initSecrets');
+const initDockerSecrets = require('./initDockerSecrets');
 
 const initApp = async () => {
-  initSecrets();
+  initDockerSecrets();
   await initFiles();
   await initConfig();
 };
