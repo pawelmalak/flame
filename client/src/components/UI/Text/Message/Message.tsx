@@ -4,8 +4,11 @@ import classes from './Message.module.css';
 
 interface Props {
   children: ReactNode;
+  isPrimary?: boolean;
 }
 
-export const Message = ({ children }: Props): JSX.Element => {
-  return <p className={classes.message}>{children}</p>;
+export const Message = ({ children, isPrimary = true }: Props): JSX.Element => {
+  const style = isPrimary ? classes.message : classes.messageCenter;
+
+  return <p className={style}>{children}</p>;
 };

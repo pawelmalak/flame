@@ -55,19 +55,42 @@ docker buildx build \
 #### Docker-Compose
 
 ```yaml
-version: '2.1'
+version: '3.6'
+
 services:
   flame:
-    image: pawelmalak/flame:latest
+    image: pawelmalak/flame
     container_name: flame
     volumes:
-      - <host_dir>:/app/data
-      - /var/run/docker.sock:/var/run/docker.sock # optional but required for Docker integration feature
+      - /path/to/host/data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock # optional but required for Docker integration
     ports:
       - 5005:5005
+    secrets:
+      - password # optional but required for (1)
     environment:
       - PASSWORD=flame_password
+      - PASSWORD_FILE=/run/secrets/password # optional but required for (1)
     restart: unless-stopped
+
+# optional but required for Docker secrets (1)
+secrets:
+  password:
+    file: /path/to/secrets/password
+```
+
+##### Docker Secrets
+
+All environment variables can be overwritten by appending `_FILE` to the variable value. For example, you can use `PASSWORD_FILE` to pass through a docker secret instead of `PASSWORD`. If both `PASSWORD` and `PASSWORD_FILE` are set, the docker secret will take precedent.
+
+```bash
+# ./secrets/flame_password
+my_custom_secret_password_123
+
+# ./docker-compose.yml
+secrets:
+  password:
+    file: ./secrets/flame_password
 ```
 
 #### Skaffold
@@ -212,7 +235,7 @@ metadata:
 - Backup your `db.sqlite` before running script!
 - Known Issues:
   - generated icons are sometimes incorrect
-  
+
 ```bash
 pip3 install Pillow, beautifulsoup4
 

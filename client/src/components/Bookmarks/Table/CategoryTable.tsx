@@ -16,11 +16,8 @@ import { actionCreators } from '../../../store';
 // Typescript
 import { Bookmark, Category } from '../../../interfaces';
 
-// CSS
-import classes from './Table.module.css';
-
 // UI
-import { Table } from '../../UI';
+import { Message, Table } from '../../UI';
 import { TableActions } from '../../Actions/TableActions';
 
 interface Props {
@@ -99,7 +96,7 @@ export const CategoryTable = ({ openFormForUpdating }: Props): JSX.Element => {
 
   return (
     <Fragment>
-      <div className={classes.Message}>
+      <Message isPrimary={false}>
         {config.useOrdering === 'orderId' ? (
           <p>You can drag and drop single rows to reorder categories</p>
         ) : (
@@ -108,7 +105,7 @@ export const CategoryTable = ({ openFormForUpdating }: Props): JSX.Element => {
             <Link to="/settings/interface">settings</Link>
           </p>
         )}
-      </div>
+      </Message>
 
       <DragDropContext onDragEnd={dragEndHanlder}>
         <Droppable droppableId="categories">

@@ -1,3 +1,7 @@
+### v2.1.1 (2021-12-02)
+- Added support for Docker secrets ([#189](https://github.com/pawelmalak/flame/issues/189))
+- Changed some messages and buttons to make it easier to open bookmarks editor ([#239](https://github.com/pawelmalak/flame/issues/239))
+
 ### v2.1.0 (2021-11-26)
 - Added option to set custom order for bookmarks ([#43](https://github.com/pawelmalak/flame/issues/43)) and ([#187](https://github.com/pawelmalak/flame/issues/187))
 - Added support for .ico files for custom icons ([#209](https://github.com/pawelmalak/flame/issues/209))

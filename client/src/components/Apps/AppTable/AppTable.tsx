@@ -17,8 +17,7 @@ import { actionCreators } from '../../../store';
 import { App } from '../../../interfaces';
 
 // Other
-import classes from './AppTable.module.css';
-import { Table } from '../../UI';
+import { Message, Table } from '../../UI';
 import { TableActions } from '../../Actions/TableActions';
 
 interface Props {
@@ -89,7 +88,7 @@ export const AppTable = (props: Props): JSX.Element => {
 
   return (
     <Fragment>
-      <div className={classes.Message}>
+      <Message isPrimary={false}>
         {config.useOrdering === 'orderId' ? (
           <p>You can drag and drop single rows to reorder application</p>
         ) : (
@@ -98,7 +97,7 @@ export const AppTable = (props: Props): JSX.Element => {
             <Link to="/settings/interface">settings</Link>
           </p>
         )}
-      </div>
+      </Message>
 
       <DragDropContext onDragEnd={dragEndHanlder}>
         <Droppable droppableId="apps">
