@@ -1,3 +1,6 @@
+### v2.2.0 (TBA)
+- Added option to set custom description for apps ([#201](https://github.com/pawelmalak/flame/issues/201))
+
 ### v2.1.1 (2021-12-02)
 - Added support for Docker secrets ([#189](https://github.com/pawelmalak/flame/issues/189))
 - Changed some messages and buttons to make it easier to open bookmarks editor ([#239](https://github.com/pawelmalak/flame/issues/239))
