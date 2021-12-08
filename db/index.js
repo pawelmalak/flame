@@ -7,11 +7,18 @@ const backupDB = require('./utils/backupDb');
 const Logger = require('../utils/Logger');
 const logger = new Logger();
 
-const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: './data/db.sqlite',
-  logging: false,
-});
+let sequelize
+if (process.env.JAWSDB_MARIA_URL) {
+   sequelize = new Sequelize(process.env.JAWSDB_MARIA_URL, {
+    logging:false
+   })
+} else {
+  sequelize = new Sequelize({
+    dialect: 'sqlite',
+    storage: './data/db.sqlite',
+    logging: false,
+  });
+}
 
 const umzug = new Umzug({
   migrations: {

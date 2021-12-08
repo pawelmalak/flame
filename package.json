@@ -12,6 +12,7 @@
     "dev-server": "nodemon server.js -e js",
     "dev-client": "npm start --prefix client",
     "dev": "concurrently \"npm run dev-server\" \"npm run dev-client\"",
+    "build": "mkdir -p ./public ./data && cd ./client && npm install --production && npm run build && cd .. && mv ./client/build/* ./public && rm -rf ./client",
     "skaffold": "concurrently \"npm run init-client\" \"npm run dev-server\""
   },
   "author": "",
@@ -26,6 +27,7 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.3",
+    "mysql2": "^2.3.3",
     "node-schedule": "^2.0.0",
     "sequelize": "^6.9.0",
     "sqlite3": "^5.0.2",

@@ -1,0 +1,14 @@
+{
+  "name": "Flame ",
+  "description": "Flame is self-hosted startpage for your server",
+  "repository": "https://github.com/pawelmalak/flame",
+  "addons": [
+    "jawsdb-maria"
+  ],
+  "env": {
+    "PASSWORD": {
+      "description": "Password to login flame",
+      "value": ""
+    }
+  }
+}
