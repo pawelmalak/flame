@@ -1,17 +1,13 @@
-.TableActions {
-  display: flex;
-  align-items: center;
+.message {
+  color: var(--color-primary);
 }
 
-.TableAction {
-  width: 22px;
+.message a {
+  color: var(--color-accent);
+  font-weight: 600;
 }
 
-.TableAction:hover {
-  cursor: pointer;
-}
-
-.Message {
+.messageCenter {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -20,10 +16,11 @@
   margin-bottom: 20px;
 }
 
-.Message a {
+.messageCenter a,
+.messageCenter span {
   color: var(--color-accent);
 }
 
-.Message a:hover {
+.messageCenter a:hover {
   cursor: pointer;
 }

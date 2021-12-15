@@ -23,6 +23,7 @@ export enum ActionType {
   updateApp = 'UPDATE_APP',
   reorderApps = 'REORDER_APPS',
   sortApps = 'SORT_APPS',
+  setEditApp = 'SET_EDIT_APP',
   // CATEGORES
   getCategories = 'GET_CATEGORIES',
   getCategoriesSuccess = 'GET_CATEGORIES_SUCCESS',
@@ -33,10 +34,14 @@ export enum ActionType {
   updateCategory = 'UPDATE_CATEGORY',
   sortCategories = 'SORT_CATEGORIES',
   reorderCategories = 'REORDER_CATEGORIES',
+  setEditCategory = 'SET_EDIT_CATEGORY',
   // BOOKMARKS
   addBookmark = 'ADD_BOOKMARK',
   deleteBookmark = 'DELETE_BOOKMARK',
   updateBookmark = 'UPDATE_BOOKMARK',
+  setEditBookmark = 'SET_EDIT_BOOKMARK',
+  reorderBookmarks = 'REORDER_BOOKMARKS',
+  sortBookmarks = 'SORT_BOOKMARKS',
   // AUTH
   login = 'LOGIN',
   logout = 'LOGOUT',

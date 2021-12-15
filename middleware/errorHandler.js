@@ -1,5 +1,4 @@
 const ErrorResponse = require('../utils/ErrorResponse');
-const colors = require('colors');
 const Logger = require('../utils/Logger');
 const logger = new Logger();
 

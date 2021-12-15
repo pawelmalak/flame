@@ -1,0 +1,12 @@
+.TableActions {
+  display: flex;
+  align-items: center;
+}
+
+.TableAction {
+  width: 22px;
+}
+
+.TableAction:hover {
+  cursor: pointer;
+}

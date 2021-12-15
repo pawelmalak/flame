@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import {
   DragDropContext,
   Droppable,
@@ -14,33 +14,39 @@ import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../store';
 
 // Typescript
-import { App } from '../../../interfaces';
+import { Bookmark, Category } from '../../../interfaces';
 
-// Other
+// UI
 import { Message, Table } from '../../UI';
 import { TableActions } from '../../Actions/TableActions';
 
 interface Props {
-  openFormForUpdating: (app: App) => void;
+  openFormForUpdating: (data: Category | Bookmark) => void;
 }
 
-export const AppTable = (props: Props): JSX.Element => {
+export const CategoryTable = ({ openFormForUpdating }: Props): JSX.Element => {
   const {
-    apps: { apps },
     config: { config },
+    bookmarks: { categories },
   } = useSelector((state: State) => state);
 
   const dispatch = useDispatch();
-  const { pinApp, deleteApp, reorderApps, createNotification, updateApp } =
-    bindActionCreators(actionCreators, dispatch);
+  const {
+    pinCategory,
+    deleteCategory,
+    createNotification,
+    reorderCategories,
+    updateCategory,
+  } = bindActionCreators(actionCreators, dispatch);
 
-  const [localApps, setLocalApps] = useState<App[]>([]);
+  const [localCategories, setLocalCategories] = useState<Category[]>([]);
 
-  // Copy apps array
+  // Copy categories array
   useEffect(() => {
-    setLocalApps([...apps]);
-  }, [apps]);
+    setLocalCategories([...categories]);
+  }, [categories]);
 
+  // Drag and drop handler
   const dragEndHanlder = (result: DropResult): void => {
     if (config.useOrdering !== 'orderId') {
       createNotification({
@@ -54,43 +60,45 @@ export const AppTable = (props: Props): JSX.Element => {
       return;
     }
 
-    const tmpApps = [...localApps];
-    const [movedApp] = tmpApps.splice(result.source.index, 1);
-    tmpApps.splice(result.destination.index, 0, movedApp);
+    const tmpCategories = [...localCategories];
+    const [movedCategory] = tmpCategories.splice(result.source.index, 1);
+    tmpCategories.splice(result.destination.index, 0, movedCategory);
 
-    setLocalApps(tmpApps);
-    reorderApps(tmpApps);
+    setLocalCategories(tmpCategories);
+    reorderCategories(tmpCategories);
   };
 
   // Action handlers
-  const deleteAppHandler = (id: number, name: string) => {
-    const proceed = window.confirm(`Are you sure you want to delete ${name}?`);
+  const deleteCategoryHandler = (id: number, name: string) => {
+    const proceed = window.confirm(
+      `Are you sure you want to delete ${name}? It will delete ALL assigned bookmarks`
+    );
 
     if (proceed) {
-      deleteApp(id);
+      deleteCategory(id);
     }
   };
 
-  const updateAppHandler = (id: number) => {
-    const app = apps.find((a) => a.id === id) as App;
-    props.openFormForUpdating(app);
+  const updateCategoryHandler = (id: number) => {
+    const category = categories.find((c) => c.id === id) as Category;
+    openFormForUpdating(category);
   };
 
-  const pinAppHandler = (id: number) => {
-    const app = apps.find((a) => a.id === id) as App;
-    pinApp(app);
+  const pinCategoryHandler = (id: number) => {
+    const category = categories.find((c) => c.id === id) as Category;
+    pinCategory(category);
   };
 
-  const changeAppVisibiltyHandler = (id: number) => {
-    const app = apps.find((a) => a.id === id) as App;
-    updateApp(id, { ...app, isPublic: !app.isPublic });
+  const changeCategoryVisibiltyHandler = (id: number) => {
+    const category = categories.find((c) => c.id === id) as Category;
+    updateCategory(id, { ...category, isPublic: !category.isPublic });
   };
 
   return (
     <Fragment>
       <Message isPrimary={false}>
         {config.useOrdering === 'orderId' ? (
-          <p>You can drag and drop single rows to reorder application</p>
+          <p>You can drag and drop single rows to reorder categories</p>
         ) : (
           <p>
             Custom order is disabled. You can change it in the{' '}
@@ -100,17 +108,17 @@ export const AppTable = (props: Props): JSX.Element => {
       </Message>
 
       <DragDropContext onDragEnd={dragEndHanlder}>
-        <Droppable droppableId="apps">
+        <Droppable droppableId="categories">
           {(provided) => (
             <Table
-              headers={['Name', 'URL', 'Icon', 'Visibility', 'Actions']}
+              headers={['Name', 'Visibility', 'Actions']}
               innerRef={provided.innerRef}
             >
-              {localApps.map((app: App, index): JSX.Element => {
+              {localCategories.map((category, index): JSX.Element => {
                 return (
                   <Draggable
-                    key={app.id}
-                    draggableId={app.id.toString()}
+                    key={category.id}
+                    draggableId={category.id.toString()}
                     index={index}
                   >
                     {(provided, snapshot) => {
@@ -129,20 +137,18 @@ export const AppTable = (props: Props): JSX.Element => {
                           ref={provided.innerRef}
                           style={style}
                         >
-                          <td style={{ width: '200px' }}>{app.name}</td>
-                          <td style={{ width: '200px' }}>{app.url}</td>
-                          <td style={{ width: '200px' }}>{app.icon}</td>
-                          <td style={{ width: '200px' }}>
-                            {app.isPublic ? 'Visible' : 'Hidden'}
+                          <td style={{ width: '300px' }}>{category.name}</td>
+                          <td style={{ width: '300px' }}>
+                            {category.isPublic ? 'Visible' : 'Hidden'}
                           </td>
 
                           {!snapshot.isDragging && (
                             <TableActions
-                              entity={app}
-                              deleteHandler={deleteAppHandler}
-                              updateHandler={updateAppHandler}
-                              pinHanlder={pinAppHandler}
-                              changeVisibilty={changeAppVisibiltyHandler}
+                              entity={category}
+                              deleteHandler={deleteCategoryHandler}
+                              updateHandler={updateCategoryHandler}
+                              pinHanlder={pinCategoryHandler}
+                              changeVisibilty={changeCategoryVisibiltyHandler}
                             />
                           )}
                         </tr>

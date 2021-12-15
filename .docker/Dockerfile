@@ -1,4 +1,4 @@
-FROM node:14 as builder
+FROM node:16 as builder
 
 WORKDIR /app
 
@@ -16,7 +16,7 @@ RUN mkdir -p ./public ./data \
     && mv ./client/build/* ./public \
     && rm -rf ./client
 
-FROM node:14-alpine
+FROM node:16-alpine
 
 COPY --from=builder /app /app
 

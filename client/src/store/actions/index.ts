@@ -24,6 +24,7 @@ import {
   UpdateAppAction,
   ReorderAppsAction,
   SortAppsAction,
+  SetEditAppAction,
 } from './app';
 
 import {
@@ -37,6 +38,10 @@ import {
   AddBookmarkAction,
   DeleteBookmarkAction,
   UpdateBookmarkAction,
+  SetEditCategoryAction,
+  SetEditBookmarkAction,
+  ReorderBookmarksAction,
+  SortBookmarksAction,
 } from './bookmark';
 
 import {
@@ -67,6 +72,7 @@ export type Action =
   | UpdateAppAction
   | ReorderAppsAction
   | SortAppsAction
+  | SetEditAppAction
   // Categories
   | GetCategoriesAction<any>
   | AddCategoryAction
@@ -75,10 +81,14 @@ export type Action =
   | UpdateCategoryAction
   | SortCategoriesAction
   | ReorderCategoriesAction
+  | SetEditCategoryAction
   // Bookmarks
   | AddBookmarkAction
   | DeleteBookmarkAction
   | UpdateBookmarkAction
+  | SetEditBookmarkAction
+  | ReorderBookmarksAction
+  | SortBookmarksAction
   // Auth
   | LoginAction
   | LogoutAction
