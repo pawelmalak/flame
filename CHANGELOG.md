@@ -1,5 +1,6 @@
-### v2.2.0 (TBA)
+### v2.2.0 (2021-12-17)
 - Added option to set custom description for apps ([#201](https://github.com/pawelmalak/flame/issues/201))
+- Fixed fatal error while deploying Flame to cluster ([#242](https://github.com/pawelmalak/flame/issues/242))
 
 ### v2.1.1 (2021-12-02)
 - Added support for Docker secrets ([#189](https://github.com/pawelmalak/flame/issues/189))
