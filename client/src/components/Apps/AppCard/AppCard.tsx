@@ -8,16 +8,15 @@ import { State } from '../../../store/reducers';
 
 interface Props {
   app: App;
-  pinHandler?: Function;
 }
 
-export const AppCard = (props: Props): JSX.Element => {
+export const AppCard = ({ app }: Props): JSX.Element => {
   const { config } = useSelector((state: State) => state.config);
 
-  const [displayUrl, redirectUrl] = urlParser(props.app.url);
+  const [displayUrl, redirectUrl] = urlParser(app.url);
 
   let iconEl: JSX.Element;
-  const { icon } = props.app;
+  const { icon } = app;
 
   if (isImage(icon)) {
     const source = isUrl(icon) ? icon : `/uploads/${icon}`;
@@ -25,7 +24,7 @@ export const AppCard = (props: Props): JSX.Element => {
     iconEl = (
       <img
         src={source}
-        alt={`${props.app.name} icon`}
+        alt={`${app.name} icon`}
         className={classes.CustomIcon}
       />
     );
@@ -54,8 +53,8 @@ export const AppCard = (props: Props): JSX.Element => {
     >
       <div className={classes.AppCardIcon}>{iconEl}</div>
       <div className={classes.AppCardDetails}>
-        <h5>{props.app.name}</h5>
-        <span>{displayUrl}</span>
+        <h5>{app.name}</h5>
+        <span>{!app.description.length ? displayUrl : app.description}</span>
       </div>
     </a>
   );
