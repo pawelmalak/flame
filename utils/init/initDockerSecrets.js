@@ -13,8 +13,8 @@ const initDockerSecrets = () => {
 
       logger.log(`${upperProperty} was overwritten with docker secret value`);
     }
-  } catch(e) {
-    logger.log('Failed to initialize docker secrets. Error: ' + e, 'ERROR');
+  } catch (e) {
+    logger.log(`Failed to initialize docker secrets. Error: ${e}`, 'ERROR');
   }
 };
 
