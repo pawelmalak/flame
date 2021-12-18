@@ -130,6 +130,19 @@ export const SearchSettings = (): JSX.Element => {
           </select>
         </InputGroup>
 
+        <InputGroup>
+          <label htmlFor={"autoClearSearch"}>Automatically clear the search bar</label>
+          <select
+            id={"autoClearSearch"}
+            name={"autoClearSearch"}
+            value={formData.autoClearSearch ? 1 : 0}
+            onChange={(e) => inputChangeHandler(e, { isBool: true })}
+            >
+            <option value={1}>True</option>
+            <option value={0}>False</option>
+          </select>
+        </InputGroup>
+
         <Button>Save changes</Button>
       </form>
 

@@ -38,6 +38,7 @@ export const searchSettingsTemplate: SearchForm = {
   searchSameTab: false,
   defaultSearchProvider: 'l',
   disableAutofocus: false,
+  autoClearSearch: false,
 };
 
 export const dockerSettingsTemplate: DockerSettingsForm = {
