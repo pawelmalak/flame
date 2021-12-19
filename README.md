@@ -39,7 +39,7 @@ docker pull pawelmalak/flame:2.0.0
 
 ```sh
 # run container
-docker run -p 5005:5005 -v /path/to/data:/app/data -e PASSWORD=flame_password flame
+docker run -p 5005:5005 -v /path/to/data:/app/data -e PASSWORD=flame_password pawelmalak/flame
 ```
 
 #### Building images
