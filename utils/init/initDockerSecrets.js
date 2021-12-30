@@ -3,14 +3,18 @@ const Logger = require('../Logger');
 const logger = new Logger();
 
 const initDockerSecrets = () => {
-  const secrets = getSecrets();
+  try {
+    const secrets = getSecrets();
 
-  for (const property in secrets) {
-    const upperProperty = property.toUpperCase();
+    for (const property in secrets) {
+      const upperProperty = property.toUpperCase();
 
-    process.env[upperProperty] = secrets[property];
+      process.env[upperProperty] = secrets[property];
 
-    logger.log(`${upperProperty} was overwritten with docker secret value`);
+      logger.log(`${upperProperty} was overwritten with docker secret value`);
+    }
+  } catch (e) {
+    logger.log(`Failed to initialize docker secrets. Error: ${e}`, 'ERROR');
   }
 };
 

@@ -5,6 +5,7 @@ export const newAppTemplate: NewApp = {
   url: '',
   icon: '',
   isPublic: true,
+  description: '',
 };
 
 export const appTemplate: App = {

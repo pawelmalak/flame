@@ -3,3 +3,4 @@ node_modules
 public
 k8s
 skaffold.yaml
+data

@@ -5,6 +5,7 @@ export interface NewApp {
   url: string;
   icon: string;
   isPublic: boolean;
+  description: string;
 }
 
 export interface App extends Model, NewApp {
