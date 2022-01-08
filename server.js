@@ -23,6 +23,7 @@ const logger = new Logger();
   await initApp();
   await connectDB();
   await associateModels();
+  await jobs();
 
   // Create server for Express API and WebSockets
   const server = http.createServer();
