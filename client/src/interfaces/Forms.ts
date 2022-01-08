@@ -13,6 +13,7 @@ export interface SearchForm {
   defaultSearchProvider: string;
   searchSameTab: boolean;
   disableAutofocus: boolean;
+  autoClearSearch: boolean;
 }
 
 export interface OtherSettingsForm {

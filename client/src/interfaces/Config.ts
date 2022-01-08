@@ -17,6 +17,7 @@ export interface Config {
   hideCategories: boolean;
   hideSearch: boolean;
   defaultSearchProvider: string;
+  autoClearSearch: boolean;
   dockerApps: boolean;
   dockerHost: string;
   kubernetesApps: boolean;

@@ -106,6 +106,7 @@ export const SearchBar = (props: Props): JSX.Element => {
         const url = `${query.template}${search}`;
         redirectUrl(url, sameTab);
       }
+      if(config.autoClearSearch) clearSearch();
     } else if (e.code === 'Escape') {
       clearSearch();
     }
