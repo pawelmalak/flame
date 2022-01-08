@@ -1,3 +1,6 @@
+### v2.X.Y (TBA)
+- Local search will now include app descriptions ([#266](https://github.com/pawelmalak/flame/issues/266))
+
 ### v2.2.0 (2021-12-17)
 - Added option to set custom description for apps ([#201](https://github.com/pawelmalak/flame/issues/201))
 - Fixed fatal error while deploying Flame to cluster ([#242](https://github.com/pawelmalak/flame/issues/242))
