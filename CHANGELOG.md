@@ -1,3 +1,8 @@
+### v2.2.1 (2022-01-08)
+- Local search will now include app descriptions ([#266](https://github.com/pawelmalak/flame/issues/266))
+- Fixed bug with unsupported characters in local search [#279](https://github.com/pawelmalak/flame/issues/279))
+- Background tasks optimization ([#283](https://github.com/pawelmalak/flame/issues/283))
+
 ### v2.2.0 (2021-12-17)
 - Added option to set custom description for apps ([#201](https://github.com/pawelmalak/flame/issues/201))
 - Fixed fatal error while deploying Flame to cluster ([#242](https://github.com/pawelmalak/flame/issues/242))
