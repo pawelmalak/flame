@@ -64,8 +64,10 @@ export const Home = (): JSX.Element => {
     if (localSearch) {
       // Search through apps
       setAppSearchResult([
-        ...apps.filter(({ name }) =>
-          new RegExp(escapeRegex(localSearch), 'i').test(name)
+        ...apps.filter(({ name, description }) =>
+          new RegExp(escapeRegex(localSearch), 'i').test(
+            `${name} ${description}`
+          )
         ),
       ]);
 
