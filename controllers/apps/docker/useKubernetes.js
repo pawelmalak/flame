@@ -35,7 +35,7 @@ const useKubernetes = async (apps) => {
       const annotations = ingress.metadata.annotations;
       const name = ingress.metadata.name;
       let url = "http://" + ingress.spec.rules[0].host;
-      if (ingress.spec.tls?.[0].hosts[0]) {
+      if (ingress.spec.tls?.[0].hosts?.[0]]) {
         url = "https://" + ingress.spec.tls[0].hosts[0];
       }
 
