@@ -39,10 +39,7 @@ const useKubernetes = async (apps) => {
         url = "https://" + ingress.spec.tls[0].hosts[0];
       }
 
-      if (
-        'flame.pawelmalak/enabled' in annotations &&
-        /^app/.test(annotations['flame.pawelmalak/type'])
-      ) {
+      if ('flame.pawelmalak/enabled' in annotations) {
         kubernetesApps.push({
           name: annotations['flame.pawelmalak/name'] || name,
           url: annotations['flame.pawelmalak/url'] || url,
