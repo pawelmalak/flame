@@ -33,15 +33,19 @@ const useKubernetes = async (apps) => {
 
     for (const ingress of ingresses) {
       const annotations = ingress.metadata.annotations;
+      const name = ingress.metadata.name;
+      let url = "http://" + ingress.spec.rules[0].host;
+      if (ingress.spec.tls?.[0].hosts[0]) {
+        url = "https://" + ingress.spec.tls[0].hosts[0];
+      }
 
       if (
-        'flame.pawelmalak/name' in annotations &&
-        'flame.pawelmalak/url' in annotations &&
+        'flame.pawelmalak/enabled' in annotations &&
         /^app/.test(annotations['flame.pawelmalak/type'])
       ) {
         kubernetesApps.push({
-          name: annotations['flame.pawelmalak/name'],
-          url: annotations['flame.pawelmalak/url'],
+          name: annotations['flame.pawelmalak/name'] || name,
+          url: annotations['flame.pawelmalak/url'] || url,
           icon: annotations['flame.pawelmalak/icon'] || 'kubernetes',
         });
       }
