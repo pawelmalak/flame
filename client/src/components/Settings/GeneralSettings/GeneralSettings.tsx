@@ -23,12 +23,14 @@ import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../store';
 
 export const GeneralSettings = (): JSX.Element => {
-  const { loading, customQueries, config } = useSelector(
-    (state: State) => state.config
-  );
+  const {
+    config: { loading, customQueries, config },
+    bookmarks: { categories },
+  } = useSelector((state: State) => state);
 
   const dispatch = useDispatch();
-  const { updateConfig } = bindActionCreators(actionCreators, dispatch);
+  const { updateConfig, sortApps, sortCategories, sortBookmarks } =
+    bindActionCreators(actionCreators, dispatch);
 
   // Initial state
   const [formData, setFormData] = useState<GeneralForm>(
@@ -48,6 +50,16 @@ export const GeneralSettings = (): JSX.Element => {
 
     // Save settings
     await updateConfig(formData);
+
+    // Sort entities with new settings
+    if (formData.useOrdering !== config.useOrdering) {
+      sortApps();
+      sortCategories();
+
+      for (let { id } of categories) {
+        sortBookmarks(id);
+      }
+    }
   };
 
   // Input handler
@@ -65,12 +77,95 @@ export const GeneralSettings = (): JSX.Element => {
 
   return (
     <Fragment>
-      {/* GENERAL SETTINGS */}
       <form
         onSubmit={(e) => formSubmitHandler(e)}
         style={{ marginBottom: '30px' }}
       >
+        {/* === GENERAL OPTIONS === */}
         <SettingsHeadline text="General" />
+        {/* SORT TYPE */}
+        <InputGroup>
+          <label htmlFor="useOrdering">Sorting type</label>
+          <select
+            id="useOrdering"
+            name="useOrdering"
+            value={formData.useOrdering}
+            onChange={(e) => inputChangeHandler(e)}
+          >
+            <option value="createdAt">By creation date</option>
+            <option value="name">Alphabetical order</option>
+            <option value="orderId">Custom order</option>
+          </select>
+        </InputGroup>
+
+        {/* === APPS OPTIONS === */}
+        <SettingsHeadline text="Apps" />
+        {/* PIN APPS */}
+        <InputGroup>
+          <label htmlFor="pinAppsByDefault">
+            Pin new applications by default
+          </label>
+          <select
+            id="pinAppsByDefault"
+            name="pinAppsByDefault"
+            value={formData.pinAppsByDefault ? 1 : 0}
+            onChange={(e) => inputChangeHandler(e, { isBool: true })}
+          >
+            <option value={1}>True</option>
+            <option value={0}>False</option>
+          </select>
+        </InputGroup>
+
+        {/* APPS OPPENING */}
+        <InputGroup>
+          <label htmlFor="appsSameTab">Open applications in the same tab</label>
+          <select
+            id="appsSameTab"
+            name="appsSameTab"
+            value={formData.appsSameTab ? 1 : 0}
+            onChange={(e) => inputChangeHandler(e, { isBool: true })}
+          >
+            <option value={1}>True</option>
+            <option value={0}>False</option>
+          </select>
+        </InputGroup>
+
+        {/* === BOOKMARKS OPTIONS === */}
+        <SettingsHeadline text="Bookmarks" />
+        {/* PIN CATEGORIES */}
+        <InputGroup>
+          <label htmlFor="pinCategoriesByDefault">
+            Pin new categories by default
+          </label>
+          <select
+            id="pinCategoriesByDefault"
+            name="pinCategoriesByDefault"
+            value={formData.pinCategoriesByDefault ? 1 : 0}
+            onChange={(e) => inputChangeHandler(e, { isBool: true })}
+          >
+            <option value={1}>True</option>
+            <option value={0}>False</option>
+          </select>
+        </InputGroup>
+
+        {/* BOOKMARKS OPPENING */}
+        <InputGroup>
+          <label htmlFor="bookmarksSameTab">
+            Open bookmarks in the same tab
+          </label>
+          <select
+            id="bookmarksSameTab"
+            name="bookmarksSameTab"
+            value={formData.bookmarksSameTab ? 1 : 0}
+            onChange={(e) => inputChangeHandler(e, { isBool: true })}
+          >
+            <option value={1}>True</option>
+            <option value={0}>False</option>
+          </select>
+        </InputGroup>
+
+        {/* SEARCH SETTINGS */}
+        <SettingsHeadline text="Search" />
         <InputGroup>
           <label htmlFor="defaultSearchProvider">Default search provider</label>
           <select
@@ -99,32 +194,6 @@ export const GeneralSettings = (): JSX.Element => {
             id="searchSameTab"
             name="searchSameTab"
             value={formData.searchSameTab ? 1 : 0}
-            onChange={(e) => inputChangeHandler(e, { isBool: true })}
-          >
-            <option value={1}>True</option>
-            <option value={0}>False</option>
-          </select>
-        </InputGroup>
-
-        <InputGroup>
-          <label htmlFor="hideSearch">Hide search bar</label>
-          <select
-            id="hideSearch"
-            name="hideSearch"
-            value={formData.hideSearch ? 1 : 0}
-            onChange={(e) => inputChangeHandler(e, { isBool: true })}
-          >
-            <option value={1}>True</option>
-            <option value={0}>False</option>
-          </select>
-        </InputGroup>
-
-        <InputGroup>
-          <label htmlFor="disableAutofocus">Disable search bar autofocus</label>
-          <select
-            id="disableAutofocus"
-            name="disableAutofocus"
-            value={formData.disableAutofocus ? 1 : 0}
             onChange={(e) => inputChangeHandler(e, { isBool: true })}
           >
             <option value={1}>True</option>
