@@ -1,21 +1,16 @@
 import {
   DockerSettingsForm,
-  OtherSettingsForm,
+  UISettingsForm,
   GeneralForm,
   ThemeSettingsForm,
   WeatherForm,
 } from '../../interfaces';
 
-export const otherSettingsTemplate: OtherSettingsForm = {
+export const uiSettingsTemplate: UISettingsForm = {
   customTitle: document.title,
-  pinAppsByDefault: true,
-  pinCategoriesByDefault: true,
   hideHeader: false,
   hideApps: false,
   hideCategories: false,
-  useOrdering: 'createdAt',
-  appsSameTab: false,
-  bookmarksSameTab: false,
   useAmericanDate: false,
   greetingsSchema: 'Good evening!;Good afternoon!;Good morning!;Good night!',
   daySchema: 'Sunday;Monday;Tuesday;Wednesday;Thursday;Friday;Saturday',
@@ -23,6 +18,8 @@ export const otherSettingsTemplate: OtherSettingsForm = {
     'January;February;March;April;May;June;July;August;September;October;November;December',
   showTime: false,
   hideDate: false,
+  hideSearch: false,
+  disableAutofocus: false,
 };
 
 export const weatherSettingsTemplate: WeatherForm = {
@@ -34,10 +31,13 @@ export const weatherSettingsTemplate: WeatherForm = {
 };
 
 export const generalSettingsTemplate: GeneralForm = {
-  hideSearch: false,
   searchSameTab: false,
   defaultSearchProvider: 'l',
-  disableAutofocus: false,
+  pinAppsByDefault: true,
+  pinCategoriesByDefault: true,
+  useOrdering: 'createdAt',
+  appsSameTab: false,
+  bookmarksSameTab: false,
 };
 
 export const dockerSettingsTemplate: DockerSettingsForm = {

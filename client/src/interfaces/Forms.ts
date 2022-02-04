@@ -9,28 +9,28 @@ export interface WeatherForm {
 }
 
 export interface GeneralForm {
-  hideSearch: boolean;
   defaultSearchProvider: string;
   searchSameTab: boolean;
-  disableAutofocus: boolean;
-}
-
-export interface OtherSettingsForm {
-  customTitle: string;
   pinAppsByDefault: boolean;
   pinCategoriesByDefault: boolean;
-  hideHeader: boolean;
-  hideApps: boolean;
-  hideCategories: boolean;
   useOrdering: string;
   appsSameTab: boolean;
   bookmarksSameTab: boolean;
+}
+
+export interface UISettingsForm {
+  customTitle: string;
+  hideHeader: boolean;
+  hideApps: boolean;
+  hideCategories: boolean;
   useAmericanDate: boolean;
   greetingsSchema: string;
   daySchema: string;
   monthSchema: string;
   showTime: boolean;
   hideDate: boolean;
+  hideSearch: boolean;
+  disableAutofocus: boolean;
 }
 
 export interface DockerSettingsForm {

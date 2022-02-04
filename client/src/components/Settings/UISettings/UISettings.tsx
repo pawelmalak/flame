@@ -7,28 +7,22 @@ import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../store';
 
 // Typescript
-import { OtherSettingsForm } from '../../../interfaces';
+import { UISettingsForm } from '../../../interfaces';
 
 // UI
 import { InputGroup, Button, SettingsHeadline } from '../../UI';
 
 // Utils
-import { otherSettingsTemplate, inputHandler } from '../../../utility';
+import { uiSettingsTemplate, inputHandler } from '../../../utility';
 
 export const UISettings = (): JSX.Element => {
-  const {
-    config: { loading, config },
-    bookmarks: { categories },
-  } = useSelector((state: State) => state);
+  const { loading, config } = useSelector((state: State) => state.config);
 
   const dispatch = useDispatch();
-  const { updateConfig, sortApps, sortCategories, sortBookmarks } =
-    bindActionCreators(actionCreators, dispatch);
+  const { updateConfig } = bindActionCreators(actionCreators, dispatch);
 
   // Initial state
-  const [formData, setFormData] = useState<OtherSettingsForm>(
-    otherSettingsTemplate
-  );
+  const [formData, setFormData] = useState<UISettingsForm>(uiSettingsTemplate);
 
   // Get config
   useEffect(() => {
@@ -46,16 +40,6 @@ export const UISettings = (): JSX.Element => {
 
     // Update local page title
     document.title = formData.customTitle;
-
-    // Sort entities with new settings
-    if (formData.useOrdering !== config.useOrdering) {
-      sortApps();
-      sortCategories();
-
-      for (let { id } of categories) {
-        sortBookmarks(id);
-      }
-    }
   };
 
   // Input handler
@@ -63,7 +47,7 @@ export const UISettings = (): JSX.Element => {
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     options?: { isNumber?: boolean; isBool?: boolean }
   ) => {
-    inputHandler<OtherSettingsForm>({
+    inputHandler<UISettingsForm>({
       e,
       options,
       setStateHandler: setFormData,
@@ -86,6 +70,36 @@ export const UISettings = (): JSX.Element => {
           value={formData.customTitle}
           onChange={(e) => inputChangeHandler(e)}
         />
+      </InputGroup>
+
+      {/* === SEARCH OPTIONS === */}
+      <SettingsHeadline text="Search" />
+      {/* HIDE SEARCHBAR */}
+      <InputGroup>
+        <label htmlFor="hideSearch">Hide search bar</label>
+        <select
+          id="hideSearch"
+          name="hideSearch"
+          value={formData.hideSearch ? 1 : 0}
+          onChange={(e) => inputChangeHandler(e, { isBool: true })}
+        >
+          <option value={1}>True</option>
+          <option value={0}>False</option>
+        </select>
+      </InputGroup>
+
+      {/* AUTOFOCUS SEARCHBAR */}
+      <InputGroup>
+        <label htmlFor="disableAutofocus">Disable search bar autofocus</label>
+        <select
+          id="disableAutofocus"
+          name="disableAutofocus"
+          value={formData.disableAutofocus ? 1 : 0}
+          onChange={(e) => inputChangeHandler(e, { isBool: true })}
+        >
+          <option value={1}>True</option>
+          <option value={0}>False</option>
+        </select>
       </InputGroup>
 
       {/* === HEADER OPTIONS === */}
@@ -160,8 +174,8 @@ export const UISettings = (): JSX.Element => {
           onChange={(e) => inputChangeHandler(e)}
         />
         <span>
-          Greetings must be separated with semicolon. Only 4 messages can be
-          used
+          Greetings must be separated with semicolon. All 4 messages must be
+          filled, even if they are the same
         </span>
       </InputGroup>
 
@@ -193,85 +207,8 @@ export const UISettings = (): JSX.Element => {
         <span>Names must be separated with semicolon</span>
       </InputGroup>
 
-      {/* === BEAHVIOR OPTIONS === */}
-      <SettingsHeadline text="App Behavior" />
-      {/* PIN APPS */}
-      <InputGroup>
-        <label htmlFor="pinAppsByDefault">
-          Pin new applications by default
-        </label>
-        <select
-          id="pinAppsByDefault"
-          name="pinAppsByDefault"
-          value={formData.pinAppsByDefault ? 1 : 0}
-          onChange={(e) => inputChangeHandler(e, { isBool: true })}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
-      </InputGroup>
-
-      {/* PIN CATEGORIES */}
-      <InputGroup>
-        <label htmlFor="pinCategoriesByDefault">
-          Pin new categories by default
-        </label>
-        <select
-          id="pinCategoriesByDefault"
-          name="pinCategoriesByDefault"
-          value={formData.pinCategoriesByDefault ? 1 : 0}
-          onChange={(e) => inputChangeHandler(e, { isBool: true })}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
-      </InputGroup>
-
-      {/* SORT TYPE */}
-      <InputGroup>
-        <label htmlFor="useOrdering">Sorting type</label>
-        <select
-          id="useOrdering"
-          name="useOrdering"
-          value={formData.useOrdering}
-          onChange={(e) => inputChangeHandler(e)}
-        >
-          <option value="createdAt">By creation date</option>
-          <option value="name">Alphabetical order</option>
-          <option value="orderId">Custom order</option>
-        </select>
-      </InputGroup>
-
-      {/* APPS OPPENING */}
-      <InputGroup>
-        <label htmlFor="appsSameTab">Open applications in the same tab</label>
-        <select
-          id="appsSameTab"
-          name="appsSameTab"
-          value={formData.appsSameTab ? 1 : 0}
-          onChange={(e) => inputChangeHandler(e, { isBool: true })}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
-      </InputGroup>
-
-      {/* BOOKMARKS OPPENING */}
-      <InputGroup>
-        <label htmlFor="bookmarksSameTab">Open bookmarks in the same tab</label>
-        <select
-          id="bookmarksSameTab"
-          name="bookmarksSameTab"
-          value={formData.bookmarksSameTab ? 1 : 0}
-          onChange={(e) => inputChangeHandler(e, { isBool: true })}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
-      </InputGroup>
-
-      {/* === MODULES OPTIONS === */}
-      <SettingsHeadline text="Modules" />
+      {/* === SECTIONS OPTIONS === */}
+      <SettingsHeadline text="Sections" />
       {/* HIDE APPS */}
       <InputGroup>
         <label htmlFor="hideApps">Hide applications</label>
