@@ -1,7 +1,7 @@
 import {
   DockerSettingsForm,
   OtherSettingsForm,
-  SearchForm,
+  GeneralForm,
   ThemeSettingsForm,
   WeatherForm,
 } from '../../interfaces';
@@ -33,7 +33,7 @@ export const weatherSettingsTemplate: WeatherForm = {
   weatherData: 'cloud',
 };
 
-export const searchSettingsTemplate: SearchForm = {
+export const generalSettingsTemplate: GeneralForm = {
   hideSearch: false,
   searchSameTab: false,
   defaultSearchProvider: 'l',

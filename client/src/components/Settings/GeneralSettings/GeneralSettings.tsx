@@ -3,7 +3,7 @@ import { useState, useEffect, FormEvent, ChangeEvent, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // Typescript
-import { Query, SearchForm } from '../../../interfaces';
+import { Query, GeneralForm } from '../../../interfaces';
 
 // Components
 import { CustomQueries } from './CustomQueries/CustomQueries';
@@ -12,7 +12,7 @@ import { CustomQueries } from './CustomQueries/CustomQueries';
 import { Button, SettingsHeadline, InputGroup } from '../../UI';
 
 // Utils
-import { inputHandler, searchSettingsTemplate } from '../../../utility';
+import { inputHandler, generalSettingsTemplate } from '../../../utility';
 
 // Data
 import { queries } from '../../../utility/searchQueries.json';
@@ -22,7 +22,7 @@ import { State } from '../../../store/reducers';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../store';
 
-export const SearchSettings = (): JSX.Element => {
+export const GeneralSettings = (): JSX.Element => {
   const { loading, customQueries, config } = useSelector(
     (state: State) => state.config
   );
@@ -31,7 +31,9 @@ export const SearchSettings = (): JSX.Element => {
   const { updateConfig } = bindActionCreators(actionCreators, dispatch);
 
   // Initial state
-  const [formData, setFormData] = useState<SearchForm>(searchSettingsTemplate);
+  const [formData, setFormData] = useState<GeneralForm>(
+    generalSettingsTemplate
+  );
 
   // Get config
   useEffect(() => {
@@ -53,7 +55,7 @@ export const SearchSettings = (): JSX.Element => {
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     options?: { isNumber?: boolean; isBool?: boolean }
   ) => {
-    inputHandler<SearchForm>({
+    inputHandler<GeneralForm>({
       e,
       options,
       setStateHandler: setFormData,

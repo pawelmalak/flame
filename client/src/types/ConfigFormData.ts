@@ -1,14 +1,14 @@
 import {
   DockerSettingsForm,
   OtherSettingsForm,
-  SearchForm,
+  GeneralForm,
   ThemeSettingsForm,
   WeatherForm,
 } from '../interfaces';
 
 export type ConfigFormData =
   | WeatherForm
-  | SearchForm
+  | GeneralForm
   | DockerSettingsForm
   | OtherSettingsForm
   | ThemeSettingsForm;

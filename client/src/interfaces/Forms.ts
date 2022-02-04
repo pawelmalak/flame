@@ -8,7 +8,7 @@ export interface WeatherForm {
   weatherData: WeatherData;
 }
 
-export interface SearchForm {
+export interface GeneralForm {
   hideSearch: boolean;
   defaultSearchProvider: string;
   searchSameTab: boolean;

@@ -6,18 +6,18 @@
       "authRequired": false
     },
     {
-      "name": "Weather",
-      "dest": "/settings/weather",
-      "authRequired": true
-    },
-    {
-      "name": "Search",
-      "dest": "/settings/search",
+      "name": "General",
+      "dest": "/settings/general",
       "authRequired": true
     },
     {
       "name": "Interface",
       "dest": "/settings/interface",
+      "authRequired": true
+    },
+    {
+      "name": "Weather",
+      "dest": "/settings/weather",
       "authRequired": true
     },
     {
