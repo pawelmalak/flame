@@ -14,6 +14,8 @@ const {
   importBookmark,
 } = require('../controllers/bookmarks');
 
+const { getAllCategories } = require('../controllers/categories');
+
 router
   .route('/')
   .post(auth, requireAuth, upload.icon, createBookmark)
@@ -25,9 +27,9 @@ router
   .put(auth, requireAuth, upload.icon, updateBookmark)
   .delete(auth, requireAuth, deleteBookmark);
 
-  router
+router
   .route('/import')
-  .post(auth, requireAuth, upload.bookmark, importBookmark, getAllBookmarks)
+  .post(auth, requireAuth, upload.bookmark, importBookmark, getAllCategories);
 
 router.route('/0/reorder').put(auth, requireAuth, reorderBookmarks);
 

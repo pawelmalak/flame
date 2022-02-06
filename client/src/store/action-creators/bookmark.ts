@@ -132,7 +132,7 @@ export const importBookmark =
         type: ActionType.createNotification,
         payload: {
           title: 'Success',
-          message: `Bookmark file uploaded.`,
+          message: `Bookmark file imported.`,
         },
       });
 
@@ -140,6 +140,20 @@ export const importBookmark =
         type: ActionType.importBookmark,
         payload: res.data.data,
       });
+
+      // Fetch bookmarks after import.
+      try {
+        const res = await axios.get<ApiResponse<Category[]>>('/api/categories', {
+          headers: applyAuth(),
+        });
+  
+        dispatch<any>({
+          type: ActionType.getCategoriesSuccess,
+          payload: res.data.data,
+        });
+      } catch (err) {
+        console.log(err);
+      }
     } catch (err) {
       console.log(err);
     }
