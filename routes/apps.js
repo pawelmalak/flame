@@ -15,13 +15,13 @@ const {
 
 router
   .route('/')
-  .post(auth, requireAuth, upload, createApp)
+  .post(auth, requireAuth, upload.icon, createApp)
   .get(auth, getAllApps);
 
 router
   .route('/:id')
   .get(auth, getSingleApp)
-  .put(auth, requireAuth, upload, updateApp)
+  .put(auth, requireAuth, upload.icon, updateApp)
   .delete(auth, requireAuth, deleteApp);
 
 router.route('/0/reorder').put(auth, requireAuth, reorderApps);

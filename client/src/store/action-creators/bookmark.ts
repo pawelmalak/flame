@@ -6,6 +6,7 @@ import { ActionType } from '../action-types';
 import {
   ApiResponse,
   Bookmark,
+  BookmarkImport,
   Category,
   Config,
   NewBookmark,
@@ -18,6 +19,7 @@ import {
   DeleteBookmarkAction,
   DeleteCategoryAction,
   GetCategoriesAction,
+  ImportBookmarkAction,
   PinCategoryAction,
   ReorderBookmarksAction,
   ReorderCategoriesAction,
@@ -102,6 +104,42 @@ export const addBookmark =
         payload: res.data.data,
       });
 
+      dispatch<any>(sortBookmarks(res.data.data.categoryId));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+export const importBookmark =
+  (formData: BookmarkImport) =>
+  async (dispatch: Dispatch<ImportBookmarkAction>) => {
+    try {
+      let formd = new FormData();
+      formd.append("file", formData.file);
+
+      const res = await axios.post<ApiResponse<Bookmark>>(
+        '/api/bookmarks/import',
+        formd,
+        {
+          headers: {
+            ...applyAuth(),
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      dispatch<any>({
+        type: ActionType.createNotification,
+        payload: {
+          title: 'Success',
+          message: `Bookmark file uploaded.`,
+        },
+      });
+
+      dispatch({
+        type: ActionType.importBookmark,
+        payload: res.data.data,
+      });
       dispatch<any>(sortBookmarks(res.data.data.categoryId));
     } catch (err) {
       console.log(err);

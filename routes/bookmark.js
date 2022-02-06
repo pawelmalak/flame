@@ -11,18 +11,23 @@ const {
   updateBookmark,
   deleteBookmark,
   reorderBookmarks,
+  importBookmark,
 } = require('../controllers/bookmarks');
 
 router
   .route('/')
-  .post(auth, requireAuth, upload, createBookmark)
+  .post(auth, requireAuth, upload.icon, createBookmark)
   .get(auth, getAllBookmarks);
 
 router
   .route('/:id')
   .get(auth, getSingleBookmark)
-  .put(auth, requireAuth, upload, updateBookmark)
+  .put(auth, requireAuth, upload.icon, updateBookmark)
   .delete(auth, requireAuth, deleteBookmark);
+
+  router
+  .route('/import')
+  .post(auth, requireAuth, upload.bookmark, importBookmark, getAllBookmarks)
 
 router.route('/0/reorder').put(auth, requireAuth, reorderBookmarks);
 

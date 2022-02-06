@@ -7,6 +7,8 @@ import { State } from '../../store/reducers';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../store';
 
+import { importBookmark } from '../../store/action-creators';
+
 // Typescript
 import { Category, Bookmark } from '../../interfaces';
 
@@ -21,6 +23,7 @@ import {
   Spinner,
   Modal,
   Message,
+  FileButton,
 } from '../UI';
 
 // Components
@@ -48,6 +51,11 @@ export const Bookmarks = (props: Props): JSX.Element => {
   const dispatch = useDispatch();
   const { getCategories, setEditCategory, setEditBookmark } =
     bindActionCreators(actionCreators, dispatch);
+
+    const { importBookmark } = bindActionCreators(
+      actionCreators,
+      dispatch
+    );
 
   // Load categories if array is empty
   useEffect(() => {
@@ -128,6 +136,10 @@ export const Bookmarks = (props: Props): JSX.Element => {
     }
   };
 
+  const importFromFile = async (file: File) => {
+    await importBookmark({file});
+  };
+
   const finishEditing = () => {
     setShowTable(false);
     setEditCategory(null);
@@ -169,6 +181,11 @@ export const Bookmarks = (props: Props): JSX.Element => {
               handler={finishEditing}
             />
           )}
+          <FileButton
+            name="Import From File"
+            icon="mdiPlusBox"
+            handler={async (f) => await importFromFile(f)}
+          />
         </div>
       )}
 
