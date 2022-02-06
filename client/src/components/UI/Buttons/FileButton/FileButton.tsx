@@ -52,7 +52,7 @@ export const FileButton = (props: Props): JSX.Element => {
           ref={imageRef}
           type="file"
           style={{ display: 'none' }}
-          accept="image/*"
+          accept=".html"
           onChange={handleChange}
         />
         {body}

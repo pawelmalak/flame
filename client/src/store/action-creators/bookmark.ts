@@ -140,7 +140,6 @@ export const importBookmark =
         type: ActionType.importBookmark,
         payload: res.data.data,
       });
-      dispatch<any>(sortBookmarks(res.data.data.categoryId));
     } catch (err) {
       console.log(err);
     }

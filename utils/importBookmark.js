@@ -1,5 +1,5 @@
 const parse = require('node-bookmarks-parser');
-var sqlite3 = require('sqlite3').verbose();
+var sqlite3 = require('sqlite3');
 const File = require('./File');
 const databaseFilePath = 'data/db.sqlite';
 
@@ -41,35 +41,46 @@ function saveBookmarks() {
 }
 
 function saveCategories() {
-  let db = new sqlite3.Database(databaseFilePath);
-  let uniqueCats = [...new Set(bookmarks.map((r) => r.category))];
-  const importDate = new Date().toString();
+  return new Promise((resolve, reject) => {
+    let db = new sqlite3.Database(databaseFilePath);
+    let uniqueCats = [...new Set(bookmarks.map((r) => r.category))];
+    const importDate = new Date().toString();
 
-  db.serialize(() => {
-    db.all(`SELECT * FROM categories`, (err, data) => {
-      if (err) {
-        console.error(err);
-      }
+    let tasks = {};
 
-      for (const newCaterory of uniqueCats) {
-        for (const category of data) {
-          if (category.name.toLowerCase() === newCaterory.toLowerCase()) {
-            continue;
-          }
+    db.serialize(() => {
+      db.all(`SELECT * FROM categories`, (err, data) => {
+        if (err) {
+          console.error(err);
+          return;
         }
 
-        let stmt = db.prepare(
-          'INSERT INTO categories (name, createdAt, updatedAt) VALUES(?,?,?)'
-        );
-        stmt.run(newCaterory, importDate, importDate, (err) => {
-          if (err) {
-            console.error(err);
+        for (const newCaterory of uniqueCats) {
+          for (const category of data) {
+            if (category.name.toLowerCase() === newCaterory.toLowerCase()) {
+              continue;
+            }
           }
-        });
-        stmt.finalize();
-      }
 
-      saveBookmarks();
+          let stmt = db.prepare(
+            'INSERT INTO categories (name, createdAt, updatedAt) VALUES(?,?,?)'
+          );
+          tasks[newCaterory] = false;
+          stmt.run(newCaterory, importDate, importDate, (err) => {
+            tasks[newCaterory] = true;
+
+            if (err) {
+              console.error(err);
+              reject(err);
+            }
+
+            if(Object.keys(tasks).every(function(k){ return tasks[k] })){
+              resolve();
+            }
+          });
+          stmt.finalize();
+        }
+      });
     });
   });
 }
@@ -99,5 +110,8 @@ module.exports = function importBookmark(path) {
     crawlBookmarks(bookmark);
   }
 
-  saveCategories();
+  saveCategories()
+    .then((r) => {
+      saveBookmarks();
+    })
 };
