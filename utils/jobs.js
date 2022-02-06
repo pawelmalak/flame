@@ -13,7 +13,7 @@ module.exports = async function () {
     // Update weather data every 15 minutes
     const weatherJob = schedule.scheduleJob(
       'updateWeather',
-      '*/15 * * * *',
+      '0 */15 * * * *',
       async () => {
         try {
           const weatherData = await getExternalWeather();
@@ -30,7 +30,7 @@ module.exports = async function () {
     // Clear old weather data every 4 hours
     const weatherCleanerJob = schedule.scheduleJob(
       'clearWeather',
-      '5 */4 * * *',
+      '0 5 */4 * * *',
       async () => {
         clearWeatherData();
       }
