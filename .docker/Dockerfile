@@ -22,7 +22,11 @@ COPY --from=builder /app /app
 
 WORKDIR /app
 
+RUN chown -R node:node .
+
 EXPOSE 5005
+
+USER node
 
 ENV NODE_ENV=production
 ENV PASSWORD=flame_password
