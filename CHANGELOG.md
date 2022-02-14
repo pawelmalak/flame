@@ -1,3 +1,8 @@
+### v2.2.2 (2022-02-TBA)
+- Fixed bug with local search not working when using prefix ([#289](https://github.com/pawelmalak/flame/issues/289))
+- Fixed bug with app description not updating when using custom icon ([#310](https://github.com/pawelmalak/flame/issues/310))
+- Changed some of the settings tabs
+
 ### v2.2.1 (2022-01-08)
 - Local search will now include app descriptions ([#266](https://github.com/pawelmalak/flame/issues/266))
 - Fixed bug with unsupported characters in local search [#279](https://github.com/pawelmalak/flame/issues/279))
