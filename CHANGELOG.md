@@ -1,4 +1,5 @@
 ### v2.2.2 (2022-02-TBA)
+- Added option to get user location directly from the app ([#287](https://github.com/pawelmalak/flame/issues/287))
 - Fixed bug with local search not working when using prefix ([#289](https://github.com/pawelmalak/flame/issues/289))
 - Fixed bug with app description not updating when using custom icon ([#310](https://github.com/pawelmalak/flame/issues/310))
 - Changed some of the settings tabs
