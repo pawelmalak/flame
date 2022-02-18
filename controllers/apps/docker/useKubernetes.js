@@ -42,6 +42,7 @@ const useKubernetes = async (apps) => {
         kubernetesApps.push({
           name: annotations['flame.pawelmalak/name'],
           url: annotations['flame.pawelmalak/url'],
+          description: annotations['flame.pawelmalak/description'],
           icon: annotations['flame.pawelmalak/icon'] || 'kubernetes',
         });
       }
