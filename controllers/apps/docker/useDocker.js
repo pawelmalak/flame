@@ -11,33 +11,26 @@ const useDocker = async (apps) => {
     dockerHost: host,
   } = await loadConfig();
 
-  let containers = null;
+  let containers = []
+  const hosts = host.split(';');
 
-  // Get list of containers
   try {
-    if (host.includes('localhost')) {
-      // Use default host
-      let { data } = await axios.get(
+    // Get list of containers
+    containers = (await Promise.all(hosts.reduce((acc, host) => {
+      const isLocalhost = host.includes('localhost');
+      acc.push(axios.get(
         `http://${host}/containers/json?{"status":["running"]}`,
-        {
+        isLocalhost ? {
           socketPath: '/var/run/docker.sock',
-        }
-      );
-
-      containers = data;
-    } else {
-      // Use custom host
-      let { data } = await axios.get(
-        `http://${host}/containers/json?{"status":["running"]}`
-      );
-
-      containers = data;
-    }
-  } catch {
-    logger.log(`Can't connect to the Docker API on ${host}`, 'ERROR');
+        } : {}
+      ))
+      return acc;
+    }, []))).flatMap(({ data }) => data)
+  } catch (err) {
+    logger.log(`Can't connect to the Docker API on one of the hosts: ${hosts.join(', ')}`, 'ERROR');
   }
 
-  if (containers) {
+  if (containers.length > 0) {
     apps = await App.findAll({
       order: [[orderType, 'ASC']],
     });
