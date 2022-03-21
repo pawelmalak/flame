@@ -69,8 +69,7 @@ export const SearchBar = (props: Props): JSX.Element => {
     );
 
     if (isLocal) {
-      // no additional encoding required for local search
-      setLocalSearch(inputRef.current.value);
+      setLocalSearch(search);
     }
 
     if (e.code === 'Enter' || e.code === 'NumpadEnter') {

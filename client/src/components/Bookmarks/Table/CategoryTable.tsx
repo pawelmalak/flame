@@ -102,7 +102,7 @@ export const CategoryTable = ({ openFormForUpdating }: Props): JSX.Element => {
         ) : (
           <p>
             Custom order is disabled. You can change it in the{' '}
-            <Link to="/settings/interface">settings</Link>
+            <Link to="/settings/general">settings</Link>
           </p>
         )}
       </Message>

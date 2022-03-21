@@ -16,7 +16,7 @@ import { WeatherSettings } from './WeatherSettings/WeatherSettings';
 import { UISettings } from './UISettings/UISettings';
 import { AppDetails } from './AppDetails/AppDetails';
 import { StyleSettings } from './StyleSettings/StyleSettings';
-import { SearchSettings } from './SearchSettings/SearchSettings';
+import { GeneralSettings } from './GeneralSettings/GeneralSettings';
 import { DockerSettings } from './DockerSettings/DockerSettings';
 import { ProtectedRoute } from '../Routing/ProtectedRoute';
 
@@ -59,8 +59,8 @@ export const Settings = (): JSX.Element => {
               component={WeatherSettings}
             />
             <ProtectedRoute
-              path="/settings/search"
-              component={SearchSettings}
+              path="/settings/general"
+              component={GeneralSettings}
             />
             <ProtectedRoute path="/settings/interface" component={UISettings} />
             <ProtectedRoute
