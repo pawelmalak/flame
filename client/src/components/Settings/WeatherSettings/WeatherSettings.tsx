@@ -82,6 +82,19 @@ export const WeatherSettings = (): JSX.Element => {
     });
   };
 
+  // Get user location
+  const getLocation = () => {
+    window.navigator.geolocation.getCurrentPosition(
+      ({ coords: { latitude, longitude } }) => {
+        setFormData({
+          ...formData,
+          lat: latitude,
+          long: longitude,
+        });
+      }
+    );
+  };
+
   return (
     <form onSubmit={(e) => formSubmitHandler(e)}>
       <SettingsHeadline text="API" />
@@ -120,15 +133,8 @@ export const WeatherSettings = (): JSX.Element => {
           step="any"
           lang="en-150"
         />
-        <span>
-          You can use
-          <a
-            href="https://www.latlong.net/convert-address-to-lat-long.html"
-            target="blank"
-          >
-            {' '}
-            latlong.net
-          </a>
+        <span onClick={getLocation}>
+          <a href="#">Click to get current location</a>
         </span>
       </InputGroup>
 
