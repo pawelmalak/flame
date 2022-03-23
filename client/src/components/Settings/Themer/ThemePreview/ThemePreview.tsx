@@ -1,32 +1,38 @@
+// Redux
+import { useDispatch } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../../../store';
+
+// Other
 import { Theme } from '../../../../interfaces/Theme';
 import classes from './ThemePreview.module.css';
 
 interface Props {
   theme: Theme;
-  applyTheme: Function;
 }
 
-export const ThemePreview = (props: Props): JSX.Element => {
+export const ThemePreview = ({
+  theme: { colors, name },
+}: Props): JSX.Element => {
+  const { setTheme } = bindActionCreators(actionCreators, useDispatch());
+
   return (
-    <div
-      className={classes.ThemePreview}
-      onClick={() => props.applyTheme(props.theme.name)}
-    >
+    <div className={classes.ThemePreview} onClick={() => setTheme(colors)}>
       <div className={classes.ColorsPreview}>
         <div
           className={classes.ColorPreview}
-          style={{ backgroundColor: props.theme.colors.background }}
+          style={{ backgroundColor: colors.background }}
         ></div>
         <div
           className={classes.ColorPreview}
-          style={{ backgroundColor: props.theme.colors.primary }}
+          style={{ backgroundColor: colors.primary }}
         ></div>
         <div
           className={classes.ColorPreview}
-          style={{ backgroundColor: props.theme.colors.accent }}
+          style={{ backgroundColor: colors.accent }}
         ></div>
       </div>
-      <p>{props.theme.name}</p>
+      <p>{name}</p>
     </div>
   );
 };

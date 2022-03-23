@@ -3,5 +3,9 @@ import { Theme } from '../../interfaces';
 
 export interface SetThemeAction {
   type: ActionType.setTheme;
-  payload: Theme;
+}
+
+export interface FetchThemesAction {
+  type: ActionType.fetchThemes;
+  payload: Theme[];
 }

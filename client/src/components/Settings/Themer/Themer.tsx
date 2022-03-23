@@ -9,12 +9,11 @@ import { actionCreators } from '../../../store';
 import { Theme, ThemeSettingsForm } from '../../../interfaces';
 
 // Components
-import { Button, InputGroup, SettingsHeadline } from '../../UI';
+import { Button, InputGroup, SettingsHeadline, Spinner } from '../../UI';
 import { ThemeBuilder } from './ThemeBuilder/ThemeBuilder';
 import { ThemeGrid } from './ThemeGrid/ThemeGrid';
 
 // Other
-import { themes } from './themes.json';
 import { State } from '../../../store/reducers';
 import { inputHandler, themeSettingsTemplate } from '../../../utility';
 
@@ -22,6 +21,7 @@ export const Themer = (): JSX.Element => {
   const {
     auth: { isAuthenticated },
     config: { loading, config },
+    theme: { themes },
   } = useSelector((state: State) => state);
 
   const dispatch = useDispatch();
@@ -63,10 +63,10 @@ export const Themer = (): JSX.Element => {
   return (
     <Fragment>
       <SettingsHeadline text="App themes" />
-      <ThemeGrid themes={themes} />
+      {!themes.length ? <Spinner /> : <ThemeGrid themes={themes} />}
 
-      <SettingsHeadline text="User themes" />
-      <ThemeBuilder />
+      {/* <SettingsHeadline text="User themes" />
+      <ThemeBuilder /> */}
 
       {isAuthenticated && (
         <form onSubmit={formSubmitHandler}>

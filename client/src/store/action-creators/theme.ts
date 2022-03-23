@@ -1,30 +1,32 @@
 import { Dispatch } from 'redux';
-import { SetThemeAction } from '../actions/theme';
+import { FetchThemesAction, SetThemeAction } from '../actions/theme';
 import { ActionType } from '../action-types';
-import { Theme } from '../../interfaces/Theme';
-import { themes } from '../../components/Settings/Themer/themes.json';
+import { Theme, ApiResponse, ThemeColors } from '../../interfaces';
+import { parseThemeToPAB } from '../../utility';
+import axios from 'axios';
 
 export const setTheme =
-  (name: string, remeberTheme: boolean = true) =>
+  (colors: ThemeColors, remeberTheme: boolean = true) =>
   (dispatch: Dispatch<SetThemeAction>) => {
-    const theme = themes.find((theme) => theme.name === name);
+    if (remeberTheme) {
+      localStorage.setItem('theme', parseThemeToPAB(colors));
+    }
 
-    if (theme) {
-      if (remeberTheme) {
-        localStorage.setItem('theme', name);
-      }
-
-      loadTheme(theme);
-
-      dispatch({
-        type: ActionType.setTheme,
-        payload: theme,
-      });
+    for (const [key, value] of Object.entries(colors)) {
+      document.body.style.setProperty(`--color-${key}`, value);
     }
   };
 
-export const loadTheme = (theme: Theme): void => {
-  for (const [key, value] of Object.entries(theme.colors)) {
-    document.body.style.setProperty(`--color-${key}`, value);
-  }
-};
+export const fetchThemes =
+  () => async (dispatch: Dispatch<FetchThemesAction>) => {
+    try {
+      const res = await axios.get<ApiResponse<Theme[]>>('/api/themes');
+
+      dispatch({
+        type: ActionType.fetchThemes,
+        payload: res.data.data,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
