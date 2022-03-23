@@ -15,13 +15,17 @@ import { ThemeGrid } from './ThemeGrid/ThemeGrid';
 
 // Other
 import { State } from '../../../store/reducers';
-import { inputHandler, themeSettingsTemplate } from '../../../utility';
+import {
+  inputHandler,
+  parseThemeToPAB,
+  themeSettingsTemplate,
+} from '../../../utility';
 
 export const Themer = (): JSX.Element => {
   const {
     auth: { isAuthenticated },
     config: { loading, config },
-    theme: { themes },
+    theme: { themes, userThemes },
   } = useSelector((state: State) => state);
 
   const dispatch = useDispatch();
@@ -44,7 +48,7 @@ export const Themer = (): JSX.Element => {
     e.preventDefault();
 
     // Save settings
-    await updateConfig(formData);
+    await updateConfig({ ...formData });
   };
 
   // Input handler
@@ -65,8 +69,14 @@ export const Themer = (): JSX.Element => {
       <SettingsHeadline text="App themes" />
       {!themes.length ? <Spinner /> : <ThemeGrid themes={themes} />}
 
-      {/* <SettingsHeadline text="User themes" />
-      <ThemeBuilder /> */}
+      {!userThemes.length ? (
+        isAuthenticated && 'auth and empty'
+      ) : (
+        <Fragment>
+          <SettingsHeadline text="User themes" />
+          <ThemeBuilder themes={userThemes} />
+        </Fragment>
+      )}
 
       {isAuthenticated && (
         <form onSubmit={formSubmitHandler}>
@@ -79,9 +89,9 @@ export const Themer = (): JSX.Element => {
               value={formData.defaultTheme}
               onChange={(e) => inputChangeHandler(e)}
             >
-              {themes.map((theme: Theme, idx) => (
-                <option key={idx} value={theme.name}>
-                  {theme.name}
+              {[...themes, ...userThemes].map((theme: Theme, idx) => (
+                <option key={idx} value={parseThemeToPAB(theme.colors)}>
+                  {theme.isCustom && '+'} {theme.name}
                 </option>
               ))}
             </select>

@@ -7,4 +7,5 @@ export interface ThemeColors {
 export interface Theme {
   name: string;
   colors: ThemeColors;
+  isCustom: boolean;
 }
