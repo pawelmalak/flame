@@ -1,4 +1,4 @@
-import { Theme } from '../../../interfaces/Theme';
+import { Theme } from '../../../../interfaces/Theme';
 import classes from './ThemePreview.module.css';
 
 interface Props {

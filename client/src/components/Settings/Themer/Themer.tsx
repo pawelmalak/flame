@@ -9,11 +9,11 @@ import { actionCreators } from '../../../store';
 import { Theme, ThemeSettingsForm } from '../../../interfaces';
 
 // Components
-import { ThemePreview } from './ThemePreview';
 import { Button, InputGroup, SettingsHeadline } from '../../UI';
+import { ThemeBuilder } from './ThemeBuilder/ThemeBuilder';
+import { ThemeGrid } from './ThemeGrid/ThemeGrid';
 
 // Other
-import classes from './Themer.module.css';
 import { themes } from './themes.json';
 import { State } from '../../../store/reducers';
 import { inputHandler, themeSettingsTemplate } from '../../../utility';
@@ -25,10 +25,7 @@ export const Themer = (): JSX.Element => {
   } = useSelector((state: State) => state);
 
   const dispatch = useDispatch();
-  const { setTheme, updateConfig } = bindActionCreators(
-    actionCreators,
-    dispatch
-  );
+  const { updateConfig } = bindActionCreators(actionCreators, dispatch);
 
   // Initial state
   const [formData, setFormData] = useState<ThemeSettingsForm>(
@@ -65,14 +62,11 @@ export const Themer = (): JSX.Element => {
 
   return (
     <Fragment>
-      <SettingsHeadline text="Set theme" />
-      <div className={classes.ThemerGrid}>
-        {themes.map(
-          (theme: Theme, idx: number): JSX.Element => (
-            <ThemePreview key={idx} theme={theme} applyTheme={setTheme} />
-          )
-        )}
-      </div>
+      <SettingsHeadline text="App themes" />
+      <ThemeGrid themes={themes} />
+
+      <SettingsHeadline text="User themes" />
+      <ThemeBuilder />
 
       {isAuthenticated && (
         <form onSubmit={formSubmitHandler}>

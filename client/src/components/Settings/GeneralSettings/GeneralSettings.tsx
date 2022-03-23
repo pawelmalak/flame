@@ -164,7 +164,7 @@ export const GeneralSettings = (): JSX.Element => {
           </select>
         </InputGroup>
 
-        {/* SEARCH SETTINGS */}
+        {/* === SEARCH OPTIONS === */}
         <SettingsHeadline text="Search" />
         <InputGroup>
           <label htmlFor="defaultSearchProvider">Default search provider</label>
