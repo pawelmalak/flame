@@ -1,9 +1,13 @@
 import { Dispatch } from 'redux';
-import { FetchThemesAction, SetThemeAction } from '../actions/theme';
+import {
+  AddThemeAction,
+  FetchThemesAction,
+  SetThemeAction,
+} from '../actions/theme';
 import { ActionType } from '../action-types';
 import { Theme, ApiResponse, ThemeColors } from '../../interfaces';
-import { parseThemeToPAB } from '../../utility';
-import axios from 'axios';
+import { applyAuth, parseThemeToPAB } from '../../utility';
+import axios, { AxiosError } from 'axios';
 
 export const setTheme =
   (colors: ThemeColors, remeberTheme: boolean = true) =>
@@ -36,32 +40,34 @@ export const fetchThemes =
     }
   };
 
-// export const addTheme = () => async (dispatch: Dispatch<>) => {
-//   try {
-//     // const res = await axios.post<>('/api/themes')
-//   } catch (err) {}
-// };
+export const addTheme =
+  (theme: Theme) => async (dispatch: Dispatch<AddThemeAction>) => {
+    try {
+      const res = await axios.post<ApiResponse<Theme>>('/api/themes', theme, {
+        headers: applyAuth(),
+      });
 
-// export const addQuery =
-// (query: Query) => async (dispatch: Dispatch<AddQueryAction>) => {
-//   try {
-//     const res = await axios.post<ApiResponse<Query>>('/api/queries', query, {
-//       headers: applyAuth(),
-//     });
+      dispatch({
+        type: ActionType.addTheme,
+        payload: res.data.data,
+      });
 
-//     dispatch({
-//       type: ActionType.addQuery,
-//       payload: res.data.data,
-//     });
-//   } catch (err) {
-//     const error = err as AxiosError<{ error: string }>;
+      dispatch<any>({
+        type: ActionType.createNotification,
+        payload: {
+          title: 'Success',
+          message: 'Theme added',
+        },
+      });
+    } catch (err) {
+      const error = err as AxiosError<{ error: string }>;
 
-//     dispatch<any>({
-//       type: ActionType.createNotification,
-//       payload: {
-//         title: 'Error',
-//         message: error.response?.data.error,
-//       },
-//     });
-//   }
-// };
+      dispatch<any>({
+        type: ActionType.createNotification,
+        payload: {
+          title: 'Error',
+          message: error.response?.data.error,
+        },
+      });
+    }
+  };

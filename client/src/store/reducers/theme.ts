@@ -9,11 +9,9 @@ interface ThemeState {
   userThemes: Theme[];
 }
 
-const savedTheme: ThemeColors = parsePABToTheme(localStorage.theme) || {
-  primary: '#effbff',
-  accent: '#6ee2ff',
-  background: '#242b33',
-};
+const savedTheme = localStorage.theme
+  ? parsePABToTheme(localStorage.theme)
+  : parsePABToTheme('#effbff;#6ee2ff;#242b33');
 
 const initialState: ThemeState = {
   activeTheme: {
@@ -52,6 +50,13 @@ export const themeReducer = (
         ...state,
         themes,
         userThemes,
+      };
+    }
+
+    case ActionType.addTheme: {
+      return {
+        ...state,
+        userThemes: [...state.userThemes, action.payload],
       };
     }
 

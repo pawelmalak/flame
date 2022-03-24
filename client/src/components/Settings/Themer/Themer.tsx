@@ -4,6 +4,7 @@ import { ChangeEvent, FormEvent, Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../store';
+import { State } from '../../../store/reducers';
 
 // Typescript
 import { Theme, ThemeSettingsForm } from '../../../interfaces';
@@ -14,7 +15,6 @@ import { ThemeBuilder } from './ThemeBuilder/ThemeBuilder';
 import { ThemeGrid } from './ThemeGrid/ThemeGrid';
 
 // Other
-import { State } from '../../../store/reducers';
 import {
   inputHandler,
   parseThemeToPAB,
@@ -82,7 +82,7 @@ export const Themer = (): JSX.Element => {
         <form onSubmit={formSubmitHandler}>
           <SettingsHeadline text="Other settings" />
           <InputGroup>
-            <label htmlFor="defaultTheme">Default theme (for new users)</label>
+            <label htmlFor="defaultTheme">Default theme for new users</label>
             <select
               id="defaultTheme"
               name="defaultTheme"

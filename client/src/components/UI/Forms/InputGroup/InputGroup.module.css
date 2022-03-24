@@ -38,3 +38,7 @@
   resize: none;
   height: 50vh;
 }
+
+.InputGroup input[type='color'] {
+  all: unset;
+}

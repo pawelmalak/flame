@@ -10,3 +10,8 @@ export interface FetchThemesAction {
   type: ActionType.fetchThemes;
   payload: Theme[];
 }
+
+export interface AddThemeAction {
+  type: ActionType.addTheme;
+  payload: Theme;
+}

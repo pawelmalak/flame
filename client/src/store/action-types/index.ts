@@ -2,6 +2,7 @@ export enum ActionType {
   // THEME
   setTheme = 'SET_THEME',
   fetchThemes = 'FETCH_THEMES',
+  addTheme = 'ADD_THEME',
   // CONFIG
   getConfig = 'GET_CONFIG',
   updateConfig = 'UPDATE_CONFIG',
