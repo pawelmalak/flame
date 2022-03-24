@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 // middleware
-const { auth, requireAuth } = require('../middleware');
+const { auth, requireAuth, requireBody } = require('../middleware');
 
 const {
   getQueries,
@@ -11,7 +11,16 @@ const {
   updateQuery,
 } = require('../controllers/queries/');
 
-router.route('/').post(auth, requireAuth, addQuery).get(getQueries);
+router
+  .route('/')
+  .post(
+    auth,
+    requireAuth,
+    requireBody(['name', 'prefix', 'template']),
+    addQuery
+  )
+  .get(getQueries);
+
 router
   .route('/:prefix')
   .delete(auth, requireAuth, deleteQuery)
