@@ -1,8 +1,9 @@
 import { ActionType } from '../action-types';
-import { Theme } from '../../interfaces';
+import { Theme, ThemeColors } from '../../interfaces';
 
 export interface SetThemeAction {
   type: ActionType.setTheme;
+  payload: ThemeColors;
 }
 
 export interface FetchThemesAction {
