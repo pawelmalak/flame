@@ -64,7 +64,7 @@ export const SearchBar = (props: Props): JSX.Element => {
   };
 
   const searchHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-    const { isLocal, search, query, isURL, sameTab } = searchParser(
+    const { isLocal, search, query, isURL, sameTab, rawQuery } = searchParser(
       inputRef.current.value
     );
 
@@ -90,15 +90,18 @@ export const SearchBar = (props: Props): JSX.Element => {
         } else if (bookmarkSearchResult?.[0]?.bookmarks?.length) {
           redirectUrl(bookmarkSearchResult[0].bookmarks[0].url, sameTab);
         } else {
-          // no local results -> search the internet with the default search provider
-          let template = query.template;
+          // no local results -> search the internet with the default search provider if query is not empty
 
-          if (query.prefix === 'l') {
-            template = 'https://duckduckgo.com/?q=';
+          if (!/^ *$/.test(rawQuery)) {
+            let template = query.template;
+
+            if (query.prefix === 'l') {
+              template = 'https://duckduckgo.com/?q=';
+            }
+
+            const url = `${template}${search}`;
+            redirectUrl(url, sameTab);
           }
-
-          const url = `${template}${search}`;
-          redirectUrl(url, sameTab);
         }
       } else {
         // Valid query -> redirect to search results

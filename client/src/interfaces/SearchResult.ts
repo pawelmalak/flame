@@ -6,4 +6,5 @@ export interface SearchResult {
   sameTab: boolean;
   search: string;
   query: Query;
+  rawQuery: string;
 }

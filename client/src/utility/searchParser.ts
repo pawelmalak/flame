@@ -14,6 +14,7 @@ export const searchParser = (searchQuery: string): SearchResult => {
       prefix: '',
       template: '',
     },
+    rawQuery: searchQuery,
   };
 
   const { customQueries, config } = store.getState().config;
