@@ -1,4 +1,4 @@
-### v2.3.0 (TBA)
+### v2.3.0 (2022-03-25)
 - Added custom theme editor ([#246](https://github.com/pawelmalak/flame/issues/246))
 - Added option to set secondary search provider ([#295](https://github.com/pawelmalak/flame/issues/295))
 - Fixed bug where pressing Enter with empty search bar would redirect to search results ([#325](https://github.com/pawelmalak/flame/issues/325))
