@@ -109,10 +109,11 @@ export const editTheme =
   };
 
 export const updateTheme =
-  (theme: Theme) => async (dispatch: Dispatch<UpdateThemeAction>) => {
+  (theme: Theme, originalName: string) =>
+  async (dispatch: Dispatch<UpdateThemeAction>) => {
     try {
       const res = await axios.put<ApiResponse<Theme[]>>(
-        `/api/themes/${theme.name}`,
+        `/api/themes/${originalName}`,
         theme,
         { headers: applyAuth() }
       );

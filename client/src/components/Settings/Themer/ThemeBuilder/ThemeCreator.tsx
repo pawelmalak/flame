@@ -74,7 +74,7 @@ export const ThemeCreator = ({ modalHandler }: Props): JSX.Element => {
     if (!themeInEdit) {
       addTheme(formData);
     } else {
-      updateTheme(formData);
+      updateTheme(formData, themeInEdit.name);
     }
 
     // close modal
