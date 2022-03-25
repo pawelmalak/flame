@@ -69,6 +69,17 @@ export const BookmarksForm = ({
   const formSubmitHandler = (e: FormEvent): void => {
     e.preventDefault();
 
+    for (let field of ['name', 'url', 'icon'] as const) {
+      if (/^ +$/.test(formData[field])) {
+        createNotification({
+          title: 'Error',
+          message: `Field cannot be empty: ${field}`,
+        });
+
+        return;
+      }
+    }
+
     const createFormData = (): FormData => {
       const data = new FormData();
       if (customIcon) {

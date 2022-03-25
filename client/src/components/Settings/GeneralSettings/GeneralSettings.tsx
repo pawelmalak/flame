@@ -164,10 +164,10 @@ export const GeneralSettings = (): JSX.Element => {
           </select>
         </InputGroup>
 
-        {/* SEARCH SETTINGS */}
+        {/* === SEARCH OPTIONS === */}
         <SettingsHeadline text="Search" />
         <InputGroup>
-          <label htmlFor="defaultSearchProvider">Default search provider</label>
+          <label htmlFor="defaultSearchProvider">Primary search provider</label>
           <select
             id="defaultSearchProvider"
             name="defaultSearchProvider"
@@ -185,6 +185,34 @@ export const GeneralSettings = (): JSX.Element => {
             })}
           </select>
         </InputGroup>
+
+        {formData.defaultSearchProvider === 'l' && (
+          <InputGroup>
+            <label htmlFor="secondarySearchProvider">
+              Secondary search provider
+            </label>
+            <select
+              id="secondarySearchProvider"
+              name="secondarySearchProvider"
+              value={formData.secondarySearchProvider}
+              onChange={(e) => inputChangeHandler(e)}
+            >
+              {[...queries, ...customQueries].map((query: Query, idx) => {
+                const isCustom = idx >= queries.length;
+
+                return (
+                  <option key={idx} value={query.prefix}>
+                    {isCustom && '+'} {query.name}
+                  </option>
+                );
+              })}
+            </select>
+            <span>
+              Will be used when "Local search" is primary search provider and
+              there are not any local results
+            </span>
+          </InputGroup>
+        )}
 
         <InputGroup>
           <label htmlFor="searchSameTab">

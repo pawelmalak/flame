@@ -9,11 +9,8 @@ import { actionCreators } from '../../../../store';
 // Typescript
 import { Query } from '../../../../interfaces';
 
-// CSS
-import classes from './CustomQueries.module.css';
-
 // UI
-import { Modal, Icon, Button } from '../../../UI';
+import { Modal, Icon, Button, CompactTable, ActionIcons } from '../../../UI';
 
 // Components
 import { QueriesForm } from './QueriesForm';
@@ -67,33 +64,27 @@ export const CustomQueries = (): JSX.Element => {
         )}
       </Modal>
 
-      <div>
-        <div className={classes.QueriesGrid}>
-          {customQueries.length > 0 && (
-            <Fragment>
-              <span>Name</span>
-              <span>Prefix</span>
-              <span>Actions</span>
-
-              <div className={classes.Separator}></div>
-            </Fragment>
-          )}
-
-          {customQueries.map((q: Query, idx) => (
-            <Fragment key={idx}>
-              <span>{q.name}</span>
-              <span>{q.prefix}</span>
-              <span className={classes.ActionIcons}>
-                <span onClick={() => updateHandler(q)}>
-                  <Icon icon="mdiPencil" />
-                </span>
-                <span onClick={() => deleteHandler(q)}>
-                  <Icon icon="mdiDelete" />
-                </span>
-              </span>
-            </Fragment>
-          ))}
-        </div>
+      <section>
+        {customQueries.length ? (
+          <CompactTable headers={['Name', 'Prefix', 'Actions']}>
+            {customQueries.map((q: Query, idx) => (
+              <Fragment key={idx}>
+                <span>{q.name}</span>
+                <span>{q.prefix}</span>
+                <ActionIcons>
+                  <span onClick={() => updateHandler(q)}>
+                    <Icon icon="mdiPencil" />
+                  </span>
+                  <span onClick={() => deleteHandler(q)}>
+                    <Icon icon="mdiDelete" />
+                  </span>
+                </ActionIcons>
+              </Fragment>
+            ))}
+          </CompactTable>
+        ) : (
+          <></>
+        )}
 
         <Button
           click={() => {
@@ -103,7 +94,7 @@ export const CustomQueries = (): JSX.Element => {
         >
           Add new search provider
         </Button>
-      </div>
+      </section>
     </Fragment>
   );
 };

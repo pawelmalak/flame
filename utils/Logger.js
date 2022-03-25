@@ -1,6 +1,6 @@
 class Logger {
   log(message, level = 'INFO') {
-    console.log(`[${this.generateTimestamp()}] [${level}] ${message}`)
+    console.log(`[${this.generateTimestamp()}] [${level}] ${message}`);
   }
 
   generateTimestamp() {
@@ -20,7 +20,9 @@ class Logger {
     // Timezone
     const tz = -d.getTimezoneOffset() / 60;
 
-    return `${year}-${month}-${day} ${hour}:${minutes}:${seconds}.${miliseconds} UTC${tz >= 0 ? '+' + tz : tz}`;
+    return `${year}-${month}-${day} ${hour}:${minutes}:${seconds}.${miliseconds} UTC${
+      tz >= 0 ? '+' + tz : tz
+    }`;
   }
 
   parseDate(date, ms = false) {

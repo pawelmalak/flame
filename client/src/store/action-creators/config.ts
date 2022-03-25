@@ -7,7 +7,7 @@ import {
   UpdateConfigAction,
   UpdateQueryAction,
 } from '../actions/config';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { ApiResponse, Config, Query } from '../../interfaces';
 import { ActionType } from '../action-types';
 import { storeUIConfig, applyAuth } from '../../utility';
@@ -103,7 +103,15 @@ export const addQuery =
         payload: res.data.data,
       });
     } catch (err) {
-      console.log(err);
+      const error = err as AxiosError<{ error: string }>;
+
+      dispatch<any>({
+        type: ActionType.createNotification,
+        payload: {
+          title: 'Error',
+          message: error.response?.data.error,
+        },
+      });
     }
   };
 

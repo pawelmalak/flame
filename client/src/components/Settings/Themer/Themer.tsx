@@ -4,31 +4,32 @@ import { ChangeEvent, FormEvent, Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../store';
+import { State } from '../../../store/reducers';
 
 // Typescript
 import { Theme, ThemeSettingsForm } from '../../../interfaces';
 
 // Components
-import { ThemePreview } from './ThemePreview';
-import { Button, InputGroup, SettingsHeadline } from '../../UI';
+import { Button, InputGroup, SettingsHeadline, Spinner } from '../../UI';
+import { ThemeBuilder } from './ThemeBuilder/ThemeBuilder';
+import { ThemeGrid } from './ThemeGrid/ThemeGrid';
 
 // Other
-import classes from './Themer.module.css';
-import { themes } from './themes.json';
-import { State } from '../../../store/reducers';
-import { inputHandler, themeSettingsTemplate } from '../../../utility';
+import {
+  inputHandler,
+  parseThemeToPAB,
+  themeSettingsTemplate,
+} from '../../../utility';
 
 export const Themer = (): JSX.Element => {
   const {
     auth: { isAuthenticated },
     config: { loading, config },
+    theme: { themes, userThemes },
   } = useSelector((state: State) => state);
 
   const dispatch = useDispatch();
-  const { setTheme, updateConfig } = bindActionCreators(
-    actionCreators,
-    dispatch
-  );
+  const { updateConfig } = bindActionCreators(actionCreators, dispatch);
 
   // Initial state
   const [formData, setFormData] = useState<ThemeSettingsForm>(
@@ -47,7 +48,7 @@ export const Themer = (): JSX.Element => {
     e.preventDefault();
 
     // Save settings
-    await updateConfig(formData);
+    await updateConfig({ ...formData });
   };
 
   // Input handler
@@ -63,31 +64,34 @@ export const Themer = (): JSX.Element => {
     });
   };
 
+  const customThemesEl = (
+    <Fragment>
+      <SettingsHeadline text="User themes" />
+      <ThemeBuilder themes={userThemes} />
+    </Fragment>
+  );
+
   return (
     <Fragment>
-      <SettingsHeadline text="Set theme" />
-      <div className={classes.ThemerGrid}>
-        {themes.map(
-          (theme: Theme, idx: number): JSX.Element => (
-            <ThemePreview key={idx} theme={theme} applyTheme={setTheme} />
-          )
-        )}
-      </div>
+      <SettingsHeadline text="App themes" />
+      {!themes.length ? <Spinner /> : <ThemeGrid themes={themes} />}
+
+      {!userThemes.length ? isAuthenticated && customThemesEl : customThemesEl}
 
       {isAuthenticated && (
         <form onSubmit={formSubmitHandler}>
           <SettingsHeadline text="Other settings" />
           <InputGroup>
-            <label htmlFor="defaultTheme">Default theme (for new users)</label>
+            <label htmlFor="defaultTheme">Default theme for new users</label>
             <select
               id="defaultTheme"
               name="defaultTheme"
               value={formData.defaultTheme}
               onChange={(e) => inputChangeHandler(e)}
             >
-              {themes.map((theme: Theme, idx) => (
-                <option key={idx} value={theme.name}>
-                  {theme.name}
+              {[...themes, ...userThemes].map((theme: Theme, idx) => (
+                <option key={idx} value={parseThemeToPAB(theme.colors)}>
+                  {theme.isCustom && '+'} {theme.name}
                 </option>
               ))}
             </select>

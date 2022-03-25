@@ -1,8 +1,11 @@
+export interface ThemeColors {
+  background: string;
+  primary: string;
+  accent: string;
+}
+
 export interface Theme {
   name: string;
-  colors: {
-    background: string;
-    primary: string;
-    accent: string;
-  }
+  colors: ThemeColors;
+  isCustom: boolean;
 }

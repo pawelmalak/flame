@@ -10,7 +10,7 @@ import { actionCreators, store } from './store';
 import { State } from './store/reducers';
 
 // Utils
-import { checkVersion, decodeToken } from './utility';
+import { checkVersion, decodeToken, parsePABToTheme } from './utility';
 
 // Routes
 import { Home } from './components/Home/Home';
@@ -31,7 +31,7 @@ export const App = (): JSX.Element => {
   const { config, loading } = useSelector((state: State) => state.config);
 
   const dispath = useDispatch();
-  const { fetchQueries, setTheme, logout, createNotification } =
+  const { fetchQueries, setTheme, logout, createNotification, fetchThemes } =
     bindActionCreators(actionCreators, dispath);
 
   useEffect(() => {
@@ -51,9 +51,12 @@ export const App = (): JSX.Element => {
       }
     }, 1000);
 
+    // load themes
+    fetchThemes();
+
     // set user theme if present
     if (localStorage.theme) {
-      setTheme(localStorage.theme);
+      setTheme(parsePABToTheme(localStorage.theme));
     }
 
     // check for updated
@@ -68,7 +71,7 @@ export const App = (): JSX.Element => {
   // If there is no user theme, set the default one
   useEffect(() => {
     if (!loading && !localStorage.theme) {
-      setTheme(config.defaultTheme, false);
+      setTheme(parsePABToTheme(config.defaultTheme), false);
     }
   }, [loading]);
 

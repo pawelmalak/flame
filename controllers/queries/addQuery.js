@@ -1,4 +1,5 @@
 const asyncWrapper = require('../../middleware/asyncWrapper');
+const ErrorResponse = require('../../utils/ErrorResponse');
 const File = require('../../utils/File');
 
 // @desc      Add custom search query
@@ -7,6 +8,12 @@ const File = require('../../utils/File');
 const addQuery = asyncWrapper(async (req, res, next) => {
   const file = new File('data/customQueries.json');
   let content = JSON.parse(file.read());
+
+  const prefixes = content.queries.map((q) => q.prefix);
+
+  if (prefixes.includes(req.body.prefix)) {
+    return next(new ErrorResponse('Prefix must be unique', 400));
+  }
 
   // Add new query
   content.queries.push(req.body);

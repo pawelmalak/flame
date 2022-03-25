@@ -3,4 +3,4 @@ docker buildx build \
   -f .docker/Dockerfile.multiarch \
   -t pawelmalak/flame:multiarch \
   -t "pawelmalak/flame:multiarch$1" \
-  --push "$2"
+  --push .

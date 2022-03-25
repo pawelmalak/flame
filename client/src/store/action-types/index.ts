@@ -1,6 +1,11 @@
 export enum ActionType {
   // THEME
   setTheme = 'SET_THEME',
+  fetchThemes = 'FETCH_THEMES',
+  addTheme = 'ADD_THEME',
+  deleteTheme = 'DELETE_THEME',
+  updateTheme = 'UPDATE_THEME',
+  editTheme = 'EDIT_THEME',
   // CONFIG
   getConfig = 'GET_CONFIG',
   updateConfig = 'UPDATE_CONFIG',
