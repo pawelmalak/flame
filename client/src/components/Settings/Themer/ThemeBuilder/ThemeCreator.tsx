@@ -1,17 +1,27 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
+
+// Redux
+import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../../store';
-import { Theme } from '../../../../interfaces';
-import { Button, InputGroup, ModalForm } from '../../../UI';
+import { State } from '../../../../store/reducers';
 
+// UI
+import { Button, InputGroup, ModalForm } from '../../../UI';
 import classes from './ThemeCreator.module.css';
+
+// Other
+import { Theme } from '../../../../interfaces';
 
 interface Props {
   modalHandler: () => void;
 }
 
 export const ThemeCreator = ({ modalHandler }: Props): JSX.Element => {
+  const {
+    theme: { activeTheme },
+  } = useSelector((state: State) => state);
+
   const { addTheme } = bindActionCreators(actionCreators, useDispatch());
 
   const [formData, setFormData] = useState<Theme>({
@@ -23,6 +33,10 @@ export const ThemeCreator = ({ modalHandler }: Props): JSX.Element => {
       background: '#ffffff',
     },
   });
+
+  useEffect(() => {
+    setFormData({ ...formData, colors: activeTheme.colors });
+  }, [activeTheme]);
 
   const inputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

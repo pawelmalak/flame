@@ -1,0 +1,16 @@
+.CompactTable {
+  display: grid;
+}
+
+.CompactTable span {
+  color: var(--color-primary);
+}
+
+.CompactTable span:last-child {
+  margin-bottom: 10px;
+}
+
+.Separator {
+  border-bottom: 1px solid var(--color-primary);
+  margin: 10px 0;
+}

@@ -1,0 +1,11 @@
+.ActionIcons {
+  display: flex;
+}
+
+.ActionIcons svg {
+  width: 20px;
+}
+
+.ActionIcons svg:hover {
+  cursor: pointer;
+}
