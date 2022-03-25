@@ -1,0 +1,7 @@
+.ThemeBuilder {
+  margin-bottom: 30px;
+}
+
+.Buttons button:not(:last-child) {
+  margin-right: 10px;
+}

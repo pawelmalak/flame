@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const WeatherIcon = (props: Props): JSX.Element => {
-  const { theme } = useSelector((state: State) => state.theme);
+  const { activeTheme } = useSelector((state: State) => state.theme);
 
   const icon = props.isDay
     ? new IconMapping().mapIcon(props.weatherStatusCode, TimeOfDay.day)
@@ -18,7 +18,7 @@ export const WeatherIcon = (props: Props): JSX.Element => {
 
   useEffect(() => {
     const delay = setTimeout(() => {
-      const skycons = new Skycons({ color: theme.colors.accent });
+      const skycons = new Skycons({ color: activeTheme.colors.accent });
       skycons.add(`weather-icon`, icon);
       skycons.play();
     }, 1);
@@ -26,7 +26,7 @@ export const WeatherIcon = (props: Props): JSX.Element => {
     return () => {
       clearTimeout(delay);
     };
-  }, [props.weatherStatusCode, icon, theme.colors.accent]);
+  }, [props.weatherStatusCode, icon, activeTheme.colors.accent]);
 
   return <canvas id={`weather-icon`} width="50" height="50"></canvas>;
 };

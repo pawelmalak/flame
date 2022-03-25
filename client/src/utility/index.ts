@@ -12,3 +12,5 @@ export * from './parseTime';
 export * from './decodeToken';
 export * from './applyAuth';
 export * from './escapeRegex';
+export * from './parseTheme';
+export * from './arrayPartition';

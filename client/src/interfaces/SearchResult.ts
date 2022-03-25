@@ -4,6 +4,8 @@ export interface SearchResult {
   isLocal: boolean;
   isURL: boolean;
   sameTab: boolean;
-  search: string;
-  query: Query;
+  encodedURL: string;
+  primarySearch: Query;
+  secondarySearch: Query;
+  rawQuery: string;
 }

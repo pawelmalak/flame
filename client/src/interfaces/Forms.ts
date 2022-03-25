@@ -10,6 +10,7 @@ export interface WeatherForm {
 
 export interface GeneralForm {
   defaultSearchProvider: string;
+  secondarySearchProvider: string;
   searchSameTab: boolean;
   pinAppsByDefault: boolean;
   pinCategoriesByDefault: boolean;

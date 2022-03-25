@@ -1,5 +1,5 @@
 import { queries } from './searchQueries.json';
-import { Query, SearchResult } from '../interfaces';
+import { SearchResult } from '../interfaces';
 import { store } from '../store/store';
 import { isUrlOrIp } from '.';
 
@@ -8,12 +8,18 @@ export const searchParser = (searchQuery: string): SearchResult => {
     isLocal: false,
     isURL: false,
     sameTab: false,
-    search: '',
-    query: {
+    encodedURL: '',
+    primarySearch: {
       name: '',
       prefix: '',
       template: '',
     },
+    secondarySearch: {
+      name: '',
+      prefix: '',
+      template: '',
+    },
+    rawQuery: searchQuery,
   };
 
   const { customQueries, config } = store.getState().config;
@@ -24,25 +30,35 @@ export const searchParser = (searchQuery: string): SearchResult => {
   // Match prefix and query
   const splitQuery = searchQuery.match(/^\/([a-z]+)[ ](.+)$/i);
 
+  // Extract prefix
   const prefix = splitQuery ? splitQuery[1] : config.defaultSearchProvider;
 
-  const search = splitQuery
+  // Encode url
+  const encodedURL = splitQuery
     ? encodeURIComponent(splitQuery[2])
     : encodeURIComponent(searchQuery);
 
-  const query = [...queries, ...customQueries].find(
-    (q: Query) => q.prefix === prefix
-  );
+  // Find primary search engine template
+  const findProvider = (prefix: string) => {
+    return [...queries, ...customQueries].find((q) => q.prefix === prefix);
+  };
 
-  // If search provider was found
-  if (query) {
-    result.query = query;
-    result.search = search;
+  const primarySearch = findProvider(prefix);
+  const secondarySearch = findProvider(config.secondarySearchProvider);
+
+  // If search providers were found
+  if (primarySearch) {
+    result.primarySearch = primarySearch;
+    result.encodedURL = encodedURL;
 
     if (prefix === 'l') {
       result.isLocal = true;
     } else {
       result.sameTab = config.searchSameTab;
+    }
+
+    if (secondarySearch) {
+      result.secondarySearch = secondarySearch;
     }
 
     return result;

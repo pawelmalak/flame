@@ -6,24 +6,32 @@ interface Props {
   isOpen: boolean;
   setIsOpen: Function;
   children: ReactNode;
+  cb?: Function;
 }
 
-export const Modal = (props: Props): JSX.Element => {
+export const Modal = ({
+  isOpen,
+  setIsOpen,
+  children,
+  cb,
+}: Props): JSX.Element => {
   const modalRef = useRef(null);
   const modalClasses = [
     classes.Modal,
-    props.isOpen ? classes.ModalOpen : classes.ModalClose,
+    isOpen ? classes.ModalOpen : classes.ModalClose,
   ].join(' ');
 
   const clickHandler = (e: MouseEvent) => {
     if (e.target === modalRef.current) {
-      props.setIsOpen(false);
+      setIsOpen(false);
+
+      if (cb) cb();
     }
   };
 
   return (
     <div className={modalClasses} onClick={clickHandler} ref={modalRef}>
-      {props.children}
+      {children}
     </div>
   );
 };
