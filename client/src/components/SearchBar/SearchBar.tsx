@@ -64,16 +64,22 @@ export const SearchBar = (props: Props): JSX.Element => {
   };
 
   const searchHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-    const { isLocal, search, query, isURL, sameTab, rawQuery } = searchParser(
-      inputRef.current.value
-    );
+    const {
+      isLocal,
+      encodedURL,
+      primarySearch,
+      secondarySearch,
+      isURL,
+      sameTab,
+      rawQuery,
+    } = searchParser(inputRef.current.value);
 
     if (isLocal) {
-      setLocalSearch(search);
+      setLocalSearch(encodedURL);
     }
 
     if (e.code === 'Enter' || e.code === 'NumpadEnter') {
-      if (!query.prefix) {
+      if (!primarySearch.prefix) {
         // Prefix not found -> emit notification
         createNotification({
           title: 'Error',
@@ -91,21 +97,20 @@ export const SearchBar = (props: Props): JSX.Element => {
           redirectUrl(bookmarkSearchResult[0].bookmarks[0].url, sameTab);
         } else {
           // no local results -> search the internet with the default search provider if query is not empty
-
           if (!/^ *$/.test(rawQuery)) {
-            let template = query.template;
+            let template = primarySearch.template;
 
-            if (query.prefix === 'l') {
-              template = 'https://duckduckgo.com/?q=';
+            if (primarySearch.prefix === 'l') {
+              template = secondarySearch.template;
             }
 
-            const url = `${template}${search}`;
+            const url = `${template}${encodedURL}`;
             redirectUrl(url, sameTab);
           }
         }
       } else {
         // Valid query -> redirect to search results
-        const url = `${query.template}${search}`;
+        const url = `${primarySearch.template}${encodedURL}`;
         redirectUrl(url, sameTab);
       }
     } else if (e.code === 'Escape') {
