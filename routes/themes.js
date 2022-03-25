@@ -4,7 +4,12 @@ const router = express.Router();
 // middleware
 const { auth, requireAuth, requireBody } = require('../middleware');
 
-const { getThemes, addTheme } = require('../controllers/themes/');
+const {
+  getThemes,
+  addTheme,
+  deleteTheme,
+  updateTheme,
+} = require('../controllers/themes/');
 
 router
   .route('/')
@@ -15,5 +20,10 @@ router
     requireBody(['name', 'colors', 'isCustom']),
     addTheme
   );
+
+router
+  .route('/:name')
+  .delete(auth, requireAuth, deleteTheme)
+  .put(auth, requireAuth, updateTheme);
 
 module.exports = router;
