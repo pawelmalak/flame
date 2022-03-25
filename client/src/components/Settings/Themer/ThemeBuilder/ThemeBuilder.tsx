@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // Redux
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../../../store';
 import { State } from '../../../../store/reducers';
 
 // Other
@@ -21,10 +23,20 @@ interface Props {
 export const ThemeBuilder = ({ themes }: Props): JSX.Element => {
   const {
     auth: { isAuthenticated },
+    theme: { themeInEdit },
   } = useSelector((state: State) => state);
+
+  const { editTheme } = bindActionCreators(actionCreators, useDispatch());
 
   const [showModal, toggleShowModal] = useState(false);
   const [isInEdit, toggleIsInEdit] = useState(false);
+
+  useEffect(() => {
+    if (themeInEdit) {
+      toggleIsInEdit(false);
+      toggleShowModal(true);
+    }
+  }, [themeInEdit]);
 
   return (
     <div className={classes.ThemeBuilder}>
@@ -45,6 +57,7 @@ export const ThemeBuilder = ({ themes }: Props): JSX.Element => {
         <div className={classes.Buttons}>
           <Button
             click={() => {
+              editTheme(null);
               toggleIsInEdit(false);
               toggleShowModal(!showModal);
             }}

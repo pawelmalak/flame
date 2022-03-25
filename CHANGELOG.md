@@ -1,3 +1,6 @@
+### v2.3.0 (TBA)
+- Added custom theme editor ([#246](https://github.com/pawelmalak/flame/issues/246))
+
 ### v2.2.2 (2022-03-21)
 - Added option to get user location directly from the app ([#287](https://github.com/pawelmalak/flame/issues/287))
 - Fixed bug with local search not working when using prefix ([#289](https://github.com/pawelmalak/flame/issues/289))

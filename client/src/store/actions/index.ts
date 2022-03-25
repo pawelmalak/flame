@@ -1,6 +1,13 @@
 import { App } from '../../interfaces';
 
-import { SetThemeAction } from './theme';
+import {
+  AddThemeAction,
+  DeleteThemeAction,
+  EditThemeAction,
+  FetchThemesAction,
+  SetThemeAction,
+  UpdateThemeAction,
+} from './theme';
 
 import {
   AddQueryAction,
@@ -54,6 +61,11 @@ import {
 export type Action =
   // Theme
   | SetThemeAction
+  | FetchThemesAction
+  | AddThemeAction
+  | DeleteThemeAction
+  | UpdateThemeAction
+  | EditThemeAction
   // Config
   | GetConfigAction
   | UpdateConfigAction

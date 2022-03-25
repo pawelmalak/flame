@@ -19,10 +19,13 @@ interface Props {
 
 export const ThemeCreator = ({ modalHandler }: Props): JSX.Element => {
   const {
-    theme: { activeTheme },
+    theme: { activeTheme, themeInEdit },
   } = useSelector((state: State) => state);
 
-  const { addTheme } = bindActionCreators(actionCreators, useDispatch());
+  const { addTheme, updateTheme } = bindActionCreators(
+    actionCreators,
+    useDispatch()
+  );
 
   const [formData, setFormData] = useState<Theme>({
     name: '',
@@ -37,6 +40,12 @@ export const ThemeCreator = ({ modalHandler }: Props): JSX.Element => {
   useEffect(() => {
     setFormData({ ...formData, colors: activeTheme.colors });
   }, [activeTheme]);
+
+  useEffect(() => {
+    if (themeInEdit) {
+      setFormData(themeInEdit);
+    }
+  }, [themeInEdit]);
 
   const inputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -62,8 +71,11 @@ export const ThemeCreator = ({ modalHandler }: Props): JSX.Element => {
   const formHandler = (e: FormEvent) => {
     e.preventDefault();
 
-    // add new theme
-    addTheme(formData);
+    if (!themeInEdit) {
+      addTheme(formData);
+    } else {
+      updateTheme(formData);
+    }
 
     // close modal
     modalHandler();
@@ -125,7 +137,11 @@ export const ThemeCreator = ({ modalHandler }: Props): JSX.Element => {
         </InputGroup>
       </div>
 
-      <Button>Add theme</Button>
+      {!themeInEdit ? (
+        <Button>Add theme</Button>
+      ) : (
+        <Button>Update theme</Button>
+      )}
     </ModalForm>
   );
 };

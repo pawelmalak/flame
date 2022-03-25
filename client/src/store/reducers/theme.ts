@@ -1,12 +1,13 @@
 import { Action } from '../actions';
 import { ActionType } from '../action-types';
-import { Theme, ThemeColors } from '../../interfaces/Theme';
+import { Theme } from '../../interfaces/Theme';
 import { arrayPartition, parsePABToTheme } from '../../utility';
 
 interface ThemeState {
   activeTheme: Theme;
   themes: Theme[];
   userThemes: Theme[];
+  themeInEdit: Theme | null;
 }
 
 const savedTheme = localStorage.theme
@@ -23,6 +24,7 @@ const initialState: ThemeState = {
   },
   themes: [],
   userThemes: [],
+  themeInEdit: null,
 };
 
 export const themeReducer = (
@@ -57,6 +59,27 @@ export const themeReducer = (
       return {
         ...state,
         userThemes: [...state.userThemes, action.payload],
+      };
+    }
+
+    case ActionType.deleteTheme: {
+      return {
+        ...state,
+        userThemes: action.payload,
+      };
+    }
+
+    case ActionType.editTheme: {
+      return {
+        ...state,
+        themeInEdit: action.payload,
+      };
+    }
+
+    case ActionType.updateTheme: {
+      return {
+        ...state,
+        userThemes: action.payload,
       };
     }
 

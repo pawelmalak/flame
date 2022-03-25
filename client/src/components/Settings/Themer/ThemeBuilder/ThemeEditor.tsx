@@ -19,9 +19,15 @@ export const ThemeEditor = (props: Props): JSX.Element => {
     theme: { userThemes },
   } = useSelector((state: State) => state);
 
-  const { deleteTheme } = bindActionCreators(actionCreators, useDispatch());
+  const { deleteTheme, editTheme } = bindActionCreators(
+    actionCreators,
+    useDispatch()
+  );
 
-  const updateHandler = (theme: Theme) => {};
+  const updateHandler = (theme: Theme) => {
+    props.modalHandler();
+    editTheme(theme);
+  };
 
   const deleteHandler = (theme: Theme) => {
     if (window.confirm(`Are you sure you want to delete this theme?`)) {

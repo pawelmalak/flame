@@ -1,8 +1,11 @@
 import { Dispatch } from 'redux';
 import {
   AddThemeAction,
+  DeleteThemeAction,
+  EditThemeAction,
   FetchThemesAction,
   SetThemeAction,
+  UpdateThemeAction,
 } from '../actions/theme';
 import { ActionType } from '../action-types';
 import { Theme, ApiResponse, ThemeColors } from '../../interfaces';
@@ -69,5 +72,56 @@ export const addTheme =
           message: error.response?.data.error,
         },
       });
+    }
+  };
+
+export const deleteTheme =
+  (name: string) => async (dispatch: Dispatch<DeleteThemeAction>) => {
+    try {
+      const res = await axios.delete<ApiResponse<Theme[]>>(
+        `/api/themes/${name}`,
+        { headers: applyAuth() }
+      );
+
+      dispatch({
+        type: ActionType.deleteTheme,
+        payload: res.data.data,
+      });
+
+      dispatch<any>({
+        type: ActionType.createNotification,
+        payload: {
+          title: 'Success',
+          message: 'Theme deleted',
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+export const editTheme =
+  (theme: Theme | null) => (dispatch: Dispatch<EditThemeAction>) => {
+    dispatch({
+      type: ActionType.editTheme,
+      payload: theme,
+    });
+  };
+
+export const updateTheme =
+  (theme: Theme) => async (dispatch: Dispatch<UpdateThemeAction>) => {
+    try {
+      const res = await axios.put<ApiResponse<Theme[]>>(
+        `/api/themes/${theme.name}`,
+        theme,
+        { headers: applyAuth() }
+      );
+
+      dispatch({
+        type: ActionType.updateTheme,
+        payload: res.data.data,
+      });
+    } catch (err) {
+      console.log(err);
     }
   };
