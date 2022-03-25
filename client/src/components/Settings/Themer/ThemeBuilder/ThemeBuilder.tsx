@@ -41,7 +41,11 @@ export const ThemeBuilder = ({ themes }: Props): JSX.Element => {
   return (
     <div className={classes.ThemeBuilder}>
       {/* MODALS */}
-      <Modal isOpen={showModal} setIsOpen={() => toggleShowModal(!showModal)}>
+      <Modal
+        isOpen={showModal}
+        setIsOpen={() => toggleShowModal(!showModal)}
+        cb={() => editTheme(null)}
+      >
         {isInEdit ? (
           <ThemeEditor modalHandler={() => toggleShowModal(!showModal)} />
         ) : (
@@ -65,7 +69,7 @@ export const ThemeBuilder = ({ themes }: Props): JSX.Element => {
             Create new theme
           </Button>
 
-          {themes.length && (
+          {themes.length ? (
             <Button
               click={() => {
                 toggleIsInEdit(true);
@@ -74,6 +78,8 @@ export const ThemeBuilder = ({ themes }: Props): JSX.Element => {
             >
               Edit user themes
             </Button>
+          ) : (
+            <></>
           )}
         </div>
       )}

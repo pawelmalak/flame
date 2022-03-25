@@ -64,19 +64,19 @@ export const Themer = (): JSX.Element => {
     });
   };
 
+  const customThemesEl = (
+    <Fragment>
+      <SettingsHeadline text="User themes" />
+      <ThemeBuilder themes={userThemes} />
+    </Fragment>
+  );
+
   return (
     <Fragment>
       <SettingsHeadline text="App themes" />
       {!themes.length ? <Spinner /> : <ThemeGrid themes={themes} />}
 
-      {!userThemes.length ? (
-        isAuthenticated && 'auth and empty'
-      ) : (
-        <Fragment>
-          <SettingsHeadline text="User themes" />
-          <ThemeBuilder themes={userThemes} />
-        </Fragment>
-      )}
+      {!userThemes.length ? isAuthenticated && customThemesEl : customThemesEl}
 
       {isAuthenticated && (
         <form onSubmit={formSubmitHandler}>

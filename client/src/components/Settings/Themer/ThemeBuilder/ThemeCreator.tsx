@@ -22,7 +22,7 @@ export const ThemeCreator = ({ modalHandler }: Props): JSX.Element => {
     theme: { activeTheme, themeInEdit },
   } = useSelector((state: State) => state);
 
-  const { addTheme, updateTheme } = bindActionCreators(
+  const { addTheme, updateTheme, editTheme } = bindActionCreators(
     actionCreators,
     useDispatch()
   );
@@ -68,6 +68,11 @@ export const ThemeCreator = ({ modalHandler }: Props): JSX.Element => {
     });
   };
 
+  const closeModal = () => {
+    editTheme(null);
+    modalHandler();
+  };
+
   const formHandler = (e: FormEvent) => {
     e.preventDefault();
 
@@ -78,14 +83,14 @@ export const ThemeCreator = ({ modalHandler }: Props): JSX.Element => {
     }
 
     // close modal
-    modalHandler();
+    closeModal();
 
     // clear theme name
     setFormData({ ...formData, name: '' });
   };
 
   return (
-    <ModalForm formHandler={formHandler} modalHandler={modalHandler}>
+    <ModalForm formHandler={formHandler} modalHandler={closeModal}>
       <InputGroup>
         <label htmlFor="name">Theme name</label>
         <input

@@ -2,6 +2,7 @@
 - Added custom theme editor ([#246](https://github.com/pawelmalak/flame/issues/246))
 - Fixed bug where pressing Enter with empty search bar would redirect to search results ([#325](https://github.com/pawelmalak/flame/issues/325))
 - Fixed bug where user could create empty app or bookmark which was causing page to go blank ([#332](https://github.com/pawelmalak/flame/issues/332))
+- Added new theme: Mint
 
 ### v2.2.2 (2022-03-21)
 - Added option to get user location directly from the app ([#287](https://github.com/pawelmalak/flame/issues/287))
