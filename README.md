@@ -214,15 +214,16 @@ curl http://${IP}:${PORT}/version
 
 ### Kubernetes integration
 
-In order to use the Kubernetes integration, each ingress must have the following annotations:
+In order to use the Kubernetes integration, configure the annotations on the ingress:
 
 ```yml
 metadata:
   annotations:
-  - flame.pawelmalak/type=application # "app" works too
-  - flame.pawelmalak/name=My container
-  - flame.pawelmalak/url=https://example.com
-  - flame.pawelmalak/icon=icon-name # optional, default is "kubernetes"
+  - flame.pawelmalak/enabled=true              # required
+  - flame.pawelmalak/type=application          # optional, defaults to application
+  - flame.pawelmalak/name=My container         # optional, defaults to ingress name
+  - flame.pawelmalak/url=https://example.com   # optional, defaults to ingress host or ingress tls host
+  - flame.pawelmalak/icon=icon-name            # optional, defaults to "kubernetes"
 ```
 
 > "Use Kubernetes Ingress API" option must be enabled for this to work. You can find it in Settings > Docker
