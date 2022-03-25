@@ -23,7 +23,7 @@ interface Props {
 export const ThemeBuilder = ({ themes }: Props): JSX.Element => {
   const {
     auth: { isAuthenticated },
-    theme: { themeInEdit },
+    theme: { themeInEdit, userThemes },
   } = useSelector((state: State) => state);
 
   const { editTheme } = bindActionCreators(actionCreators, useDispatch());
@@ -37,6 +37,13 @@ export const ThemeBuilder = ({ themes }: Props): JSX.Element => {
       toggleShowModal(true);
     }
   }, [themeInEdit]);
+
+  useEffect(() => {
+    if (isInEdit && !userThemes.length) {
+      toggleIsInEdit(false);
+      toggleShowModal(false);
+    }
+  }, [userThemes]);
 
   return (
     <div className={classes.ThemeBuilder}>

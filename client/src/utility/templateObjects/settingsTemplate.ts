@@ -33,6 +33,7 @@ export const weatherSettingsTemplate: WeatherForm = {
 export const generalSettingsTemplate: GeneralForm = {
   searchSameTab: false,
   defaultSearchProvider: 'l',
+  secondarySearchProvider: 'd',
   pinAppsByDefault: true,
   pinCategoriesByDefault: true,
   useOrdering: 'createdAt',

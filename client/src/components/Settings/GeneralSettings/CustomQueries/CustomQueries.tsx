@@ -65,7 +65,7 @@ export const CustomQueries = (): JSX.Element => {
       </Modal>
 
       <section>
-        {customQueries.length && (
+        {customQueries.length ? (
           <CompactTable headers={['Name', 'Prefix', 'Actions']}>
             {customQueries.map((q: Query, idx) => (
               <Fragment key={idx}>
@@ -82,6 +82,8 @@ export const CustomQueries = (): JSX.Element => {
               </Fragment>
             ))}
           </CompactTable>
+        ) : (
+          <></>
         )}
 
         <Button

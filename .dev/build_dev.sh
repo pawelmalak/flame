@@ -1,0 +1,1 @@
+docker build -t flame:dev -f .docker/Dockerfile .
