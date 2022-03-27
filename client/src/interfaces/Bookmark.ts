@@ -11,3 +11,7 @@ export interface NewBookmark {
 export interface Bookmark extends Model, NewBookmark {
   orderId: number;
 }
+
+export interface BookmarkImport {
+  file: File
+}

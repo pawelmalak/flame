@@ -18,6 +18,10 @@ export const isImage = (data: string): boolean => {
   return regex.test(data);
 };
 
+export const isBase64Image = (data: string): boolean => {
+  return data.startsWith("data:image/")
+};
+
 export const isSvg = (data: string): boolean => {
   const regex = /.(svg)$/i;
 

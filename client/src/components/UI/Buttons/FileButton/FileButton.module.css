@@ -1,0 +1,31 @@
+.ActionButton {
+  /* background-color: var(--color-accent); */
+  border: 1.5px solid var(--color-accent);
+  border-radius: 4px;
+  color: var(--color-primary);
+  padding: 5px 15px;
+  transition: all 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 250px;
+  margin-right: 10px;
+  margin-bottom: 20px;
+}
+
+.ActionButton:hover {
+  background-color: var(--color-accent);
+  color: var(--color-background);
+  cursor: pointer;
+}
+
+.ActionButtonIcon {
+  --size: 20px;
+  width: var(--size);
+  height: var(--size);
+  /* display: flex; */
+}
+
+.ActionButtonName {
+  display: flex;
+}

@@ -12,7 +12,7 @@ import { Bookmark, Category } from '../../../interfaces';
 // Other
 import classes from './BookmarkCard.module.css';
 import { Icon } from '../../UI';
-import { iconParser, isImage, isSvg, isUrl, urlParser } from '../../../utility';
+import { iconParser, isImage, isBase64Image, isSvg, isUrl, urlParser } from '../../../utility';
 
 interface Props {
   category: Category;
@@ -54,7 +54,18 @@ export const BookmarkCard = (props: Props): JSX.Element => {
           if (bookmark.icon) {
             const { icon, name } = bookmark;
 
-            if (isImage(icon)) {
+            if(isBase64Image(icon)){
+              iconEl = (
+                <div className={classes.BookmarkIcon}>
+                  <img
+                    src={icon}
+                    alt={`${name} icon`}
+                    className={classes.CustomIcon}
+                  />
+                </div>
+              );
+            }
+            else if (isImage(icon)) {
               const source = isUrl(icon) ? icon : `/uploads/${icon}`;
 
               iconEl = (
