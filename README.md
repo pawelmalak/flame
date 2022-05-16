@@ -175,6 +175,7 @@ labels:
   - flame.url=https://example.com
   - flame.icon=icon-name # optional, default is "docker"
 # - flame.icon=custom to make changes in app. ie: custom icon upload
+  - flame.description=A description
 ```
 
 > "Use Docker API" option must be enabled for this to work. You can find it in Settings > Docker
@@ -187,6 +188,7 @@ labels:
   - flame.name=First App;Second App
   - flame.url=https://example1.com;https://example2.com
   - flame.icon=icon-name1;icon-name2
+  - flame.description=First description;Second description
 ```
 
 If you want to use a remote docker host follow this instructions in the host:
@@ -223,6 +225,7 @@ metadata:
   - flame.pawelmalak/name=My container
   - flame.pawelmalak/url=https://example.com
   - flame.pawelmalak/icon=icon-name # optional, default is "kubernetes"
+  - flame.pawelmalak/description=A description
 ```
 
 > "Use Kubernetes Ingress API" option must be enabled for this to work. You can find it in Settings > Docker

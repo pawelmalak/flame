@@ -91,16 +91,21 @@ const useDocker = async (apps) => {
         for (let i = 0; i < labels['flame.name'].split(';').length; i++) {
           const names = labels['flame.name'].split(';');
           const urls = labels['flame.url'].split(';');
+          let descriptions = '';
           let icons = '';
 
           if ('flame.icon' in labels) {
             icons = labels['flame.icon'].split(';');
+          }
+          if ('flame.description' in labels) {
+            descriptions = labels['flame.description'].split(';');
           }
 
           dockerApps.push({
             name: names[i] || names[0],
             url: urls[i] || urls[0],
             icon: icons[i] || 'docker',
+            description: descriptions[i] || descriptions[0]
           });
         }
       }
