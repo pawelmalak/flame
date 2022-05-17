@@ -97,10 +97,13 @@ const useDocker = async (apps) => {
             icons = labels['flame.icon'].split(';');
           }
 
+          const visibilities = labels['flame.visibility'].split(';');
+
           dockerApps.push({
             name: names[i] || names[0],
             url: urls[i] || urls[0],
             icon: icons[i] || 'docker',
+            isPublic: !((visibilities[i] || visibilities[0]) === 'hidden')
           });
         }
       }
