@@ -1,9 +1,24 @@
+
 const { join } = require('path');
 const express = require('express');
+const { registerRoutes } = require('./routes');
 const { errorHandler } = require('./middleware');
+const ziti = require('@openziti/ziti-sdk-nodejs');
+const zitiServiceName = process.env.ZITI_SERVICE_NAME || 'flamez';
+const zitiIdentityFile = process.env.ZITI_IDENTITY_FILE;
 
-const api = express();
+if ((typeof zitiIdentityFile !== 'undefined') && (typeof zitiServiceName !== 'undefined')) {
+    ziti.init( zitiIdentityFile ).catch(( err ) => { process.exit(); });  // Authenticate ourselves onto the Ziti network using the specified identity file
+}
 
+var api;
+if ((typeof zitiIdentityFile !== 'undefined') && (typeof zitiServiceName !== 'undefined')) {
+  const api = ziti.express( express, zitiServiceName );    // using OpenZiti overlay networking
+} else {
+  const api = express();                                   // using underlay networking
+}
+
+registerRoutes(api);
 // Static files
 api.use(express.static(join(__dirname, 'public')));
 api.use('/uploads', express.static(join(__dirname, 'data/uploads')));

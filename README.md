@@ -59,13 +59,13 @@ version: '3.6'
 
 services:
   flame:
-    image: pawelmalak/flame
-    container_name: flame
+    image: qrkourier/flamez
+    container_name: flamez
     volumes:
       - /path/to/host/data:/app/data
       - /var/run/docker.sock:/var/run/docker.sock # optional but required for Docker integration
-    ports:
-      - 5005:5005
+    # ports:
+    #   - 5005:5005
     secrets:
       - password # optional but required for (1)
     environment:
