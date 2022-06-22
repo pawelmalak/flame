@@ -28,7 +28,7 @@
     "multer": "^1.4.3",
     "node-schedule": "^2.0.0",
     "sequelize": "^6.9.0",
-    "sqlite3": "^5.0.2",
+    "sqlite3": "^5.0.3",
     "umzug": "^2.3.0",
     "ws": "^8.2.3"
   },
