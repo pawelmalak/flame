@@ -5,25 +5,27 @@ const loadConfig = require('./loadConfig');
 const getExternalWeather = async () => {
   const { WEATHER_API_KEY: secret, lat, long } = await loadConfig();
 
+  //units = standard, metric, imperial
   // Fetch data from external API
   try {
     const res = await axios.get(
-      `http://api.weatherapi.com/v1/current.json?key=${secret}&q=${lat},${long}`
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${secret}&units=metric`
     );
 
     // Save weather data
-    const cursor = res.data.current;
+    const cursor = res.data;
+    const isDay = (Math.floor(Date.now()/1000) < cursor.sys.sunset) | 0
     const weatherData = await Weather.create({
-      externalLastUpdate: cursor.last_updated,
-      tempC: cursor.temp_c,
-      tempF: cursor.temp_f,
-      isDay: cursor.is_day,
-      cloud: cursor.cloud,
-      conditionText: cursor.condition.text,
-      conditionCode: cursor.condition.code,
-      humidity: cursor.humidity,
-      windK: cursor.wind_kph,
-      windM: cursor.wind_mph,
+      externalLastUpdate: cursor.dt,
+      tempC: cursor.main.temp,
+      tempF: 0,
+      isDay: isDay,
+      cloud: cursor.clouds.all,
+      conditionText: cursor.weather[0].main,
+      conditionCode: cursor.weather[0].id,
+      humidity: cursor.main.humidity,
+      windK: cursor.wind.speed,
+      windM: 0,
     });
     return weatherData;
   } catch (err) {
