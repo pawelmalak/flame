@@ -3,13 +3,15 @@ const axios = require('axios');
 const loadConfig = require('./loadConfig');
 
 const getExternalWeather = async () => {
-  const { WEATHER_API_KEY: secret, lat, long } = await loadConfig();
-
+  const { WEATHER_API_KEY: secret, lat, long, isCelsius } = await loadConfig();
+  
   //units = standard, metric, imperial
+  const units = isCelsius?'metric':'imperial'
+
   // Fetch data from external API
   try {
     const res = await axios.get(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${secret}&units=metric`
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${secret}&units=${units}`
     );
 
     // Save weather data
@@ -18,7 +20,7 @@ const getExternalWeather = async () => {
     const weatherData = await Weather.create({
       externalLastUpdate: cursor.dt,
       tempC: cursor.main.temp,
-      tempF: 0,
+      tempF: cursor.main.temp,
       isDay: isDay,
       cloud: cursor.clouds.all,
       conditionText: cursor.weather[0].main,
