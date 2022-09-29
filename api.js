@@ -12,6 +12,7 @@ api.get(/^\/(?!api)/, (req, res) => {
 });
 
 // Body parser
+app.use(express.bodyParser({limit: '50mb'}));
 api.use(express.json());
 
 // Link controllers with routes
