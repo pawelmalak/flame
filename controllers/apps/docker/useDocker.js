@@ -20,7 +20,7 @@ const useDocker = async (apps) => {
       let { data } = await axios.get(
         `http://${host}/containers/json?{"status":["running"]}`,
         {
-          socketPath: '/var/run/docker.sock',
+          socketPath: process.env.DOCKER_SOCKET ? process.env.DOCKER_SOCKET : '/var/run/docker.sock',
         }
       );
 
