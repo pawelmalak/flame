@@ -9,6 +9,7 @@ const useDocker = async (apps) => {
     useOrdering: orderType,
     unpinStoppedApps,
     dockerHost: host,
+    dockerSocket: socket
   } = await loadConfig();
 
   let containers = null;
@@ -20,7 +21,7 @@ const useDocker = async (apps) => {
       let { data } = await axios.get(
         `http://${host}/containers/json?{"status":["running"]}`,
         {
-          socketPath: '/var/run/docker.sock',
+          socketPath: socket,
         }
       );
 

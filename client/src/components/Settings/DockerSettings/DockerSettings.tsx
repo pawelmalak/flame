@@ -57,7 +57,7 @@ export const DockerSettings = (): JSX.Element => {
   return (
     <form onSubmit={(e) => formSubmitHandler(e)}>
       <SettingsHeadline text="Docker" />
-      {/* CUSTOM DOCKER SOCKET HOST */}
+      {/* CUSTOM DOCKER REMOTE HOST */}
       <InputGroup>
         <label htmlFor="dockerHost">Docker host</label>
         <input
@@ -98,6 +98,19 @@ export const DockerSettings = (): JSX.Element => {
           <option value={1}>True</option>
           <option value={0}>False</option>
         </select>
+      </InputGroup>
+
+      {/* CUSTOM DOCKER SOCKET */}
+      <InputGroup>
+        <label htmlFor="dockerSocket">Docker socket</label>
+        <input
+          type="text"
+          id="dockerSocket"
+          name="dockerSocket"
+          placeholder="/path/to/socket.sock"
+          value={formData.dockerSocket}
+          onChange={(e) => inputChangeHandler(e)}
+        />
       </InputGroup>
 
       {/* KUBERNETES SETTINGS */}

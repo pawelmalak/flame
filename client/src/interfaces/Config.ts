@@ -20,6 +20,7 @@ export interface Config {
   secondarySearchProvider: string;
   dockerApps: boolean;
   dockerHost: string;
+  dockerSocket: string;
   kubernetesApps: boolean;
   unpinStoppedApps: boolean;
   useAmericanDate: boolean;
