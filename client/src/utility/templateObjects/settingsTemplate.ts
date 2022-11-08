@@ -44,6 +44,7 @@ export const generalSettingsTemplate: GeneralForm = {
 export const dockerSettingsTemplate: DockerSettingsForm = {
   dockerApps: true,
   dockerHost: 'localhost',
+  dockerSocket: '/var/run/docker.sock',
   kubernetesApps: true,
   unpinStoppedApps: true,
 };

@@ -20,6 +20,7 @@ export const configTemplate: Config = {
   secondarySearchProvider: 'd',
   dockerApps: false,
   dockerHost: 'localhost',
+  dockerSocket: '/var/run/docker.sock',
   kubernetesApps: false,
   unpinStoppedApps: false,
   useAmericanDate: false,

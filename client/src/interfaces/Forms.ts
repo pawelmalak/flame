@@ -37,6 +37,7 @@ export interface UISettingsForm {
 export interface DockerSettingsForm {
   dockerApps: boolean;
   dockerHost: string;
+  dockerSocket: string;
   kubernetesApps: boolean;
   unpinStoppedApps: boolean;
 }
