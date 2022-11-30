@@ -1,25 +1,19 @@
-import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-
-// Redux
-import { useDispatch, useSelector } from 'react-redux';
-import { State } from '../../../store/reducers';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../../store';
-
-// Typescript
+import { useAtomValue } from 'jotai';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { UISettingsForm } from '../../../interfaces';
-
-// UI
-import { InputGroup, Button, SettingsHeadline } from '../../UI';
-
-// Utils
-import { uiSettingsTemplate, inputHandler } from '../../../utility';
+import {
+  configAtom,
+  configLoadingAtom,
+  useUpdateConfig,
+} from '../../../state/config';
+import { inputHandler, uiSettingsTemplate } from '../../../utility';
+import { Button, InputGroup, SettingsHeadline } from '../../UI';
+import { Checkbox } from '../../UI/Checkbox/Checkbox';
 
 export const UISettings = (): JSX.Element => {
-  const { loading, config } = useSelector((state: State) => state.config);
-
-  const dispatch = useDispatch();
-  const { updateConfig } = bindActionCreators(actionCreators, dispatch);
+  const loading = useAtomValue(configLoadingAtom);
+  const config = useAtomValue(configAtom);
+  const updateConfig = useUpdateConfig();
 
   // Initial state
   const [formData, setFormData] = useState<UISettingsForm>(uiSettingsTemplate);
@@ -55,6 +49,9 @@ export const UISettings = (): JSX.Element => {
     });
   };
 
+  const onBooleanToggle = (prop: keyof UISettingsForm) =>
+    setFormData((prev) => ({ ...prev, [prop]: !prev[prop] }));
+
   return (
     <form onSubmit={(e) => formSubmitHandler(e)}>
       {/* === OTHER OPTIONS === */}
@@ -75,77 +72,77 @@ export const UISettings = (): JSX.Element => {
       {/* === SEARCH OPTIONS === */}
       <SettingsHeadline text="Search" />
       {/* HIDE SEARCHBAR */}
-      <InputGroup>
-        <label htmlFor="hideSearch">Hide search bar</label>
-        <select
+      <InputGroup type="horizontal">
+        <Checkbox
           id="hideSearch"
-          name="hideSearch"
-          value={formData.hideSearch ? 1 : 0}
-          onChange={(e) => inputChangeHandler(e, { isBool: true })}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
+          checked={formData.hideSearch}
+          onClick={() => onBooleanToggle('hideSearch')}
+        />
+        <label htmlFor="hideSearch">Hide search bar</label>
+      </InputGroup>
+      {/* HIDE SEARCH PROVIDER*/}
+      <InputGroup type="horizontal">
+        <Checkbox
+          id="hideSearchProvider"
+          checked={formData.hideSearchProvider}
+          onClick={() => onBooleanToggle('hideSearchProvider')}
+        />
+        <label htmlFor="hideSearchProvider">Hide search provider label</label>
       </InputGroup>
 
       {/* AUTOFOCUS SEARCHBAR */}
-      <InputGroup>
+      <InputGroup type="horizontal">
+        <Checkbox
+          id="appsSameTab"
+          checked={formData.disableAutofocus}
+          onClick={() => onBooleanToggle('disableAutofocus')}
+        />
         <label htmlFor="disableAutofocus">Disable search bar autofocus</label>
-        <select
-          id="disableAutofocus"
-          name="disableAutofocus"
-          value={formData.disableAutofocus ? 1 : 0}
-          onChange={(e) => inputChangeHandler(e, { isBool: true })}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
+      </InputGroup>
+
+      <InputGroup type="horizontal">
+        <Checkbox
+          id="autoClearSearch"
+          checked={formData.autoClearSearch}
+          onClick={() => onBooleanToggle('autoClearSearch')}
+        />
+        <label htmlFor="autoClearSearch">
+          Automatically clear the search bar
+        </label>
       </InputGroup>
 
       {/* === HEADER OPTIONS === */}
       <SettingsHeadline text="Header" />
       {/* HIDE HEADER */}
-      <InputGroup>
+      <InputGroup type="horizontal">
+        <Checkbox
+          id="hideHeader"
+          checked={formData.hideHeader}
+          onClick={() => onBooleanToggle('hideHeader')}
+        />
         <label htmlFor="hideHeader">
           Hide headline (greetings and weather)
         </label>
-        <select
-          id="hideHeader"
-          name="hideHeader"
-          value={formData.hideHeader ? 1 : 0}
-          onChange={(e) => inputChangeHandler(e, { isBool: true })}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
       </InputGroup>
 
       {/* HIDE DATE */}
-      <InputGroup>
-        <label htmlFor="hideDate">Hide date</label>
-        <select
+      <InputGroup type="horizontal">
+        <Checkbox
           id="hideDate"
-          name="hideDate"
-          value={formData.hideDate ? 1 : 0}
-          onChange={(e) => inputChangeHandler(e, { isBool: true })}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
+          checked={formData.hideDate}
+          onClick={() => onBooleanToggle('hideDate')}
+        />
+        <label htmlFor="hideDate">Hide date</label>
       </InputGroup>
 
       {/* HIDE TIME */}
-      <InputGroup>
-        <label htmlFor="showTime">Hide time</label>
-        <select
+      <InputGroup type="horizontal">
+        <Checkbox
           id="showTime"
-          name="showTime"
-          value={formData.showTime ? 1 : 0}
-          onChange={(e) => inputChangeHandler(e, { isBool: true })}
-        >
-          <option value={0}>True</option>
-          <option value={1}>False</option>
-        </select>
+          checked={!formData.showTime}
+          onClick={() => onBooleanToggle('showTime')}
+        />
+        <label htmlFor="showTime">Hide time</label>
       </InputGroup>
 
       {/* DATE FORMAT */}
@@ -210,31 +207,23 @@ export const UISettings = (): JSX.Element => {
       {/* === SECTIONS OPTIONS === */}
       <SettingsHeadline text="Sections" />
       {/* HIDE APPS */}
-      <InputGroup>
-        <label htmlFor="hideApps">Hide applications</label>
-        <select
+      <InputGroup type="horizontal">
+        <Checkbox
           id="hideApps"
-          name="hideApps"
-          value={formData.hideApps ? 1 : 0}
-          onChange={(e) => inputChangeHandler(e, { isBool: true })}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
+          checked={formData.hideApps}
+          onClick={() => onBooleanToggle('hideApps')}
+        />
+        <label htmlFor="hideApps">Hide applications</label>
       </InputGroup>
 
       {/* HIDE CATEGORIES */}
-      <InputGroup>
-        <label htmlFor="hideCategories">Hide categories</label>
-        <select
+      <InputGroup type="horizontal">
+        <Checkbox
           id="hideCategories"
-          name="hideCategories"
-          value={formData.hideCategories ? 1 : 0}
-          onChange={(e) => inputChangeHandler(e, { isBool: true })}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
+          checked={formData.hideCategories}
+          onClick={() => onBooleanToggle('hideCategories')}
+        />
+        <label htmlFor="hideCategories">Hide categories</label>
       </InputGroup>
 
       <Button>Save changes</Button>

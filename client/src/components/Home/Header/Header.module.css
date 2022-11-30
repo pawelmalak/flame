@@ -16,12 +16,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 60px;
 }
 
 .SettingsLink {
+  display: inline-block;
   visibility: visible;
   color: var(--color-accent);
+  margin-bottom: 10px;
 }
 
 @media (min-width: 769px) {

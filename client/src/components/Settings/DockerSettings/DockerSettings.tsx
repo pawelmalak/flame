@@ -1,25 +1,19 @@
-import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-
-// Redux
-import { useDispatch, useSelector } from 'react-redux';
-import { State } from '../../../store/reducers';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../../store';
-
-// Typescript
+import { useAtomValue } from 'jotai';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { DockerSettingsForm } from '../../../interfaces';
-
-// UI
-import { InputGroup, Button, SettingsHeadline } from '../../UI';
-
-// Utils
-import { inputHandler, dockerSettingsTemplate } from '../../../utility';
+import {
+  configAtom,
+  configLoadingAtom,
+  useUpdateConfig,
+} from '../../../state/config';
+import { dockerSettingsTemplate, inputHandler } from '../../../utility';
+import { Button, InputGroup, SettingsHeadline } from '../../UI';
+import { Checkbox } from '../../UI/Checkbox/Checkbox';
 
 export const DockerSettings = (): JSX.Element => {
-  const { loading, config } = useSelector((state: State) => state.config);
-
-  const dispatch = useDispatch();
-  const { updateConfig } = bindActionCreators(actionCreators, dispatch);
+  const loading = useAtomValue(configLoadingAtom);
+  const config = useAtomValue(configAtom);
+  const updateConfig = useUpdateConfig();
 
   // Initial state
   const [formData, setFormData] = useState<DockerSettingsForm>(
@@ -54,6 +48,9 @@ export const DockerSettings = (): JSX.Element => {
     });
   };
 
+  const onBooleanToggle = (prop: keyof DockerSettingsForm) =>
+    setFormData((prev) => ({ ...prev, [prop]: !prev[prop] }));
+
   return (
     <form onSubmit={(e) => formSubmitHandler(e)}>
       <SettingsHeadline text="Docker" />
@@ -71,49 +68,37 @@ export const DockerSettings = (): JSX.Element => {
       </InputGroup>
 
       {/* USE DOCKER API */}
-      <InputGroup>
-        <label htmlFor="dockerApps">Use Docker API</label>
-        <select
+      <InputGroup type="horizontal">
+        <Checkbox
           id="dockerApps"
-          name="dockerApps"
-          value={formData.dockerApps ? 1 : 0}
-          onChange={(e) => inputChangeHandler(e, { isBool: true })}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
+          checked={formData.dockerApps}
+          onClick={() => onBooleanToggle('dockerApps')}
+        />
+        <label htmlFor="dockerApps">Use Docker API</label>
       </InputGroup>
 
       {/* UNPIN DOCKER APPS */}
-      <InputGroup>
+      <InputGroup type="horizontal">
+        <Checkbox
+          id="unpinStoppedApps"
+          checked={formData.unpinStoppedApps}
+          onClick={() => onBooleanToggle('unpinStoppedApps')}
+        />
         <label htmlFor="unpinStoppedApps">
           Unpin stopped containers / other apps
         </label>
-        <select
-          id="unpinStoppedApps"
-          name="unpinStoppedApps"
-          value={formData.unpinStoppedApps ? 1 : 0}
-          onChange={(e) => inputChangeHandler(e, { isBool: true })}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
       </InputGroup>
 
       {/* KUBERNETES SETTINGS */}
       <SettingsHeadline text="Kubernetes" />
       {/* USE KUBERNETES */}
-      <InputGroup>
-        <label htmlFor="kubernetesApps">Use Kubernetes Ingress API</label>
-        <select
+      <InputGroup type="horizontal">
+        <Checkbox
           id="kubernetesApps"
-          name="kubernetesApps"
-          value={formData.kubernetesApps ? 1 : 0}
-          onChange={(e) => inputChangeHandler(e, { isBool: true })}
-        >
-          <option value={1}>True</option>
-          <option value={0}>False</option>
-        </select>
+          checked={formData.kubernetesApps}
+          onClick={() => onBooleanToggle('kubernetesApps')}
+        />
+        <label htmlFor="kubernetesApps">Use Kubernetes Ingress API</label>
       </InputGroup>
 
       <Button>Save changes</Button>

@@ -1,18 +1,12 @@
+import { useAtomValue, useSetAtom } from 'jotai';
 import { Fragment } from 'react';
-
-// Redux
-import { useDispatch, useSelector } from 'react-redux';
-import { State } from '../../../store/reducers';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../../store';
-
-// Typescript
 import { Bookmark, Category } from '../../../interfaces';
-
-// Other
-import classes from './BookmarkCard.module.css';
+import { authAtom } from '../../../state/auth';
+import { categoryInEditAtom } from '../../../state/bookmark';
+import { configAtom } from '../../../state/config';
+import { isImage, isSvg, isUrl, urlParser } from '../../../utility';
 import { Icon } from '../../UI';
-import { iconParser, isImage, isSvg, isUrl, urlParser } from '../../../utility';
+import classes from './BookmarkCard.module.css';
 
 interface Props {
   category: Category;
@@ -22,13 +16,10 @@ interface Props {
 export const BookmarkCard = (props: Props): JSX.Element => {
   const { category, fromHomepage = false } = props;
 
-  const {
-    config: { config },
-    auth: { isAuthenticated },
-  } = useSelector((state: State) => state);
+  const config = useAtomValue(configAtom);
+  const { isAuthenticated } = useAtomValue(authAtom);
 
-  const dispatch = useDispatch();
-  const { setEditCategory } = bindActionCreators(actionCreators, dispatch);
+  const setCategoryInEdit = useSetAtom(categoryInEditAtom);
 
   return (
     <div className={classes.BookmarkCard}>
@@ -38,7 +29,7 @@ export const BookmarkCard = (props: Props): JSX.Element => {
         }
         onClick={() => {
           if (!fromHomepage && isAuthenticated) {
-            setEditCategory(category);
+            setCategoryInEdit(category);
           }
         }}
       >
@@ -81,7 +72,7 @@ export const BookmarkCard = (props: Props): JSX.Element => {
             } else {
               iconEl = (
                 <div className={classes.BookmarkIcon}>
-                  <Icon icon={iconParser(icon)} />
+                  <Icon icon={icon} />
                 </div>
               );
             }

@@ -1,15 +1,8 @@
-import { useState, useEffect } from 'react';
-
-// Redux
-import { useSelector, useDispatch } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../../../store';
-import { State } from '../../../../store/reducers';
-
-// Other
+import { useAtom, useAtomValue } from 'jotai';
+import { useEffect, useState } from 'react';
 import { Theme } from '../../../../interfaces';
-
-// UI
+import { authAtom } from '../../../../state/auth';
+import { themeInEditAtom, userThemesAtom } from '../../../../state/theme';
 import { Button, Modal } from '../../../UI';
 import { ThemeGrid } from '../ThemeGrid/ThemeGrid';
 import classes from './ThemeBuilder.module.css';
@@ -21,16 +14,26 @@ interface Props {
 }
 
 export const ThemeBuilder = ({ themes }: Props): JSX.Element => {
-  const {
-    auth: { isAuthenticated },
-    theme: { themeInEdit, userThemes },
-  } = useSelector((state: State) => state);
+  const { isAuthenticated } = useAtomValue(authAtom);
 
-  const { editTheme } = bindActionCreators(actionCreators, useDispatch());
+  const [themeInEdit, setThemeInEdit] = useAtom(themeInEditAtom);
+  const userThemes = useAtomValue(userThemesAtom);
 
   const [showModal, toggleShowModal] = useState(false);
   const [isInEdit, toggleIsInEdit] = useState(false);
 
+  const showEdit = () => {
+    toggleIsInEdit(true);
+    toggleShowModal(true);
+  };
+
+  const showCreate = () => {
+    setThemeInEdit(null);
+    toggleIsInEdit(false);
+    toggleShowModal(true);
+  };
+
+  // TODO: Refactor all useEffects to simplify
   useEffect(() => {
     if (themeInEdit) {
       toggleIsInEdit(false);
@@ -51,7 +54,7 @@ export const ThemeBuilder = ({ themes }: Props): JSX.Element => {
       <Modal
         isOpen={showModal}
         setIsOpen={() => toggleShowModal(!showModal)}
-        cb={() => editTheme(null)}
+        cb={() => setThemeInEdit(null)}
       >
         {isInEdit ? (
           <ThemeEditor modalHandler={() => toggleShowModal(!showModal)} />
@@ -66,28 +69,10 @@ export const ThemeBuilder = ({ themes }: Props): JSX.Element => {
       {/* BUTTONS */}
       {isAuthenticated && (
         <div className={classes.Buttons}>
-          <Button
-            click={() => {
-              editTheme(null);
-              toggleIsInEdit(false);
-              toggleShowModal(!showModal);
-            }}
-          >
-            Create new theme
-          </Button>
-
+          <Button click={showCreate}>Create new theme</Button>
           {themes.length ? (
-            <Button
-              click={() => {
-                toggleIsInEdit(true);
-                toggleShowModal(!showModal);
-              }}
-            >
-              Edit user themes
-            </Button>
-          ) : (
-            <></>
-          )}
+            <Button click={showEdit}>Edit user themes</Button>
+          ) : null}
         </div>
       )}
     </div>

@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-
 import classes from './Message.module.css';
 
 interface Props {

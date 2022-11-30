@@ -1,25 +1,22 @@
-import { useState, useEffect, ChangeEvent, SyntheticEvent } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAtom } from 'jotai';
+import { ChangeEvent, SyntheticEvent, useEffect, useState } from 'react';
 import { NewApp } from '../../../interfaces';
-
-import classes from './AppForm.module.css';
-
-import { ModalForm, InputGroup, Button } from '../../UI';
+import { appInUpdateAtom, useAddApp, useUpdateApp } from '../../../state/app';
+import { useCreateNotification } from '../../../state/notification';
 import { inputHandler, newAppTemplate } from '../../../utility';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../../store';
-import { State } from '../../../store/reducers';
+import { Button, InputGroup, ModalForm } from '../../UI';
+import classes from './AppForm.module.css';
 
 interface Props {
   modalHandler: () => void;
 }
 
 export const AppForm = ({ modalHandler }: Props): JSX.Element => {
-  const { appInUpdate } = useSelector((state: State) => state.apps);
+  const createNotification = useCreateNotification();
 
-  const dispatch = useDispatch();
-  const { addApp, updateApp, setEditApp, createNotification } =
-    bindActionCreators(actionCreators, dispatch);
+  const [appInUpdate, setEditApp] = useAtom(appInUpdateAtom);
+  const addApp = useAddApp();
+  const updateApp = useUpdateApp();
 
   const [useCustomIcon, toggleUseCustomIcon] = useState<boolean>(false);
   const [customIcon, setCustomIcon] = useState<File | null>(null);
@@ -164,11 +161,19 @@ export const AppForm = ({ modalHandler }: Props): JSX.Element => {
             onChange={(e) => inputChangeHandler(e)}
           />
           <span>
-            Use icon name from MDI or pass a valid URL.
+            Use icon name from{' '}
             <a href="https://materialdesignicons.com/" target="blank">
-              {' '}
-              Click here for reference
+              MDI
             </a>
+            , icon name from{' '}
+            <a
+              href="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              dashboard-icons
+            </a>
+            , or pass a valid URL.
           </span>
           <span
             onClick={() => toggleUseCustomIcon(!useCustomIcon)}
@@ -196,7 +201,7 @@ export const AppForm = ({ modalHandler }: Props): JSX.Element => {
             }}
             className={classes.Switch}
           >
-            Switch to MDI
+            Switch to icon name
           </span>
         </InputGroup>
       )}

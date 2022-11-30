@@ -1,31 +1,24 @@
-import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
-
-// Redux
-import { useDispatch, useSelector } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../../../store';
-import { State } from '../../../../store/reducers';
-
-// UI
+import { useAtom, useAtomValue } from 'jotai';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { Theme } from '../../../../interfaces';
+import {
+  activeThemeAtom,
+  themeInEditAtom,
+  useAddTheme,
+  useUpdateTheme,
+} from '../../../../state/theme';
 import { Button, InputGroup, ModalForm } from '../../../UI';
 import classes from './ThemeCreator.module.css';
-
-// Other
-import { Theme } from '../../../../interfaces';
 
 interface Props {
   modalHandler: () => void;
 }
 
 export const ThemeCreator = ({ modalHandler }: Props): JSX.Element => {
-  const {
-    theme: { activeTheme, themeInEdit },
-  } = useSelector((state: State) => state);
-
-  const { addTheme, updateTheme, editTheme } = bindActionCreators(
-    actionCreators,
-    useDispatch()
-  );
+  const activeTheme = useAtomValue(activeThemeAtom);
+  const [themeInEdit, setThemeInEdit] = useAtom(themeInEditAtom);
+  const addTheme = useAddTheme();
+  const updateTheme = useUpdateTheme();
 
   const [formData, setFormData] = useState<Theme>({
     name: '',
@@ -37,9 +30,10 @@ export const ThemeCreator = ({ modalHandler }: Props): JSX.Element => {
     },
   });
 
-  useEffect(() => {
-    setFormData({ ...formData, colors: activeTheme.colors });
-  }, [activeTheme]);
+  useEffect(
+    () => setFormData({ ...formData, colors: activeTheme.colors }),
+    [activeTheme]
+  );
 
   useEffect(() => {
     if (themeInEdit) {
@@ -69,7 +63,7 @@ export const ThemeCreator = ({ modalHandler }: Props): JSX.Element => {
   };
 
   const closeModal = () => {
-    editTheme(null);
+    setThemeInEdit(null);
     modalHandler();
   };
 

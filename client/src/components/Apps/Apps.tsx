@@ -1,47 +1,36 @@
+import { useAtomValue, useSetAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
-// Redux
-import { useDispatch, useSelector } from 'react-redux';
-
-// Typescript
 import { App } from '../../interfaces';
-
-// CSS
-import classes from './Apps.module.css';
-
-// UI
-import { Headline, Spinner, ActionButton, Modal, Container } from '../UI';
-
-// Subcomponents
-import { AppGrid } from './AppGrid/AppGrid';
+import {
+  appInUpdateAtom,
+  appsAtom,
+  appsLoadingAtom,
+  useFetchApps,
+} from '../../state/app';
+import { authAtom } from '../../state/auth';
+import { ActionButton, Container, Headline, Modal, Spinner } from '../UI';
 import { AppForm } from './AppForm/AppForm';
+import { AppGrid } from './AppGrid/AppGrid';
+import classes from './Apps.module.css';
 import { AppTable } from './AppTable/AppTable';
-
-// Utils
-import { State } from '../../store/reducers';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../store';
 
 interface Props {
   searching: boolean;
 }
 
 export const Apps = (props: Props): JSX.Element => {
-  // Get Redux state
-  const {
-    apps: { apps, loading },
-    auth: { isAuthenticated },
-  } = useSelector((state: State) => state);
+  const { isAuthenticated } = useAtomValue(authAtom);
 
-  // Get Redux action creators
-  const dispatch = useDispatch();
-  const { getApps, setEditApp } = bindActionCreators(actionCreators, dispatch);
+  const apps = useAtomValue(appsAtom);
+  const setEditApp = useSetAtom(appInUpdateAtom);
+  const loading = useAtomValue(appsLoadingAtom);
+  const fetchApps = useFetchApps();
 
   // Load apps if array is empty
   useEffect(() => {
     if (!apps.length) {
-      getApps();
+      fetchApps();
     }
   }, []);
 

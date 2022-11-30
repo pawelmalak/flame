@@ -1,43 +1,35 @@
-import { useState, useEffect, Fragment } from 'react';
+import { useAtomValue } from 'jotai';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
-// Redux
-import { useDispatch, useSelector } from 'react-redux';
-import { State } from '../../store/reducers';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../store';
-
-// Typescript
 import { App, Category } from '../../interfaces';
-
-// UI
-import { Icon, Container, SectionHeadline, Spinner, Message } from '../UI';
-
-// CSS
-import classes from './Home.module.css';
-
-// Components
+import { appsAtom, appsLoadingAtom, useFetchApps } from '../../state/app';
+import { authAtom } from '../../state/auth';
+import {
+  bookmarksLoadingAtom,
+  categoriesAtom,
+  useFetchCategories,
+} from '../../state/bookmark';
+import { configAtom } from '../../state/config';
+import { escapeRegex } from '../../utility';
 import { AppGrid } from '../Apps/AppGrid/AppGrid';
 import { BookmarkGrid } from '../Bookmarks/BookmarkGrid/BookmarkGrid';
 import { SearchBar } from '../SearchBar/SearchBar';
+import { Container, Icon, Message, SectionHeadline, Spinner } from '../UI';
 import { Header } from './Header/Header';
-
-// Utils
-import { escapeRegex } from '../../utility';
+import classes from './Home.module.css';
 
 export const Home = (): JSX.Element => {
-  const {
-    apps: { apps, loading: appsLoading },
-    bookmarks: { categories, loading: bookmarksLoading },
-    config: { config },
-    auth: { isAuthenticated },
-  } = useSelector((state: State) => state);
+  const config = useAtomValue(configAtom);
 
-  const dispatch = useDispatch();
-  const { getApps, getCategories } = bindActionCreators(
-    actionCreators,
-    dispatch
-  );
+  const { isAuthenticated } = useAtomValue(authAtom);
+
+  const apps = useAtomValue(appsAtom);
+  const appsLoading = useAtomValue(appsLoadingAtom);
+  const fetchApps = useFetchApps();
+
+  const categories = useAtomValue(categoriesAtom);
+  const bookmarksLoading = useAtomValue(bookmarksLoadingAtom);
+  const fetchCategories = useFetchCategories();
 
   // Local search query
   const [localSearch, setLocalSearch] = useState<null | string>(null);
@@ -46,17 +38,13 @@ export const Home = (): JSX.Element => {
     null | Category[]
   >(null);
 
-  // Load applications
   useEffect(() => {
     if (!apps.length) {
-      getApps();
+      fetchApps();
     }
-  }, []);
 
-  // Load bookmark categories
-  useEffect(() => {
     if (!categories.length) {
-      getCategories();
+      fetchCategories();
     }
   }, []);
 
@@ -110,12 +98,10 @@ export const Home = (): JSX.Element => {
           Welcome to Flame! Go to <Link to="/settings/app">/settings</Link>,
           login and start customizing your new homepage
         </Message>
-      ) : (
-        <></>
-      )}
+      ) : null}
 
       {!config.hideApps && (isAuthenticated || apps.some((a) => a.isPinned)) ? (
-        <Fragment>
+        <>
           <SectionHeadline title="Applications" link="/applications" />
           {appsLoading ? (
             <Spinner />
@@ -131,14 +117,12 @@ export const Home = (): JSX.Element => {
             />
           )}
           <div className={classes.HomeSpace}></div>
-        </Fragment>
-      ) : (
-        <></>
-      )}
+        </>
+      ) : null}
 
       {!config.hideCategories &&
       (isAuthenticated || categories.some((c) => c.isPinned)) ? (
-        <Fragment>
+        <>
           <SectionHeadline title="Bookmarks" link="/bookmarks" />
           {bookmarksLoading ? (
             <Spinner />
@@ -156,10 +140,8 @@ export const Home = (): JSX.Element => {
               fromHomepage={true}
             />
           )}
-        </Fragment>
-      ) : (
-        <></>
-      )}
+        </>
+      ) : null}
 
       <Link to="/settings" className={classes.SettingsButton}>
         <Icon icon="mdiCog" color="var(--color-background)" />

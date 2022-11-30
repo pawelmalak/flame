@@ -1,18 +1,8 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-
-// Redux
-import { useDispatch } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../../store';
-
-// Typescript
 import { Category, NewCategory } from '../../../interfaces';
-
-// UI
-import { ModalForm, InputGroup, Button } from '../../UI';
-
-// Utils
+import { useAddCategory, useUpdateCategory } from '../../../state/bookmark';
 import { inputHandler, newCategoryTemplate } from '../../../utility';
+import { Button, InputGroup, ModalForm } from '../../UI';
 
 interface Props {
   modalHandler: () => void;
@@ -23,11 +13,8 @@ export const CategoryForm = ({
   category,
   modalHandler,
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
-  const { addCategory, updateCategory } = bindActionCreators(
-    actionCreators,
-    dispatch
-  );
+  const addCategory = useAddCategory();
+  const updateCategory = useUpdateCategory();
 
   const [formData, setFormData] = useState<NewCategory>(newCategoryTemplate);
 

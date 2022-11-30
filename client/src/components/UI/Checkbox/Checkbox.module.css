@@ -1,0 +1,26 @@
+.Checkbox {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: var(--color-primary);
+  border-radius: 4px;
+  margin: 8px 0;
+  cursor: pointer;
+}
+
+.Checkbox.Checked::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  background-color: var(--color-background);
+  border-radius: 3px;
+}
+
+.Checkbox > input {
+  visibility: hidden;
+}

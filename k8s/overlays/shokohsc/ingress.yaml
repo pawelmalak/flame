@@ -6,10 +6,10 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: ca-cluster-issuer
-    flame.pawelmalak/name: flame
-    flame.pawelmalak/url: dev.flame.shokohsc.home
-    flame.pawelmalak/type: app
-    flame.pawelmalak/icon: fire
+    flame.georgesg/name: flame
+    flame.georgesg/url: dev.flame.shokohsc.home
+    flame.georgesg/type: app
+    flame.georgesg/icon: fire
 spec:
   rules:
   - host: dev.flame.shokohsc.home

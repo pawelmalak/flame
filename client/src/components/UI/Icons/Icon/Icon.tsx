@@ -1,26 +1,34 @@
-import classes from './Icon.module.css';
-
 import { Icon as MDIcon } from '@mdi/react';
+import { iconParser } from '../../../../utility';
+import classes from './Icon.module.css';
 
 interface Props {
   icon: string;
   color?: string;
 }
 
-export const Icon = (props: Props): JSX.Element => {
+export const Icon = ({ icon, color }: Props): JSX.Element => {
   const MDIcons = require('@mdi/js');
-  let iconPath = MDIcons[props.icon];
+  const mdiIcon = iconParser(icon);
+  let mdiIconPath = MDIcons[mdiIcon];
 
-  if (!iconPath) {
-    console.log(`Icon ${props.icon} not found`);
-    iconPath = MDIcons.mdiCancel;
+  if (!mdiIconPath) {
+    return (
+      <div className={classes.AppIconWrapper}>
+        <img
+          src={`https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/${icon}.png`}
+          className={classes.AppIcon}
+          alt={icon}
+        />
+      </div>
+    );
+  } else {
+    return (
+      <MDIcon
+        className={classes.Icon}
+        path={mdiIconPath}
+        color={color ? color : 'var(--color-primary)'}
+      />
+    );
   }
-
-  return (
-    <MDIcon
-      className={classes.Icon}
-      path={iconPath}
-      color={props.color ? props.color : 'var(--color-primary)'}
-    />
-  );
 };

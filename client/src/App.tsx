@@ -1,38 +1,43 @@
+import 'external-svg-loader';
+import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import 'external-svg-loader';
-
-// Redux
-import { useDispatch, useSelector } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { autoLogin, getConfig } from './store/action-creators';
-import { actionCreators, store } from './store';
-import { State } from './store/reducers';
-
-// Utils
-import { checkVersion, decodeToken, parsePABToTheme } from './utility';
-
-// Routes
-import { Home } from './components/Home/Home';
 import { Apps } from './components/Apps/Apps';
-import { Settings } from './components/Settings/Settings';
 import { Bookmarks } from './components/Bookmarks/Bookmarks';
+import { Home } from './components/Home/Home';
 import { NotificationCenter } from './components/NotificationCenter/NotificationCenter';
-
-// Get config
-store.dispatch<any>(getConfig());
-
-// Validate token
-if (localStorage.token) {
-  store.dispatch<any>(autoLogin());
-}
+import { Settings } from './components/Settings/Settings';
+import { Spinner } from './components/UI';
+import { useAutoLogin, useLogout } from './state/auth';
+import { configAtom, configLoadingAtom, useFetchConfig } from './state/config';
+import { infoMessage, useCreateNotification } from './state/notification';
+import { useFetchQueries } from './state/queries';
+import { useFetchThemes, useSetTheme } from './state/theme';
+import { decodeToken, parsePABToTheme, useCheckVersion } from './utility';
 
 export const App = (): JSX.Element => {
-  const { config, loading } = useSelector((state: State) => state.config);
+  const autoLogin = useAutoLogin();
 
-  const dispath = useDispatch();
-  const { fetchQueries, setTheme, logout, createNotification, fetchThemes } =
-    bindActionCreators(actionCreators, dispath);
+  // Validate token
+  if (localStorage.token) {
+    autoLogin();
+  }
+
+  const getConfig = useFetchConfig();
+  const config = useAtomValue(configAtom);
+  const loading = useAtomValue(configLoadingAtom);
+
+  useEffect(() => {
+    getConfig();
+  }, []);
+
+  const createNotification = useCreateNotification();
+  const setTheme = useSetTheme();
+  const fetchThemes = useFetchThemes();
+  const fetchQueries = useFetchQueries();
+  const checkVersion = useCheckVersion();
+
+  const logout = useLogout();
 
   useEffect(() => {
     // check if token is valid
@@ -43,10 +48,9 @@ export const App = (): JSX.Element => {
 
         if (now > expiresIn) {
           logout();
-          createNotification({
-            title: 'Info',
-            message: 'Session expired. You have been logged out',
-          });
+          createNotification(
+            infoMessage('Session expired. You have been logged out')
+          );
         }
       }
     }, 1000);
@@ -74,6 +78,10 @@ export const App = (): JSX.Element => {
       setTheme(parsePABToTheme(config.defaultTheme), false);
     }
   }, [loading]);
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <>

@@ -1,7 +1,6 @@
 import { ReactNode, SyntheticEvent } from 'react';
-
-import classes from './ModalForm.module.css';
 import { Icon } from '../..';
+import classes from './ModalForm.module.css';
 
 interface ComponentProps {
   children: ReactNode;

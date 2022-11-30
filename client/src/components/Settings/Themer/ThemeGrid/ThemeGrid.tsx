@@ -1,8 +1,5 @@
-// Components
-import { ThemePreview } from '../ThemePreview/ThemePreview';
-
-// Other
 import { Theme } from '../../../../interfaces';
+import { ThemePreview } from '../ThemePreview/ThemePreview';
 import classes from './ThemeGrid.module.css';
 
 interface Props {

@@ -1,34 +1,28 @@
-import { Fragment } from 'react';
-
-// UI
+import { useAtomValue } from 'jotai';
+import { authAtom } from '../../../state/auth';
+import { useCheckVersion } from '../../../utility';
 import { Button, SettingsHeadline } from '../../UI';
-import { AuthForm } from './AuthForm/AuthForm';
 import classes from './AppDetails.module.css';
-
-// Store
-import { useSelector } from 'react-redux';
-import { State } from '../../../store/reducers';
-
-// Other
-import { checkVersion } from '../../../utility';
+import { AuthForm } from './AuthForm/AuthForm';
 
 export const AppDetails = (): JSX.Element => {
-  const { isAuthenticated } = useSelector((state: State) => state.auth);
+  const { isAuthenticated } = useAtomValue(authAtom);
+  const checkVersion = useCheckVersion(true);
 
   return (
-    <Fragment>
+    <>
       <SettingsHeadline text="Authentication" />
       <AuthForm />
 
       {isAuthenticated && (
-        <Fragment>
+        <>
           <hr className={classes.separator} />
 
           <div>
             <SettingsHeadline text="App version" />
             <p className={classes.text}>
               <a
-                href="https://github.com/pawelmalak/flame"
+                href="https://github.com/GeorgeSG/flame"
                 target="_blank"
                 rel="noreferrer"
               >
@@ -40,7 +34,7 @@ export const AppDetails = (): JSX.Element => {
             <p className={classes.text}>
               See changelog{' '}
               <a
-                href="https://github.com/pawelmalak/flame/blob/master/CHANGELOG.md"
+                href="https://github.com/GeorgeSG/flame/blob/master/CHANGELOG.md"
                 target="_blank"
                 rel="noreferrer"
               >
@@ -48,10 +42,10 @@ export const AppDetails = (): JSX.Element => {
               </a>
             </p>
 
-            <Button click={() => checkVersion(true)}>Check for updates</Button>
+            <Button click={checkVersion}>Check for updates</Button>
           </div>
-        </Fragment>
+        </>
       )}
-    </Fragment>
+    </>
   );
 };

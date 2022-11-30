@@ -1,5 +1,4 @@
 import { MouseEvent, ReactNode, useRef } from 'react';
-
 import classes from './Modal.module.css';
 
 interface Props {
@@ -9,6 +8,7 @@ interface Props {
   cb?: Function;
 }
 
+// TODO: refactor cb + setIsOpen into onClose()
 export const Modal = ({
   isOpen,
   setIsOpen,

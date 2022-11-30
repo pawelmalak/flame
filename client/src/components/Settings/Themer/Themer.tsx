@@ -1,35 +1,31 @@
-import { ChangeEvent, FormEvent, Fragment, useEffect, useState } from 'react';
-
-// Redux
-import { useDispatch, useSelector } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../../store';
-import { State } from '../../../store/reducers';
-
-// Typescript
+import { useAtomValue } from 'jotai';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Theme, ThemeSettingsForm } from '../../../interfaces';
-
-// Components
-import { Button, InputGroup, SettingsHeadline, Spinner } from '../../UI';
-import { ThemeBuilder } from './ThemeBuilder/ThemeBuilder';
-import { ThemeGrid } from './ThemeGrid/ThemeGrid';
-
-// Other
+import { authAtom } from '../../../state/auth';
+import {
+  configAtom,
+  configLoadingAtom,
+  useUpdateConfig,
+} from '../../../state/config';
+import { themesAtom, userThemesAtom } from '../../../state/theme';
 import {
   inputHandler,
   parseThemeToPAB,
   themeSettingsTemplate,
 } from '../../../utility';
+import { Button, InputGroup, SettingsHeadline, Spinner } from '../../UI';
+import { ThemeBuilder } from './ThemeBuilder/ThemeBuilder';
+import { ThemeGrid } from './ThemeGrid/ThemeGrid';
 
 export const Themer = (): JSX.Element => {
-  const {
-    auth: { isAuthenticated },
-    config: { loading, config },
-    theme: { themes, userThemes },
-  } = useSelector((state: State) => state);
+  const { isAuthenticated } = useAtomValue(authAtom);
 
-  const dispatch = useDispatch();
-  const { updateConfig } = bindActionCreators(actionCreators, dispatch);
+  const themes = useAtomValue(themesAtom);
+  const userThemes = useAtomValue(userThemesAtom);
+
+  const loading = useAtomValue(configLoadingAtom);
+  const config = useAtomValue(configAtom);
+  const updateConfig = useUpdateConfig();
 
   // Initial state
   const [formData, setFormData] = useState<ThemeSettingsForm>(
@@ -37,11 +33,7 @@ export const Themer = (): JSX.Element => {
   );
 
   // Get config
-  useEffect(() => {
-    setFormData({
-      ...config,
-    });
-  }, [loading]);
+  useEffect(() => setFormData({ ...config }), [loading]);
 
   // Form handler
   const formSubmitHandler = async (e: FormEvent) => {
@@ -65,14 +57,14 @@ export const Themer = (): JSX.Element => {
   };
 
   const customThemesEl = (
-    <Fragment>
+    <>
       <SettingsHeadline text="User themes" />
       <ThemeBuilder themes={userThemes} />
-    </Fragment>
+    </>
   );
 
   return (
-    <Fragment>
+    <>
       <SettingsHeadline text="App themes" />
       {!themes.length ? <Spinner /> : <ThemeGrid themes={themes} />}
 
@@ -100,6 +92,6 @@ export const Themer = (): JSX.Element => {
           <Button>Save changes</Button>
         </form>
       )}
-    </Fragment>
+    </>
   );
 };

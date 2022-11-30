@@ -1,27 +1,17 @@
-import { useState, useEffect, Fragment } from 'react';
 import axios from 'axios';
-
-// Redux
-import { useSelector } from 'react-redux';
-
-// Typescript
-import { Weather, ApiResponse } from '../../../interfaces';
-
-// CSS
+import { useAtomValue } from 'jotai';
+import { Fragment, useEffect, useState } from 'react';
+import { ApiResponse, Weather } from '../../../interfaces';
+import { configAtom, configLoadingAtom } from '../../../state/config';
+import { weatherTemplate } from '../../../utility/templateObjects/weatherTemplate';
+import { WeatherIcon } from '../../UI';
 import classes from './WeatherWidget.module.css';
 
-// UI
-import { WeatherIcon } from '../../UI';
-import { State } from '../../../store/reducers';
-import { weatherTemplate } from '../../../utility/templateObjects/weatherTemplate';
-
 export const WeatherWidget = (): JSX.Element => {
-  const { loading: configLoading, config } = useSelector(
-    (state: State) => state.config
-  );
+  const configLoading = useAtomValue(configLoadingAtom);
+  const config = useAtomValue(configAtom);
 
   const [weather, setWeather] = useState<Weather>(weatherTemplate);
-  const [isLoading, setIsLoading] = useState(true);
 
   // Initial request to get data
   useEffect(() => {
@@ -32,7 +22,6 @@ export const WeatherWidget = (): JSX.Element => {
         if (weatherData) {
           setWeather(weatherData);
         }
-        setIsLoading(false);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -59,7 +48,7 @@ export const WeatherWidget = (): JSX.Element => {
     <div className={classes.WeatherWidget}>
       {configLoading ||
         (config.WEATHER_API_KEY && weather.id > 0 && (
-          <Fragment>
+          <>
             <div className={classes.WeatherIcon}>
               <WeatherIcon
                 weatherStatusCode={weather.conditionCode}
@@ -75,9 +64,12 @@ export const WeatherWidget = (): JSX.Element => {
               )}
 
               {/* ADDITIONAL DATA */}
-              <span>{weather[config.weatherData]}%</span>
+              <span>
+                {weather.conditionText} · 
+                {weather[config.weatherData]}%
+              </span>
             </div>
-          </Fragment>
+          </>
         ))}
     </div>
   );

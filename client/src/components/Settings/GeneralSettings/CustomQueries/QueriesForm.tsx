@@ -1,11 +1,6 @@
-import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
-
-import { useDispatch } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../../../store';
-
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Query } from '../../../../interfaces';
-
+import { useAddQuery, useUpdateQuery } from '../../../../state/queries';
 import { Button, InputGroup, ModalForm } from '../../../UI';
 
 interface Props {
@@ -14,11 +9,8 @@ interface Props {
 }
 
 export const QueriesForm = (props: Props): JSX.Element => {
-  const dispatch = useDispatch();
-  const { addQuery, updateQuery } = bindActionCreators(
-    actionCreators,
-    dispatch
-  );
+  const addQuery = useAddQuery();
+  const updateQuery = useUpdateQuery();
 
   const { modalHandler, query } = props;
 

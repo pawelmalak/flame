@@ -2,6 +2,16 @@
 
 ![Homescreen screenshot](.github/home.png)
 
+## mhzawadi/flame
+
+This is a hard fork of https://github.com/pawelmalak/flame.
+
+I forked because I wanted to try using Flame, but it seems it's abandoned with 100 issues and 25 open PRs.
+I decided to merge the changes from some of the open PRs in my `master` and go from there 🙂.
+
+Note: I was not an active Flame contributor. I have my own set of features I want to build on top of that.
+PRs are welcome.
+
 ## Description
 
 Flame is self-hosted startpage for your server. Its design is inspired (heavily) by [SUI](https://github.com/jeroenpardon/sui). Flame is very easy to setup and use. With built-in editors, it allows you to setup your very own application hub in no time - no file editing necessary.
@@ -19,23 +29,23 @@ Flame is self-hosted startpage for your server. Its design is inspired (heavily)
 
 ### With Docker (recommended)
 
-[Docker Hub link](https://hub.docker.com/r/pawelmalak/flame)
+[Docker Hub link](https://hub.docker.com/r/mhzawadi/flame)
 
 ```sh
-docker pull pawelmalak/flame
+docker pull mhzawadi/flame
 
 # for ARM architecture (e.g. RaspberryPi)
-docker pull pawelmalak/flame:multiarch
+docker pull mhzawadi/flame:multiarch
 
 # installing specific version
-docker pull pawelmalak/flame:2.0.0
+docker pull mhzawadi/flame:2.0.0
 ```
 
 #### Deployment
 
 ```sh
 # run container
-docker run -p 5005:5005 -v /path/to/data:/app/data -e PASSWORD=flame_password pawelmalak/flame
+docker run -p 5005:5005 -v /path/to/data:/app/data -e PASSWORD=flame_password mhzawadi/flame
 ```
 
 #### Building images
@@ -59,7 +69,7 @@ version: '3.6'
 
 services:
   flame:
-    image: pawelmalak/flame
+    image: mhzawadi/flame
     container_name: flame
     volumes:
       - /path/to/host/data:/app/data
@@ -123,7 +133,7 @@ Follow instructions from wiki: [Installation without Docker](https://github.com/
 
 ```sh
 # clone repository
-git clone https://github.com/pawelmalak/flame
+git clone https://github.com/mhzawadi/flame
 cd flame
 
 # run only once
@@ -219,10 +229,10 @@ In order to use the Kubernetes integration, each ingress must have the following
 ```yml
 metadata:
   annotations:
-  - flame.pawelmalak/type=application # "app" works too
-  - flame.pawelmalak/name=My container
-  - flame.pawelmalak/url=https://example.com
-  - flame.pawelmalak/icon=icon-name # optional, default is "kubernetes"
+  - flame.georgesg/type=application # "app" works too
+  - flame.georgesg/name=My container
+  - flame.georgesg/url=https://example.com
+  - flame.georgesg/icon=icon-name # optional, default is "kubernetes"
 ```
 
 > "Use Kubernetes Ingress API" option must be enabled for this to work. You can find it in Settings > Docker

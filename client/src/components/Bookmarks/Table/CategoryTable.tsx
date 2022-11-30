@@ -1,43 +1,38 @@
-import { useState, useEffect, Fragment } from 'react';
+import { useAtomValue } from 'jotai';
+import { useEffect, useState } from 'react';
 import {
   DragDropContext,
-  Droppable,
   Draggable,
+  Droppable,
   DropResult,
 } from 'react-beautiful-dnd';
 import { Link } from 'react-router-dom';
-
-// Redux
-import { useDispatch, useSelector } from 'react-redux';
-import { State } from '../../../store/reducers';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../../store';
-
-// Typescript
 import { Bookmark, Category } from '../../../interfaces';
-
-// UI
-import { Message, Table } from '../../UI';
+import {
+  categoriesAtom,
+  useDeleteCategory,
+  usePinCategory,
+  useReorderCategories,
+  useUpdateCategory,
+} from '../../../state/bookmark';
+import { configAtom } from '../../../state/config';
+import { useCreateNotification } from '../../../state/notification';
 import { TableActions } from '../../Actions/TableActions';
+import { Message, Table } from '../../UI';
 
 interface Props {
   openFormForUpdating: (data: Category | Bookmark) => void;
 }
 
 export const CategoryTable = ({ openFormForUpdating }: Props): JSX.Element => {
-  const {
-    config: { config },
-    bookmarks: { categories },
-  } = useSelector((state: State) => state);
+  const config = useAtomValue(configAtom);
 
-  const dispatch = useDispatch();
-  const {
-    pinCategory,
-    deleteCategory,
-    createNotification,
-    reorderCategories,
-    updateCategory,
-  } = bindActionCreators(actionCreators, dispatch);
+  const categories = useAtomValue(categoriesAtom);
+  const pinCategory = usePinCategory();
+  const deleteCategory = useDeleteCategory();
+  const reorderCategories = useReorderCategories();
+  const updateCategory = useUpdateCategory();
+  const createNotification = useCreateNotification();
 
   const [localCategories, setLocalCategories] = useState<Category[]>([]);
 
@@ -95,7 +90,7 @@ export const CategoryTable = ({ openFormForUpdating }: Props): JSX.Element => {
   };
 
   return (
-    <Fragment>
+    <>
       <Message isPrimary={false}>
         {config.useOrdering === 'orderId' ? (
           <p>You can drag and drop single rows to reorder categories</p>
@@ -161,6 +156,6 @@ export const CategoryTable = ({ openFormForUpdating }: Props): JSX.Element => {
           )}
         </Droppable>
       </DragDropContext>
-    </Fragment>
+    </>
   );
 };

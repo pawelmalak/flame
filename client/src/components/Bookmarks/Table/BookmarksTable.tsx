@@ -1,42 +1,37 @@
-import { useState, useEffect, Fragment } from 'react';
+import { useAtomValue } from 'jotai';
+import { useEffect, useState } from 'react';
 import {
   DragDropContext,
-  Droppable,
   Draggable,
+  Droppable,
   DropResult,
 } from 'react-beautiful-dnd';
-
-// Redux
-import { useDispatch, useSelector } from 'react-redux';
-import { State } from '../../../store/reducers';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../../store';
-
-// Typescript
 import { Bookmark, Category } from '../../../interfaces';
-
-// UI
-import { Message, Table } from '../../UI';
-import { TableActions } from '../../Actions/TableActions';
+import {
+  categoryInEditAtom,
+  useDeleteBookmark,
+  useReorderBookmarks,
+  useUpdateBookmark,
+} from '../../../state/bookmark';
+import { configAtom } from '../../../state/config';
+import { useCreateNotification } from '../../../state/notification';
 import { bookmarkTemplate } from '../../../utility';
+import { TableActions } from '../../Actions/TableActions';
+import { Message, Table } from '../../UI';
 
 interface Props {
   openFormForUpdating: (data: Category | Bookmark) => void;
 }
 
 export const BookmarksTable = ({ openFormForUpdating }: Props): JSX.Element => {
-  const {
-    bookmarks: { categoryInEdit },
-    config: { config },
-  } = useSelector((state: State) => state);
+  const config = useAtomValue(configAtom);
 
-  const dispatch = useDispatch();
-  const {
-    deleteBookmark,
-    updateBookmark,
-    createNotification,
-    reorderBookmarks,
-  } = bindActionCreators(actionCreators, dispatch);
+  const categoryInEdit = useAtomValue(categoryInEditAtom);
+  const deleteBookmark = useDeleteBookmark();
+  const updateBookmark = useUpdateBookmark();
+  const reorderBookmarks = useReorderBookmarks();
+
+  const createNotification = useCreateNotification();
 
   const [localBookmarks, setLocalBookmarks] = useState<Bookmark[]>([]);
 
@@ -103,7 +98,7 @@ export const BookmarksTable = ({ openFormForUpdating }: Props): JSX.Element => {
   };
 
   return (
-    <Fragment>
+    <>
       {!categoryInEdit ? (
         <Message isPrimary={false}>
           Switch to grid view and click on the name of category you want to edit
@@ -183,6 +178,6 @@ export const BookmarksTable = ({ openFormForUpdating }: Props): JSX.Element => {
           </Droppable>
         </DragDropContext>
       )}
-    </Fragment>
+    </>
   );
 };

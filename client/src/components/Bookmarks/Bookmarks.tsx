@@ -1,29 +1,26 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
-// Redux
-import { useDispatch, useSelector } from 'react-redux';
-import { State } from '../../store/reducers';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../store';
-
-// Typescript
-import { Category, Bookmark } from '../../interfaces';
-
-// CSS
-import classes from './Bookmarks.module.css';
-
-// UI
+import { Bookmark, Category } from '../../interfaces';
 import {
+  ActionButton,
   Container,
   Headline,
-  ActionButton,
-  Spinner,
-  Modal,
   Message,
+  Modal,
+  Spinner,
 } from '../UI';
+import classes from './Bookmarks.module.css';
 
 // Components
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { authAtom } from '../../state/auth';
+import {
+  bookmarkInEditAtom,
+  bookmarksLoadingAtom,
+  categoriesAtom,
+  categoryInEditAtom,
+  useFetchCategories,
+} from '../../state/bookmark';
 import { BookmarkGrid } from './BookmarkGrid/BookmarkGrid';
 import { Form } from './Form/Form';
 import { Table } from './Table/Table';
@@ -38,21 +35,19 @@ export enum ContentType {
 }
 
 export const Bookmarks = (props: Props): JSX.Element => {
-  // Get Redux state
-  const {
-    bookmarks: { loading, categories, categoryInEdit },
-    auth: { isAuthenticated },
-  } = useSelector((state: State) => state);
+  const { isAuthenticated } = useAtomValue(authAtom);
 
-  // Get Redux action creators
-  const dispatch = useDispatch();
-  const { getCategories, setEditCategory, setEditBookmark } =
-    bindActionCreators(actionCreators, dispatch);
+  const loading = useAtomValue(bookmarksLoadingAtom);
+  const categories = useAtomValue(categoriesAtom);
+  const [categoryInEdit, setCategoryInEdit] = useAtom(categoryInEditAtom);
+  const setBookmarkInEdit = useSetAtom(bookmarkInEditAtom);
+
+  const fetchCategories = useFetchCategories();
 
   // Load categories if array is empty
   useEffect(() => {
     if (!categories.length) {
-      getCategories();
+      fetchCategories();
     }
   }, []);
 
@@ -84,7 +79,7 @@ export const Bookmarks = (props: Props): JSX.Element => {
 
   useEffect(() => {
     setShowTable(false);
-    setEditCategory(null);
+    setCategoryInEdit(null);
   }, []);
 
   // Form actions
@@ -107,10 +102,10 @@ export const Bookmarks = (props: Props): JSX.Element => {
 
     if (instanceOfCategory(data)) {
       setFormContentType(ContentType.category);
-      setEditCategory(data);
+      setCategoryInEdit(data);
     } else {
       setFormContentType(ContentType.bookmark);
-      setEditBookmark(data);
+      setBookmarkInEdit(data);
     }
 
     toggleModal();
@@ -120,7 +115,7 @@ export const Bookmarks = (props: Props): JSX.Element => {
   const showTableForEditing = (contentType: ContentType) => {
     // We're in the edit mode and the same button was clicked - go back to list
     if (showTable && contentType === tableContentType) {
-      setEditCategory(null);
+      setBookmarkInEdit(null);
       setShowTable(false);
     } else {
       setShowTable(true);
@@ -130,7 +125,7 @@ export const Bookmarks = (props: Props): JSX.Element => {
 
   const finishEditing = () => {
     setShowTable(false);
-    setEditCategory(null);
+    setBookmarkInEdit(null);
   };
 
   return (
@@ -176,9 +171,7 @@ export const Bookmarks = (props: Props): JSX.Element => {
         <Message isPrimary={false}>
           Click on category name to edit its bookmarks
         </Message>
-      ) : (
-        <></>
-      )}
+      ) : null}
 
       {loading ? (
         <Spinner />

@@ -1,13 +1,11 @@
-import { useSelector } from 'react-redux';
+import { useAtomValue } from 'jotai';
 import { Notification as NotificationInterface } from '../../interfaces';
-
+import { notificationsAtom } from '../../state/notification';
+import { Notification } from '../UI';
 import classes from './NotificationCenter.module.css';
 
-import { Notification } from '../UI';
-import { State } from '../../store/reducers';
-
 export const NotificationCenter = (): JSX.Element => {
-  const { notifications } = useSelector((state: State) => state.notification);
+  const { notifications } = useAtomValue(notificationsAtom);
 
   return (
     <div

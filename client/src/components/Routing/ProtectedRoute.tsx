@@ -1,9 +1,9 @@
-import { useSelector } from 'react-redux';
+import { useAtomValue } from 'jotai';
 import { Redirect, Route, RouteProps } from 'react-router';
-import { State } from '../../store/reducers';
+import { authAtom } from '../../state/auth';
 
 export const ProtectedRoute = ({ ...rest }: RouteProps) => {
-  const { isAuthenticated } = useSelector((state: State) => state.auth);
+  const { isAuthenticated } = useAtomValue(authAtom);
 
   if (isAuthenticated) {
     return <Route {...rest} />;

@@ -1,33 +1,21 @@
-import { NavLink, Link, Switch, Route } from 'react-router-dom';
-
-// Redux
-import { useSelector } from 'react-redux';
-import { State } from '../../store/reducers';
-
-// Typescript
+import { useAtomValue } from 'jotai';
+import { Link, NavLink, Route, Switch } from 'react-router-dom';
 import { Route as SettingsRoute } from '../../interfaces';
-
-// CSS
-import classes from './Settings.module.css';
-
-// Components
-import { Themer } from './Themer/Themer';
-import { WeatherSettings } from './WeatherSettings/WeatherSettings';
-import { UISettings } from './UISettings/UISettings';
-import { AppDetails } from './AppDetails/AppDetails';
-import { StyleSettings } from './StyleSettings/StyleSettings';
-import { GeneralSettings } from './GeneralSettings/GeneralSettings';
-import { DockerSettings } from './DockerSettings/DockerSettings';
+import { authAtom } from '../../state/auth';
 import { ProtectedRoute } from '../Routing/ProtectedRoute';
-
-// UI
 import { Container, Headline } from '../UI';
-
-// Data
+import { AppDetails } from './AppDetails/AppDetails';
+import { DockerSettings } from './DockerSettings/DockerSettings';
+import { GeneralSettings } from './GeneralSettings/GeneralSettings';
 import { routes } from './settings.json';
+import classes from './Settings.module.css';
+import { StyleSettings } from './StyleSettings/StyleSettings';
+import { Themer } from './Themer/Themer';
+import { UISettings } from './UISettings/UISettings';
+import { WeatherSettings } from './WeatherSettings/WeatherSettings';
 
 export const Settings = (): JSX.Element => {
-  const { isAuthenticated } = useSelector((state: State) => state.auth);
+  const { isAuthenticated } = useAtomValue(authAtom);
 
   const tabs = isAuthenticated ? routes : routes.filter((r) => !r.authRequired);
 

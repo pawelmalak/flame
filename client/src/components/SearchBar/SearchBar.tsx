@@ -1,19 +1,10 @@
-import { useRef, useEffect, KeyboardEvent } from 'react';
-
-// Redux
-import { useDispatch, useSelector } from 'react-redux';
-
-// Typescript
+import { useAtomValue } from 'jotai';
+import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { App, Category } from '../../interfaces';
-
-// CSS
+import { configAtom, configLoadingAtom } from '../../state/config';
+import { useCreateNotification } from '../../state/notification';
+import { redirectUrl, urlParser, useSearchParser } from '../../utility';
 import classes from './SearchBar.module.css';
-
-// Utils
-import { searchParser, urlParser, redirectUrl } from '../../utility';
-import { State } from '../../store/reducers';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../store';
 
 interface Props {
   setLocalSearch: (query: string) => void;
@@ -22,14 +13,19 @@ interface Props {
 }
 
 export const SearchBar = (props: Props): JSX.Element => {
-  const { config, loading } = useSelector((state: State) => state.config);
+  const config = useAtomValue(configAtom);
+  const loading = useAtomValue(configLoadingAtom);
+  const searchParser = useSearchParser();
 
-  const dispatch = useDispatch();
-  const { createNotification } = bindActionCreators(actionCreators, dispatch);
+  const createNotification = useCreateNotification();
 
   const { setLocalSearch, appSearchResult, bookmarkSearchResult } = props;
 
   const inputRef = useRef<HTMLInputElement>(document.createElement('input'));
+
+  const [searchProvider, setSearchProvider] = useState(
+    searchParser('').primarySearch.name
+  );
 
   // Search bar autofocus
   useEffect(() => {
@@ -78,6 +74,10 @@ export const SearchBar = (props: Props): JSX.Element => {
       setLocalSearch(encodedURL);
     }
 
+    if (primarySearch.name) {
+      setSearchProvider(primarySearch.name);
+    }
+
     if (e.code === 'Enter' || e.code === 'NumpadEnter') {
       if (!primarySearch.prefix) {
         // Prefix not found -> emit notification
@@ -113,6 +113,7 @@ export const SearchBar = (props: Props): JSX.Element => {
         const url = `${primarySearch.template}${encodedURL}`;
         redirectUrl(url, sameTab);
       }
+      if (config.autoClearSearch) clearSearch();
     } else if (e.code === 'Escape') {
       clearSearch();
     }
@@ -120,6 +121,9 @@ export const SearchBar = (props: Props): JSX.Element => {
 
   return (
     <div className={classes.SearchContainer}>
+      {!config.hideSearchProvider && (
+        <span className={classes.SearchProvider}>{searchProvider}</span>
+      )}
       <input
         ref={inputRef}
         type="text"

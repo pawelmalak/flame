@@ -1,10 +1,5 @@
-// Redux
-import { useDispatch } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../../../store';
-
-// Other
 import { Theme } from '../../../../interfaces/Theme';
+import { useSetTheme } from '../../../../state/theme';
 import classes from './ThemePreview.module.css';
 
 interface Props {
@@ -14,7 +9,7 @@ interface Props {
 export const ThemePreview = ({
   theme: { colors, name },
 }: Props): JSX.Element => {
-  const { setTheme } = bindActionCreators(actionCreators, useDispatch());
+  const setTheme = useSetTheme();
 
   return (
     <div className={classes.ThemePreview} onClick={() => setTheme(colors)}>

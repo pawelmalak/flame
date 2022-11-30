@@ -1,7 +1,7 @@
+import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Skycons } from 'skycons-ts';
-import { State } from '../../../../store/reducers';
+import { activeThemeAtom } from '../../../../state/theme';
 import { IconMapping, TimeOfDay } from './IconMapping';
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const WeatherIcon = (props: Props): JSX.Element => {
-  const { activeTheme } = useSelector((state: State) => state.theme);
+  const activeTheme = useAtomValue(activeThemeAtom);
 
   const icon = props.isDay
     ? new IconMapping().mapIcon(props.weatherStatusCode, TimeOfDay.day)

@@ -1,22 +1,19 @@
-import { useState, ChangeEvent, useEffect, FormEvent } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 // Redux
-import { useDispatch, useSelector } from 'react-redux';
-import { State } from '../../../store/reducers';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../../store';
 
 // Typescript
+import { useAtomValue } from 'jotai';
 import { Bookmark, Category, NewBookmark } from '../../../interfaces';
-
-// UI
-import { ModalForm, InputGroup, Button } from '../../UI';
-
-// CSS
-import classes from './Form.module.css';
-
-// Utils
+import {
+  categoriesAtom,
+  useAddBookmark,
+  useUpdateBookmark,
+} from '../../../state/bookmark';
+import { useCreateNotification } from '../../../state/notification';
 import { inputHandler, newBookmarkTemplate } from '../../../utility';
+import { Button, InputGroup, ModalForm } from '../../UI';
+import classes from './Form.module.css';
 
 interface Props {
   modalHandler: () => void;
@@ -27,11 +24,11 @@ export const BookmarksForm = ({
   bookmark,
   modalHandler,
 }: Props): JSX.Element => {
-  const { categories } = useSelector((state: State) => state.bookmarks);
+  const createNotification = useCreateNotification();
 
-  const dispatch = useDispatch();
-  const { addBookmark, updateBookmark, createNotification } =
-    bindActionCreators(actionCreators, dispatch);
+  const categories = useAtomValue(categoriesAtom);
+  const addBookmark = useAddBookmark();
+  const updateBookmark = useUpdateBookmark();
 
   const [useCustomIcon, toggleUseCustomIcon] = useState<boolean>(false);
   const [customIcon, setCustomIcon] = useState<File | null>(null);
@@ -219,11 +216,19 @@ export const BookmarksForm = ({
             onChange={(e) => inputChangeHandler(e)}
           />
           <span>
-            Use icon name from MDI or pass a valid URL.
+            Use icon name from{' '}
             <a href="https://materialdesignicons.com/" target="blank">
-              {' '}
-              Click here for reference
+              MDI
             </a>
+            , icon name from{' '}
+            <a
+              href="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              dashboard-icons
+            </a>
+            , or pass a valid URL.
           </span>
           <span
             onClick={() => toggleUseCustomIcon(!useCustomIcon)}
@@ -250,7 +255,7 @@ export const BookmarksForm = ({
             }}
             className={classes.Switch}
           >
-            Switch to MDI
+            Switch to icon name
           </span>
         </InputGroup>
       )}

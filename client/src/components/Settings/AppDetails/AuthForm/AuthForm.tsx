@@ -1,21 +1,14 @@
-import { FormEvent, Fragment, useEffect, useState, useRef } from 'react';
-
-// Redux
-import { useSelector, useDispatch } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../../../store';
-import { State } from '../../../../store/reducers';
+import { useAtomValue } from 'jotai';
+import { FormEvent, useEffect, useRef, useState } from 'react';
+import { authAtom, useLogin, useLogout } from '../../../../state/auth';
 import { decodeToken, parseTokenExpire } from '../../../../utility';
-
-// Other
-import { InputGroup, Button } from '../../../UI';
+import { Button, InputGroup } from '../../../UI';
 import classes from '../AppDetails.module.css';
 
 export const AuthForm = (): JSX.Element => {
-  const { isAuthenticated, token } = useSelector((state: State) => state.auth);
-
-  const dispatch = useDispatch();
-  const { login, logout } = bindActionCreators(actionCreators, dispatch);
+  const { isAuthenticated, token } = useAtomValue(authAtom);
+  const login = useLogin();
+  const logout = useLogout();
 
   const [tokenExpires, setTokenExpires] = useState('');
   const [formData, setFormData] = useState({
@@ -47,7 +40,7 @@ export const AuthForm = (): JSX.Element => {
   };
 
   return (
-    <Fragment>
+    <>
       {!isAuthenticated ? (
         <form onSubmit={formHandler}>
           <InputGroup>
@@ -105,6 +98,6 @@ export const AuthForm = (): JSX.Element => {
           <Button click={logout}>Logout</Button>
         </div>
       )}
-    </Fragment>
+    </>
   );
 };

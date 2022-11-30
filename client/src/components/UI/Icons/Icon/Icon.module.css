@@ -2,3 +2,14 @@
   color: var(--color-primary);
   width: 90%;
 }
+
+.AppIconWrapper {
+  display: flex;
+  align-items: center;
+  height: 35px;
+  width: 35px;
+}
+
+.AppIcon {
+  height: 31px;
+}

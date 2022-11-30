@@ -1,17 +1,16 @@
-import classes from './AppCard.module.css';
-import { Icon } from '../../UI';
-import { iconParser, isImage, isSvg, isUrl, urlParser } from '../../../utility';
-
+import { useAtomValue } from 'jotai';
 import { App } from '../../../interfaces';
-import { useSelector } from 'react-redux';
-import { State } from '../../../store/reducers';
+import { configAtom } from '../../../state/config';
+import { isImage, isSvg, isUrl, urlParser } from '../../../utility';
+import { Icon } from '../../UI';
+import classes from './AppCard.module.css';
 
 interface Props {
   app: App;
 }
 
 export const AppCard = ({ app }: Props): JSX.Element => {
-  const { config } = useSelector((state: State) => state.config);
+  const config = useAtomValue(configAtom);
 
   const [displayUrl, redirectUrl] = urlParser(app.url);
 
@@ -41,7 +40,7 @@ export const AppCard = ({ app }: Props): JSX.Element => {
       </div>
     );
   } else {
-    iconEl = <Icon icon={iconParser(icon)} />;
+    iconEl = <Icon icon={icon} />;
   }
 
   return (

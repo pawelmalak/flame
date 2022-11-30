@@ -4,4 +4,9 @@
   font-weight: 900;
   font-size: 20px;
   margin-bottom: 16px;
+  transition: color 0.2s;
+}
+
+.SectionHeadlineLink:hover .SectionHeadline {
+  color: var(--color-accent);
 }

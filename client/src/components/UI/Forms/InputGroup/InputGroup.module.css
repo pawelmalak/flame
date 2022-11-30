@@ -2,6 +2,16 @@
   margin-bottom: 15px;
 }
 
+.InputGroup.Horizontal {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.InputGroup label {
+  cursor: pointer;
+}
+
 .InputGroup label,
 .InputGroup span,
 .InputGroup input,

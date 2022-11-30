@@ -1,32 +1,25 @@
+import { useAtomValue, useSetAtom } from 'jotai';
 import { Fragment } from 'react';
-
-// Redux
-import { useSelector, useDispatch } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { Theme } from '../../../../interfaces';
-import { actionCreators } from '../../../../store';
-import { State } from '../../../../store/reducers';
-
-// Other
+import {
+  themeInEditAtom,
+  useDeleteTheme,
+  userThemesAtom,
+} from '../../../../state/theme';
 import { ActionIcons, CompactTable, Icon, ModalForm } from '../../../UI';
 
 interface Props {
   modalHandler: () => void;
 }
 
-export const ThemeEditor = (props: Props): JSX.Element => {
-  const {
-    theme: { userThemes },
-  } = useSelector((state: State) => state);
-
-  const { deleteTheme, editTheme } = bindActionCreators(
-    actionCreators,
-    useDispatch()
-  );
+export const ThemeEditor = ({ modalHandler }: Props): JSX.Element => {
+  const userThemes = useAtomValue(userThemesAtom);
+  const setThemeInEdit = useSetAtom(themeInEditAtom);
+  const deleteTheme = useDeleteTheme();
 
   const updateHandler = (theme: Theme) => {
-    props.modalHandler();
-    editTheme(theme);
+    modalHandler();
+    setThemeInEdit(theme);
   };
 
   const deleteHandler = (theme: Theme) => {
@@ -36,7 +29,7 @@ export const ThemeEditor = (props: Props): JSX.Element => {
   };
 
   return (
-    <ModalForm formHandler={() => {}} modalHandler={props.modalHandler}>
+    <ModalForm formHandler={() => {}} modalHandler={modalHandler}>
       <CompactTable headers={['Name', 'Actions']}>
         {userThemes.map((t, idx) => (
           <Fragment key={idx}>

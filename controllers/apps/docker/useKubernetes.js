@@ -35,14 +35,14 @@ const useKubernetes = async (apps) => {
       const annotations = ingress.metadata.annotations;
 
       if (
-        'flame.pawelmalak/name' in annotations &&
-        'flame.pawelmalak/url' in annotations &&
-        /^app/.test(annotations['flame.pawelmalak/type'])
+        'flame.georgesg/name' in annotations &&
+        'flame.georgesg/url' in annotations &&
+        /^app/.test(annotations['flame.georgesg/type'])
       ) {
         kubernetesApps.push({
-          name: annotations['flame.pawelmalak/name'],
-          url: annotations['flame.pawelmalak/url'],
-          icon: annotations['flame.pawelmalak/icon'] || 'kubernetes',
+          name: annotations['flame.georgesg/name'],
+          url: annotations['flame.georgesg/url'],
+          icon: annotations['flame.georgesg/icon'] || 'kubernetes',
         });
       }
     }

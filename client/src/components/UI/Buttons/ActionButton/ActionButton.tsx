@@ -1,8 +1,7 @@
 import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-
-import classes from './ActionButton.module.css';
 import { Icon } from '../..';
+import classes from './ActionButton.module.css';
 
 interface Props {
   name: string;
@@ -13,12 +12,12 @@ interface Props {
 
 export const ActionButton = (props: Props): JSX.Element => {
   const body = (
-    <Fragment>
+    <>
       <div className={classes.ActionButtonIcon}>
         <Icon icon={props.icon} />
       </div>
       <div className={classes.ActionButtonName}>{props.name}</div>
-    </Fragment>
+    </>
   );
 
   if (props.link) {

@@ -1,21 +1,12 @@
-import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import axios from 'axios';
-
-// Redux
-import { useDispatch } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../../store';
-
-// Typescript
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { ApiResponse } from '../../../interfaces';
-
-// Other
-import { InputGroup, Button } from '../../UI';
+import { useCreateNotification } from '../../../state/notification';
 import { applyAuth } from '../../../utility';
+import { Button, InputGroup } from '../../UI';
 
 export const StyleSettings = (): JSX.Element => {
-  const dispatch = useDispatch();
-  const { createNotification } = bindActionCreators(actionCreators, dispatch);
+  const createNotification = useCreateNotification();
 
   const [customStyles, setCustomStyles] = useState<string>('');
 

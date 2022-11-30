@@ -48,23 +48,16 @@ export const getDateTime = (): string => {
   }
 
   // Time
-  const p = parseTime;
   let timeEl = '';
 
   if (showTime) {
-    const time = `${p(now.getHours())}:${p(now.getMinutes())}:${p(
-      now.getSeconds()
-    )}`;
-
-    timeEl = time;
+    timeEl = `${parseTime(now.getHours())}:${parseTime(
+      now.getMinutes()
+    )}:${parseTime(now.getSeconds())}`;
   }
 
   // Separator
-  let separator = '';
-
-  if (!hideDate && showTime) {
-    separator = ' - ';
-  }
+  const separator = !hideDate && showTime ? ' · ' : '';
 
   // Output
   return `${dateEl}${separator}${timeEl}`;

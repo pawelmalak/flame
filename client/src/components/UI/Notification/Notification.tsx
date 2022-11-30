@@ -1,8 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../../store';
-
+import { useClearNotification } from '../../../state/notification';
 import classes from './Notification.module.css';
 
 interface Props {
@@ -13,8 +10,7 @@ interface Props {
 }
 
 export const Notification = (props: Props): JSX.Element => {
-  const dispatch = useDispatch();
-  const { clearNotification } = bindActionCreators(actionCreators, dispatch);
+  const clearNotification = useClearNotification();
 
   const [isOpen, setIsOpen] = useState(true);
   const elementClasses = [

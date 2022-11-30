@@ -1,28 +1,17 @@
+import { useAtomValue } from 'jotai';
 import { Fragment, useState } from 'react';
-
-// Redux
-import { useDispatch, useSelector } from 'react-redux';
-import { State } from '../../../../store/reducers';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../../../store';
-
-// Typescript
 import { Query } from '../../../../interfaces';
-
-// UI
-import { Modal, Icon, Button, CompactTable, ActionIcons } from '../../../UI';
-
-// Components
+import { configAtom } from '../../../../state/config';
+import { useCreateNotification } from '../../../../state/notification';
+import { customQueriesAtom, useDeleteQuery } from '../../../../state/queries';
+import { ActionIcons, Button, CompactTable, Icon, Modal } from '../../../UI';
 import { QueriesForm } from './QueriesForm';
 
 export const CustomQueries = (): JSX.Element => {
-  const { customQueries, config } = useSelector((state: State) => state.config);
-
-  const dispatch = useDispatch();
-  const { deleteQuery, createNotification } = bindActionCreators(
-    actionCreators,
-    dispatch
-  );
+  const customQueries = useAtomValue(customQueriesAtom);
+  const deleteQuery = useDeleteQuery();
+  const config = useAtomValue(configAtom);
+  const createNotification = useCreateNotification();
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [editableQuery, setEditableQuery] = useState<Query | null>(null);
@@ -49,7 +38,7 @@ export const CustomQueries = (): JSX.Element => {
   };
 
   return (
-    <Fragment>
+    <>
       <Modal
         isOpen={modalIsOpen}
         setIsOpen={() => setModalIsOpen(!modalIsOpen)}
@@ -82,9 +71,7 @@ export const CustomQueries = (): JSX.Element => {
               </Fragment>
             ))}
           </CompactTable>
-        ) : (
-          <></>
-        )}
+        ) : null}
 
         <Button
           click={() => {
@@ -95,6 +82,6 @@ export const CustomQueries = (): JSX.Element => {
           Add new search provider
         </Button>
       </section>
-    </Fragment>
+    </>
   );
 };

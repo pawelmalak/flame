@@ -1,38 +1,41 @@
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import {
   DragDropContext,
-  Droppable,
   Draggable,
+  Droppable,
   DropResult,
 } from 'react-beautiful-dnd';
 import { Link } from 'react-router-dom';
 
 // Redux
-import { useDispatch, useSelector } from 'react-redux';
-import { State } from '../../../store/reducers';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../../store';
 
-// Typescript
+import { useAtomValue } from 'jotai';
 import { App } from '../../../interfaces';
-
-// Other
-import { Message, Table } from '../../UI';
+import {
+  appsAtom,
+  useDeleteApp,
+  usePinApp,
+  useReorderApps,
+  useUpdateApp,
+} from '../../../state/app';
+import { configAtom } from '../../../state/config';
+import { useCreateNotification } from '../../../state/notification';
 import { TableActions } from '../../Actions/TableActions';
+import { Message, Table } from '../../UI';
 
 interface Props {
   openFormForUpdating: (app: App) => void;
 }
 
 export const AppTable = (props: Props): JSX.Element => {
-  const {
-    apps: { apps },
-    config: { config },
-  } = useSelector((state: State) => state);
+  const config = useAtomValue(configAtom);
 
-  const dispatch = useDispatch();
-  const { pinApp, deleteApp, reorderApps, createNotification, updateApp } =
-    bindActionCreators(actionCreators, dispatch);
+  const apps = useAtomValue(appsAtom);
+  const pinApp = usePinApp();
+  const deleteApp = useDeleteApp();
+  const reorderApps = useReorderApps();
+  const updateApp = useUpdateApp();
+  const createNotification = useCreateNotification();
 
   const [localApps, setLocalApps] = useState<App[]>([]);
 
@@ -87,7 +90,7 @@ export const AppTable = (props: Props): JSX.Element => {
   };
 
   return (
-    <Fragment>
+    <>
       <Message isPrimary={false}>
         {config.useOrdering === 'orderId' ? (
           <p>You can drag and drop single rows to reorder application</p>
@@ -155,6 +158,6 @@ export const AppTable = (props: Props): JSX.Element => {
           )}
         </Droppable>
       </DragDropContext>
-    </Fragment>
+    </>
   );
 };
