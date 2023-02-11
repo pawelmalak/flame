@@ -17,7 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@kubernetes/client-node": "^0.15.1",
+    "@kubernetes/client-node": "^0.18.1",
     "@types/express": "^4.17.13",
     "axios": "^0.24.0",
     "concurrently": "^6.3.0",
@@ -33,6 +33,6 @@
     "ws": "^8.2.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.14"
+    "nodemon": "^2.0.20"
   }
 }
