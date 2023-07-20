@@ -56,6 +56,7 @@ export const searchParser = (searchQuery: string): SearchResult => {
     if (prefix === 'l') {
       result.isLocal = true;
     }
+
     result.sameTab = config.searchSameTab;
 
     if (secondarySearch) {
