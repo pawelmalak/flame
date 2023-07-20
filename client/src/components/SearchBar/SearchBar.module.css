@@ -9,6 +9,7 @@
   border-bottom: 2px solid var(--color-accent);
   opacity: 0.5;
   transition: all 0.2s;
+  border-radius: 0px;
 }
 
 .SearchBar:focus {
