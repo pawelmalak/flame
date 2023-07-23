@@ -43,6 +43,9 @@ const useKubernetes = async (apps) => {
           name: annotations['flame.pawelmalak/name'],
           url: annotations['flame.pawelmalak/url'],
           icon: annotations['flame.pawelmalak/icon'] || 'kubernetes',
+          // Add description and visibility
+          description: annotations['flame.pawelmalak/description'] || '',
+          isPublic: (annotations['flame.pawelmalak/visible'] && /^true$/.test(annotations['flame.pawelmalak/visible']) ? 1 : 0),
         });
       }
     }
@@ -54,8 +57,9 @@ const useKubernetes = async (apps) => {
     }
 
     for (const item of kubernetesApps) {
-      if (apps.some((app) => app.name === item.name)) {
-        const app = apps.find((a) => a.name === item.name);
+      // Find by name or url
+      if (apps.some((app) => app.name === item.name || app.url === item.url)) {
+        const app = apps.find((a) => a.name === item.name || app.url === item.url);
         await app.update({ ...item, isPinned: true });
       } else {
         await App.create({
