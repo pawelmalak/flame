@@ -110,10 +110,10 @@ export const WeatherSettings = (): JSX.Element => {
           onChange={(e) => inputChangeHandler(e)}
         />
         <span>
-          Using
-          <a href="https://www.weatherapi.com/pricing.aspx" target="blank">
+          Now using
+          <a href="https://openweathermap.org/api" target="blank">
             {' '}
-            Weather API
+            OpenWeatherMap
           </a>
           . Key is required for weather module to work.
         </span>
