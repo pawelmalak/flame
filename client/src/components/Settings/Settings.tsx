@@ -24,9 +24,11 @@ import { ProtectedRoute } from '../Routing/ProtectedRoute';
 import { Container, Headline } from '../UI';
 
 // Data
-import { routes } from './settings.json';
+import clientRoutes from './settings.json';
 
 export const Settings = (): JSX.Element => {
+  const routes = clientRoutes.routes;
+
   const { isAuthenticated } = useSelector((state: State) => state.auth);
 
   const tabs = isAuthenticated ? routes : routes.filter((r) => !r.authRequired);

@@ -165,7 +165,7 @@ export const AppForm = ({ modalHandler }: Props): JSX.Element => {
           />
           <span>
             Use icon name from MDI or pass a valid URL.
-            <a href="https://materialdesignicons.com/" target="blank">
+            <a href="https://pictogrammers.com/library/mdi/" target="blank">
               {' '}
               Click here for reference
             </a>

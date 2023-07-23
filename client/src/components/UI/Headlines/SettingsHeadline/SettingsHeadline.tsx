@@ -1,4 +1,4 @@
-const classes = require('./SettingsHeadline.module.css');
+import classes from './SettingsHeadline.module.css';
 
 interface Props {
   text: string;

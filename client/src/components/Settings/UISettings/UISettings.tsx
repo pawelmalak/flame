@@ -223,9 +223,9 @@ export const UISettings = (): JSX.Element => {
         </select>
       </InputGroup>
 
-      {/* HIDE CATEGORIES */}
+      {/* HIDE BOOKMARK CATEGORIES */}
       <InputGroup>
-        <label htmlFor="hideCategories">Hide categories</label>
+        <label htmlFor="hideCategories">Hide bookmarks</label>
         <select
           id="hideCategories"
           name="hideCategories"

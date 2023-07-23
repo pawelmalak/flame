@@ -1,3 +1,10 @@
+### v2.3.1 (2023-07-23)
+- Fixed bug where "Open search results in the same tab" setting was not respected if "Local search" was set as primary search provider ([#270](https://github.com/pawelmalak/flame/issues/270))
+- Fixed bug where search bar had rounded input field on iOS ([#394](https://github.com/pawelmalak/flame/issues/394))
+- Updated link to Material Design Icons reference page ([#414](https://github.com/pawelmalak/flame/issues/414))
+- Fixed bug where color inputs in theme creator/editor were too small ([#429](https://github.com/pawelmalak/flame/issues/429))
+- Changed input labels in settings for more consistent naming ([#430](https://github.com/pawelmalak/flame/issues/430))
+
 ### v2.3.0 (2022-03-25)
 - Added custom theme editor ([#246](https://github.com/pawelmalak/flame/issues/246))
 - Added option to set secondary search provider ([#295](https://github.com/pawelmalak/flame/issues/295))

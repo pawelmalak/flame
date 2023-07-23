@@ -15,7 +15,7 @@ import { Button, SettingsHeadline, InputGroup } from '../../UI';
 import { inputHandler, generalSettingsTemplate } from '../../../utility';
 
 // Data
-import { queries } from '../../../utility/searchQueries.json';
+import searchQueries from '../../../utility/searchQueries.json';
 
 // Redux
 import { State } from '../../../store/reducers';
@@ -31,6 +31,8 @@ export const GeneralSettings = (): JSX.Element => {
   const dispatch = useDispatch();
   const { updateConfig, sortApps, sortCategories, sortBookmarks } =
     bindActionCreators(actionCreators, dispatch);
+
+  const queries = searchQueries.queries;
 
   // Initial state
   const [formData, setFormData] = useState<GeneralForm>(
