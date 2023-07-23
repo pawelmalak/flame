@@ -40,5 +40,11 @@
 }
 
 .InputGroup input[type='color'] {
-  all: unset;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+}
+
+.InputGroup input[type='color']:hover {
+  cursor: pointer;
 }
