@@ -26,6 +26,7 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.3",
+    "node-bookmarks-parser": "^2.0.0",
     "node-schedule": "^2.0.0",
     "sequelize": "^6.9.0",
     "sqlite3": "^5.0.2",

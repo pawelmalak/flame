@@ -19,6 +19,11 @@ export interface AddBookmarkAction {
   payload: Bookmark;
 }
 
+export interface ImportBookmarkAction {
+  type: ActionType.importBookmark;
+  payload: Bookmark;
+}
+
 export interface PinCategoryAction {
   type: ActionType.pinCategory;
   payload: Category;
