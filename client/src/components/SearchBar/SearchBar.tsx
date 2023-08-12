@@ -78,7 +78,7 @@ export const SearchBar = (props: Props): JSX.Element => {
       setLocalSearch(encodedURL);
     }
 
-    if (e.code === 'Enter' || e.code === 'NumpadEnter') {
+    if (e.code === 'Enter' || e.code === 'NumpadEnter' || e.keyCode === 13) {
       if (!primarySearch.prefix) {
         // Prefix not found -> emit notification
         createNotification({
