@@ -23,9 +23,13 @@ COPY --from=builder /app /app
 
 WORKDIR /app
 
+RUN chown -R node:node .
+
 EXPOSE 5005
+
+USER node
 
 ENV NODE_ENV=production
 ENV PASSWORD=flame_password
 
-CMD ["sh", "-c", "chown -R node /app/data && node server.js"]
+CMD ["node", "server.js"]
