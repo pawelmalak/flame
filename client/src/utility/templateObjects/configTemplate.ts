@@ -23,6 +23,7 @@ export const configTemplate: Config = {
   kubernetesApps: false,
   unpinStoppedApps: false,
   useAmericanDate: false,
+  useAmericanTime: false,
   disableAutofocus: false,
   greetingsSchema: 'Good evening!;Good afternoon!;Good morning!;Good night!',
   daySchema: 'Sunday;Monday;Tuesday;Wednesday;Thursday;Friday;Saturday',

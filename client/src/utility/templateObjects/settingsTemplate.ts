@@ -12,6 +12,7 @@ export const uiSettingsTemplate: UISettingsForm = {
   hideApps: false,
   hideCategories: false,
   useAmericanDate: false,
+  useAmericanTime: false,
   greetingsSchema: 'Good evening!;Good afternoon!;Good morning!;Good night!',
   daySchema: 'Sunday;Monday;Tuesday;Wednesday;Thursday;Friday;Saturday',
   monthSchema:
