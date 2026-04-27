@@ -14,7 +14,15 @@ const storage = multer.diskStorage({
   },
 });
 
-const supportedTypes = ['jpg', 'jpeg', 'png', 'svg', 'svg+xml', 'x-icon'];
+const supportedTypes = [
+  'jpg',
+  'jpeg',
+  'png',
+  'svg',
+  'svg+xml',
+  'x-icon',
+  'html',
+];
 
 const fileFilter = (req, file, cb) => {
   if (supportedTypes.includes(file.mimetype.split('/')[1])) {
@@ -26,4 +34,7 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({ storage, fileFilter });
 
-module.exports = upload.single('icon');
+module.exports = {
+  icon: upload.single('icon'),
+  bookmark: upload.single('file'),
+};
