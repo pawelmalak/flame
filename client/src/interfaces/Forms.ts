@@ -25,6 +25,7 @@ export interface UISettingsForm {
   hideApps: boolean;
   hideCategories: boolean;
   useAmericanDate: boolean;
+  useAmericanTime: boolean;
   greetingsSchema: string;
   daySchema: string;
   monthSchema: string;

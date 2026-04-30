@@ -162,6 +162,20 @@ export const UISettings = (): JSX.Element => {
         </select>
       </InputGroup>
 
+      {/* TIME FORMAT */}
+      <InputGroup>
+        <label htmlFor="useAmericanTime">Time formatting</label>
+        <select
+          id="useAmericanTime"
+          name="useAmericanTime"
+          value={formData.useAmericanTime ? 1 : 0}
+          onChange={(e) => inputChangeHandler(e, { isBool: true })}
+        >
+          <option value={1}>01:30 PM</option>
+          <option value={0}>13:30</option>
+        </select>
+      </InputGroup>
+
       {/* CUSTOM GREETINGS */}
       <InputGroup>
         <label htmlFor="greetingsSchema">Custom greetings</label>

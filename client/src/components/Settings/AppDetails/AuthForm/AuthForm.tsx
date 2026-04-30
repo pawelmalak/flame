@@ -99,7 +99,7 @@ export const AuthForm = (): JSX.Element => {
       ) : (
         <div>
           <p className={classes.text}>
-            You are logged in. Your session will expire{' '}
+            You are logged in. Your session will expire on{' '}
             <span>{tokenExpires}</span>
           </p>
           <Button click={logout}>Logout</Button>

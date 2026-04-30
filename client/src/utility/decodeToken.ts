@@ -13,7 +13,16 @@ export const parseTokenExpire = (expiresIn: number): string => {
   const p = parseTime;
 
   const useAmericanDate = localStorage.useAmericanDate === 'true';
-  const time = `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+  const useAmericanTime = localStorage.useAmericanTime === 'true';
+
+  let hours = d.getHours();
+  let timePeriod = '';
+  if (useAmericanTime) {
+    timePeriod = hours >= 12 ? ' PM' : ' AM';
+    hours = hours % 12 || 12;
+  }
+
+  const time = `${p(hours)}:${p(d.getMinutes())}:${p(d.getSeconds())}${timePeriod}`;
 
   if (useAmericanDate) {
     return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()} ${time}`;

@@ -23,6 +23,7 @@ export interface Config {
   kubernetesApps: boolean;
   unpinStoppedApps: boolean;
   useAmericanDate: boolean;
+  useAmericanTime: boolean;
   disableAutofocus: boolean;
   greetingsSchema: string;
   daySchema: string;

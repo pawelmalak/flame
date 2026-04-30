@@ -15,6 +15,7 @@ import { ConfigFormData } from '../../types';
 
 const keys: (keyof Config)[] = [
   'useAmericanDate',
+  'useAmericanTime',
   'greetingsSchema',
   'daySchema',
   'monthSchema',

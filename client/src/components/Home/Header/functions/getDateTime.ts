@@ -29,6 +29,7 @@ export const getDateTime = (): string => {
   const now = new Date();
 
   const useAmericanDate = localStorage.useAmericanDate === 'true';
+  const useAmericanTime = localStorage.useAmericanTime === 'true';
   const showTime = localStorage.showTime === 'true';
   const hideDate = localStorage.hideDate === 'true';
 
@@ -50,11 +51,18 @@ export const getDateTime = (): string => {
   // Time
   const p = parseTime;
   let timeEl = '';
+  let timePeriod = '';
 
   if (showTime) {
-    const time = `${p(now.getHours())}:${p(now.getMinutes())}:${p(
+    let hours = now.getHours();
+    if (useAmericanTime) {
+      timePeriod = hours >= 12 ? ' PM' : ' AM';
+      hours = hours % 12 || 12;
+    }
+
+    const time = `${p(hours)}:${p(now.getMinutes())}:${p(
       now.getSeconds()
-    )}`;
+    )}${timePeriod}`;
 
     timeEl = time;
   }
