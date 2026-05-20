@@ -25,7 +25,7 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^9.0.3",
-    "multer": "^1.4.3",
+    "multer": "^2.1.1",
     "node-schedule": "^2.0.0",
     "sequelize": "^6.9.0",
     "sqlite3": "^6.0.1",
