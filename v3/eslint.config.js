@@ -48,6 +48,7 @@ export default tseslint.config(
           next: ['const', 'let', 'var'],
         },
         { blankLine: 'always', prev: '*', next: 'return' },
+        { blankLine: 'any', prev: ['const', 'let', 'var'], next: 'return' },
       ],
       'import/order': [
         'error',

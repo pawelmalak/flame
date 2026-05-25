@@ -14,7 +14,7 @@ export default {
         }
 
         const hasArrow = node.declarations.some(
-          (d) => d.init && d.init.type === 'ArrowFunctionExpression',
+          d => d.init && d.init.type === 'ArrowFunctionExpression',
         );
 
         if (!hasArrow) {
