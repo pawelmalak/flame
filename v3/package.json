@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --port 5000",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
@@ -14,6 +14,8 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@mdi/js": "^7.4.47",
+    "@tanstack/react-query": "^5.100.14",
     "better-sqlite3": "^12.10.0",
     "drizzle-orm": "^0.45.2",
     "next": "16.2.6",

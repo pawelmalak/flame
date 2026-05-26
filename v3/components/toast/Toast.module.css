@@ -1,0 +1,98 @@
+.toast {
+  width: 300px;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  border-radius: 4px;
+  padding: 15px 10px;
+  display: grid;
+  grid-template-columns: 20px 1fr 20px;
+  align-items: start;
+  gap: 10px;
+  transition:
+    background-color 0.25s,
+    color 0.25s;
+  animation: slideIn 0.3s;
+}
+
+.toast[data-interactive='true'] {
+  cursor: pointer;
+}
+
+.toast[data-exiting='true'] {
+  animation: slideOut 0.3s forwards;
+}
+
+.toast[data-highlighted='true'] {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+}
+
+.toast:not([data-highlighted='true']):hover {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.body {
+  min-width: 0;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  margin-bottom: 4px;
+}
+
+.message {
+  font-size: 14px;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.actionLabel {
+  display: inline-block;
+  margin-top: 6px;
+  font-weight: 500;
+  color: var(--color-accent);
+}
+
+.close {
+  background: none;
+  border: none;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  color: inherit;
+  cursor: pointer;
+}
+
+.close svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(600px);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(600px);
+  }
+}

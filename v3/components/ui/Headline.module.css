@@ -1,0 +1,10 @@
+.title {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.subtitle {
+  color: var(--color-primary);
+  margin-bottom: 20px;
+  font-weight: 400;
+}

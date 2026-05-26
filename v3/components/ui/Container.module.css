@@ -1,0 +1,17 @@
+.container {
+  width: 100%;
+  padding: 20px;
+  margin: 0 auto;
+}
+
+@media (min-width: 769px) {
+  .container {
+    width: 90%;
+  }
+}
+
+@media (min-width: 1201px) {
+  .container {
+    padding: 50px 250px;
+  }
+}

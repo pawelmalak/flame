@@ -1,0 +1,24 @@
+.nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.link {
+  padding-left: 7px;
+  border-left: 3px solid transparent;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  transition:
+    border-color 0.3s,
+    color 0.3s;
+}
+
+.link:hover,
+.link:focus {
+  border-left: 3px solid var(--color-primary);
+}
+
+.linkActive {
+  border-left: 3px solid var(--color-primary);
+}

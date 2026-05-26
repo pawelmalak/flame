@@ -1,4 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# negate public dir ignore that is a leftover from pre v3 repo
+!/public/
 
 # dependencies
 /node_modules

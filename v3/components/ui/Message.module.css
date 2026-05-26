@@ -1,0 +1,26 @@
+.message {
+  color: var(--color-primary);
+}
+
+.message a {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.messageCenter {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  color: var(--color-primary);
+  margin-bottom: 20px;
+}
+
+.messageCenter a,
+.messageCenter span {
+  color: var(--color-accent);
+}
+
+.messageCenter a:hover {
+  cursor: pointer;
+}

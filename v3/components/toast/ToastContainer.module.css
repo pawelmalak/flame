@@ -1,0 +1,21 @@
+.container {
+  position: fixed;
+  right: var(--spacing-ui);
+  bottom: var(--spacing-ui);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 500;
+  pointer-events: none;
+}
+
+.container > * {
+  pointer-events: auto;
+}
+
+@media (max-width: 480px) {
+  .container {
+    right: var(--spacing-ui);
+    left: var(--spacing-ui);
+  }
+}
