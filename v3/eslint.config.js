@@ -24,6 +24,7 @@ export default tseslint.config(
     },
     rules: {
       curly: ['error', 'all'],
+      'no-console': 'error',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
@@ -57,6 +58,12 @@ export default tseslint.config(
           'newlines-between': 'always',
         },
       ],
+    },
+  },
+  {
+    files: ['__tests__/**/*.{ts,tsx}'],
+    rules: {
+      'no-console': 'off',
     },
   },
 );
