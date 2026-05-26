@@ -8,12 +8,12 @@ export default tseslint.config(
     ignores: ['**/dist/**', '**/.next/**', '**/node_modules/**'],
   },
   {
-    files: ['{app,components,db,lib}/**/*.{ts,tsx}'],
+    files: ['{app,components,db,lib,__tests__}/**/*.{ts,tsx}'],
     extends: [...tseslint.configs.recommended],
   },
   eslintPluginPrettier,
   {
-    files: ['{app,components,db,lib}/**/*.{ts,tsx}'],
+    files: ['{app,components,db,lib,__tests__}/**/*.{ts,tsx}'],
     plugins: {
       custom: {
         rules: {

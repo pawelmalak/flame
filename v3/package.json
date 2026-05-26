@@ -9,6 +9,9 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio"
@@ -27,6 +30,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitest/coverage-v8": "^4.1.7",
     "drizzle-kit": "^0.31.10",
     "eslint": "^9.39.4",
     "eslint-config-prettier": "^10.1.8",
@@ -34,6 +38,7 @@
     "eslint-plugin-prettier": "^5.5.5",
     "prettier": "^3.8.3",
     "typescript": "^5",
-    "typescript-eslint": "^8.59.4"
+    "typescript-eslint": "^8.59.4",
+    "vitest": "^4.1.7"
   }
 }
