@@ -1,5 +1,5 @@
 {
-  "name": "v3",
+  "name": "flame",
   "version": "3.0.0",
   "private": true,
   "type": "module",
@@ -21,6 +21,7 @@
     "@tanstack/react-query": "^5.100.14",
     "better-sqlite3": "^12.10.0",
     "drizzle-orm": "^0.45.2",
+    "jose": "^6.2.3",
     "next": "16.2.6",
     "pino": "^10.3.1",
     "react": "19.2.4",

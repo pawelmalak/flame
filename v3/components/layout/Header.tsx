@@ -12,6 +12,8 @@ export const Header = ({ config }: { config: HeaderConfig }) => {
   const { hideDate, hideTime, hideHeader } = config;
 
   useEffect(() => {
+    setNow(new Date());
+
     const interval = setInterval(() => setNow(new Date()), 1000);
 
     return () => clearInterval(interval);
@@ -23,7 +25,7 @@ export const Header = ({ config }: { config: HeaderConfig }) => {
 
   return (
     <header className={styles.header} data-flame="header">
-      {showDateTime ? <p>{dateTime}</p> : null}
+      {showDateTime ? <p suppressHydrationWarning>{dateTime}</p> : null}
 
       <Link href="/settings" className={styles.settingsLink}>
         Go to Settings

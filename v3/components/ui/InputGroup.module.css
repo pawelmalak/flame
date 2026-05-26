@@ -1,0 +1,50 @@
+.inputGroup {
+  margin-bottom: 15px;
+}
+
+.inputGroup label,
+.inputGroup span,
+.inputGroup input,
+.inputGroup textarea {
+  display: block;
+}
+
+.inputGroup input,
+.inputGroup select,
+.inputGroup textarea {
+  margin: 8px 0;
+  width: 100%;
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+  background-color: var(--color-primary);
+  color: var(--color-background);
+}
+
+.inputGroup span {
+  font-size: 12px;
+  color: var(--color-primary);
+}
+
+.inputGroup span a {
+  color: var(--color-accent);
+}
+
+.inputGroup label {
+  color: var(--color-primary);
+}
+
+.inputGroup textarea {
+  resize: none;
+  height: 50vh;
+}
+
+.inputGroup input[type='color'] {
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+}
+
+.inputGroup input[type='color']:hover {
+  cursor: pointer;
+}

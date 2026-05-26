@@ -11,6 +11,9 @@ export default defineConfig({
   test: {
     include: ['__tests__/**/*.{test,spec}.ts'],
     environment: 'node',
+    env: {
+      LOG_LEVEL: 'silent',
+    },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],

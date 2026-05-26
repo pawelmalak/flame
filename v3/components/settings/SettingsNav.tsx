@@ -6,17 +6,23 @@ import { usePathname } from 'next/navigation';
 import type { SettingsNavItem } from '@/app/settings/navItems';
 import styles from './SettingsNav.module.css';
 
-export const SettingsNav = ({ items }: { items: SettingsNavItem[] }) => {
+type Props = {
+  items: SettingsNavItem[];
+  isAuthenticated: boolean;
+};
+
+export const SettingsNav = ({ items, isAuthenticated }: Props) => {
   const pathname = usePathname();
+  const visibleItems = isAuthenticated ? items : items.filter(item => !item.isAuthRequired);
 
   return (
     <nav className={styles.nav} data-flame="settings-nav">
-      {items.map(item => {
+      {visibleItems.map((item, idx) => {
         const isActive = pathname === item.href;
         const className = isActive ? `${styles.link} ${styles.linkActive}` : styles.link;
 
         return (
-          <Link key={item.href} href={item.href} className={className}>
+          <Link key={idx} href={item.href} className={className}>
             {item.name}
           </Link>
         );
