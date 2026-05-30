@@ -28,7 +28,7 @@ export const POST = async (request: Request): Promise<Response> => {
   const ip = getClientIp(request);
 
   if (!loginLimiter.allowRequest(ip)) {
-    return NextResponse.json({ ok: false, error: 'rate-limited' }, { status: 429 });
+    return NextResponse.json({ success: false, error: 'rate-limited' }, { status: 429 });
   }
 
   let body: unknown;
@@ -36,7 +36,7 @@ export const POST = async (request: Request): Promise<Response> => {
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json({ ok: false, error: 'invalid-body' }, { status: 400 });
+    return NextResponse.json({ success: false, error: 'invalid-body' }, { status: 400 });
   }
 
   const password =
@@ -45,7 +45,7 @@ export const POST = async (request: Request): Promise<Response> => {
       : undefined;
 
   if (typeof password !== 'string' || password.length === 0) {
-    return NextResponse.json({ ok: false, error: 'invalid-body' }, { status: 400 });
+    return NextResponse.json({ success: false, error: 'invalid-body' }, { status: 400 });
   }
 
   const expectedPassword = process.env.PASSWORD ?? '';
@@ -53,11 +53,11 @@ export const POST = async (request: Request): Promise<Response> => {
   if (!comparePassword(password, expectedPassword)) {
     authLog.warn({ ip }, 'login failed');
 
-    return NextResponse.json({ ok: false, error: 'invalid-credentials' }, { status: 401 });
+    return NextResponse.json({ success: false, error: 'invalid-credentials' }, { status: 401 });
   }
 
   const token = await signSession(ADMIN_USER.id);
-  const response = NextResponse.json({ ok: true });
+  const response = NextResponse.json({ success: true });
 
   response.cookies.set(SESSION_COOKIE, token, {
     httpOnly: true,

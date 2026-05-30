@@ -4,13 +4,15 @@ import Link from 'next/link';
 import { Header } from '@/components/layout/Header';
 import { Container } from '@/components/ui/Container';
 import { Message } from '@/components/ui/Message';
-import { PLACEHOLDER_HEADER_CONFIG } from '@/lib/config';
+import { getMergedConfig } from '@/lib/mergedConfig';
 import styles from './page.module.css';
 
 export default function HomePage() {
+  const config = getMergedConfig();
+
   return (
     <Container>
-      <Header config={PLACEHOLDER_HEADER_CONFIG} />
+      <Header config={config} />
 
       <Message>
         Welcome to Flame! Go to <Link href="/settings">/settings</Link>, login and start customizing

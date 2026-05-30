@@ -63,7 +63,7 @@ describe('POST /api/auth/login', () => {
     const response = await loginPOST(buildRequest({ password: TEST_PASSWORD }));
 
     expect(response.status).toBe(200);
-    expect(await response.json()).toEqual({ ok: true });
+    expect(await response.json()).toEqual({ success: true });
 
     const setCookie = response.headers.get('set-cookie') ?? '';
 
@@ -86,7 +86,7 @@ describe('POST /api/auth/login', () => {
     const response = await loginPOST(buildRequest({ password: 'wrong-password' }));
 
     expect(response.status).toBe(401);
-    expect(await response.json()).toEqual({ ok: false, error: 'invalid-credentials' });
+    expect(await response.json()).toEqual({ success: false, error: 'invalid-credentials' });
     expect(response.headers.get('set-cookie')).toBe(null);
   });
 
@@ -124,6 +124,6 @@ describe('POST /api/auth/login', () => {
     const response = await loginPOST(buildRequest({ password: TEST_PASSWORD }));
 
     expect(response.status).toBe(429);
-    expect(await response.json()).toEqual({ ok: false, error: 'rate-limited' });
+    expect(await response.json()).toEqual({ success: false, error: 'rate-limited' });
   });
 });

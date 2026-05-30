@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 
 import Database from 'better-sqlite3';
-import { drizzle } from 'drizzle-orm/better-sqlite3';
+import { drizzle, type BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 
 import { DATA_DIR, DB_PATH } from './paths';
 import * as schema from './schema';
@@ -26,6 +26,6 @@ const globalRef = globalThis as GlobalWithDb;
 export const sqlite: Database.Database =
   globalRef.__flameSqlite ?? (globalRef.__flameSqlite = createDbConnection());
 
-export const db = drizzle(sqlite, { schema });
+export type DbClient = BetterSQLite3Database<typeof schema>;
 
-export type DbClient = typeof db;
+export const db: DbClient = drizzle(sqlite, { schema });

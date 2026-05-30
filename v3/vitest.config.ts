@@ -17,7 +17,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],
-      include: ['lib/**/*.ts', 'db/**/*.ts', 'app/**/*.ts'],
+      include: ['lib/**/*.ts', 'db/**/*.ts', 'app/**/*.ts', 'hooks/**/*.ts'],
       exclude: ['**/*.d.ts', 'db/migrations/**'],
     },
   },

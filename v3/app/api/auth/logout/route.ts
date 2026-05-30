@@ -9,7 +9,7 @@ export const POST = async (request: Request): Promise<Response> => {
     return new NextResponse(null, { status: 404 });
   }
 
-  const response = NextResponse.json({ ok: true });
+  const response = NextResponse.json({ success: true });
 
   response.cookies.delete(SESSION_COOKIE);
 

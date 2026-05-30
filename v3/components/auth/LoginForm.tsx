@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type SyntheticEvent } from 'react';
 
 import { useToast } from '@/components/toast/ToastProvider';
 import { Button } from '@/components/ui/Button';
@@ -19,7 +19,7 @@ export const LoginForm = () => {
     inputRef.current?.focus();
   }, []);
 
-  const handleSubmit = async (event: FormEvent) => {
+  const handleSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (isSubmitting || password.length === 0) {

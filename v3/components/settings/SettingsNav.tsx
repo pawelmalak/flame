@@ -17,12 +17,12 @@ export const SettingsNav = ({ items, isAuthenticated }: Props) => {
 
   return (
     <nav className={styles.nav} data-flame="settings-nav">
-      {visibleItems.map((item, idx) => {
+      {visibleItems.map(item => {
         const isActive = pathname === item.href;
         const className = isActive ? `${styles.link} ${styles.linkActive}` : styles.link;
 
         return (
-          <Link key={idx} href={item.href} className={className}>
+          <Link key={item.href} href={item.href} className={className}>
             {item.name}
           </Link>
         );

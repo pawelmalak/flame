@@ -4,4 +4,4 @@ export type SettingsNavItem = {
   isAuthRequired?: boolean;
 };
 
-export const settingsNavItems: SettingsNavItem[] = [];
+export const settingsNavItems: SettingsNavItem[] = [{ name: 'General', href: '/settings/general' }];

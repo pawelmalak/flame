@@ -52,7 +52,7 @@ describe('POST /api/auth/logout', () => {
     const response = await logoutPOST(buildRequest());
 
     expect(response.status).toBe(200);
-    expect(await response.json()).toEqual({ ok: true });
+    expect(await response.json()).toEqual({ success: true });
 
     const setCookie = response.headers.get('set-cookie') ?? '';
 
