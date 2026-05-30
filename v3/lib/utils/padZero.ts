@@ -1,1 +1,1 @@
-export const padZero = (n: number) => n.toString().padStart(2, '0');
+export const padZero = (value: number) => value.toString().padStart(2, '0');

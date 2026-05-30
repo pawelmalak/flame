@@ -1,20 +1,9 @@
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { POST as logoutPOST } from '@/app/api/auth/logout/route';
+import { setupEnvSandbox } from '../helpers/envSandbox';
 
-const ENV_KEYS = ['PASSWORD', 'AUTH_DISABLED'] as const;
-
-let savedEnv: Partial<Record<(typeof ENV_KEYS)[number], string | undefined>>;
-
-const setEnv = (key: string, value: string | undefined): void => {
-  const env = process.env as Record<string, string | undefined>;
-
-  if (value === undefined) {
-    delete env[key];
-  } else {
-    env[key] = value;
-  }
-};
+const { setEnv } = setupEnvSandbox(['PASSWORD', 'AUTH_DISABLED'] as const);
 
 const buildRequest = (): Request =>
   new Request('http://test.local/api/auth/logout', {
@@ -23,20 +12,8 @@ const buildRequest = (): Request =>
   });
 
 beforeEach(() => {
-  savedEnv = {};
-
-  for (const key of ENV_KEYS) {
-    savedEnv[key] = process.env[key];
-  }
-
   setEnv('PASSWORD', 'flame');
   setEnv('AUTH_DISABLED', undefined);
-});
-
-afterEach(() => {
-  for (const key of ENV_KEYS) {
-    setEnv(key, savedEnv[key]);
-  }
 });
 
 describe('POST /api/auth/logout', () => {
@@ -48,7 +25,7 @@ describe('POST /api/auth/logout', () => {
     expect(response.status).toBe(404);
   });
 
-  it('returns 200 and emits a Set-Cookie clearing flame_session', async () => {
+  it('returns 200 and sets a cookie that clears the session', async () => {
     const response = await logoutPOST(buildRequest());
 
     expect(response.status).toBe(200);

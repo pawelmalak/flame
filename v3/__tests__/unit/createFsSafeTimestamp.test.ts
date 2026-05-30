@@ -20,9 +20,9 @@ describe('createFsSafeTimestamp', () => {
   it('produces a string containing no colon or dot characters', () => {
     vi.setSystemTime(new Date('2026-12-31T23:59:59.999Z'));
 
-    const result = createFsSafeTimestamp();
+    const timestamp = createFsSafeTimestamp();
 
-    expect(result).not.toMatch(/[:.]/);
+    expect(timestamp).not.toMatch(/[:.]/);
   });
 
   it('returns distinct values across time advances', () => {

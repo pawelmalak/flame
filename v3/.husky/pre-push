@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+cd "$(git rev-parse --show-toplevel)/v3" || exit 1
+
+npm run test

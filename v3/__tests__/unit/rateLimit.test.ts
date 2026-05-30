@@ -83,7 +83,7 @@ describe('createRateLimiter', () => {
     expect(limiter.allowRequest('b')).toBe(false);
   });
 
-  it('clearAttemptsByKey() clears a specific key', () => {
+  it('clears attempts for a specific key', () => {
     const clock = fakeClock(1_000_000);
     const limiter = createRateLimiter({ maxAttempts: 1, windowMs: 600_000, now: clock.now });
 
@@ -94,7 +94,7 @@ describe('createRateLimiter', () => {
     expect(limiter.allowRequest('a')).toBe(true);
   });
 
-  it('clearAttemptsByKey() leaves other keys untouched', () => {
+  it('leaves other keys untouched when clearing one', () => {
     const clock = fakeClock(1_000_000);
     const limiter = createRateLimiter({ maxAttempts: 1, windowMs: 600_000, now: clock.now });
 

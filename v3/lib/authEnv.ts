@@ -15,14 +15,14 @@ export const checkAuthEnv = (): AuthEnvCheckResult => {
 };
 
 export const enforceAuthEnv = (): void => {
-  const result = checkAuthEnv();
+  const envCheckResult = checkAuthEnv();
 
-  if (result.success) {
+  if (envCheckResult.success) {
     return;
   }
 
   authLog.fatal(
-    { reason: result.reason },
+    { reason: envCheckResult.reason },
     'PASSWORD env required when auth enabled - set PASSWORD or AUTH_DISABLED=true to start the server',
   );
 

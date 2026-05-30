@@ -69,7 +69,7 @@ export const LoginForm = () => {
           placeholder="••••••"
           autoComplete="current-password"
           value={password}
-          onChange={e => setPassword(e.target.value)}
+          onChange={event => setPassword(event.target.value)}
           disabled={isSubmitting}
         />
       </InputGroup>

@@ -17,21 +17,21 @@ describe('createTestDb', () => {
     expect(row.foreign_keys).toBe(1);
   });
 
-  it('isolates state between invocations', () => {
-    const a = createTestDb();
-    const b = createTestDb();
+  it('isolates state between calls', () => {
+    const firstDb = createTestDb();
+    const secondDb = createTestDb();
 
     try {
-      a.sqlite.exec('CREATE TABLE marker (id INTEGER PRIMARY KEY)');
+      firstDb.sqlite.exec('CREATE TABLE marker (id INTEGER PRIMARY KEY)');
 
-      const tables = b.sqlite
+      const tables = secondDb.sqlite
         .prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='marker'")
         .all();
 
       expect(tables).toHaveLength(0);
     } finally {
-      a.close();
-      b.close();
+      firstDb.close();
+      secondDb.close();
     }
   });
 

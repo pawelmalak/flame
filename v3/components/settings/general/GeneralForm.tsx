@@ -9,7 +9,7 @@ import { SettingsHeadline } from '@/components/settings/SettingsHeadline';
 import { TextField } from '@/components/settings/TextField';
 import { useToast } from '@/components/toast/ToastProvider';
 import { Button } from '@/components/ui/Button';
-import type { MergedConfig, GlobalConfigOnlyKey } from '@/lib/config';
+import type { MergedConfig, GlobalConfigOnlyKey, UnvalidatedConfig } from '@/lib/config';
 import { useFormStateUpdater } from '@/hooks/useFormStateUpdater';
 
 type Props = {
@@ -31,8 +31,8 @@ const joinStringSchemaKey = (values: readonly string[]): string => values.join(L
 const splitStringSchemaKey = (raw: string): string[] =>
   raw
     .split(LIST_DELIMITER)
-    .map((part) => part.trim())
-    .filter((part) => part.length > 0);
+    .map(part => part.trim())
+    .filter(part => part.length > 0);
 
 const buildInitialState = ({
   sessionLifetimeDays,
@@ -67,7 +67,7 @@ export const GeneralForm = ({ initialConfig, envLockedKeys }: Props) => {
   const updateState = useFormStateUpdater(setFormState);
 
   const buildConfigUpdatePayload = ():
-    | { success: true; payload: Record<string, unknown> }
+    | { success: true; payload: UnvalidatedConfig }
     | { success: false; error: string } => {
     const {
       sessionLifetimeDays,
@@ -78,7 +78,7 @@ export const GeneralForm = ({ initialConfig, envLockedKeys }: Props) => {
       ...configRest
     } = formState;
 
-    const payload: Record<string, unknown> = { ...configRest };
+    const payload: UnvalidatedConfig = { ...configRest };
 
     for (const lockedKey of envLockedKeys) {
       delete payload[lockedKey];

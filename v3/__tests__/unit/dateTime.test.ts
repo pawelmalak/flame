@@ -13,52 +13,52 @@ const baseDateTimeConfig: DateTimeConfig = {
 
 describe('formatDateTime', () => {
   it('renders european date order by default', () => {
-    const result = formatDateTime(new Date(2026, 4, 7, 9, 5, 3), baseDateTimeConfig);
+    const formatted = formatDateTime(new Date(2026, 4, 7, 9, 5, 3), baseDateTimeConfig);
 
-    expect(result).toBe('Thursday, 7 May 2026 - 09:05:03');
+    expect(formatted).toBe('Thursday, 7 May 2026 - 09:05:03');
   });
 
   it('renders american date order when useAmericanDate is true', () => {
-    const result = formatDateTime(new Date(2026, 4, 7, 9, 5, 3), {
+    const formatted = formatDateTime(new Date(2026, 4, 7, 9, 5, 3), {
       ...baseDateTimeConfig,
       useAmericanDate: true,
     });
 
-    expect(result).toBe('Thursday, May 7 2026 - 09:05:03');
+    expect(formatted).toBe('Thursday, May 7 2026 - 09:05:03');
   });
 
   it('pads single-digit time components with leading zero', () => {
-    const result = formatDateTime(new Date(2026, 0, 1, 1, 2, 3), baseDateTimeConfig);
+    const formatted = formatDateTime(new Date(2026, 0, 1, 1, 2, 3), baseDateTimeConfig);
 
-    expect(result).toContain(' - 01:02:03');
+    expect(formatted).toContain(' - 01:02:03');
   });
 
   it('omits the date when hideDate is true', () => {
-    const result = formatDateTime(new Date(2026, 0, 1, 12, 0, 0), {
+    const formatted = formatDateTime(new Date(2026, 0, 1, 12, 0, 0), {
       ...baseDateTimeConfig,
       hideDate: true,
     });
 
-    expect(result).toBe('12:00:00');
+    expect(formatted).toBe('12:00:00');
   });
 
   it('omits the time when hideTime is true', () => {
-    const result = formatDateTime(new Date(2026, 0, 1, 12, 0, 0), {
+    const formatted = formatDateTime(new Date(2026, 0, 1, 12, 0, 0), {
       ...baseDateTimeConfig,
       hideTime: true,
     });
 
-    expect(result).toBe('Thursday, 1 January 2026');
+    expect(formatted).toBe('Thursday, 1 January 2026');
   });
 
   it('returns an empty string when both date and time are hidden', () => {
-    const result = formatDateTime(new Date(2026, 0, 1, 12, 0, 0), {
+    const formatted = formatDateTime(new Date(2026, 0, 1, 12, 0, 0), {
       ...baseDateTimeConfig,
       hideDate: true,
       hideTime: true,
     });
 
-    expect(result).toBe('');
+    expect(formatted).toBe('');
   });
 
   it('drops the separator when only one half renders', () => {
@@ -82,15 +82,15 @@ describe('formatDateTime', () => {
 
     expect(sunday.getDay()).toBe(0);
 
-    const result = formatDateTime(sunday, baseDateTimeConfig);
+    const formatted = formatDateTime(sunday, baseDateTimeConfig);
 
-    expect(result.startsWith('Sunday,')).toBe(true);
+    expect(formatted.startsWith('Sunday,')).toBe(true);
   });
 
   it('indexes monthSchema by getMonth() (December = 11)', () => {
-    const result = formatDateTime(new Date(2026, 11, 15, 9, 0, 0), baseDateTimeConfig);
+    const formatted = formatDateTime(new Date(2026, 11, 15, 9, 0, 0), baseDateTimeConfig);
 
-    expect(result).toContain('December');
+    expect(formatted).toContain('December');
   });
 });
 

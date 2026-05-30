@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { POST as loginPOST } from '@/app/api/auth/login/route';
 import { DEFAULT_MAX_ATTEMPTS, loginLimiter } from '@/lib/rateLimit';
+import { setupEnvSandbox } from '../helpers/envSandbox';
 
 const TEST_PASSWORD = 'flame';
 const TEST_SECRET = 'test-secret-very-long-string';
@@ -13,27 +14,15 @@ const buildRequest = (body: unknown, headers: HeadersInit = {}): Request =>
     body: JSON.stringify(body),
   });
 
-const ENV_KEYS = ['PASSWORD', 'SECRET', 'AUTH_DISABLED', 'RATE_LIMIT_DISABLED'] as const;
-
-let savedEnv: Partial<Record<(typeof ENV_KEYS)[number], string | undefined>>;
-
-const setEnv = (key: string, value: string | undefined): void => {
-  const env = process.env as Record<string, string | undefined>;
-
-  if (value === undefined) {
-    delete env[key];
-  } else {
-    env[key] = value;
-  }
-};
+const { setEnv } = setupEnvSandbox([
+  'PASSWORD',
+  'SECRET',
+  'AUTH_DISABLED',
+  'RATE_LIMIT_DISABLED',
+  'NODE_ENV',
+] as const);
 
 beforeEach(() => {
-  savedEnv = {};
-
-  for (const key of ENV_KEYS) {
-    savedEnv[key] = process.env[key];
-  }
-
   setEnv('PASSWORD', TEST_PASSWORD);
   setEnv('SECRET', TEST_SECRET);
   setEnv('AUTH_DISABLED', undefined);
@@ -43,10 +32,6 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  for (const key of ENV_KEYS) {
-    setEnv(key, savedEnv[key]);
-  }
-
   loginLimiter.clearAttemptsByKey('1.2.3.4');
 });
 

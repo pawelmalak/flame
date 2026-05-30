@@ -30,7 +30,7 @@ export const createRateLimiter = (options: RateLimitOptions = {}): RateLimiter =
 
       const current = now();
       const timeDelta = current - windowMs;
-      const recentAttempts = (attempts.get(key) ?? []).filter(ts => ts > timeDelta);
+      const recentAttempts = (attempts.get(key) ?? []).filter(timestamp => timestamp > timeDelta);
 
       if (recentAttempts.length >= maxAttempts) {
         attempts.set(key, recentAttempts);

@@ -18,7 +18,7 @@ const getSortedBackups = (dir: string): { name: string; mtimeMs: number }[] => {
       const { mtimeMs } = fs.statSync(path.join(dir, name));
       return { name, mtimeMs };
     })
-    .sort((a, b) => a.mtimeMs - b.mtimeMs);
+    .sort((firstBackup, secondBackup) => firstBackup.mtimeMs - secondBackup.mtimeMs);
 };
 
 const removeOldBackups = (dir: string, keepCount: number): number => {

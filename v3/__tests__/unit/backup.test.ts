@@ -120,7 +120,7 @@ describe('__internal.getSortedBackups', () => {
 
     const sorted = __internal.getSortedBackups(tmpPaths.BACKUPS_DIR);
 
-    expect(sorted.map(b => b.name)).toEqual(['older.sqlite', 'newer.sqlite']);
+    expect(sorted.map(backup => backup.name)).toEqual(['older.sqlite', 'newer.sqlite']);
   });
 
   it('ignores files that do not end with .sqlite', () => {
@@ -130,7 +130,7 @@ describe('__internal.getSortedBackups', () => {
 
     const sorted = __internal.getSortedBackups(tmpPaths.BACKUPS_DIR);
 
-    expect(sorted.map(b => b.name)).toEqual(['a.sqlite']);
+    expect(sorted.map(backup => backup.name)).toEqual(['a.sqlite']);
   });
 });
 
