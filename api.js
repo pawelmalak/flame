@@ -1,5 +1,6 @@
 const { join } = require('path');
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const { errorHandler } = require('./middleware');
 
 const api = express();
@@ -13,6 +14,9 @@ api.get(/^\/(?!api)/, (req, res) => {
 
 // Body parser
 api.use(express.json());
+
+// Cookie parser (used for short-lived OIDC PKCE state)
+api.use(cookieParser(process.env.SECRET));
 
 // Link controllers with routes
 api.use('/api/apps', require('./routes/apps'));

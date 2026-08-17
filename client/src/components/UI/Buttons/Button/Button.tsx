@@ -4,13 +4,18 @@ import classes from './Button.module.css';
 interface Props {
   children: ReactNode;
   click?: any;
+  type?: 'button' | 'submit' | 'reset';
 }
 
 export const Button = (props: Props): JSX.Element => {
-  const { children, click } = props;
+  const { children, click, type } = props;
 
   return (
-    <button className={classes.Button} onClick={click ? click : () => {}}>
+    <button
+      type={type || 'submit'}
+      className={classes.Button}
+      onClick={click ? click : () => {}}
+    >
       {children}
     </button>
   );

@@ -5,4 +5,5 @@ module.exports = {
   upload: require('./multer'),
   requireAuth: require('./requireAuth'),
   requireBody: require('./requireBody'),
+  requireOidc: require('./requireOidc'),
 };

@@ -33,6 +33,19 @@ export const login =
     }
   };
 
+export const loginWithOidcToken =
+  (token: string) => async (dispatch: Dispatch<LoginAction>) => {
+    localStorage.setItem('token', token);
+
+    dispatch({
+      type: ActionType.login,
+      payload: token,
+    });
+
+    dispatch<any>(getApps());
+    dispatch<any>(getCategories());
+  };
+
 export const logout = () => (dispatch: Dispatch<LogoutAction>) => {
   localStorage.removeItem('token');
 

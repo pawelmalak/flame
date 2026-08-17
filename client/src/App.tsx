@@ -5,7 +5,7 @@ import 'external-svg-loader';
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { autoLogin, getConfig } from './store/action-creators';
+import { autoLogin, getConfig, loginWithOidcToken } from './store/action-creators';
 import { actionCreators, store } from './store';
 import { State } from './store/reducers';
 
@@ -22,8 +22,17 @@ import { NotificationCenter } from './components/NotificationCenter/Notification
 // Get config
 store.dispatch<any>(getConfig());
 
-// Validate token
-if (localStorage.token) {
+// Handle OIDC redirect (?oidc_token=...) before checking localStorage
+const oidcTokenParams = new URLSearchParams(window.location.search);
+const oidcToken = oidcTokenParams.get('oidc_token');
+
+if (oidcToken) {
+  store.dispatch<any>(loginWithOidcToken(oidcToken));
+
+  // Remove the token from the URL so it isn't left in browser history
+  window.history.replaceState({}, document.title, window.location.pathname);
+} else if (localStorage.token) {
+  // Validate token
   store.dispatch<any>(autoLogin());
 }
 

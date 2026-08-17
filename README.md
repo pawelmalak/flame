@@ -93,6 +93,30 @@ secrets:
     file: ./secrets/flame_password
 ```
 
+##### OIDC Authentication (optional)
+
+Flame supports signing in via an external OIDC provider (e.g. [Kanidm](https://kanidm.com/)) in addition to the built-in password login.
+
+To enable it, set the following environment variables:
+
+```
+OIDC_ISSUER=https://your-idp.example.com/oauth2/openid/flame
+OIDC_CLIENT_ID=flame
+OIDC_CLIENT_SECRET=your_client_secret
+OIDC_REDIRECT_URI=https://your-flame-instance.example.com/api/auth/oidc/callback
+``` 
+
+All four variables must be set for OIDC to activate; if any is missing, the "Sign in with OIDC" button won't appear and the `/api/auth/oidc/*` endpoints return `404`.
+
+**Kanidm setup example:**
+
+```bash
+kanidm system oauth2 create flame Flame https://your-flame-instance.example.com
+kanidm system oauth2 add-redirect-url flame https://your-flame-instance.example.com/api/auth/oidc/callback
+kanidm system oauth2 update-scope-map flame <your_group> openid profile email
+kanidm system oauth2 show-basic-secret flame
+```
+
 #### Skaffold
 
 ```sh
