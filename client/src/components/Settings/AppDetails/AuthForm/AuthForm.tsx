@@ -13,6 +13,7 @@ import classes from '../AppDetails.module.css';
 
 export const AuthForm = (): JSX.Element => {
   const { isAuthenticated, token } = useSelector((state: State) => state.auth);
+  const { config } = useSelector((state: State) => state.config);
 
   const dispatch = useDispatch();
   const { login, logout } = bindActionCreators(actionCreators, dispatch);
@@ -95,6 +96,19 @@ export const AuthForm = (): JSX.Element => {
           </InputGroup>
 
           <Button>Login</Button>
+
+          {config.isOidcEnabled && (
+            <span style={{ marginLeft: '10px' }}>
+              <Button
+                type="button"
+                click={() => {
+                  window.location.href = '/api/auth/oidc/login';
+                }}
+              >
+                Sign in with OIDC
+              </Button>
+            </span>
+          )}
         </form>
       ) : (
         <div>

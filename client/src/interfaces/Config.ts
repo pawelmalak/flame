@@ -32,4 +32,5 @@ export interface Config {
   isKilometer: boolean;
   weatherData: WeatherData;
   hideDate: boolean;
+  isOidcEnabled: boolean;
 }
