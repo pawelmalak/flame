@@ -2,3 +2,4 @@ node_modules
 data
 public
 !client/public
+client/dist

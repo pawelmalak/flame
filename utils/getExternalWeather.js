@@ -27,7 +27,7 @@ const getExternalWeather = async () => {
     });
     return weatherData;
   } catch (err) {
-    throw new Error('External API request failed');
+    throw new Error('External API request failed: '+ err.message);
   }
 };
 
