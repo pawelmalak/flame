@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../store';
 
 // Typescript
-import { Bookmark, Category, NewBookmark } from '../../../interfaces';
+import { Bookmark, Category, NewBookmark, ApiResponse } from '../../../interfaces';
 
 // UI
 import { ModalForm, InputGroup, Button } from '../../UI';
@@ -16,7 +16,8 @@ import { ModalForm, InputGroup, Button } from '../../UI';
 import classes from './Form.module.css';
 
 // Utils
-import { inputHandler, newBookmarkTemplate } from '../../../utility';
+import { inputHandler, newBookmarkTemplate, applyAuth } from '../../../utility';
+import axios from 'axios';
 
 interface Props {
   modalHandler: () => void;
@@ -35,6 +36,7 @@ export const BookmarksForm = ({
 
   const [useCustomIcon, toggleUseCustomIcon] = useState<boolean>(false);
   const [customIcon, setCustomIcon] = useState<File | null>(null);
+  const [fetchingFavicon, setFetchingFavicon] = useState<boolean>(false);
 
   const [formData, setFormData] = useState<NewBookmark>(newBookmarkTemplate);
 
@@ -62,6 +64,26 @@ export const BookmarksForm = ({
   const fileChangeHandler = (e: ChangeEvent<HTMLInputElement>): void => {
     if (e.target.files) {
       setCustomIcon(e.target.files[0]);
+    }
+  };
+
+  const fetchFaviconHandler = async (): Promise<void> => {
+    if (!formData.url || fetchingFavicon) return;
+
+    setFetchingFavicon(true);
+    try {
+      const res = await axios.get<ApiResponse<{ filename: string }>>(
+        `/api/apps/favicon?url=${encodeURIComponent(formData.url.trim())}`,
+        { headers: applyAuth() }
+      );
+      setFormData({ ...formData, icon: res.data.data.filename });
+    } catch (err) {
+      createNotification({
+        title: 'Error',
+        message: 'Could not fetch favicon',
+      });
+    } finally {
+      setFetchingFavicon(false);
     }
   };
 
@@ -230,6 +252,9 @@ export const BookmarksForm = ({
             className={classes.Switch}
           >
             Switch to custom icon upload
+          </span>
+          <span onClick={fetchFaviconHandler} className={classes.Switch}>
+            {fetchingFavicon ? 'Fetching favicon...' : 'Fetch favicon'}
           </span>
         </InputGroup>
       ) : (

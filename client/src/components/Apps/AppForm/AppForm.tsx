@@ -1,11 +1,12 @@
 import { useState, useEffect, ChangeEvent, SyntheticEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NewApp } from '../../../interfaces';
+import { NewApp, ApiResponse } from '../../../interfaces';
 
 import classes from './AppForm.module.css';
 
 import { ModalForm, InputGroup, Button } from '../../UI';
-import { inputHandler, newAppTemplate } from '../../../utility';
+import { inputHandler, newAppTemplate, applyAuth } from '../../../utility';
+import axios from 'axios';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../store';
 import { State } from '../../../store/reducers';
@@ -23,6 +24,7 @@ export const AppForm = ({ modalHandler }: Props): JSX.Element => {
 
   const [useCustomIcon, toggleUseCustomIcon] = useState<boolean>(false);
   const [customIcon, setCustomIcon] = useState<File | null>(null);
+  const [fetchingFavicon, setFetchingFavicon] = useState<boolean>(false);
   const [formData, setFormData] = useState<NewApp>(newAppTemplate);
 
   useEffect(() => {
@@ -50,6 +52,26 @@ export const AppForm = ({ modalHandler }: Props): JSX.Element => {
   const fileChangeHandler = (e: ChangeEvent<HTMLInputElement>): void => {
     if (e.target.files) {
       setCustomIcon(e.target.files[0]);
+    }
+  };
+
+  const fetchFaviconHandler = async (): Promise<void> => {
+    if (!formData.url || fetchingFavicon) return;
+
+    setFetchingFavicon(true);
+    try {
+      const res = await axios.get<ApiResponse<{ filename: string }>>(
+        `/api/apps/favicon?url=${encodeURIComponent(formData.url.trim())}`,
+        { headers: applyAuth() }
+      );
+      setFormData({ ...formData, icon: res.data.data.filename });
+    } catch (err) {
+      createNotification({
+        title: 'Error',
+        message: 'Could not fetch favicon',
+      });
+    } finally {
+      setFetchingFavicon(false);
     }
   };
 
@@ -175,6 +197,9 @@ export const AppForm = ({ modalHandler }: Props): JSX.Element => {
             className={classes.Switch}
           >
             Switch to custom icon upload
+          </span>
+          <span onClick={fetchFaviconHandler} className={classes.Switch}>
+            {fetchingFavicon ? 'Fetching favicon...' : 'Fetch favicon'}
           </span>
         </InputGroup>
       ) : (
