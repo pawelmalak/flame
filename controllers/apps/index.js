@@ -5,4 +5,5 @@ module.exports = {
   updateApp: require('./updateApp'),
   reorderApps: require('./reorderApps'),
   getAllApps: require('./getAllApps'),
+  getFavicon: require('./getFavicon'),
 };
