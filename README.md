@@ -133,6 +133,22 @@ npm run dev-init
 npm run dev
 ```
 
+### Tests
+
+Install server dependencies first with `npm run dev-init`, or `npm install` in the repository root. The test script uses Node's built-in test runner.
+
+```sh
+# run every test
+npm test
+
+# run one file
+node --test test/login.test.js
+node --test test/uploadFilename.test.js
+node --test test/updateApp.test.js
+```
+
+`test/login.test.js` checks that a wrong password is rejected and no token is returned. `test/uploadFilename.test.js` checks that an upload name which would leave `data/uploads` is rejected, and that a normal filename stays inside that directory. `test/updateApp.test.js` checks a missing app. The handler calls `ErrorResponse` without requiring it, so `next` receives `ReferenceError: ErrorResponse is not defined` and no response is sent.
+
 ## Screenshots
 
 ![Apps screenshot](.github/apps.png)
