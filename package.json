@@ -15,7 +15,7 @@
     "skaffold": "concurrently \"npm run init-client\" \"npm run dev-server\""
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@kubernetes/client-node": "^0.15.1",
     "@types/express": "^4.17.13",
