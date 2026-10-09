@@ -147,7 +147,7 @@ node --test test/uploadFilename.test.js
 node --test test/updateApp.test.js
 ```
 
-`test/login.test.js` checks that a wrong password is rejected and no token is returned. `test/uploadFilename.test.js` checks that an upload name which would leave `data/uploads` is rejected, and that a normal filename stays inside that directory. `test/updateApp.test.js` checks that updating an app which does not exist returns not found. That file currently fails: `controllers/apps/updateApp.js` calls `ErrorResponse` without requiring it, so the handler does not return status 404. `npm test` exits with a failure until that require is added.
+`test/login.test.js` checks that a wrong password is rejected and no token is returned. `test/uploadFilename.test.js` checks that an upload name which would leave `data/uploads` is rejected, and that a normal filename stays inside that directory. `test/updateApp.test.js` checks a missing app. The handler calls `ErrorResponse` without requiring it, so `next` receives `ReferenceError: ErrorResponse is not defined` and no response is sent.
 
 ## Screenshots
 
