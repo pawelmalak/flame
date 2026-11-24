@@ -11,7 +11,7 @@ const {
   updateConfig,
 } = require('../controllers/config');
 
-router.route('/').get(getConfig).put(auth, requireAuth, updateConfig);
+router.route('/').get(auth, getConfig).put(auth, requireAuth, updateConfig);
 
 router.route('/0/css').get(getCSS).put(auth, requireAuth, updateCSS);
 
