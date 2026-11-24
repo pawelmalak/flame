@@ -8,7 +8,7 @@ const getExternalWeather = async () => {
   // Fetch data from external API
   try {
     const res = await axios.get(
-      `http://api.weatherapi.com/v1/current.json?key=${secret}&q=${lat},${long}`
+      `https://api.weatherapi.com/v1/current.json?key=${secret}&q=${lat},${long}`
     );
 
     // Save weather data
